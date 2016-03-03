@@ -10,9 +10,62 @@ conds <- factor( c("Control","Control", "Control",
                    "Treat", "Treat","Treat") )
 data <- data.frame(demodata[, columns])
 
+deseqrun <- NULL
+lb_scat <- NULL
+lb_volc <- NULL
+lb_ma <- NULL
+
 test_that("Able to run DESeq2", {
   deseqrun <- runDESeq(data, columns, conds)
   
   expect_true(exists("deseqrun"))
   expect_equal(deseqrun[[2]][[1]], 0.1641255385)
+})
+
+test_that("Linked brush initialization", {
+  expect_silent( lb_scat <- linked_brush_scatter())
+  expect_true(exists("lb_scat"))
+  
+  expect_silent( lb_volc <- linked_brush_volcano())
+  expect_true(exists("lb_volc"))
+  
+  expect_silent( lb_ma <- linked_brush_ma() )
+  expect_true(exists("lb_ma"))
+})
+
+##################################################
+de_res <- data.frame(deseqrun)
+norm_data <- getNormalizedMatrix(data[, columns])
+rdata <- cbind(rownames(de_res), norm_data[rownames(de_res), columns],
+           log10(rowMeans(norm_data[rownames(de_res),
+                                    paste(c("exper_rep1","exper_rep2","exper_rep3"))]) + 0.1),
+           log10( rowMeans( norm_data[ rownames( de_res ),
+                                       paste(c("control_rep1","control_rep2","control_rep3"))] ) +  0.1),
+           de_res[rownames(de_res),
+                  c("padj", "log2FoldChange")], 2 ^ de_res[rownames(de_res),
+                                                           "log2FoldChange"],
+           -1 * log10(de_res[rownames(de_res), "padj"]))
+colnames(rdata) <- c("ID", columns, "Cond1", "Cond2", "padj", "log2FoldChange",
+                 "foldChange", "log10padj")
+rdata <- as.data.frame(rdata)
+rdata$padj[is.na(rdata$padj)] <- 1
+rdata <- rdata[, c(paste(c("exper_rep1","exper_rep2","exper_rep3")), paste(c("control_rep1","control_rep2","control_rep3")))]
+
+padj_cutoff <- 0.01
+foldChange_cutoff <- 2
+
+rdata$Legend <- character(nrow(rdata))
+rdata$Legend[rdata$log2FoldChange > log2(foldChange_cutoff) &
+           rdata$padj < padj_cutoff] <- "Up"
+rdata$Legend[rdata$log2FoldChange < log2(1 / foldChange_cutoff) &
+           rdata$padj < padj_cutoff] <- "Down"
+rdata$Legend[abs(rdata$log2FoldChange) <= log2(foldChange_cutoff)] <- "NS"
+rdata$Legend[is.null(rdata$log10padj)] <- "NA"
+##################################################
+
+test_that("plots produce no errors", {
+  expect_silent( all2all(data) )
+  expect_silent( test_scat <- mainScatter(rdata, lb_scat) )
+  expect_silent( test_volc <- volcanoScatter(rdata, lb_volc) )
+  expect_silent( test_ma <- MAPlot(rdata, lb_ma) )
 })
