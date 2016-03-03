@@ -1,4 +1,3 @@
-require(shiny)
 library(debrowser)
 library(DESeq2)
 library(testthat)
@@ -9,11 +8,6 @@ columns <- c("exper_rep1","exper_rep2","exper_rep3",
 conds <- factor( c("Control","Control", "Control",
                    "Treat", "Treat","Treat") )
 data <- data.frame(demodata[, columns])
-
-deseqrun <- NULL
-lb_scat <- NULL
-lb_volc <- NULL
-lb_ma <- NULL
 
 test_that("Able to run DESeq2", {
   deseqrun <- runDESeq(data, columns, conds)
@@ -34,6 +28,11 @@ test_that("Linked brush initialization", {
 })
 
 ##################################################
+deseqrun <- runDESeq(data, columns, conds)
+lb_scat <- linked_brush_scatter()
+lb_volc <- linked_brush_volcano()
+lb_ma <- linked_brush_ma()
+
 de_res <- data.frame(deseqrun)
 norm_data <- getNormalizedMatrix(data[, columns])
 rdata <- cbind(rownames(de_res), norm_data[rownames(de_res), columns],
@@ -49,7 +48,6 @@ colnames(rdata) <- c("ID", columns, "Cond1", "Cond2", "padj", "log2FoldChange",
                  "foldChange", "log10padj")
 rdata <- as.data.frame(rdata)
 rdata$padj[is.na(rdata$padj)] <- 1
-rdata <- rdata[, c(paste(c("exper_rep1","exper_rep2","exper_rep3")), paste(c("control_rep1","control_rep2","control_rep3")))]
 
 padj_cutoff <- 0.01
 foldChange_cutoff <- 2
@@ -61,11 +59,28 @@ rdata$Legend[rdata$log2FoldChange < log2(1 / foldChange_cutoff) &
            rdata$padj < padj_cutoff] <- "Down"
 rdata$Legend[abs(rdata$log2FoldChange) <= log2(foldChange_cutoff)] <- "NS"
 rdata$Legend[is.null(rdata$log10padj)] <- "NA"
+
+dat <- rdata
+dat$M <- rdata$Cond1 - rdata$Cond2
+dat$A <- (rdata$Cond1 + rdata$Cond2) / 2 
 ##################################################
 
 test_that("plots produce no errors", {
   expect_silent( all2all(data) )
+  
   expect_silent( test_scat <- mainScatter(rdata, lb_scat) )
-  expect_silent( test_volc <- volcanoScatter(rdata, lb_volc) )
-  expect_silent( test_ma <- MAPlot(rdata, lb_ma) )
+  expect_false(is.null(test_scat))
+  expect_silent( test_scat_zoom <- scatterZoom(rdata) )
+  expect_false(is.null(test_scat_zoom))
+  
+  expect_silent( test_volc <- volcanoPlot(rdata, lb_volc) )
+  expect_false(is.null(test_volc))
+  expect_silent( test_volc_zoom <- volcanoZoom(rdata) )
+  expect_false(is.null(test_volc_zoom))
+  
+  expect_silent( test_ma <- MAPlot(dat, lb_ma) )
+  expect_false(is.null(test_ma))
+  expect_silent( test_ma_zoom <- MAZoom(dat) )
+  expect_false(is.null(test_ma_zoom))
+  
 })
