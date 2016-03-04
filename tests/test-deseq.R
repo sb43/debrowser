@@ -49,8 +49,8 @@ colnames(rdata) <- c("ID", columns, "Cond1", "Cond2", "padj", "log2FoldChange",
 rdata <- as.data.frame(rdata)
 rdata$padj[is.na(rdata$padj)] <- 1
 
-padj_cutoff <- 0.01
-foldChange_cutoff <- 2
+padj_cutoff <- 0.6
+foldChange_cutoff <- 6
 
 rdata$Legend <- character(nrow(rdata))
 rdata$Legend[rdata$log2FoldChange > log2(foldChange_cutoff) &
@@ -62,11 +62,17 @@ rdata$Legend[is.null(rdata$log10padj)] <- "NA"
 
 dat <- rdata
 dat$M <- rdata$Cond1 - rdata$Cond2
-dat$A <- (rdata$Cond1 + rdata$Cond2) / 2 
+dat$A <- (rdata$Cond1 + rdata$Cond2) / 2
 ##################################################
 
 test_that("plots produce no errors", {
   expect_silent( all2all(data) )
+  
+  heatmap <- runHeatmap(mtcars)
+  expect_false( is.null(heatmap) )
+  
+  expect_silent( MAP <- MAPlot(dat, lb_ma) )
+  expect_false( is.null(MAP) )
   
   expect_silent( test_scat <- mainScatter(rdata, lb_scat) )
   expect_false(is.null(test_scat))
@@ -82,5 +88,44 @@ test_that("plots produce no errors", {
   expect_false(is.null(test_ma))
   expect_silent( test_ma_zoom <- MAZoom(dat) )
   expect_false(is.null(test_ma_zoom))
-  
+})
+
+test_that("plots produce no errors", {
+  goInput <- NULL
+  goInput$gofunc <- "groupGO"
+  goInput$goplot <- "enrichGO"
+  goInput$goextplot <- "Summary"
+  goInput$gopvalue <- 0.01
+  goInput$ontology <- "CC"
+  dataset <- rdata[, columns]
+  genelist <- getGeneList(rownames(isolate(dataset)))
+  gotest <-getGOPlots(isolate(dataset[, isolate(columns)]), goInput, genelist)
+  expect_false(is.null(gotest))
+  goInput$ontology <- "MF"
+  gotest <-getGOPlots(isolate(dataset[, isolate(columns)]), goInput, genelist)
+  expect_false(is.null(gotest))
+  goInput$ontology <- "BP"
+  gotest <-getGOPlots(isolate(dataset[, isolate(columns)]), goInput, genelist)
+  expect_false(is.null(gotest))
+  goInput$goplot <- "enrichKEGG"
+  gotest <-getGOPlots(isolate(dataset[, isolate(columns)]), goInput, genelist)
+  expect_false(is.null(gotest))
+  goInput$goextplot <- "Dotplot"
+  gotest <-getGOPlots(isolate(dataset[, isolate(columns)]), goInput, genelist)
+  expect_false(is.null(gotest))
+  goInput$goplot <- "disease"
+  gotest <-getGOPlots(isolate(dataset[, isolate(columns)]), goInput, genelist)
+  expect_false(is.null(gotest))
+  goInput$goextplot <- "Summary"
+  gotest <-getGOPlots(isolate(dataset[, isolate(columns)]), goInput, genelist)
+  expect_false(is.null(gotest))
+  goInput$goplot <- "compare"
+  gotest <-getGOPlots(isolate(dataset[, isolate(columns)]), goInput, genelist)
+  expect_false(is.null(gotest))
+  goInput$ontology <- "MF"
+  gotest <-getGOPlots(isolate(dataset[, isolate(columns)]), goInput, genelist)
+  expect_false(is.null(gotest))
+  goInput$ontology <- "CC"
+  gotest <-getGOPlots(isolate(dataset[, isolate(columns)]), goInput, genelist)
+  expect_false(is.null(gotest))
 })
