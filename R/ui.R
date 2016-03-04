@@ -59,7 +59,7 @@ deUI<- function() {
                 h4("Filter"),
                 sliderInput("padj", "padj value cut off",
                     0, 1, 0.01, step = 0.001),
-            sliderInput("foldChange", "Fold Change cut off",
+                sliderInput("foldChange", "Fold Change cut off",
                     1, 10, 2, step = 0.1),
                     uiOutput("downloadSection"),
                     uiOutput("leftMenu"))

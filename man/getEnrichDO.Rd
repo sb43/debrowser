@@ -22,7 +22,7 @@ getEnrichDO
 }
 \examples{
    genelist<-getGeneList(c('OCLN', 'ABCC2'))
-   x <- getEnrichDO(genelist)
+   x <- getEnrichDO(genelist, NULL)
    
 }
 

@@ -21,11 +21,21 @@ getAddPanel <- function() {
                     "mcquitty", "median", "centroid"))),
             column(3, selectInput("distance_method", "Distance Method:",
                 choices <- c("cor", "euclidean", "maximum", "manhattan",
-                    "canberra", "binary", "minkowski"))),
-            column(3, actionButton("startAddPlot", "Submit"))),
-            column(3, downloadButton("downloadPlot", "Download")),
-        column(12, plotOutput("addplot1", height = 500))))
+                    "canberra", "binary", "minkowski")))),
+        conditionalPanel( (condition <- "input.addplot=='all2all'"),
+            column(3, sliderInput("cex", "corr font size",
+                                  min = 0.1, max = 10, step = 0.1, value = 2))),
+            column(3,
+                  sliderInput("width", "width",
+                           min = 100, max = 2000, step = 10, value = 700)),
+            column(3,
+                   sliderInput("height", "height",
+                               min = 100, max = 2000, step = 10, value = 500)),
+            column(1, actionButton("startAddPlot", "Submit")),
+            column(1, downloadButton("downloadPlot", "")),
+          uiOutput("plotarea")))
 }
+
 #'Left menu for additional plots
 #'
 #' @note \code{getLeftMenu}
@@ -65,6 +75,7 @@ getLeftMenu <- function() {
 #' @param metadata, coupled samples and conditions
 #' @param clustering_method, clustering method used
 #' @param distance_method, distance method used
+#' @param cex, font size
 #' @examples  
 #'    x <- getAddPlots(mtcars)
 #'    
@@ -72,12 +83,12 @@ getLeftMenu <- function() {
 #'
 #'
 getAddPlots <- function(dataset, datasetname="Up", addplot="heatmap",
-                        metadata=c("samples", "conditions"),
+                        metadata=NULL,
                         clustering_method = "complete",
-                        distance_method = "cor") {
+                        distance_method = "cor", cex=2) {
     if (nrow(dataset) > 0) {
         if (addplot == "all2all") {
-            a <- all2all(dataset)
+            a <- all2all(dataset, cex)
         } else if (addplot == "heatmap") {
             a <- runHeatmap(dataset, title = paste("Dataset:", datasetname),
                 clustering_method = clustering_method,

@@ -5,8 +5,8 @@
 \title{getAddPlots, for additional plots}
 \usage{
 getAddPlots(dataset, datasetname = "Up", addplot = "heatmap",
-  metadata = c("samples", "conditions"), clustering_method = "complete",
-  distance_method = "cor")
+  metadata = NULL, clustering_method = "complete",
+  distance_method = "cor", cex = 2)
 }
 \arguments{
 \item{dataset, }{the dataset to use}
@@ -20,6 +20,8 @@ getAddPlots(dataset, datasetname = "Up", addplot = "heatmap",
 \item{clustering_method, }{clustering method used}
 
 \item{distance_method, }{distance method used}
+
+\item{cex, }{font size}
 }
 \value{
 the panel for additional plots;

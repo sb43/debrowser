@@ -4,12 +4,16 @@
 \alias{panel.cor}
 \title{Prepares the correlations for the all2all plot.}
 \usage{
-panel.cor(x, y, ...)
+panel.cor(x, y, prefix = "rho=", cex.cor = 2, ...)
 }
 \arguments{
 \item{x, }{numeric vector x}
 
 \item{y, }{numeric vector y}
+
+\item{prefix, }{prefix for the text}
+
+\item{cex.cor, }{correlation font size}
 
 \item{..., }{additional parameters}
 }

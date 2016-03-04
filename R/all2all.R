@@ -1,15 +1,18 @@
 #' Prepares all2all scatter plots for given datasets. 
 #' 
 #' @param data, data that have the sample names in the header.
+#' @param cex text size
 #' @return all2all scatter plots
 #' @examples
 #'   plot<-all2all(mtcars)
 #' 
 #' @export
-#' 
-all2all <- function(data) {
-    pairs(log10(data[1:1000, ]), pch = 19, cex = 0.25,
-            diag.panel = panel.hist, lower.panel = panel.cor)
+#'  
+
+all2all <- function(data, cex=2) {
+    pcor <- function(x,y, ...) panel.cor(x,y, cex.cor = cex)
+    pairs(log10(data[1:1000, ]), cex=0.25,
+            diag.panel = panel.hist, lower.panel = pcor)
 }
 
 #' Prepares the historgram for the all2all plot. 
@@ -38,6 +41,8 @@ panel.hist <- function(x, ...) {
 #' 
 #' @param x, numeric vector x
 #' @param y, numeric vector y
+#' @param prefix, prefix for the text
+#' @param cex.cor, correlation font size
 #' @param ..., additional parameters
 #' @return all2all correlation plots
 #' @examples
@@ -45,32 +50,15 @@ panel.hist <- function(x, ...) {
 #' 
 #' @export
 #' 
-panel.cor <- function(x, y, ...) {
-    par(new = TRUE)
-    cor_val <- cor.test(x, y, method = "spearman",
-                        na.rm = TRUE, exact = FALSE)$estimate
-    cor_val <- round(cor_val, digits = 2)
+#' 
 
-    legend("center", cex = 1.5, bty = "n", paste("rho=", cor_val))
-}
-
-#' Smoothes the scatterplot for the all2all plot. 
-#' 
-#' @param x, x coordinates
-#' @param y, y coordinates
-#' @param ..., any additional params
-#' @return all2all smoothed scatter plots
-#' @examples
-#'   n   <- 10000
-#'   x1  <- matrix(rnorm(n), ncol = 2)
-#'   x2  <- matrix(rnorm(n, mean = 3, sd = 1.5), ncol = 2)
-#'   x   <- rbind(x1, x2)
-#'   y   <- rbind(x2, x1)
-#'   panel.smoothScatter(x, y)
-#' 
-#' @export
-#' 
-panel.smoothScatter <- function(x, y, ...) {
-    par(new = TRUE)
-    smoothScatter(x, y, nrpoints = 0)
+panel.cor <- function(x, y, prefix = "rho=", cex.cor=2, ...)
+{
+  usr <- par("usr")
+  on.exit(par(usr))
+  par(usr = c(0, 1, 0, 1))
+  r <- cor.test(x, y, method="spearman",na.rm = TRUE, exact = FALSE)$estimate
+  txt <- round(r, digits=2)
+  txt <- paste0(prefix, txt)
+  text(0.5, 0.5, txt, cex=cex.cor)
 }
