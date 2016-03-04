@@ -4,10 +4,12 @@
 \alias{all2all}
 \title{Prepares all2all scatter plots for given datasets.}
 \usage{
-all2all(data)
+all2all(data, cex = 2)
 }
 \arguments{
 \item{data, }{data that have the sample names in the header.}
+
+\item{cex}{text size}
 }
 \value{
 all2all scatter plots

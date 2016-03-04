@@ -4,14 +4,14 @@
 \alias{getEnrichGO}
 \title{getEnrichGO}
 \usage{
-getEnrichGO(genelist, pvalueCutoff = 0.01, organism = "human", ont = "CC")
+getEnrichGO(genelist, pvalueCutoff = 0.01, org = "human", ont = "CC")
 }
 \arguments{
 \item{genelist, }{gene list}
 
 \item{pvalueCutoff, }{p value cutoff}
 
-\item{organism, }{the organism used}
+\item{org, }{the organism used}
 
 \item{ont, }{the ontology used}
 }
@@ -26,7 +26,7 @@ getEnrichGO
 }
 \examples{
    genelist<-getGeneList(c('OCLN', 'ABCC2'))
-   x <- getEnrichGO(genelist)
+   x <- getEnrichGO(genelist, 0.01, NULL, "CC")
    
 }
 

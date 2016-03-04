@@ -69,9 +69,22 @@ document.addEventListener("DOMContentLoaded", function() {
 <div id="quick-start" class="section level1">
 <h1><span class="header-section-number">2</span> Quick start</h1>
 <p>Running these simple command will launch the DEBrowser within your local machine.</p>
-<pre><code>library(debrowser) 
-library(shiny) 
-runApp()</code></pre>
+<p>Before you start; First, you will have to install R and/or RStudio. (On Fedora/Red Hat/CentOS, these packages have to be installed; openssl-devel, libxml2-devel, libcurl-devel, libpng-devel)</p>
+<pre><code># Installation instructions from source:
+# 1. Install the dependencias by running source command on attached bioC_install.R script in R or RStudio . 
+source(&quot;./bioC_install.R&quot;)
+
+# 2. install debrowser using the command below
+
+R CMD INSTALL debrowser_0.99.0.tar.gz
+
+# 3. Start R and load the library
+
+library(debrowser)
+
+#  4. start DE browser
+
+startDEBrowser()</code></pre>
 </div>
 <div id="browsing-your-data" class="section level1">
 <h1><span class="header-section-number">3</span> Browsing your Data</h1>

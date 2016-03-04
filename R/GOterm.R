@@ -32,26 +32,27 @@ getGeneList <- function(genes) {
 #' @note \code{getEnrichGO}
 #' @param genelist, gene list
 #' @param pvalueCutoff, p value cutoff
-#' @param organism, the organism used
+#' @param org, the organism used
 #' @param ont, the ontology used
 #' @return Enriched GO
 #' @examples
 #'    genelist<-getGeneList(c('OCLN', 'ABCC2'))
-#'    x <- getEnrichGO(genelist)
+#'    x <- getEnrichGO(genelist, 0.01, NULL, "CC")
 #'    
 #' @export
 #' 
  
 getEnrichGO <- function(genelist, pvalueCutoff = 0.01,
-    organism = "human", ont="CC") {
-        res <- c()
-        res$enrich_p <- enrichGO(gene = genelist, organism = organism,
+    org = "human", ont="CC") {
+    if (is.null(org)) return(NULL)
+    res <- c()
+    res$enrich_p <- enrichGO(gene = genelist, organism = org,
             ont = ont, pvalueCutoff = pvalueCutoff,
             readable = TRUE)
 
-        res$p <- barplot(res$enrich_p, title = paste("Enrich GO", ont),
+    res$p <- barplot(res$enrich_p, title = paste("Enrich GO", ont),
             font.size = 12)
-        res
+    return(res)
 }
 
 #' getEnrichKEGG
@@ -62,19 +63,20 @@ getEnrichGO <- function(genelist, pvalueCutoff = 0.01,
 #' @return Enriched KEGG
 #' @examples
 #'    genelist<-getGeneList(c('OCLN', 'ABCC2'))
-#'    x <- getEnrichKEGG(genelist)
+#'    x <- getEnrichKEGG(genelist,NULL)
 #'    
 #' @export
 #' 
 
 getEnrichKEGG <- function(genelist, pvalueCutoff = 0.01) {
+    if (is.null(pvalueCutoff)) return(NULL)
     res <- c()
     res$enrich_p <- enrichKEGG(gene = genelist, organism = "human",
         pvalueCutoff = pvalueCutoff, readable = TRUE,
         use_internal_data = TRUE)
     res$p <- barplot(res$enrich_p, title = paste("KEGG Enrichment: p-value=",
         pvalueCutoff))
-    res
+    return(res)
 }
 
 #' clusterData
@@ -131,8 +133,7 @@ clusterData <- function(dat) {
 #' @param title, title of the comparison
 #' @return compared cluster
 #' @examples
-#'    genelist<-getGeneList(c('OCLN', 'ABCC2'))
-#'    x <- getEnrichDO(genelist)
+#'    x <- compareClust()
 #'    
 #' @export
 #' 
@@ -177,11 +178,12 @@ compareClust <- function(dat = NULL, ont = "CC", organism = "human",
 #' @return enriched DO
 #' @examples
 #'    genelist<-getGeneList(c('OCLN', 'ABCC2'))
-#'    x <- getEnrichDO(genelist)
+#'    x <- getEnrichDO(genelist, NULL)
 #'    
 #' @export
 #' 
 getEnrichDO <- function(genelist, pvalueCutoff = 0.01) {
+    if (is.null(pvalueCutoff)) return(NULL)
     res <- c()
     res$enrich_p <- enrichDO(gene = genelist, ont = "DO",
         pvalueCutoff = pvalueCutoff, readable = TRUE)

@@ -22,7 +22,8 @@ pca list
 PCA analysis
 }
 \examples{
-  x<-run_pca()
+  load(paste0(system.file("extdata/demo/", package="debrowser"), "demodata.Rda"))
+  pca_data<-run_pca(getNormalizedMatrix(demodata[rowSums(demodata[,2:7])>10,2:7]))
   
 }
 

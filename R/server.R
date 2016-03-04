@@ -47,6 +47,16 @@ deServer<-shinyServer(function(input, output, session) {
             a <- getLeftMenu()
         a
     })
+    
+    output$plotarea <- renderUI({
+      a<-NULL
+      if (!is.null(filt_data()))
+        a<-column(12, plotOutput("addplot1", 
+                                      height = input$height, 
+                                      width = input$width))
+      a
+    })
+    
     output$startup <- renderUI({
       a<-list( column( 12, wellPanel( 
         helpText("Please select a file or 
@@ -170,11 +180,23 @@ deServer<-shinyServer(function(input, output, session) {
         de_res %>% head
         de_res <- data.frame(de_res)
         norm_data <- getNormalizedMatrix(data[, columns()])
+        if (length(inputconds()$conds1)>1)
+            mean_cond1 <- rowMeans(norm_data[rownames(de_res),
+                             paste(inputconds()$conds1)])
+        else
+            mean_cond1 <- norm_data[rownames(de_res),
+                                  paste(inputconds()$conds1)]
+        
+        if (length(inputconds()$conds2)>1)
+            mean_cond2 <- rowMeans( norm_data[ rownames( de_res ),
+                             paste( inputconds()$conds2 )] )
+        else
+            mean_cond2 <- norm_data[ rownames( de_res ),
+                                     paste( inputconds()$conds2 )]
+                                                  
         m <- cbind(rownames(de_res), norm_data[rownames(de_res), columns()],
-            log10(rowMeans(norm_data[rownames(de_res),
-            paste(inputconds()$conds1)]) + 0.1),
-            log10( rowMeans( norm_data[ rownames( de_res ),
-            paste( inputconds( )$conds2 )] ) +  0.1),
+            log10(mean_cond1 + 0.1),
+            log10(mean_cond2 + 0.1),
                     de_res[rownames(de_res),
             c("padj", "log2FoldChange")], 2 ^ de_res[rownames(de_res),
                 "log2FoldChange"],
@@ -349,7 +371,8 @@ deServer<-shinyServer(function(input, output, session) {
             metadata <- cbind(columns(), conds())
             a <- getAddPlots(dataset, input$dataset, input$addplot, metadata,
                 clustering_method = inputAddPlot()$clustering_method,
-                distance_method = inputAddPlot()$distance_method)
+                distance_method = inputAddPlot()$distance_method,
+                cex = input$cex)
         }
         a
     })
@@ -446,11 +469,12 @@ deServer<-shinyServer(function(input, output, session) {
     output$downloadPlot <- downloadHandler(filename = function() {
         paste(input$addplot, ".pdf", sep = "")
     }, content = function(file) {
-        pdf(file)
+        pdf(file, height=input$height*0.039370, width=input$width*0.039370)
         print(getAddPlots(datasetInput()[, columns()], input$dataset,
             input$addplot, cbind(columns(), conds()),
             clustering_method = inputAddPlot()$clustering_method,
-            distance_method = inputAddPlot()$distance_method))
+          distance_method = inputAddPlot()$distance_method,
+          cex = input$cex))
         dev.off()
     })
 

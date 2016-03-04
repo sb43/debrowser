@@ -28,8 +28,7 @@ compareClust
 \code{compareClust}
 }
 \examples{
-   genelist<-getGeneList(c('OCLN', 'ABCC2'))
-   x <- getEnrichDO(genelist)
+   x <- compareClust()
    
 }
 
