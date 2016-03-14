@@ -1,27 +1,28 @@
 #' Run DESeq2 algorithm.
-#' 
+#'
 #' @param data, A matrix that includes all the expression raw counts,
-#'    rownames has to be the gene, isoform or region names/IDs
+#'     rownames has to be the gene, isoform or region names/IDs
 #' @param columns, is a vector that includes the columns that are going
-#'    to be analyzed. These columns has to match with the given data.
+#'     to be analyzed. These columns has to match with the given data.
 #' @param conds, experimental conditions. The order has to match
-#'    with the column order
-#' @param fitType, DESeq2 fitType, it can be 'parametric', 'local', 'mean'.
-#' @param non_expressed_cutoff, to remove unexpressed r
-#'    egions/genes/isoforms this cutoff is used
+#'     with the column order
+#' @param fitType, DESeq2 fitType, it can be 'parametric', 
+#'     'local', 'mean'.
+#' @param non_expressed_cutoff, to remove unexpressed 
+#'     regions/genes/isoforms this cutoff is used
 #' @return deseq2 results
-#' 
+#'
 #' @export
-#' 
 #' @import DESeq2
-#' 
+#'
 #' @examples
-#'   x <- runDESeq(data<-NULL, columns<-c())
-#' 
+#'     x <- runDESeq(data<-NULL, columns<-c())
+#'
 
 runDESeq <- function(data, columns, conds,
-    fitType = c("parametric", "local", "mean"), non_expressed_cutoff = 10) {
-        if( !is.null(data) ){
+    fitType = c("parametric", "local", "mean"),
+    non_expressed_cutoff = 10) {
+        if ( !is.null(data) ){
             data[, columns] <- apply(data[, columns], 2,
                 function(x) as.integer(x))
 

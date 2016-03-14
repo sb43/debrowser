@@ -23,7 +23,7 @@ it requires edgeR package
 \code{getGoPanel}
 }
 \examples{
-   x <- getNormalizedMatrix(mtcars)
-   
+    x <- getNormalizedMatrix(mtcars)
+
 }
 

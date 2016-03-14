@@ -18,7 +18,7 @@ Barplot and box plots are in this page too
 \code{getMainPanel}
 }
 \examples{
-   x <- getMainPanel()
-   
+    x <- getMainPanel()
+
 }
 

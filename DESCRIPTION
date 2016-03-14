@@ -17,14 +17,14 @@ Description: Bioinformatics platform containing interactive plots and tables
     made on site and the results are shown in various plots such as scatter,
     bar, box, volcano, ma plots and Heatmaps.
 Depends:
-    R (>= 3.2.0),
-    clusterProfiler,
-    ggvis,
-    DT,
-    shiny
+    R (>= 3.2.3),
+    shiny,
+    ggvis
 License: GPL-3 + file LICENSE
 LazyData: true
 Imports:
+    clusterProfiler,
+    DT,
     ReactomePA,
     ggplot2,
     RColorBrewer,
@@ -34,14 +34,24 @@ Imports:
     DESeq2,
     org.Hs.eg.db,
     DOSE,
-    edgeR
+    edgeR,
+    igraph,
+    grDevices,
+    graphics,
+    stats,
+    utils,
+    GenomicRanges,
+    IRanges,
+    S4Vectors,
+    SummarizedExperiment
 RoxygenNote: 5.0.1
 Suggests: knitr,
     rmarkdown,
     R.rsp,
     testthat
 VignetteBuilder: knitr,  R.rsp
-URL: http://debrowser.umassmed.edu/ and https://github.com/UMMS-Biocore/debrowser
+URL: http://debrowser.umassmed.edu/ and 
+    https://github.com/UMMS-Biocore/debrowser
 BugReports: https://github.com/UMMS-Biocore/debrowser/issues/new
 biocViews:
     Sequencing,

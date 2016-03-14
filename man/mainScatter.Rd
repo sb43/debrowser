@@ -20,7 +20,7 @@ volcano plot
 Main scatter plot
 }
 \examples{
-   x <- mainScatter()
-   
+    x <- mainScatter()
+
 }
 

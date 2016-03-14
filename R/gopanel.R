@@ -32,7 +32,7 @@ getGoPanel <- function(){
             ) ),
             column( 3,
                 actionButton("startGO", "Submit"),
-                downloadButton("downloadGOPlot", "Download")),
+                downloadButton("downloadGOPlot", "")),
             column(12,
                 wellPanel( plotOutput("GOPlots1") )) )
     a

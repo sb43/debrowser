@@ -23,7 +23,7 @@ shinyServer to be able to run interactively
 \code{deServer}
 }
 \examples{
-   deServer
+    deServer
 
 }
 

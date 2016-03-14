@@ -34,15 +34,18 @@ pca list
 Plot PCA results.
 }
 \examples{
-  load(paste0(system.file("extdata/demo/", package="debrowser"), "demodata.Rda"))
-  pca_data<-run_pca(getNormalizedMatrix(demodata[rowSums(demodata[,2:7])>10,2:7]))
-  metadata<-cbind(colnames(demodata[,2:7]), c(rep("Cond1",3), rep("Cond2",3)))
-  colnames(metadata)<-c("samples", "conditions")
-  
-   a <- plot_pca(pca_data$PCs, explained = pca_data$explained,
-        metadata = metadata, color = "samples",
-        size = 5, shape = "conditions",
-        factors = c("samples", "conditions"))
-  
+    load(system.file("extdata", "demo", "demodata.Rda",
+            package="debrowser"))
+    pca_data<-run_pca(getNormalizedMatrix(
+            demodata[rowSums(demodata[,2:7])>10,2:7]))
+    metadata<-cbind(colnames(demodata[,2:7]), 
+            c(rep("Cond1",3), rep("Cond2",3)))
+    colnames(metadata)<-c("samples", "conditions")
+
+    a <- plot_pca(pca_data$PCs, explained = pca_data$explained,
+            metadata = metadata, color = "samples",
+            size = 5, shape = "conditions",
+            factors = c("samples", "conditions"))
+
 }
 

@@ -18,7 +18,7 @@ zoomed scatter plot
 scatter zoom
 }
 \examples{
-   x <- scatterZoom()
-   
+    x <- scatterZoom()
+
 }
 

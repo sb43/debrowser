@@ -17,10 +17,11 @@ to be analyzed. These columns has to match with the given data.}
 \item{conds, }{experimental conditions. The order has to match
 with the column order}
 
-\item{fitType, }{DESeq2 fitType, it can be 'parametric', 'local', 'mean'.}
+\item{fitType, }{DESeq2 fitType, it can be 'parametric', 
+'local', 'mean'.}
 
-\item{non_expressed_cutoff, }{to remove unexpressed r
-egions/genes/isoforms this cutoff is used}
+\item{non_expressed_cutoff, }{to remove unexpressed 
+regions/genes/isoforms this cutoff is used}
 }
 \value{
 deseq2 results
@@ -29,7 +30,7 @@ deseq2 results
 Run DESeq2 algorithm.
 }
 \examples{
-  x <- runDESeq(data<-NULL, columns<-c())
+    x <- runDESeq(data<-NULL, columns<-c())
 
 }
 

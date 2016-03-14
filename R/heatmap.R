@@ -1,23 +1,24 @@
 #' It creates a heatmap 
-#' 
+#'
 #' @param data, a matrixthat includes expression values
 #' @param title, title of the heatmap
 #' @param dend, dendogram
 #' @param names, a flag to show the rownames
-#' @param clustering_method = c('complete', 'ward', 'single', 'average',
-#'        'mcquitty', 'median' , 'centroid')
+#' @param clustering_method = c('complete', 'ward.D2', 'single', 'average',
+#' 'mcquitty', 'median' , 'centroid')
 #' @param distance_method = c('cor','euclidean', 'maximum', 'manhattan',
-#'        'canberra', 'binary' ,'minkowski')
+#' 'canberra', 'binary' ,'minkowski')
 #' @return heatmap.2 plot
 #'
 #' @examples
-#'    x <- runHeatmap(mtcars)
-#'    
+#'     x <- runHeatmap(mtcars)
+#'
 #' @export
 #' @import gplots
 #' @import RColorBrewer
-#' 
-runHeatmap <- function(data, title="Title", dend = "both", names = FALSE,
+#'
+runHeatmap <- function(data, title="Title", dend = "both",
+    names = FALSE,
     clustering_method = c("ward.D2", "complete", "single",
         "average", "mcquitty", "median", "centroid"),
     distance_method = c("euclidean", "cor", "maximum",
@@ -26,8 +27,6 @@ runHeatmap <- function(data, title="Title", dend = "both", names = FALSE,
 
     cldt <- scale(t(ld), center = TRUE, scale = TRUE)
     cld <- t(cldt)
-    dissimilarity <- 1 - cor(cld)
-    distance <- as.dist(dissimilarity)
     hclust2 <- function(x, ...) hclust(x, method = clustering_method)
     dist2 <- function(x, ...) {
         if (distance_method != "cor") {

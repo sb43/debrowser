@@ -20,7 +20,7 @@ MA plot
 Prepares volcano plot
 }
 \examples{
-   x <- MAPlot()
-   
+    x <- MAPlot()
+
 }
 

@@ -7,32 +7,63 @@
 #' @return the panel for main plots;
 #'
 #' @examples
-#'    deServer
+#'     deServer
 #'
 #' @export
-#'
-
+#' @import clusterProfiler
+#' @importFrom shiny actionButton actionLink addResourcePath column
+#'             conditionalPanel downloadButton downloadHandler
+#'             eventReactive fileInput fluidPage helpText isolate
+#'             mainPanel need observe outputOptions plotOutput
+#'             radioButtons reactive reactiveValues renderPlot
+#'             renderUI runApp selectInput shinyUI sidebarLayout
+#'             sidebarPanel sliderInput tabPanel tabsetPanel
+#'             textOutput titlePanel uiOutput updateRadioButtons
+#'             updateTabsetPanel validate wellPanel tags h4 isolate
+#'             shinyServer
+#' @importFrom DT datatable dataTableOutput renderDataTable
+#' @importFrom ggplot2 aes_string geom_point ggplot labs
+#'             scale_x_discrete scale_y_discrete
+#' @importFrom ggvis add_axis add_legend add_tooltip axis_props
+#'             bind_shiny create_broker ggvis ggvisOutput handle_brush
+#'             hide_legend layer_bars layer_boxplots layer_points
+#'             scale_nominal set_options %>% group_by
+#' @importFrom igraph layout.kamada.kawai  
+#' @importFrom grDevices dev.off pdf
+#' @importFrom graphics barplot hist pairs par rect text
+#' @importFrom stats aggregate as.dist cor cor.test dist
+#'             hclust kmeans na.omit prcomp var
+#' @importFrom utils read.table write.table
+#' @importMethodsFrom AnnotationDbi as.data.frame as.list colnames
+#'             head mappedkeys nrow subset
+#' @importMethodsFrom GenomicRanges as.factor
+#' @importMethodsFrom IRanges as.matrix "colnames<-" mean
+#'             nchar paste rownames toupper unique which
+#' @importMethodsFrom S4Vectors t
+#' @importMethodsFrom SummarizedExperiment cbind
+#' @import ReactomePA
+#' @import DOSE
 #options( shiny.maxRequestSize = 30 * 1024 ^ 2)
 #library("debrowser")
 
-deServer<-shinyServer(function(input, output, session) {
+deServer <- function(input, output, session) {
 
     output$mainpanel <- renderUI({
-        a<-NULL
+        a <- NULL
         if (!is.null(filt_data()))
-            a<-getMainPanel()
+            a <- getMainPanel()
         a
     })
-    output$addpanel <- renderUI({
-        a<-NULL
+    output$qcpanel <- renderUI({
+        a <- NULL
         if (!is.null(filt_data()))
-            a<-getAddPanel()
+            a <- getQCPanel()
         a
     })
     output$gopanel <- renderUI({
-        a<-NULL
+        a <- NULL
         if (!is.null(filt_data()))
-            a<-getGoPanel()
+            a <- getGoPanel()
         a
     })
     output$downloadSection <- renderUI({
@@ -47,63 +78,89 @@ deServer<-shinyServer(function(input, output, session) {
             a <- getLeftMenu()
         a
     })
-    
     output$plotarea <- renderUI({
-      a<-NULL
-      if (!is.null(filt_data()))
-        a<-column(12, plotOutput("addplot1", 
-                                      height = input$height, 
-                                      width = input$width))
-      a
+        a <- NULL
+        if (!is.null(filt_data()))
+            a <- column(12, plotOutput("qcplotout",
+                                    height = input$height,
+                                    width = input$width))
+    a
     })
     
+    output$loading <- renderUI({
+        addResourcePath(prefix = "www", directoryPath =
+                        system.file("extdata", "www", 
+                                    package = "debrowser"))
+        imgsrc <- "www/images/loading.gif"
+        a<-list(
+        tags$head(tags$style(type = "text/css", "
+            #loadmessage {
+                        position: fixed;
+                        top: 0px;
+                        left: 200px;
+                        width: 70%;
+                        height: 100;
+                        padding: 5px 0px 5px 0px;
+                        text-align: center;
+                        font-weight: bold;
+                        font-size: 100%;
+                        color: #000000;
+                        opacity: 0.8;
+                        background-color: #FFFFFFF;
+                        z-index: 100;
+            }")),
+        conditionalPanel(condition = "$('html').hasClass('shiny-busy')",
+                        tags$div("Please wait! Loading...", id = "loadmessage",
+                            tags$img(src = imgsrc
+                            ))))
+    })
+
     output$startup <- renderUI({
-      a<-list( column( 12, wellPanel( 
-        helpText("Please select a file or 
-                       load the demo data!"),
-        helpText( "For mor information;" ), 
-        helpText(   a("Quick Start Guide",     
-                      href="http://dolphin.readthedocs.org/en/master/debrowser/quickstart.html", 
-                      target="_blank")
-                       ) ) ))
+        a <- list( column( 12, wellPanel(
+        helpText("Please select a file or
+                    load the demo data!"),
+        helpText( "For mor information;" ),
+        helpText(   a("Quick Start Guide",
+    href = "http://dolphin.readthedocs.org/en/master/debrowser/quickstart.html",
+                    target = "_blank")
+                    ) ) ))
     })
     output$afterload <- renderUI({
-      a<-list( column( 12, wellPanel( 
+    a <- list( column( 12, wellPanel(
         helpText( "Please choose the appropriate conditions for DESeq analysis
-                   and press 'Run DESeq!' button in the left menu" ),
-        helpText( "To be able to select conditions please click 
-                   'Condition1' or 'Condition2' boxes. 
-                   You can also use delete button to remove the 
-                   samples from the list."))))
+                and press 'Run DESeq!' button in the left menu" ),
+        helpText( "To be able to select conditions please click
+                'Condition1' or 'Condition2' boxes.
+                You can also use delete button to remove the
+                samples from the list."))))
     })
     output$fileUploaded <- reactive({
-      return(!is.null(Dataset()))
+        return(!is.null(Dataset()))
     })
-    outputOptions(output, 'fileUploaded', suspendWhenHidden=FALSE)
-    
+    outputOptions(output, "fileUploaded", suspendWhenHidden = FALSE)
+
     Dataset <- reactive({
         if (is.null(input$file1) && is.null(loaddemo()$demo)) {
-          # User has not uploaded a file yet
-          return(NULL)
+            # User has not uploaded a file yet
+            return(NULL)
         }
-        else if (is.null(input$file1) && loaddemo()$demo==TRUE)
-        {
-          return(loaddemo()$demodata)
+        else if (is.null(input$file1) && loaddemo()$demo == TRUE) {
+            return(loaddemo()$demodata)
         }
         inFile <- input$file1
         validate(need(try(m <- read.table(inFile$datapath, sep = "\t",
-                         header = TRUE, row.names = 1)),
-                         "Please select a data set"))
-        
+                        header = TRUE, row.names = 1)),
+                        "Please select a data set"))
         m
     })
-    loaddemo <- reactiveValues(demo = NULL, demodata=NULL)
+    loaddemo <- reactiveValues(demo = NULL, demodata = NULL)
     loaddemo <- eventReactive(input$demo, {
-         m<-c()
-         m$demo=TRUE
-         load(paste0(system.file("extdata/demo/", package="debrowser"), "demodata.Rda"))
-         m$demodata<-demodata
-         m
+        m <- c()
+        m$demo <- TRUE
+        load(system.file("extdata", "demo", "demodata.Rda",
+                        package = "debrowser"))
+        m$demodata <- demodata
+        m
     })
 
     selected1 <- reactive({
@@ -115,22 +172,21 @@ deServer<-shinyServer(function(input, output, session) {
     })
 
     choices <- reactive({
-      m<-NULL
-      if(!is.null(Dataset()))
-      {
-        cnames <- colnames(Dataset())
-        cn <- cnames[2:length(cnames)]
-        m <- as.list(NULL)
-        for (i in seq(cn)) {
-            m[i] <- cn[i]
+        m <- NULL
+        if (!is.null(Dataset())){
+            cnames <- colnames(Dataset())
+            cn <- cnames[2:length(cnames)]
+            m <- as.list(NULL)
+            for (i in seq(cn)) {
+                m[i] <- cn[i]
+            }
         }
-      }
-      m
+        m
     })
 
     observe({
-        if (!is.null(input$addplot)) {
-            updateRadioButtons(session, "addplot", selected = input$addplot)
+        if (!is.null(input$qcplot)) {
+            updateRadioButtons(session, "qcplot", selected = input$qcplot)
         }
     })
 
@@ -157,7 +213,7 @@ deServer<-shinyServer(function(input, output, session) {
     })
 
     conds <- reactive({
-        m <- c(rep(x, length(inputconds()$conds1)), rep(y,
+        m <- c(rep("Cond1", length(inputconds()$conds1)), rep("Cond2",
             length(inputconds()$conds2)))
         m
     })
@@ -180,20 +236,20 @@ deServer<-shinyServer(function(input, output, session) {
         de_res %>% head
         de_res <- data.frame(de_res)
         norm_data <- getNormalizedMatrix(data[, columns()])
-        if (length(inputconds()$conds1)>1)
+        if (length(inputconds()$conds1) > 1)
             mean_cond1 <- rowMeans(norm_data[rownames(de_res),
-                             paste(inputconds()$conds1)])
+                            paste(inputconds()$conds1)])
         else
             mean_cond1 <- norm_data[rownames(de_res),
-                                  paste(inputconds()$conds1)]
-        
-        if (length(inputconds()$conds2)>1)
+                            paste(inputconds()$conds1)]
+
+        if (length(inputconds()$conds2) > 1)
             mean_cond2 <- rowMeans( norm_data[ rownames( de_res ),
-                             paste( inputconds()$conds2 )] )
+                            paste( inputconds()$conds2 )] )
         else
             mean_cond2 <- norm_data[ rownames( de_res ),
-                                     paste( inputconds()$conds2 )]
-                                                  
+                            paste( inputconds()$conds2 )]
+
         m <- cbind(rownames(de_res), norm_data[rownames(de_res), columns()],
             log10(mean_cond1 + 0.1),
             log10(mean_cond2 + 0.1),
@@ -201,7 +257,7 @@ deServer<-shinyServer(function(input, output, session) {
             c("padj", "log2FoldChange")], 2 ^ de_res[rownames(de_res),
                 "log2FoldChange"],
             -1 * log10(de_res[rownames(de_res), "padj"]))
-            colnames(m) <- c("ID", columns(), x, y, "padj", "log2FoldChange",
+            colnames(m) <- c("ID", columns(), "Cond1", "Cond2", "padj", "log2FoldChange",
                 "foldChange", "log10padj")
         m <- as.data.frame(m)
         m$padj[is.na(m$padj)] <- 1
@@ -331,9 +387,9 @@ deServer<-shinyServer(function(input, output, session) {
     observe({
         if (is.null(input$radiotabs))
             return(NULL)
-        if (input$addplot == "all2all" ||
-            input$addplot == "heatmap" ||
-            input$addplot == "pca" ||
+        if (input$qcplot == "all2all" ||
+            input$qcplot == "heatmap" ||
+            input$qcplot == "pca" ||
             input$radiotabs == "panel2") {
             updateTabsetPanel(session, inputId = "methodtabs",
                 selected = "panel2")
@@ -364,23 +420,23 @@ deServer<-shinyServer(function(input, output, session) {
         }
     })
 
-    output$addplot1 <- renderPlot({
+    output$qcplotout <- renderPlot({
         a <- NULL
-        if (!is.null(input$addplot)) {
+        if (!is.null(input$qcplot)) {
             dataset <- datasetInput()[, columns()]
             metadata <- cbind(columns(), conds())
-            a <- getAddPlots(dataset, input$dataset, input$addplot, metadata,
-                clustering_method = inputAddPlot()$clustering_method,
-                distance_method = inputAddPlot()$distance_method,
+            a <- getQCPlots(dataset, input$dataset, input$qcplot, metadata,
+                clustering_method = inputQCPlot()$clustering_method,
+                distance_method = inputQCPlot()$distance_method,
                 cex = input$cex)
         }
         a
     })
 
-    inputAddPlot <- reactiveValues(clustering_method = "ward",
+    inputQCPlot <- reactiveValues(clustering_method = "ward.D2",
         distance_method = "cor")
 
-    inputAddPlot <- eventReactive(input$startAddPlot, {
+    inputQCPlot <- eventReactive(input$startQCPlot, {
         m <- c()
         m$clustering_method <- input$clustering_method
         m$distance_method <- input$distance_method
@@ -467,14 +523,15 @@ deServer<-shinyServer(function(input, output, session) {
         write.table(datasetInput(), file, sep = ",", row.names = FALSE)
     })
     output$downloadPlot <- downloadHandler(filename = function() {
-        paste(input$addplot, ".pdf", sep = "")
+        paste(input$qcplot, ".pdf", sep = "")
     }, content = function(file) {
-        pdf(file, height=input$height*0.039370, width=input$width*0.039370)
-        print(getAddPlots(datasetInput()[, columns()], input$dataset,
-            input$addplot, cbind(columns(), conds()),
-            clustering_method = inputAddPlot()$clustering_method,
-          distance_method = inputAddPlot()$distance_method,
-          cex = input$cex))
+        pdf(file, height = input$height * 0.039370,
+            width = input$width * 0.039370)
+        print( getQCPlots(datasetInput()[, columns()], input$dataset,
+            input$qcplot, cbind(columns(), conds()),
+            clustering_method = inputQCPlot()$clustering_method,
+            distance_method = inputQCPlot()$distance_method,
+            cex = input$cex) )
         dev.off()
     })
 
@@ -486,4 +543,4 @@ deServer<-shinyServer(function(input, output, session) {
             getGeneList(rownames(datasetInput()))))
         dev.off()
     })
-})
+}
