@@ -20,7 +20,7 @@ volcano plot
 Prepares volcano plot
 }
 \examples{
-   x <- volcanoPlot()
+    x <- volcanoPlot()
 
 }
 

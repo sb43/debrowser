@@ -20,7 +20,7 @@ Prepares initial samples to fill condition boxes.
 it reads the sample names from the data and splits into two.
 }
 \examples{
-   x<-getSampleNames(mtcars, 1)
-   x<-getSampleNames(mtcars, 2)
+    x<-getSampleNames(mtcars, 1)
+    x<-getSampleNames(mtcars, 2)
 }
 

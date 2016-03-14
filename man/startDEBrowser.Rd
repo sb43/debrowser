@@ -6,6 +6,9 @@
 \usage{
 startDEBrowser()
 }
+\value{
+the app
+}
 \description{
 startDEBrowser to be able to run interactively
 }
@@ -13,7 +16,7 @@ startDEBrowser to be able to run interactively
 \code{startDEBrowser}
 }
 \examples{
-   startDEBrowser()
-   
+    startDEBrowser()
+
 }
 

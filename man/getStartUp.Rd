@@ -17,7 +17,7 @@ getStartUp, startup screen
 }
 \examples{
  
-   x <- getStartUp()
+    x <- getStartUp()
 
 }
 

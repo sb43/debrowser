@@ -3,7 +3,7 @@
 \name{getDownloadSection}
 \alias{getDownloadSection}
 \title{getDownloadSection, download section button and dataset selection
-      box in the menu}
+    box in the menu}
 \usage{
 getDownloadSection()
 }
@@ -12,13 +12,13 @@ the panel for download section in the menu;
 }
 \description{
 getDownloadSection, download section button and dataset selection
-      box in the menu
+    box in the menu
 }
 \note{
 \code{getDownloadSection}
 }
 \examples{
-   x<- getDownloadSection()
+    x<- getDownloadSection()
 
 }
 

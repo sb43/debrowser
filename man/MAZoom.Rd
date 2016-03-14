@@ -18,7 +18,7 @@ zoomed MA plot
 MA Zoom
 }
 \examples{
-   x <- MAZoom()
-   
+    x <- MAZoom()
+
 }
 

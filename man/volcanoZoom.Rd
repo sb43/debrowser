@@ -18,7 +18,7 @@ zoomed volcano plot
 Prepares volcano plot
 }
 \examples{
-   x <- volcanoZoom()
-   
+    x <- volcanoZoom()
+
 }
 

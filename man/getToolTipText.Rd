@@ -17,7 +17,7 @@ tooltip text
 Prepares tooltiptext for the second scatter plot in the plots page
 }
 \examples{
- x <- getToolTipText()
- 
+x <- getToolTipText()
+
 }
 

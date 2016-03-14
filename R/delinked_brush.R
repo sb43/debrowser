@@ -2,19 +2,19 @@
 #'
 #' A linked brush function modified to be able to create non-reactive
 #' linked brush object for ggvis plots
-#' 
+#'
 #' @note \code{delinked_brush} is very new and is likely to change
-#'        substantially
+#'     substantially
 #' @return A list with components:
-#'   \item{input}{A function that takes a visualisation as an argument and
+#'     \item{input}{A function that takes a visualisation as an argument and
 #'      adds an input brush to that plot}
-#'   \item{selected}{A reactive providing a logical vector that describes
+#'     \item{selected}{A reactive providing a logical vector that describes
 #'     which points are under the brush}
 #'
 #' @export
 #' @examples
-#'    lb <- linked_brush_scatter()
-#' 
+#'     lb <- linked_brush_scatter()
+#'
 
 linked_brush_scatter <- function() {
 
@@ -33,17 +33,17 @@ linked_brush_scatter <- function() {
 #'
 #' A linked brush function modified to be able to create non-reactive
 #' linked brush object for ggvis plots
-#' 
+#'
 #' @note \code{delinked_brush} is very new and is likely to change
-#'        substantially
+#'     substantially
 #' @return A list with components:
-#'   \item{input}{A function that takes a visualisation as an argument and
-#'      adds an input brush to that plot}
-#'   \item{selected}{A reactive providing a logical vector that describes
+#'     \item{input}{A function that takes a visualisation as an argument and
+#'     adds an input brush to that plot}
+#'     \item{selected}{A reactive providing a logical vector that describes
 #'     which points are under the brush}
 #'
 #' @examples
-#'    lb <- linked_brush_volcano()
+#'     lb <- linked_brush_volcano()
 #' @export
 
 linked_brush_volcano <- function() {
@@ -64,16 +64,16 @@ linked_brush_volcano <- function() {
 #'
 #' A linked brush function modified to be able to create non-reactive
 #' linked brush object for ggvis plots
-#' 
+#'
 #' @note \code{delinked_brush} is very new and is likely to change
-#'        substantially
+#'     substantially
 #' @return A list with components:
-#'   \item{input}{A function that takes a visualisation as an argument and
-#'      adds an input brush to that plot}
-#'   \item{selected}{A reactive providing a logical vector that describes
+#'     \item{input}{A function that takes a visualisation as an argument and
+#'     adds an input brush to that plot}
+#'     \item{selected}{A reactive providing a logical vector that describes
 #'     which points are under the brush}
 #' @examples
-#'    lb <- linked_brush_ma()
+#'     lb <- linked_brush_ma()
 #' @export
 linked_brush_ma <- function() {
     rv2 <- shiny::reactiveValues(under_brush2 = character())

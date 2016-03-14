@@ -16,7 +16,7 @@ shinyUI to be able to run interactively
 \code{deUI}
 }
 \examples{
-   x<-deUI()
-   
+    x<-deUI()
+
 }
 

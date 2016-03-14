@@ -29,13 +29,13 @@ deseq2 results
 Adds a title with extra axis to ggvis plot and sets the positions
 }
 \examples{
- require(ggvis)
- mtcars \%>\%
-   ggvis(x=~cyl, y=~wt, fill=~mpg) \%>\%
-   group_by(mpg) \%>\%
-   layer_bars() \%>\%
-   add_title_pos(title = "title", angle=310, dy=0, dx=0) \%>\%
-   set_options(width = 400, height = 350)
+    require(ggvis)
+    mtcars \%>\%
+    ggvis(x=~cyl, y=~wt, fill=~mpg) \%>\%
+    group_by(mpg) \%>\%
+    layer_bars() \%>\%
+    add_title_pos(title = "title", angle=310, dy=0, dx=0) \%>\%
+    set_options(width = 400, height = 350)
 
 }
 

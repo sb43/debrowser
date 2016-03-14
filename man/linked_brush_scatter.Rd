@@ -8,9 +8,9 @@ linked_brush_scatter()
 }
 \value{
 A list with components:
-  \item{input}{A function that takes a visualisation as an argument and
+    \item{input}{A function that takes a visualisation as an argument and
      adds an input brush to that plot}
-  \item{selected}{A reactive providing a logical vector that describes
+    \item{selected}{A reactive providing a logical vector that describes
     which points are under the brush}
 }
 \description{
@@ -19,10 +19,10 @@ linked brush object for ggvis plots
 }
 \note{
 \code{delinked_brush} is very new and is likely to change
-       substantially
+    substantially
 }
 \examples{
-   lb <- linked_brush_scatter()
+    lb <- linked_brush_scatter()
 
 }
 

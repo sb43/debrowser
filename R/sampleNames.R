@@ -1,15 +1,15 @@
 #' Prepares initial samples to fill condition boxes.  
 #' it reads the sample names from the data and splits into two. 
-#' 
+#'
 #' @param dat, data that have the sample names in the header
 #' @param part, c(1,2). 1=first half and 2= second half
 #' @return sample names.
-#' 
+#'
 #' @examples
-#'    x<-getSampleNames(mtcars, 1)
-#'    x<-getSampleNames(mtcars, 2)
-#' @export 
-#' 
+#'     x<-getSampleNames(mtcars, 1)
+#'     x<-getSampleNames(mtcars, 2)
+#' @export
+#'
 
 getSampleNames <- function(dat, part) {
     if (is.null(dat)) {

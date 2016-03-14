@@ -17,7 +17,7 @@ getAfterLoad, after loading the data this text will be shown
 }
 \examples{
  
-   x <- getAfterLoad()
+    x <- getAfterLoad()
 
 }
 
