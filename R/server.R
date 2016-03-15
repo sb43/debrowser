@@ -43,11 +43,11 @@
 #' @importMethodsFrom SummarizedExperiment cbind
 #' @import ReactomePA
 #' @import DOSE
+#' @import jsonlite
 #options( shiny.maxRequestSize = 30 * 1024 ^ 2)
 #library("debrowser")
 
 deServer <- function(input, output, session) {
-
     output$mainpanel <- renderUI({
         a <- NULL
         if (!is.null(filt_data()))
@@ -140,6 +140,16 @@ deServer <- function(input, output, session) {
     outputOptions(output, "fileUploaded", suspendWhenHidden = FALSE)
 
     Dataset <- reactive({
+        query <- parseQueryString(session$clientData$url_search)
+        jsonobj<-query$jsonobject
+        if (!is.null(jsonobj))
+        {
+          jsondata<-fromJSON(jsonobj)
+          rownames(jsondata)<-jsondata[, 1]
+          jsondata<-jsondata[,c(2:ncol(jsondata))]
+          return(jsondata)
+        }
+        
         if (is.null(input$file1) && is.null(loaddemo()$demo)) {
             # User has not uploaded a file yet
             return(NULL)
@@ -147,6 +157,7 @@ deServer <- function(input, output, session) {
         else if (is.null(input$file1) && loaddemo()$demo == TRUE) {
             return(loaddemo()$demodata)
         }
+        
         inFile <- input$file1
         validate(need(try(m <- read.table(inFile$datapath, sep = "\t",
                         header = TRUE, row.names = 1)),
@@ -204,8 +215,8 @@ deServer <- function(input, output, session) {
     inputconds <- reactiveValues(conds1 = NULL, conds2 = NULL)
     inputconds <- eventReactive(input$goButton, {
         m <- c()
-        validate(need(input$condition1, "Condition1 has to be selected"),
-            need(input$condition2, "Condition2 has to be selected"))
+        #validate(need(input$condition1, "Condition1 has to be selected"),
+        #    need(input$condition2, "Condition2 has to be selected"))
         m$conds1 <- input$condition1
         m$conds2 <- input$condition2
         m$fittype <- input$fittype
@@ -218,7 +229,7 @@ deServer <- function(input, output, session) {
         m
     })
 
-    columns <- reactive({
+    cols <- reactive({
         m <- c(paste(inputconds()$conds1), paste(inputconds()$conds2))
     })
 
@@ -229,13 +240,13 @@ deServer <- function(input, output, session) {
     })
 
     filt_data <- reactive({
-        data <- Dataset()[, columns()]
-        if (length(columns) == length(conds))
-            de_res <- runDESeq(data, columns(), conds(), inputconds()$fittype,
+        data <- Dataset()[, cols()]
+        if (length(cols) == length(conds))
+            de_res <- runDESeq(data, cols(), conds(), inputconds()$fittype,
                 non_expressed_cutoff = 10)
-        de_res %>% head
+
         de_res <- data.frame(de_res)
-        norm_data <- getNormalizedMatrix(data[, columns()])
+        norm_data <- getNormalizedMatrix(data[, cols()])
         if (length(inputconds()$conds1) > 1)
             mean_cond1 <- rowMeans(norm_data[rownames(de_res),
                             paste(inputconds()$conds1)])
@@ -250,14 +261,14 @@ deServer <- function(input, output, session) {
             mean_cond2 <- norm_data[ rownames( de_res ),
                             paste( inputconds()$conds2 )]
 
-        m <- cbind(rownames(de_res), norm_data[rownames(de_res), columns()],
+        m <- cbind(rownames(de_res), norm_data[rownames(de_res), cols()],
             log10(mean_cond1 + 0.1),
             log10(mean_cond2 + 0.1),
                     de_res[rownames(de_res),
             c("padj", "log2FoldChange")], 2 ^ de_res[rownames(de_res),
                 "log2FoldChange"],
             -1 * log10(de_res[rownames(de_res), "padj"]))
-            colnames(m) <- c("ID", columns(), "Cond1", "Cond2", "padj", "log2FoldChange",
+            colnames(m) <- c("ID", cols(), "Cond1", "Cond2", "padj", "log2FoldChange",
                 "foldChange", "log10padj")
         m <- as.data.frame(m)
         m$padj[is.na(m$padj)] <- 1
@@ -297,12 +308,12 @@ deServer <- function(input, output, session) {
         # Pick out the movie with this ID
         dat <- f[f$ID == dd$ID, ]
 
-        bardata <- as.data.frame(cbind(columns(),
-            t(dat[, columns()]), conds()))
+        bardata <- as.data.frame(cbind(cols(),
+            t(dat[, cols()]), conds()))
 
         colnames(bardata) <- c("libs", "count", "conds")
 
-        ypos <- -5 * max(nchar(columns()))
+        ypos <- -5 * max(nchar(cols()))
         bardata$count <- as.numeric(as.character(bardata$count))
 
         title3 <- paste(dat$ID, " variation")
@@ -423,8 +434,8 @@ deServer <- function(input, output, session) {
     output$qcplotout <- renderPlot({
         a <- NULL
         if (!is.null(input$qcplot)) {
-            dataset <- datasetInput()[, columns()]
-            metadata <- cbind(columns(), conds())
+            dataset <- datasetInput()[, cols()]
+            metadata <- cbind(cols(), conds())
             a <- getQCPlots(dataset, input$dataset, input$qcplot, metadata,
                 clustering_method = inputQCPlot()$clustering_method,
                 distance_method = inputQCPlot()$distance_method,
@@ -459,7 +470,7 @@ deServer <- function(input, output, session) {
     output$GOPlots1 <- renderPlot({
         a <- NULL
         genelist <- getGeneList(rownames(isolate(datasetInput())))
-        a <- getGOPlots(isolate(datasetInput()[, isolate(columns())]),
+        a <- getGOPlots(isolate(datasetInput()[, isolate(cols())]),
             inputGO(), genelist)
         a
     })
@@ -527,8 +538,8 @@ deServer <- function(input, output, session) {
     }, content = function(file) {
         pdf(file, height = input$height * 0.039370,
             width = input$width * 0.039370)
-        print( getQCPlots(datasetInput()[, columns()], input$dataset,
-            input$qcplot, cbind(columns(), conds()),
+        print( getQCPlots(datasetInput()[, cols()], input$dataset,
+            input$qcplot, cbind(cols(), conds()),
             clustering_method = inputQCPlot()$clustering_method,
             distance_method = inputQCPlot()$distance_method,
             cex = input$cex) )
@@ -539,7 +550,7 @@ deServer <- function(input, output, session) {
         paste(input$goplot, ".pdf", sep = "")
     }, content = function(file) {
         pdf(file)
-        print(getGOPlots(datasetInput()[, columns()], inputGO(),
+        print(getGOPlots(datasetInput()[, cols()], inputGO(),
             getGeneList(rownames(datasetInput()))))
         dev.off()
     })
