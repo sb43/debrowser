@@ -44,13 +44,14 @@
 #' @import ReactomePA
 #' @import DOSE
 #' @import jsonlite
+
 #options( shiny.maxRequestSize = 30 * 1024 ^ 2)
 #library("debrowser")
 
 deServer <- function(input, output, session) {
   
     output$programtitle <- renderUI({
-       a<-NULL  
+       a<-titlePanel(" ")
        if (is.null(parseQueryString(session$clientData$url_search)$jsonobject))
          a <- titlePanel("DE Browser")
        a
@@ -152,7 +153,7 @@ deServer <- function(input, output, session) {
         jsonobj<-query$jsonobject
         if (!is.null(jsonobj))
         {
-          jsondata<-fromJSON(jsonobj)
+          jsondata<-fromJSON(jsonobj, simplifyDataFrame = TRUE)
           rownames(jsondata)<-jsondata[, 1]
           jsondata<-jsondata[,c(2:ncol(jsondata))]
           return(jsondata)
