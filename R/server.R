@@ -48,6 +48,14 @@
 #library("debrowser")
 
 deServer <- function(input, output, session) {
+  
+    output$programtitle <- renderUI({
+       a<-NULL  
+       if (is.null(parseQueryString(session$clientData$url_search)$jsonobject))
+         a <- titlePanel("DE Browser")
+       a
+    })
+
     output$mainpanel <- renderUI({
         a <- NULL
         if (!is.null(filt_data()))
