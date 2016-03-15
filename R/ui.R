@@ -11,7 +11,7 @@
 
 deUI <- function() {
     shinyUI(fluidPage(
-    titlePanel("DE Browser"),
+    uiOutput("programtitle"),
     textOutput("text"),
     sidebarLayout(
         sidebarPanel( 
