@@ -45,8 +45,10 @@
 #' @import DOSE
 #' @import jsonlite
 
-#options( shiny.maxRequestSize = 30 * 1024 ^ 2)
-#library("debrowser")
+if (!interactive()) {
+    options( shiny.maxRequestSize = 30 * 1024 ^ 2)
+#    library("debrowser")
+}
 
 deServer <- function(input, output, session) {
   
