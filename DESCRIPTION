@@ -19,7 +19,8 @@ Description: Bioinformatics platform containing interactive plots and tables
 Depends:
     R (>= 3.2.3),
     shiny,
-    ggvis
+    ggvis,
+    jsonlite
 License: GPL-3 + file LICENSE
 LazyData: true
 Imports:
@@ -43,8 +44,7 @@ Imports:
     GenomicRanges,
     IRanges,
     S4Vectors,
-    SummarizedExperiment,
-    jsonlite
+    SummarizedExperiment
 RoxygenNote: 5.0.1
 Suggests: knitr,
     rmarkdown,
