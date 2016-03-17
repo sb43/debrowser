@@ -168,9 +168,8 @@ deServer <- function(input, output, session) {
         }
         
         inFile <- input$file1
-        validate(need(try(m <- read.table(inFile$datapath, sep = "\t",
-                        header = TRUE, row.names = 1)),
-                        "Please select a data set"))
+        try(m <- read.table(inFile$datapath, sep = "\t",
+                        header = TRUE, row.names = 1))
         m
     })
     loaddemo <- reactiveValues(demo = NULL, demodata = NULL)
