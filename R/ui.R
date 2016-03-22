@@ -17,13 +17,10 @@ deUI <- function() {
         sidebarPanel( 
             uiOutput("loading"),
             width = 2,
-            conditionalPanel(condition = "!output.fileUploaded
-                        && !input.demo",
-                actionLink("demo", "Load Demo!"),
-                fileInput("file1", "Choose TSV File",
-                    accept = c("text/tsv",
-                        "text/comma-separated-values,text/plain",
-                        ".tsv"))),
+            useShinyjs(),                                           # Include shinyjs in the UI
+            extendShinyjs(text = jsResetCode),                      # Add the js code to the page
+            actionLink("reset_button", "Reload"),
+            uiOutput("initialmenu"),
             conditionalPanel(condition = "(output.fileUploaded
                         || input.demo)
                             && !input.goButton",
