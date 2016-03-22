@@ -44,15 +44,26 @@
 #' @import ReactomePA
 #' @import DOSE
 #' @import jsonlite
-
-#options( shiny.maxRequestSize = 30 * 1024 ^ 2)
-#library("debrowser")
+#' @import shinyjs
 
 deServer <- function(input, output, session) {
+  if (!interactive()) {
+    options( shiny.maxRequestSize = 30 * 1024 ^ 2,
+             shiny.fullstacktrace = TRUE, shiny.trace=TRUE, 
+             shiny.autoreload=TRUE)
+    #    library("debrowser")
+  }
   
+    session$onSessionEnded(function() {
+      js$reset()
+    })
+    observeEvent(input$reset_button, {js$reset()})
     output$programtitle <- renderUI({
        a<-titlePanel(" ")
-       if (is.null(parseQueryString(session$clientData$url_search)$jsonobject))
+       if (is.null(parseQueryString(session$clientData$url_search)$jsonobject) || 
+           (!is.null(parseQueryString(session$clientData$url_search)$title) && 
+            parseQueryString(session$clientData$url_search)$title != "no" ) ||
+            is.null(parseQueryString(session$clientData$url_search)$title)) 
          a <- titlePanel("DE Browser")
        a
     })
@@ -95,7 +106,26 @@ deServer <- function(input, output, session) {
                                     width = input$width))
     a
     })
-    
+
+    output$initialmenu <-renderUI({
+      a<-list(column( 2, wellPanel(
+        helpText("Please wait for loading the samples!"))))
+
+      if (is.null(parseQueryString(session$clientData$url_search)$jsonobject))
+      {
+         a<-list(
+         conditionalPanel(condition = "!output.fileUploaded
+                        && !input.demo",
+                       actionLink("demo", "Load Demo!"),
+                       fileInput("file1", "Choose TSV File",
+                        accept = c("text/tsv",
+                        "text/comma-separated-values,text/plain",
+                        ".tsv")))
+         )
+      }
+      a
+    })
+
     output$loading <- renderUI({
         addResourcePath(prefix = "www", directoryPath =
                         system.file("extdata", "www", 

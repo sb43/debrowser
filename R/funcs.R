@@ -26,3 +26,12 @@ round_vals <- function(l) {
     l <- round(as.numeric(l), digits = 2)
     parse(text = l)
 }
+
+#' Reload the app
+#' @export
+#'
+#' @examples
+#'     x<-jsResetCode()
+
+jsResetCode <- "shinyjs.reset = function() {history.go(0)}" # Define the js method that resets the page
+
