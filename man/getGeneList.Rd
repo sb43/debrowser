@@ -22,7 +22,7 @@ GOTerm analysis functions
 symobol to ENTREZ ID conversion
 }
 \examples{
-   x <- getGeneList(c('OCLN', 'ABCC2'))
-   
+    x <- getGeneList(c('OCLN', 'ABCC2'))
+
 }
 

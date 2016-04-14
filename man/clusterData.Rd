@@ -19,7 +19,7 @@ clusterData
 \code{clusterData}
 }
 \examples{
-   mycluster <- clusterData(mtcars)
-   
+    mycluster <- clusterData(mtcars)
+
 }
 
