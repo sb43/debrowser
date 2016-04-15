@@ -317,9 +317,9 @@ getMergedComparison <- function(dc = NULL, nc = NULL){
     if (is.null(dc)) return (NULL)
     for ( ni in seq(1:nc)) {
         tmp <- dc[[ni]]$init_data[,c("foldChange", "pvalue", "padj")]
-        tt <- paste0("Cond", (2*ni-1),".vs.Cond",(2*ni))
+        tt <- paste0("C", (2*ni-1),".vs.C",(2*ni))
         colnames(tmp) <- c(paste0("foldChange.", tt),  
-            paste0("padj", tt), paste0("pvalue", tt))
+            paste0("pvalue", tt), paste0("padj", tt))
         if (ni==1){
             merged <- tmp
         }

@@ -27,6 +27,7 @@
 #'             styleInterval
 #' @importFrom ggplot2 aes_string geom_point ggplot labs ylab
 #'             scale_x_discrete scale_y_discrete aes geom_bar
+#'             autoplot
 #' @importFrom ggvis add_axis add_legend add_tooltip axis_props
 #'             bind_shiny create_broker ggvis ggvisOutput handle_brush
 #'             hide_legend layer_bars layer_boxplots layer_points
@@ -51,6 +52,8 @@
 #' @importFrom edgeR calcNormFactors equalizeLibSizes DGEList
 #' @importFrom DESeq2 DESeq results DESeqDataSetFromMatrix
 #' @importFrom org.Hs.eg.db org.Hs.egSYMBOL2EG
+#' @importFrom annotate geneSymbols
+#' @import ggfortify
 
 deServer <- function(input, output, session) {
     tryCatch(
@@ -273,11 +276,12 @@ deServer <- function(input, output, session) {
             }
             a
         })
+
         output$pcaexplained <- renderPlot({
             a <- NULL
             if (!is.null(input$qcplot)) {
                 a <- getPCAexplained(datasetInput(), 
-                    cols(), input )
+                                 cols(), input )
             }
             a
         })
@@ -303,7 +307,7 @@ deServer <- function(input, output, session) {
                 m <- DT::datatable(init_data(), options =
                 list(lengthMenu = list(c(10, 25, 50, 100),
                 c("10", "25", "50", "100")),
-                pageLength = 15, paging = TRUE, searching = TRUE)) 
+                pageLength = 25, paging = TRUE, searching = TRUE)) 
             if (!input$goQCplots)
                 m %>% getTableStyle(input)
             m
@@ -314,7 +318,7 @@ deServer <- function(input, output, session) {
                 DT::datatable(filt_data()[filt_data()[, "Legend"] == "Up", ], 
                 options = list(lengthMenu = list(c(10, 25, 50, 100),
                 c("10", "25", "50", "100")),
-                pageLength = 15, paging = TRUE, searching = TRUE)) %>%
+                pageLength = 25, paging = TRUE, searching = TRUE)) %>%
                 getTableStyle(input)
         })
         output$down <- DT::renderDataTable({
@@ -322,7 +326,7 @@ deServer <- function(input, output, session) {
                 DT::datatable(filt_data()[filt_data()[, "Legend"] == "Down", ], 
                 options = list(lengthMenu = list(c(10, 25, 50, 100),
                 c("10", "25", "50", "100")),
-                pageLength = 15, paging = TRUE, searching = TRUE)) %>%
+                pageLength = 25, paging = TRUE, searching = TRUE)) %>%
                 getTableStyle(input)
         })
         output$selected <- DT::renderDataTable({
@@ -330,7 +334,7 @@ deServer <- function(input, output, session) {
                 DT::datatable(selected$data$getSelected(), 
                 options = list(lengthMenu = list(c(10, 25, 50, 100),
                 c("10", "25", "50", "100")),
-                pageLength = 15, paging = TRUE, searching = TRUE)) %>%
+                pageLength = 25, paging = TRUE, searching = TRUE)) %>%
                 getTableStyle(input)
         })
         output$geneset <- DT::renderDataTable({
@@ -338,7 +342,7 @@ deServer <- function(input, output, session) {
                 m <- DT::datatable(getGeneSet(), options =
                     list(lengthMenu = list(c(10, 25, 50, 100),
                     c("10", "25", "50", "100")),
-                    pageLength = 15, paging = TRUE, searching = TRUE)) 
+                    pageLength = 25, paging = TRUE, searching = TRUE)) 
             if (!input$goQCplots)
                 m %>% getTableStyle(input)
             m
@@ -365,7 +369,7 @@ deServer <- function(input, output, session) {
             m <- DT::datatable(getMostVaried(), options =
                 list(lengthMenu = list(c(10, 25, 50, 100),
                 c("10", "25", "50", "100")),
-                pageLength = 15, paging = TRUE, searching = TRUE)) 
+                pageLength = 25, paging = TRUE, searching = TRUE)) 
             if (!input$goQCplots)
                 m %>% getTableStyle(input)
             m
@@ -378,7 +382,7 @@ deServer <- function(input, output, session) {
                 DT::datatable(merged, options =
                     list(lengthMenu = list(c(10, 25, 50, 100),
                     c("10", "25", "50", "100")),
-                    pageLength = 15, paging = TRUE, searching = TRUE)) %>%
+                    pageLength = 25, paging = TRUE, searching = TRUE)) %>%
                 getTableStyle(input, pastr, fcstr)
         })
         output$gotable <- DT::renderDataTable({
@@ -388,7 +392,7 @@ deServer <- function(input, output, session) {
                 DT::datatable(gorestable,
                     list(lengthMenu = list(c(10, 25, 50, 100),
                     c("10", "25", "50", "100")),
-                    pageLength = 15, paging = TRUE, searching = TRUE))
+                    pageLength = 25, paging = TRUE, searching = TRUE))
             }
         })
 

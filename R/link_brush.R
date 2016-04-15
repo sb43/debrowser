@@ -1,9 +1,9 @@
 #' Modified linked brush object.
 #'
-#' A linked brush function modified to be able to create non-reactive
+#' A link brush function modified to be able to create non-reactive
 #' linked brush object for ggvis plots
 #'
-#' @note \code{delinked_brush} is very new and is likely to change
+#' @note \code{link_brush} is very new and is likely to change
 #'     substantially
 #' @return A list with components:
 #'     \item{input}{A function that takes a visualisation as an argument and
@@ -13,19 +13,16 @@
 #'
 #' @export
 #' @examples
-#'     lb <- linked_brush()
+#'     lb <- link_brush()
 #'
 
-linked_brush <- function() {
-
+link_brush <- function() {
     rv <- shiny::reactiveValues(under_brush = character())
-
     input <- function(vis) {
         handle_brush(vis, fill = "red", on_move = function(items, ...) {
             rv$under_brush <- unique(items$key__)
         })
     }
-
     selected_r <- reactive(rv$under_brush)
     list(input = input, selected = create_broker(selected_r))
 }

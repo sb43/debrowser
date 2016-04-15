@@ -114,6 +114,10 @@ getPCAexplained <- function(datasetInput = NULL,
         datexp$explained <- as.numeric( as.character(datexp$explained) )
         a <- ggplot(datexp, aes(x = PCs, y = explained)) +
             geom_bar(stat="identity") + ylab("% variance explained")
+        colourfield = NULL
+        if ("Legend" %in% colnames(datasetInput))
+            colourfield = 'Legend'
     }
     a
 }
+

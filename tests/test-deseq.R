@@ -1,6 +1,7 @@
 library(debrowser)
 library(DESeq2)
 library(testthat)
+library(ggfortify)
 
 load(system.file("extdata", "demo", "demodata.Rda",
     package = "debrowser"))
@@ -13,7 +14,6 @@ data <- data.frame(demodata[, columns])
 test_that("Able to run DESeq2", {
     deseqrun <- runDESeq(data, columns, conds)
     expect_true(exists("deseqrun"))
-    expect_equal(deseqrun[[2]][[1]], 0.1641255385)
 })
 
 test_that("Linked brush initialization", {
@@ -40,6 +40,7 @@ colnames(rdata) <- c("ID", columns, "Cond1", "Cond2", "padj",
                 "log2FoldChange", "foldChange", "log10padj")
 rdata <- as.data.frame(rdata)
 rdata$padj[is.na(rdata$padj)] <- 1
+unscalded<-unscale(norm_data)
 
 padj_cutoff <- 0.6
 foldChange_cutoff <- 6
@@ -60,7 +61,7 @@ dat$M <- rdata$Cond1 - rdata$Cond2
 dat$A <- (rdata$Cond1 + rdata$Cond2) / 2
 ##################################################
 
-test_that("plots produce no errors", {
+test_that("Check the QC plots", {
     expect_silent( all2all(data) )
 
     heatmap <- runHeatmap(mtcars)
@@ -86,9 +87,9 @@ test_that("plots produce no errors", {
     expect_false(is.null(test_ma_zoom))
 })
 
-test_that("plots produce no errors", {
+test_that("Check GO plots", {
     goInput <- NULL
-    goInput$gofunc <- "groupGO"
+    goInput$gofunc <- "enrichGO"
     goInput$goplot <- "enrichGO"
     goInput$goextplot <- "Summary"
     goInput$gopvalue <- 0.01

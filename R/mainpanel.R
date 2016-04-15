@@ -41,7 +41,7 @@ getMainPanelPlots <- function(filt_data = NULL,
         is.null(input$padjtxt) || is.null(input$foldChangetxt)  )
             return(NULL)
 
-    lb <- linked_brush()
+    lb <- link_brush()
     x <- paste0("Cond", 2*compselect - 1) 
     y <- paste0("Cond", 2*compselect) 
     domains <- getDomains(filt_data)
