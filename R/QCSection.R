@@ -1,5 +1,5 @@
 #' getQCPanel, conditional panel for QC plots 
-#'
+#' @param flag, to show the section
 #'
 #' @note \code{getQCSection}
 #' @return the panel for QC plots;
@@ -10,96 +10,115 @@
 #' @export
 #'
 
-getQCPanel <- function() {
-    a <- list( conditionalPanel( (condition <- "input.qcplot=='all2all' ||
-                                input.qcplot=='heatmap' ||
-                                input.qcplot=='pca'"),
-            column(2,
-                sliderInput("width", "width",
-                        min = 100, max = 2000, step = 10, value = 700)),
-            column(2,
-                sliderInput("height", "height",
-                        min = 100, max = 2000, step = 10, value = 500)),
-        conditionalPanel( (condition <- "input.qcplot=='all2all'"),
-            column(2, sliderInput("cex", "corr font size",
-                                  min = 0.1, max = 10,
-                                  step = 0.1, value = 2))),
-        conditionalPanel( (condition <- "input.qcplot=='heatmap'"),
-                column(3, selectInput("clustering_method", "Clustering Method:",
-                    choices <- c("complete", "ward.D2", "single", "average",
-                        "mcquitty", "median", "centroid"))),
-                column(3, selectInput("distance_method", "Distance Method:",
-                    choices <- c("cor", "euclidean", "maximum", "manhattan",
-                        "canberra", "binary", "minkowski"))),
-            column(1, actionButton("startQCPlot", "Submit"))),
-            column(1, downloadButton("downloadPlot", "")),
-            uiOutput("plotarea")))
-}
-
-#'Left menu for QC plots
-#'
-#' @note \code{getLeftMenu}
-#' @return returns the left menu according to the selected tab;
-#'
-#' @examples
-#'     x <- getLeftMenu()
-#'
-#' @export
-#'
-getLeftMenu <- function() {
-    a <- list( conditionalPanel( (condition <- "input.methodtabs=='panel1'"),
-            wellPanel(radioButtons("mainplot", paste("Main Plots:", sep = ""),
-            c(Scatter = "scatter", VolcanoPlot = "volcano",
-                MAPlot = "maplot")))),
-        conditionalPanel( (condition <- "input.methodtabs=='panel2'"),
-            wellPanel(radioButtons("qcplot",
-                paste("QC Plots:", sep = ""),
-            c(All2All = "all2all", Heatmap = "heatmap", PCA = "pca")))),
-        conditionalPanel( (condition <- "input.methodtabs=='panel3'"),
-            wellPanel(radioButtons("goplot", paste("Go Plots:", sep = ""),
-            c(enrichGO = "enrichGO", enrichKEGG = "enrichKEGG",
-        Disease = "disease", compareClusters = "compare")))),
-        tags$small("Note: Please don't forget to choose appropriate
-            dataset to visualize it in the QC plots."))
+getQCPanel <- function(flag = FALSE) {
+    a <- NULL
+    if (flag){
+        a <- list(
+            conditionalPanel(condition = "!input.startQCPlot & 
+            input.qcplot=='heatmap'",
+            helpText( "Please select parameters and press the 
+            submit button in the left menu
+            for the plots" )),
+            uiOutput("plotarea"))
+    }
+    a
 }
 
 #' getQCPlots, for quality checks 
 #'
-#'
 #' @note \code{getQCPlots}
-#' @return the panel for QC plots;
 #' @param dataset, the dataset to use
-#' @param datasetname, name of the dataset
-#' @param qcplot, type of plot to add
+#' @param input, user input
 #' @param metadata, coupled samples and conditions
 #' @param clustering_method, clustering method used
 #' @param distance_method, distance method used
 #' @param cex, font size
+#' @return the panel for QC plots;
 #' @examples
-#'     x <- getQCPlots(mtcars)
+#'     x <- getQCPlots()
 #'
 #' @export
 #'
-getQCPlots <- function(dataset, datasetname = "Up", qcplot = "heatmap",
-                        metadata = NULL,
-                        clustering_method = "complete",
-                        distance_method = "cor", cex = 2) {
+getQCPlots <- function(dataset = NULL, input = NULL,
+    metadata = NULL, clustering_method = "complete",
+    distance_method = "cor", cex = 2) {
+    if (is.null(dataset)) return(NULL)
     a <- NULL
     if (nrow(dataset) > 0) {
-        if (qcplot == "all2all") {
+        if (input$qcplot == "all2all") {
             a <- all2all(dataset, cex)
-        } else if (qcplot == "heatmap") {
-            a <- runHeatmap(dataset, title = paste("Dataset:", datasetname),
+        } else if (input$qcplot == "heatmap") {
+            a <- runHeatmap(dataset, title = paste("Dataset:", input$dataset),
                 clustering_method = clustering_method,
                 distance_method = distance_method)
-        } else if (qcplot == "pca") {
-            colnames(metadata) <- c("samples", "conditions")
+        } else if (input$qcplot == "pca") {
+            if (!is.null(metadata)){
+                colnames(metadata) <- c("samples", "conditions")
+            }
             pca_data <- run_pca(getNormalizedMatrix(dataset))
-            a <- plot_pca(pca_data$PCs, explained = pca_data$explained,
+            a <- plot_pca(pca_data$PCs, input$pcselx, input$pcsely,
+                explained = pca_data$explained,
                 metadata = metadata, color = "samples",
                 size = 5, shape = "conditions",
                 factors = c("samples", "conditions"))
         }
     }
     a
+}
+#' getQCPlotArea
+#' 
+#' @param input, user input
+#' @param flag, flag to show the element in the ui
+#' @examples
+#'     x <- getQCPlotArea()
+#'
+#' @export
+#'
+getQCPlotArea <- function(input = NULL,flag = FALSE)
+{
+    a <- NULL
+    if (flag)
+        a <- list(column(12, plotOutput("qcplotout",
+            height = input$height, width = input$width)),
+            conditionalPanel(condition = "input.qcplot == 'pca'",
+            column(12, plotOutput("pcaexplained",
+            height = input$height, width = input$width))
+            ))
+    a
+}
+
+#' saveQCPlot, save to pdf
+#'
+#' @note \code{saveQCPlot}
+#' @param filename, filename
+#' @param input, input params
+#' @param datasetInput, dataset
+#' @param cols, selected columns
+#' @param conds, selected conditions
+#' @param inputQCPlot, clustering method and distance method
+#' @examples
+#'     saveQCPlot()
+#'
+#' @export
+#'
+saveQCPlot <- function(filename = NULL, input = NULL, datasetInput = NULL, 
+    cols = NULL, conds = NULL, inputQCPlot = NULL){
+    if (is.null(datasetInput)) return(NULL)
+    pdf(filename, height = input$height * 0.010370,
+        width = input$width * 0.010370)
+    if (!is.null(cols)){
+        dataset <- datasetInput[, cols]
+        metadata <- cbind(cols, conds)
+    }else{
+        dataset <- datasetInput[,c(input$samples)]
+        metadata <- cbind(colnames(dataset), "Conds")
+    }
+    if (nrow(dataset)>2){
+        print(getQCPlots(dataset, input, metadata,
+            clustering_method = inputQCPlot$clustering_method,
+            distance_method = inputQCPlot$distance_method,
+            cex = input$cex))
+        print(getPCAexplained(datasetInput, cols, input))
+    }
+    dev.off()
 }

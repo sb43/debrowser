@@ -24,7 +24,6 @@ runHeatmap <- function(data, title="Title", dend = "both",
     distance_method = c("euclidean", "cor", "maximum",
         "manhattan", "canberra", "binary", "minkowski")) {
     ld <- log2(data + 0.1)
-
     cldt <- scale(t(ld), center = TRUE, scale = TRUE)
     cld <- t(cldt)
     hclust2 <- function(x, ...) hclust(x, method = clustering_method)
@@ -35,7 +34,6 @@ runHeatmap <- function(data, title="Title", dend = "both",
             return(as.dist(1 - cor(t(x))))
         }
     }
-
     m <- heatmap.2(cld, Rowv = TRUE, main = title, dendrogram = dend,
         Colv = TRUE, col = redblue(256), labRow = names,
         distfun = dist2, hclustfun = hclust2, density.info = "none",

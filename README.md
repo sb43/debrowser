@@ -1,5 +1,5 @@
-# debrowser: 
-Differential Expression Analysis Toolbox
+# DEBrowser: 
+Interactive Differential Expression Analysis Toolbox
 
 # Introduction
 
@@ -70,15 +70,15 @@ biocLite(“DOSE”)
 
 biocLite(“edgeR”)
 
-# 2. install debrowser using the command below
+# 2. install DEBrowser using the command below
 
-R CMD INSTALL debrowser_0.99.0.tar.gz
+R CMD INSTALL DEBrowser_0.99.0.tar.gz
 
 # 3. Start R and load the library
 
-library(debrowser)
+library(DEBrowser)
 
-#  4. start DE browser
+#  4. start DEBrowser
 
 startDEBrowser()
 ```
@@ -132,4 +132,4 @@ Selected is populated based on your current selection of your graph.
 
 With that, you've now successfully navigated the DEBrowser and are ready to
 start inserting your own data files and browsing your own experiments.  Enjoy
-the DESeq browser!
+the DEBrowser!

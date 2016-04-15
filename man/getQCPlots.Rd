@@ -4,16 +4,13 @@
 \alias{getQCPlots}
 \title{getQCPlots, for quality checks}
 \usage{
-getQCPlots(dataset, datasetname = "Up", qcplot = "heatmap",
-  metadata = NULL, clustering_method = "complete",
-  distance_method = "cor", cex = 2)
+getQCPlots(dataset = NULL, input = NULL, metadata = NULL,
+  clustering_method = "complete", distance_method = "cor", cex = 2)
 }
 \arguments{
 \item{dataset, }{the dataset to use}
 
-\item{datasetname, }{name of the dataset}
-
-\item{qcplot, }{type of plot to add}
+\item{input, }{user input}
 
 \item{metadata, }{coupled samples and conditions}
 
@@ -33,7 +30,7 @@ getQCPlots, for quality checks
 \code{getQCPlots}
 }
 \examples{
-    x <- getQCPlots(mtcars)
+    x <- getQCPlots()
 
 }
 

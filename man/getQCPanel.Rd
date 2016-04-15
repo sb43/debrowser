@@ -4,7 +4,10 @@
 \alias{getQCPanel}
 \title{getQCPanel, conditional panel for QC plots}
 \usage{
-getQCPanel()
+getQCPanel(flag = FALSE)
+}
+\arguments{
+\item{flag, }{to show the section}
 }
 \value{
 the panel for QC plots;

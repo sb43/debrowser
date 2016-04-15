@@ -4,7 +4,8 @@
 \alias{getEnrichGO}
 \title{getEnrichGO}
 \usage{
-getEnrichGO(genelist, pvalueCutoff = 0.01, org = "human", ont = "CC")
+getEnrichGO(genelist = NULL, pvalueCutoff = 0.01, org = "org.Hs.eg.db",
+  ont = "CC")
 }
 \arguments{
 \item{genelist, }{gene list}
@@ -25,8 +26,7 @@ getEnrichGO
 \code{getEnrichGO}
 }
 \examples{
-   genelist<-getGeneList(c('OCLN', 'ABCC2'))
-   x <- getEnrichGO(genelist, 0.01, NULL, "CC")
-   
+    x <- getEnrichGO()
+
 }
 
