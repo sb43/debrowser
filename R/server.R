@@ -53,7 +53,6 @@
 #' @importFrom DESeq2 DESeq results DESeqDataSetFromMatrix
 #' @importFrom org.Hs.eg.db org.Hs.egSYMBOL2EG
 #' @importFrom annotate geneSymbols
-#' @import ggfortify
 
 deServer <- function(input, output, session) {
     tryCatch(
