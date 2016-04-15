@@ -39,9 +39,11 @@ getEnrichGO <- function(genelist = NULL, pvalueCutoff = 0.01,
     org = "org.Hs.eg.db", ont="CC") {
     if (is.null(genelist)) return(NULL)
     res <- c()
-    res$enrich_p <- enrichGO(gene = genelist, OrgDb = org,
+    #res$enrich_p <- enrichGO(gene = genelist, OrgDb = org,
+    #    ont = ont, pvalueCutoff = pvalueCutoff)
+    res$enrich_p <- enrichGO(gene = genelist, organism = "human",
         ont = ont, pvalueCutoff = pvalueCutoff)
-
+                             
     res$p <- barplot(res$enrich_p, title = paste("Enrich GO", ont),
         font.size = 12)
     res$table <- NULL
@@ -157,10 +159,12 @@ compareClust <- function(dat = NULL, ont = "CC", org = "org.Hs.eg.db",
                     pvalueCutoff = pvalueCutoff)
             else if (fun == "enrichDO")
                 xx <- compareCluster(genecluster, fun = fun,
-                    OrgDb = org, pvalueCutoff = pvalueCutoff) 
+                #    OrgDb = org, pvalueCutoff = pvalueCutoff) 
+                    organism = "human", pvalueCutoff = pvalueCutoff) 
             else {
                 xx <- compareCluster(genecluster, fun = fun,
-                    ont = ont, OrgDb = org, pvalueCutoff = pvalueCutoff)
+                #    ont = ont, OrgDb = org, pvalueCutoff = pvalueCutoff)
+                     ont = ont, organism = "human", pvalueCutoff = pvalueCutoff)
                     title <- paste(ont, title)
             }
             if (!is.null(xx@compareClusterResult) )

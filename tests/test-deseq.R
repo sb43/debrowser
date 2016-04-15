@@ -1,7 +1,6 @@
 library(debrowser)
 library(DESeq2)
 library(testthat)
-library(ggfortify)
 
 load(system.file("extdata", "demo", "demodata.Rda",
     package = "debrowser"))
@@ -40,7 +39,6 @@ colnames(rdata) <- c("ID", columns, "Cond1", "Cond2", "padj",
                 "log2FoldChange", "foldChange", "log10padj")
 rdata <- as.data.frame(rdata)
 rdata$padj[is.na(rdata$padj)] <- 1
-unscalded<-unscale(norm_data)
 
 padj_cutoff <- 0.6
 foldChange_cutoff <- 6
