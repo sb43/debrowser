@@ -21,8 +21,7 @@ getEnrichKEGG
 \code{getEnrichKEGG}
 }
 \examples{
-   genelist<-getGeneList(c('OCLN', 'ABCC2'))
-   x <- getEnrichKEGG(genelist,NULL)
-   
+    genelist<-getGeneList(c('OCLN', 'ABCC2'))
+    x <- getEnrichKEGG(genelist,NULL)
 }
 

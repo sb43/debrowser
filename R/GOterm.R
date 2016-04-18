@@ -1,31 +1,26 @@
 #' GOTerm analysis functions
 #'
 #' @note \code{GOTerm}
-#' 
+#'
 #' @export
-#' @import org.Hs.eg.db
-#' @import annotate
-#' @import AnnotationDbi
-#' @importFrom DOSE enrichDO
-#' 
+#'
 #' @note \code{getGeneList}
 #' symobol to ENTREZ ID conversion
 #' @param genes, gene list
 #' @return ENTREZ ID list
-#' 
+#'
 #' @examples
-#'    x <- getGeneList(c('OCLN', 'ABCC2'))
-#'    
-
+#'     x <- getGeneList(c('OCLN', 'ABCC2'))
+#'
 getGeneList <- function(genes) {
     ll <- org.Hs.egSYMBOL2EG
     # Get the entrez gene identifiers that are mapped to a gene symbol
     mapped_genes <- mappedkeys(ll)
-    upg <- unique(mapped_genes[toupper(mapped_genes) %in% toupper(genes)])
+    upg <- unique(mapped_genes[toupper(mapped_genes) %in% 
+        toupper(genes)])
     # Convert to a list
     genelist <- rapply(cbind(as.list(ll[upg])), c)
 }
-
 
 #' getEnrichGO
 #'
@@ -36,22 +31,24 @@ getGeneList <- function(genes) {
 #' @param ont, the ontology used
 #' @return Enriched GO
 #' @examples
-#'    genelist<-getGeneList(c('OCLN', 'ABCC2'))
-#'    x <- getEnrichGO(genelist, 0.01, NULL, "CC")
-#'    
+#'     x <- getEnrichGO()
+#'
 #' @export
-#' 
- 
-getEnrichGO <- function(genelist, pvalueCutoff = 0.01,
-    org = "human", ont="CC") {
-    if (is.null(org)) return(NULL)
+#'
+getEnrichGO <- function(genelist = NULL, pvalueCutoff = 0.01,
+    org = "org.Hs.eg.db", ont="CC") {
+    if (is.null(genelist)) return(NULL)
     res <- c()
-    res$enrich_p <- enrichGO(gene = genelist, organism = org,
-            ont = ont, pvalueCutoff = pvalueCutoff,
-            readable = TRUE)
-
+        res$enrich_p <- enrichGO(gene = genelist, OrgDb = org,
+    # res$enrich_p <- enrichGO(gene = genelist, organism = "human",
+            ont = ont, pvalueCutoff = pvalueCutoff)
+                             
     res$p <- barplot(res$enrich_p, title = paste("Enrich GO", ont),
-            font.size = 12)
+        font.size = 12)
+    res$table <- NULL
+    if (!is.null(nrow(res$enrich_p@result)) )
+        res$table <- res$enrich_p@result[,c("ID", "Description", 
+            "GeneRatio", "pvalue", "p.adjust", "qvalue")]
     return(res)
 }
 
@@ -62,20 +59,21 @@ getEnrichGO <- function(genelist, pvalueCutoff = 0.01,
 #' @param pvalueCutoff, the p value cutoff
 #' @return Enriched KEGG
 #' @examples
-#'    genelist<-getGeneList(c('OCLN', 'ABCC2'))
-#'    x <- getEnrichKEGG(genelist,NULL)
-#'    
+#'     genelist<-getGeneList(c('OCLN', 'ABCC2'))
+#'     x <- getEnrichKEGG(genelist,NULL)
 #' @export
-#' 
-
+#'
 getEnrichKEGG <- function(genelist, pvalueCutoff = 0.01) {
     if (is.null(pvalueCutoff)) return(NULL)
     res <- c()
-    res$enrich_p <- enrichKEGG(gene = genelist, organism = "human",
-        pvalueCutoff = pvalueCutoff, readable = TRUE,
-        use_internal_data = TRUE)
-    res$p <- barplot(res$enrich_p, title = paste("KEGG Enrichment: p-value=",
-        pvalueCutoff))
+    res$enrich_p <- enrichKEGG(gene = genelist,
+        pvalueCutoff = pvalueCutoff, use_internal_data = TRUE)
+    res$p <- barplot(res$enrich_p, title =
+        paste("KEGG Enrichment: p-value=", pvalueCutoff))
+    res$table <- NULL
+    if (!is.null(nrow(res$enrich_p@result)) )
+        res$table <- res$enrich_p@result[,c("ID", "Description", 
+            "GeneRatio", "pvalue", "p.adjust", "qvalue")]
     return(res)
 }
 
@@ -85,10 +83,10 @@ getEnrichKEGG <- function(genelist, pvalueCutoff = 0.01) {
 #' @param dat, the data to cluster
 #' @return clustered data
 #' @examples
-#'    mycluster <- clusterData(mtcars)
-#'    
+#'     mycluster <- clusterData(mtcars)
+#'
 #' @export
-#' 
+#'
 clusterData <- function(dat) {
     ret <- list()
     itemlabels <- rownames(dat)
@@ -99,8 +97,8 @@ clusterData <- function(dat) {
     wss <- (nrow(mydata) - 1) * sum(apply(mydata, 2, var))
     for (i in 2:15) wss[i] <- sum(kmeans(mydata, centers = i)$withinss)
     plot(1:15, wss, type = "b",
-         xlab = "Number of Clusters",
-         ylab = "Within groups sum of squares")
+        xlab = "Number of Clusters",
+        ylab = "Within groups sum of squares")
     k <- 0
     for (i in 1:14) {
         if ( ( wss[i] / wss[i + 1] ) > 1.2 ) {
@@ -122,25 +120,26 @@ clusterData <- function(dat) {
     return(mydata_cluster)
 }
 
-
 #' compareClust
 #'
 #' @note \code{compareClust}
 #' @param dat, data to compare clusters
 #' @param ont, the ontology to use
-#' @param organism, the organism used
+#' @param org, the organism used
 #' @param fun, fun
 #' @param title, title of the comparison
+#' @param pvalueCutoff, pvalueCutoff
 #' @return compared cluster
 #' @examples
-#'    x <- compareClust()
-#'    
+#'     x <- compareClust()
+#'   
 #' @export
 #' 
-
-compareClust <- function(dat = NULL, ont = "CC", organism = "human",
-    fun = "enrichGO", title = "Ontology Distribution Comparison") {
+compareClust <- function(dat = NULL, ont = "CC", org = "org.Hs.eg.db",
+    fun = "enrichGO", title = "Ontology Distribution Comparison",
+    pvalueCutoff = 0.01) {
         if (is.null(dat)) return(NULL)
+        res <- c()
         genecluster <- list()
         k <- max(dat$fit.cluster)
         for (i in 1:k) {
@@ -150,44 +149,50 @@ compareClust <- function(dat = NULL, ont = "CC", organism = "human",
             genecl <- push(genecl, genelist)
             genecluster[c(paste("X", i, sep = ""))] <- genecl
         }
-
+        res$table <- NULL
         p <- tryCatch({
             title <- paste(fun, title)
             xx <- c()
             if (fun == "enrichKEGG" || fun == "enrichPathway")
                 xx <- compareCluster(genecluster, fun = fun,
-                                   organism = organism)
+                    pvalueCutoff = pvalueCutoff)
             else if (fun == "enrichDO")
-                xx <- compareCluster(genecluster, fun = fun) 
-            else {
+                 xx <- compareCluster(genecluster, fun = fun,
+                     OrgDb = org, pvalueCutoff = pvalueCutoff) 
+                     #organism = "human", pvalueCutoff = pvalueCutoff) 
+            else 
                 xx <- compareCluster(genecluster, fun = fun,
-                    organism = organism, ont = ont)
-                title <- paste(ont, title)
-            }
-            p <- plot(xx, title = title)
-            p
+                        ont = ont, OrgDb = org, pvalueCutoff = pvalueCutoff)
+                #ont = ont, organism = "human", pvalueCutoff = pvalueCutoff)
+            title <- paste(ont, title)
+            
+            if (!is.null(xx@compareClusterResult) )
+                res$table <- xx@compareClusterResult[,
+                c("Cluster", "ID", "Description", "GeneRatio", "BgRatio", 
+                  "pvalue", "p.adjust", "qvalue")]
+            res$p <- plot(xx, title = title)
         })
-        p
+        res
 }
-
 #' getEnrichDO
-#'
 #' @note \code{getEnrichDO}
 #' @param genelist, gene list
 #' @param pvalueCutoff, the p value cutoff
 #' @return enriched DO
 #' @examples
-#'    genelist<-getGeneList(c('OCLN', 'ABCC2'))
-#'    x <- getEnrichDO(genelist, NULL)
-#'    
+#'     x <- getEnrichDO()
 #' @export
-#' 
-getEnrichDO <- function(genelist, pvalueCutoff = 0.01) {
-    if (is.null(pvalueCutoff)) return(NULL)
+#'
+getEnrichDO <- function(genelist = NULL, pvalueCutoff = 0.01) {
+    if (is.null(genelist)) return(NULL)
     res <- c()
     res$enrich_p <- enrichDO(gene = genelist, ont = "DO",
-        pvalueCutoff = pvalueCutoff, readable = TRUE)
+        pvalueCutoff = pvalueCutoff)
 
     res$p <- barplot(res$enrich_p, title = "Enrich DO", font.size = 12)
+    res$table <- NULL
+    if (!is.null(nrow(res$enrich_p@result)) )
+         res$table <- res$enrich_p@result[,c("ID", "Description", 
+            "GeneRatio", "pvalue", "p.adjust", "qvalue")]
     res
 }

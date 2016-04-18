@@ -4,19 +4,22 @@
 \alias{compareClust}
 \title{compareClust}
 \usage{
-compareClust(dat = NULL, ont = "CC", organism = "human",
-  fun = "enrichGO", title = "Ontology Distribution Comparison")
+compareClust(dat = NULL, ont = "CC", org = "org.Hs.eg.db",
+  fun = "enrichGO", title = "Ontology Distribution Comparison",
+  pvalueCutoff = 0.01)
 }
 \arguments{
 \item{dat, }{data to compare clusters}
 
 \item{ont, }{the ontology to use}
 
-\item{organism, }{the organism used}
+\item{org, }{the organism used}
 
 \item{fun, }{fun}
 
 \item{title, }{title of the comparison}
+
+\item{pvalueCutoff, }{pvalueCutoff}
 }
 \value{
 compared cluster
@@ -28,7 +31,7 @@ compareClust
 \code{compareClust}
 }
 \examples{
-   x <- compareClust()
-   
+    x <- compareClust()
+  
 }
 
