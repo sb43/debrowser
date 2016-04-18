@@ -235,10 +235,14 @@ a
 #'
 getProgramTitle <- function(session = NULL) {
     if (is.null(session)) return (NULL)
-    a<-titlePanel(" ")
+    refreshbtn <- list(column(1, extendShinyjs(text = jscode),
+       actionButton("refresh", "", icon = icon("refresh"), offset=0)))
+    a<-NULL
     title<-parseQueryString(session$clientData$url_search)$title
     if (is.null(title) || title != "no" ) 
-        a <- titlePanel("DE Browser")
+        a <- list(refreshbtn, titlePanel("DEBrowser"))
+    else
+        a <- list(refreshbtn, titlePanel("v1.0.0"))
     a
 }
 #' getLoadingMsg and gif
@@ -416,7 +420,7 @@ getTableStyle <- function(dat = NULL, input = NULL,
     padj = c("padj"), foldChange=c("foldChange")){
     if (is.null(dat)) return (NULL)
     a <- dat 
-    if(!is.null(padj) && padj != "")
+    if(!is.null(padj) && padj != "" && !input$goQCplots)
         a <- a %>% formatStyle(
             padj,
             color = styleInterval(c(0, input$padjtxt), 
@@ -424,7 +428,7 @@ getTableStyle <- function(dat = NULL, input = NULL,
             backgroundColor = styleInterval(
             input$padjtxt, c('green', 'white'))
         ) 
-    if(!is.null(foldChange) && foldChange != "")
+    if(!is.null(foldChange) && foldChange != "" && !input$goQCplots)
         a <- a %>% formatStyle(
             foldChange,
             color = styleInterval(c(1/as.numeric(input$foldChangetxt), 
@@ -479,3 +483,5 @@ hideObj <- function(btns = NULL) {
     for (btn in seq(1:length(btns)))
         shinyjs::hide(btns[btn])
 }
+
+jscode <- "shinyjs.refresh = function() { history.go(0); }"
