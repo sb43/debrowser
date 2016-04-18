@@ -1,5 +1,8 @@
-#' getDownloadSection, download section button and dataset selection
-#'     box in the menu
+#' getDownloadSection
+#'
+#' download section button and dataset selection box in the
+#' menu for user to download selected data.
+#'
 #' @param flag, to show the download selection
 #' @param type, main vs. QC section
 #'
