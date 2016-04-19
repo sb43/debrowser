@@ -1,4 +1,7 @@
 #' getSamples
+#'
+#' Gathers the sample names to be used within DEBrowser.
+#'
 #' @param cnames, names of the  samples
 #' @param index, starting column in a tab separated file
 #' @return choices
@@ -20,6 +23,9 @@ getSamples <- function (cnames = NULL, index = 2) {
 }
 
 #' prepDataContainer
+#'
+#' Prepares the data container that stores values used within DESeq.
+#'
 #' @param data, loaded dataset
 #' @param counter, the number of comparisons
 #' @param input, input parameters
@@ -68,6 +74,9 @@ prepDataContainer <- function(data = NULL, counter=NULL,
 }
 
 #' getMean
+#'
+#' Gathers the mean for selected condition.
+#'
 #' @param norm_data, loaded dataset
 #' @param de_res, de results
 #' @param inputconds, input parameters
@@ -92,6 +101,10 @@ getMean<-function(norm_data = NULL, de_res = NULL,
 }
 
 #' prepDESeqOutput
+#'
+#' Prepares the output data from DESeq to be used within
+#' DEBrowser
+#'
 #' @param data, loaded dataset
 #' @param cols, columns
 #' @param conds, conds
@@ -133,6 +146,10 @@ prepDESeqOutput <- function(data = NULL, cols = NULL,
 }
 
 #' applyFilters
+#'
+#' Applies filters based on user selected parameters to be
+#' displayed within the DEBrowser.
+#'
 #' @param filt_data, loaded dataset
 #' @param cols, selected samples
 #' @param input, input parameters
@@ -178,6 +195,9 @@ applyFilters <- function(filt_data = NULL, cols = NULL,
 }
 
 #' getSelectedDatasetInput
+#'
+#' Gathers the user selected dataset output to be displayed.
+#'
 #' @param rdata, filtered dataset
 #' @param getSelected, selected data
 #' @param getMostVaried, most varied data
@@ -215,7 +235,11 @@ getSelectedDatasetInput<-function(rdata = NULL, getSelected = NULL,
     }
     m
 }
+
 #' prepDataForQC
+#'
+#' Prepares selected data for QC plots.
+#'
 #' @param dataset, loaded dataset
 #' @return data
 #' @export
@@ -237,6 +261,10 @@ prepDataForQC<-function(dataset = NULL){
 }
 
 #' getMostVariedList
+#'
+#' Calculates the most varied genes to be used for specific plots
+#' within the DEBrowser.
+#'
 #' @param datavar, loaded dataset
 #' @param cols, selected columns
 #' @param topn, most varied records
@@ -263,7 +291,12 @@ getMostVariedList <- function(datavar = NULL, cols = NULL,
     cvsort_top <- head(cvsort, topindex)
     selected_var <- data.frame(datavar[rownames(cvsort_top),])
 }
+
 #' getGeneSetData
+#'
+#' Gathers the specified gene set list to be used within the
+#' DEBrowser.
+#'
 #' @param data, loaded dataset
 #' @param geneset, given gene set
 #' @return data
@@ -288,7 +321,11 @@ getGeneSetData <- function(data = NULL, geneset = NULL) {
     retset <- data[geneset, ]
     retset
 }
+
 #' addID
+#'
+#' Adds an id to the data frame being used.
+#'
 #' @param data, loaded dataset
 #' @return data
 #' @export
@@ -303,7 +340,12 @@ addID <- function(data = NULL) {
     colnames(dat1) <- c("ID", colnames(data))
     dat1
 }
+
 #' getMergedComparison
+#'
+#' Gathers the merged comparison data to be used within the
+#' DEBrowser.
+#'
 #' @param dc, data container
 #' @param nc, the number of comparisons
 #' @return data
