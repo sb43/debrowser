@@ -1,4 +1,6 @@
-#' shinyServer to be able to run interactively
+#' deServer
+#'
+#' Sets up shinyServer to be able to run DEBrowser interactively.
 #'
 #' @note \code{deServer}
 #' @param input, input params from UI
@@ -56,8 +58,12 @@
 #' @importFrom DESeq2 DESeq results DESeqDataSetFromMatrix
 #' @importFrom org.Hs.eg.db org.Hs.egSYMBOL2EG
 #' @importFrom annotate geneSymbols
+<<<<<<< HEAD
 #' @import     V8
 
+=======
+#'
+>>>>>>> 8c93627e07d4e143f729ae394f5a8235e869e7b7
 deServer <- function(input, output, session) {
     tryCatch(
     {

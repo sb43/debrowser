@@ -1,4 +1,6 @@
-#' shinyUI to be able to run interactively
+#' deUI
+#'
+#' Creates a shinyUI to be able to run DEBrowser interactively.
 #'
 #' @note \code{deUI}
 #' @return the panel for main plots;
@@ -7,8 +9,12 @@
 #'     x<-deUI()
 #'
 #' @export
+<<<<<<< HEAD
 #' 
 
+=======
+#'
+>>>>>>> 8c93627e07d4e143f729ae394f5a8235e869e7b7
 deUI <- function() {
     shinyUI(fluidPage(
         shinyjs::useShinyjs(),
