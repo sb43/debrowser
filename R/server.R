@@ -73,6 +73,12 @@ deServer <- function(input, output, session) {
         observeEvent(input$refresh, {
             js$refresh();
         })
+        observeEvent(input$stopapp, {
+            stopApp();
+        })
+        cancel.onSessionEnded <- session$onSessionEnded(function() {
+            stopApp();
+        })
         observeEvent(input$stopApp, {
             stopApp(returnValue = invisible())
         })

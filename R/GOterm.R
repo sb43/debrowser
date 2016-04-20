@@ -172,8 +172,8 @@ compareClust <- function(dat = NULL, ont = "CC", org = "org.Hs.eg.db",
                     pvalueCutoff = pvalueCutoff)
             else if (fun == "enrichDO")
                  xx <- compareCluster(genecluster, fun = fun,
-                     OrgDb = org, pvalueCutoff = pvalueCutoff) 
-                     #organism = "human", pvalueCutoff = pvalueCutoff) 
+                     pvalueCutoff = pvalueCutoff) 
+                     #pvalueCutoff = pvalueCutoff) 
             else 
                 xx <- compareCluster(genecluster, fun = fun,
                         ont = ont, OrgDb = org, pvalueCutoff = pvalueCutoff)

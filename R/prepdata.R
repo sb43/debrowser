@@ -52,6 +52,7 @@ prepDataContainer <- function(data = NULL, counter=NULL,
     {
         m$conds[cnt] <- list(input[[paste0("condition",cnt)]])
     }
+    shinyjs::disable("resetsamples")
     m$fittype <- input$fittype
     shinyjs::disable("goButton")
     m

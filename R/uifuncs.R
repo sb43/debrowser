@@ -101,7 +101,7 @@ getGOLeftMenu <- function() {
             ),
             conditionalPanel( ( condition <- "input.goplot=='compare'"),
                 selectInput("gofunc", "Plot Function:",
-                choices =  c( "enrichGO", "enrichDO", "enrichKEGG"))
+                choices =  c( "enrichGO", "enrichKEGG"))
             ),
             actionButton("startGO", "Submit"),
             downloadButton("downloadGOPlot", "Download Plots"))
@@ -272,7 +272,9 @@ getInitialMenu <- function(input = NULL, output = NULL, session = NULL) {
 getProgramTitle <- function(session = NULL) {
     if (is.null(session)) return (NULL)
     refreshbtn <- list(column(1, extendShinyjs(text = jscode),
-       actionButton("refresh", "", icon = icon("refresh"), offset=0)))
+       actionButton("refresh", "", icon = icon("refresh"), offset=0), 
+       actionButton("stopapp", "", icon = icon("stop"), offset=0)
+       ))
     a<-NULL
     title<-parseQueryString(session$clientData$url_search)$title
     if (is.null(title) || title != "no" ) 
