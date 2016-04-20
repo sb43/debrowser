@@ -1,4 +1,8 @@
-#' Condition selection screen
+#' getDataPrepPanel
+#'
+#' Create and show the Condition selection screen to the user
+#' within the DEBrowser.
+#'
 #' @param flag, flag to show the element in the ui
 #' @note \code{getDataPrepPanel}
 #' @return returns the left menu according to the selected tab;
@@ -36,7 +40,11 @@ getDataPrepPanel <- function(flag = FALSE){
     )
     a
 }
-#' getLeftMenu Left menu for plots
+
+#' getLeftMenu
+#'
+#' Generates the left menu for for plots within the DEBrowser.
+#'
 #' @param flag, flag to show the element in the ui
 #' @note \code{getLeftMenu}
 #' @return returns the left menu according to the selected tab;
@@ -64,7 +72,11 @@ a <- list( conditionalPanel( (condition <- "input.methodtabs=='panel1'"),
                 ))
 a
 }
-#' getGOLeftMenu GO Left menu
+
+#' getGOLeftMenu
+#'
+#' Generates the GO Left menu to be displayed within the DEBrowser.
+#'
 #' @note \code{getGOLeftMenu}
 #' @return returns the left menu according to the selected tab;
 #' @examples
@@ -89,12 +101,16 @@ getGOLeftMenu <- function() {
             ),
             conditionalPanel( ( condition <- "input.goplot=='compare'"),
                 selectInput("gofunc", "Plot Function:",
-                choices =  c( "enrichGO", "enrichDO", "enrichKEGG"))
+                choices =  c( "enrichGO", "enrichKEGG"))
             ),
             actionButton("startGO", "Submit"),
             downloadButton("downloadGOPlot", "Download Plots"))
 }
+
 #' getPCselection
+#'
+#' Generates the PC selection number to be used within DEBrowser.
+#'
 #' @param num, PC selection number
 #' @param xy, x or y coordinate
 #' @note \code{getPCselection}
@@ -107,7 +123,12 @@ getPCselection <- function(num = 1, xy = "x" ) {
     numericInput(paste0("pcsel", xy), 
         paste0("PC selection[", xy, "]"), num, 1, 6)
 }
+
 #' getQCLeftMenu
+#'
+#' Generates the left menu to be used for QC plots within the
+#' DEBrowser.
+#'
 #' @note \code{getQCLeftMenu}
 #' @return QC left menu
 #' @examples
@@ -142,6 +163,10 @@ getQCLeftMenu <- function() {
 }
 
 #' logSliderJScode
+#'
+#' Generates the log based slider to be used by the user within
+#' DEBrowser.
+#'
 #' @param slidername, id of the slider
 #' @note \code{logSliderJScode}
 #' @return returns the slider values in log10 scale
@@ -168,7 +193,10 @@ logSliderJScode <- function(slidername = NULL){
     }, 4)})")
 }
 
-#' getCutOffSelection Cut off selection for DE analysis
+#' getCutOffSelection
+#'
+#' Gathers the cut off selection for DE analysis
+#'
 #' @param flag, flag to show the element in the ui
 #' @param nc, total number of comparisons
 #' @note \code{getCutOffSelection}
@@ -197,7 +225,11 @@ getCutOffSelection <- function(flag = TRUE, nc = 1){
     }
     a
 }
-#' getInitialMenu Initial menu
+
+#' getInitialMenu
+#'
+#' Displays the initial menu within DEBrowser.
+#'
 #' @param input, input from user
 #' @param output, output to user
 #' @param session, session info
@@ -208,24 +240,28 @@ getCutOffSelection <- function(flag = TRUE, nc = 1){
 #' @export
 #'
 getInitialMenu <- function(input = NULL, output = NULL, session = NULL) {
-if (is.null(input)) return (NULL)
-a<-NULL
-if (is.null(parseQueryString(session$clientData$url_search)$jsonobject))
-{
-    a<-list(
-        conditionalPanel(condition = "!input.demo &&
-            !output.dataready",
-            actionLink("demo", "Load Demo!"),
-            fileInput("file1", "Choose TSV File",
-                accept = c("text/tsv",
-                    "text/comma-separated-values,text/plain",
-                    ".tsv")))
-    )
+    if (is.null(input)) return (NULL)
+    a<-NULL
+    if (is.null(parseQueryString(session$clientData$url_search)$jsonobject))
+    {
+        a<-list(
+            conditionalPanel(condition = "!input.demo &&
+                !output.dataready",
+                actionLink("demo", "Load Demo!"),
+                fileInput("file1", "Choose TSV File",
+                    accept = c("text/tsv",
+                        "text/comma-separated-values,text/plain",
+                        ".tsv")))
+        )
+    }
+    a
 }
-a
-}
-#' getProgramTitle If it is called in a program, the 
-#' program title will be hidden
+
+#' getProgramTitle
+#'
+#' Generates the title of the program to be displayed within DEBrowser.
+#' If it is called in a program, the program title will be hidden
+#'
 #' @param session, session var
 #' @note \code{getProgramTitle}
 #' @return program title
@@ -236,7 +272,9 @@ a
 getProgramTitle <- function(session = NULL) {
     if (is.null(session)) return (NULL)
     refreshbtn <- list(column(1, extendShinyjs(text = jscode),
-       actionButton("refresh", "", icon = icon("refresh"), offset=0)))
+       actionButton("refresh", "", icon = icon("refresh"), offset=0), 
+       actionButton("stopapp", "", icon = icon("stop"), offset=0)
+       ))
     a<-NULL
     title<-parseQueryString(session$clientData$url_search)$title
     if (is.null(title) || title != "no" ) 
@@ -245,7 +283,12 @@ getProgramTitle <- function(session = NULL) {
         a <- list(refreshbtn, titlePanel("v1.0.0"))
     a
 }
-#' getLoadingMsg and gif
+
+#' getLoadingMsg
+#'
+#' Creates and displays the loading message/gif to be displayed
+#' within the DEBrowser.
+#'
 #' @note \code{getLoadingMsg}
 #' @return loading msg
 #' @examples
@@ -279,7 +322,11 @@ getLoadingMsg <- function() {
             tags$img(src = imgsrc
             ))))
 }
+
 #' getLogo
+#'
+#' Generates and displays the logo to be shown within DEBrowser.
+#'
 #' @note \code{getLogo}
 #' @return return logo
 #' @examples
@@ -295,6 +342,9 @@ getLogo <- function(){
 }
 
 #' getStartupMsg
+#'
+#' Generates and displays the starting message within DEBrowser.
+#'
 #' @note \code{getStartupMsg}
 #' @return return startup msg
 #' @examples
@@ -311,6 +361,10 @@ target = "_blank")) ) ))
 }
 
 #' getAfterLoadMsg
+#'
+#' Generates and displays the message to be shown after loading data
+#' within the DEBrowser.
+#'
 #' @note \code{getAfterLoadMsg}
 #' @return return After Load Msg
 #' @examples
@@ -328,6 +382,10 @@ helpText( "To be able to select conditions please click
 }
 
 #' getStartPlotsMsg
+#'
+#' Generates and displays the starting messgae to be shown once
+#' the user has first seen the main plots page within DEBrowser.
+#'
 #' @note \code{getStartPlotsMsg}
 #' @return return start plot msg
 #' @examples
@@ -340,7 +398,12 @@ a <- list( conditionalPanel(condition <- "!input.startPlots",
     helpText( "Please choose the appropriate parameters and 
             press submit button to draw the plots!" )))))
 }
+
 #' getCondMsg
+#'
+#' Generates and displays the current conditions and their samples
+#' within the DEBrowser.
+#'
 #' @param cols, columns
 #' @param conds, selected conditions
 #' @note \code{getCondMsg}
@@ -366,6 +429,10 @@ getCondMsg <- function(cols = NULL, conds = NULL) {
 }
 
 #' togglePanels
+#'
+#' User defined toggle to display which panels are to be shown within
+#' DEBrowser.
+#'
 #' @param num, selected panel 
 #' @param nums, all panels
 #' @param session, session info
@@ -390,6 +457,10 @@ togglePanels <- function(num = NULL, nums = NULL, session = NULL){
 }
 
 #' getCompSelection
+#'
+#' Gathers the user selected comparison set to be used within the
+#' DEBrowser.
+#'
 #' @param count, comparison count
 #' @note \code{getCompSelection}
 #' @examples
@@ -407,6 +478,10 @@ getCompSelection <- function(count = NULL) {
 }
 
 #' getTableStyle
+#'
+#' User defined selection that selects the style of table to display
+#' within the DEBrowser.
+#'
 #' @param dat, dataset
 #' @param input, input params
 #' @param padj, the name of the padj value column in the dataset
@@ -442,6 +517,10 @@ getTableStyle <- function(dat = NULL, input = NULL,
 }
 
 #' textareaInput
+#'
+#' Generates a text area input to be used for gene selection within
+#' the DEBrowser.
+#'
 #' @param id, id of the control
 #' @param label, label of the control
 #' @param value, initial value
@@ -460,7 +539,11 @@ textareaInput <- function(id, label, value, rows=20, cols=35,
     tags$label('for'=id,label),
     tags$textarea(id=id,class=class,rows=rows,cols=cols,value))
 }
-#' showObj 
+
+#' showObj
+#'
+#' Displays a shiny object.
+#'
 #' @param btns, show group of objects with shinyjs
 #' @examples
 #'     x <- showObj()
@@ -472,7 +555,10 @@ showObj <- function(btns = NULL) {
         shinyjs::show(btns[btn])
 }
 
-#' hideObj 
+#' hideObj
+#'
+#' Hides a shiny object.
+#'
 #' @param btns, hide group of objects with shinyjs
 #' @examples
 #'     x <- hideObj()

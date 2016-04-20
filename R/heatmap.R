@@ -1,4 +1,6 @@
-#' It creates a heatmap 
+#' runHeatmap
+#'
+#' Creates a heatmap based on the user selected parameters within shiny.
 #'
 #' @param data, a matrixthat includes expression values
 #' @param title, title of the heatmap

@@ -1,4 +1,7 @@
-#' getQCPanel, conditional panel for QC plots 
+#' getQCPanel
+#'
+#' Gathers the conditional panel for QC plots
+#'
 #' @param flag, to show the section
 #'
 #' @note \code{getQCSection}
@@ -9,7 +12,6 @@
 #'
 #' @export
 #'
-
 getQCPanel <- function(flag = FALSE) {
     a <- NULL
     if (flag){
@@ -24,7 +26,10 @@ getQCPanel <- function(flag = FALSE) {
     a
 }
 
-#' getQCPlots, for quality checks 
+#' getQCPlots
+#'
+#' Gathers the plot data to be displayed within the
+#' quality checks panel.
 #'
 #' @note \code{getQCPlots}
 #' @param dataset, the dataset to use
@@ -65,7 +70,11 @@ getQCPlots <- function(dataset = NULL, input = NULL,
     }
     a
 }
+
 #' getQCPlotArea
+#'
+#' Displays the QC plot output area to the user within the
+#' DEBrowser.
 #' 
 #' @param input, user input
 #' @param flag, flag to show the element in the ui
@@ -87,7 +96,9 @@ getQCPlotArea <- function(input = NULL,flag = FALSE)
     a
 }
 
-#' saveQCPlot, save to pdf
+#' saveQCPlot
+#'
+#' Saves the current QC plot selection to the users local disk.
 #'
 #' @note \code{saveQCPlot}
 #' @param filename, filename
