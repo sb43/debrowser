@@ -101,7 +101,7 @@ getGOLeftMenu <- function() {
             ),
             conditionalPanel( ( condition <- "input.goplot=='compare'"),
                 selectInput("gofunc", "Plot Function:",
-                choices =  c( "enrichGO", "enrichDO", "enrichKEGG"))
+                choices =  c( "enrichGO", "enrichKEGG"))
             ),
             actionButton("startGO", "Submit"),
             downloadButton("downloadGOPlot", "Download Plots"))
@@ -148,6 +148,7 @@ getQCLeftMenu <- function() {
                 min = 0.1, max = 10,
                 step = 0.1, value = 2)),
             conditionalPanel( (condition <- "input.qcplot=='heatmap'"),
+                checkboxInput("interactive", "Interactive", value = FALSE),
                 selectInput("clustering_method", "Clustering Method:",
                 choices <- c("complete", "ward.D2", "single", "average",
                 "mcquitty", "median", "centroid")),
@@ -272,7 +273,9 @@ getInitialMenu <- function(input = NULL, output = NULL, session = NULL) {
 getProgramTitle <- function(session = NULL) {
     if (is.null(session)) return (NULL)
     refreshbtn <- list(column(1, extendShinyjs(text = jscode),
-       actionButton("refresh", "", icon = icon("refresh"), offset=0)))
+       actionButton("refresh", "", icon = icon("refresh"), offset=0)
+       #actionButton("stopapp", "", icon = icon("stop"), offset=0)
+       ))
     a<-NULL
     title<-parseQueryString(session$clientData$url_search)$title
     if (is.null(title) || title != "no" ) 
@@ -569,3 +572,24 @@ hideObj <- function(btns = NULL) {
 }
 
 jscode <- "shinyjs.refresh = function() { history.go(0); }"
+
+#
+#' getComparisonPanel
+#'
+#' It shows comparison tab
+#'
+#' @param flag, to show the panel
+#' @examples
+#'     x <- getComparisonPanel()
+#' @export
+#'
+getComparisonPanel <- function(flag = NULL) {
+    a <- NULL
+    if (flag)
+        a <- list(
+        DT::dataTableOutput("mergedcomp")
+        )
+    a
+}
+
+

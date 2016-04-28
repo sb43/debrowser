@@ -54,7 +54,7 @@ deUI <- function() {
                 tabPanel(title = "Most Varied", value = "panel9", id="panel9",
                     DT::dataTableOutput("mostvaried")),
                 tabPanel(title = "Comparisons", value = "panel10", id="panel10",
-                    DT::dataTableOutput("mergedcomp"))
+                    uiOutput("comparisonPanel"))
             )
         )
     )

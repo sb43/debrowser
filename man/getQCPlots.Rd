@@ -2,10 +2,10 @@
 % Please edit documentation in R/QCSection.R
 \name{getQCPlots}
 \alias{getQCPlots}
-\title{getQCPlots, for quality checks}
+\title{getQCPlots}
 \usage{
 getQCPlots(dataset = NULL, input = NULL, metadata = NULL,
-  clustering_method = "complete", distance_method = "cor", cex = 2)
+  inputQCPlot = NULL, cex = 2)
 }
 \arguments{
 \item{dataset, }{the dataset to use}
@@ -14,17 +14,18 @@ getQCPlots(dataset = NULL, input = NULL, metadata = NULL,
 
 \item{metadata, }{coupled samples and conditions}
 
+\item{cex, }{font size}
+
 \item{clustering_method, }{clustering method used}
 
 \item{distance_method, }{distance method used}
-
-\item{cex, }{font size}
 }
 \value{
 the panel for QC plots;
 }
 \description{
-getQCPlots, for quality checks
+Gathers the plot data to be displayed within the
+quality checks panel.
 }
 \note{
 \code{getQCPlots}

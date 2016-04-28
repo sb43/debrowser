@@ -25,7 +25,7 @@ getSelectedDatasetInput(rdata = NULL, getSelected = NULL,
 data
 }
 \description{
-getSelectedDatasetInput
+Gathers the user selected dataset output to be displayed.
 }
 \examples{
     x <- getSelectedDatasetInput()
