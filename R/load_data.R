@@ -40,5 +40,6 @@ load_data <- function (input = NULL, session = NULL) {
     inFile <- input$file1
     try(m <- read.table(inFile$datapath, sep = "\t",
         header = TRUE, row.names = 1))
+    
     m
 }

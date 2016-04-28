@@ -315,8 +315,7 @@ getGeneSetData <- function(data = NULL, geneset = NULL) {
         dat1 <- addID(data)
 
     rownames(dat1) <- toupper(dat1$ID)
-    geneset
-    #geneset<-toupper(geneset[(toupper(geneset) %in% toupper(data$ID))])
+        #geneset<-toupper(geneset[(toupper(geneset) %in% toupper(data$ID))])
     geneset <- unique(as.vector(unlist(lapply(toupper(geneset), 
         function(x){ dat1$ID[(grepl(x, toupper(dat1$ID)))] }))))
     retset <- data[geneset, ]
@@ -349,28 +348,42 @@ addID <- function(data = NULL) {
 #'
 #' @param dc, data container
 #' @param nc, the number of comparisons
+#' @param input, input params
 #' @return data
 #' @export
 #'
 #' @examples
 #'     x <- getMergedComparison()
 #'
-getMergedComparison <- function(dc = NULL, nc = NULL){
+getMergedComparison <- function(dc = NULL, nc = NULL, input = NULL){
     merged <- c()
     if (is.null(dc)) return (NULL)
+    
+    padj_cutoff <- as.numeric(input$padjtxt)
+    foldChange_cutoff <- as.numeric(input$foldChangetxt)
     for ( ni in seq(1:nc)) {
-        tmp <- dc[[ni]]$init_data[,c("foldChange", "pvalue", "padj")]
+        tmp <- dc[[ni]]$init_data[,c("foldChange", "padj")]
         tt <- paste0("C", (2*ni-1),".vs.C",(2*ni))
         colnames(tmp) <- c(paste0("foldChange.", tt),  
-            paste0("pvalue", tt), paste0("padj", tt))
+            paste0("padj", tt))
         if (ni==1){
             merged <- tmp
         }
         else{
-            merged <- merge(merged, tmp, by="row.names")
-            row.names(merged) <- merged$Row.names
-            merged[,c("Row.names")] <- NULL
+            merged <- merge(merged, tmp, all = TRUE, by=0)
+            rownames(merged) <- merged$Row.names
+            merged$Row.names <- NULL
         }
+        if (is.null(merged$Legend)){
+          merged$Legend <- character(nrow(merged))
+          merged$Legend <- "NS"
+        }
+        merged[which(merged[,c(paste0("foldChange.", tt))] >= foldChange_cutoff &
+            merged[,c(paste0("padj", tt))] <= padj_cutoff), "Legend"] <- "Sig"
+        merged[which(merged[,c(paste0("foldChange.", tt))] <= 1/foldChange_cutoff &
+            merged[,c(paste0("padj", tt))] <= padj_cutoff), "Legend"] <- "Sig"
     }
+    merged <- merged[merged$Legend == "Sig", ]
+    merged[,c("Legend")]<- NULL
     merged
 }

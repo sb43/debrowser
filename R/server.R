@@ -23,7 +23,7 @@
 #'             sidebarPanel  sliderInput  stopApp  tabPanel  tabsetPanel 
 #'             textInput  textOutput  titlePanel  uiOutput tags HTML
 #'             h4 img icon updateTabsetPanel  updateTextInput  validate 
-#'             wellPanel
+#'             wellPanel checkboxInput
 #' @importFrom shinyjs show hide enable disable useShinyjs extendShinyjs
 #'             js
 #' @importFrom DT datatable dataTableOutput renderDataTable formatStyle
@@ -58,6 +58,7 @@
 #' @importFrom DESeq2 DESeq results DESeqDataSetFromMatrix
 #' @importFrom org.Hs.eg.db org.Hs.egSYMBOL2EG
 #' @importFrom annotate geneSymbols
+#' @importFrom reshape2 melt
 #' @import     V8
 #'
 deServer <- function(input, output, session) {
@@ -73,12 +74,10 @@ deServer <- function(input, output, session) {
         observeEvent(input$refresh, {
             js$refresh();
         })
-        observeEvent(input$stopapp, {
-            stopApp();
-        })
-        cancel.onSessionEnded <- session$onSessionEnded(function() {
-            stopApp();
-        })
+        #observeEvent(input$stopapp, {
+        #    stopApp();
+        #})
+
         observeEvent(input$stopApp, {
             stopApp(returnValue = invisible())
         })
@@ -120,6 +119,10 @@ deServer <- function(input, output, session) {
         })
         output$preppanel <- renderUI({
             getDataPrepPanel(!is.null(init_data))
+        })
+        
+        output$comparisonPanel <- renderUI({
+            getComparisonPanel(!is.null(comparison()$init_data))
         })
         output$leftMenu  <- renderUI({
            getLeftMenu()
@@ -204,7 +207,7 @@ deServer <- function(input, output, session) {
             input, session)
         })
         observeEvent(input$goQCplots, {
-            togglePanels(2, c(2, 4, 8, 9), session)
+            togglePanels(2, c(2, 4, 7, 8, 9), session)
         })
 
         comparison <- reactive({
@@ -216,16 +219,15 @@ deServer <- function(input, output, session) {
         conds <- reactive({ comparison()$conds })
         cols <- reactive({ comparison()$cols })
         init_data <- reactive({ 
-            if (!is.null(comparison()$init_data)){
+            if (!is.null(comparison()$init_data))
                 comparison()$init_data 
-            }
             else
                 qcdata()
         })
         filt_data <- reactive({
-            if (!is.null(comparison()$init_data) 
-            && !is.null(input$padjtxt) && 
-            !is.null(input$foldChangetxt))
+            if (!is.null(comparison()$init_data) && 
+                !is.null(input$padjtxt) &&
+                !is.null(input$foldChangetxt))
             applyFilters(init_data(), isolate(cols()), input)
         })
         randstr <- reactive({ 
@@ -270,47 +272,77 @@ deServer <- function(input, output, session) {
             if (!is.null(isolate(filt_data())) && !is.null(input$padjtxt) && 
                 !is.null(input$foldChangetxt)) {
                 condmsg$text <- getCondMsg( isolate(cols()), isolate(conds()))
-                selected$data<-getMainPanelPlots(isolate(filt_data()), 
+                selected$data <- getMainPanelPlots(isolate(filt_data()), 
                     isolate(cols()), isolate(conds()), input, compselect)
             }
         })
         qcdata <- reactive({
             prepDataForQC(Dataset()[input$samples])
         })
+        heatdat <- reactive({
+            dat <- getQCReplot()
+            if (is.null(dat)) return (NULL)
+            count = nrow(t(dat$carpet))
+            dat <- melt(t(dat$carpet), varnames=c("Genes","Samples"), value.name="Values")
+            ID <- paste0(dat$Genes, "_", dat$Samples)
+            dat <- cbind(dat, ID)
+            rownames(dat) <- dat$ID
+            list(dat, count)
+        })
+        lbheat <- link_brush()
+
+        observe({
+            if (inputQCPlot()$interactive && input$qcplot == "heatmap")
+                getIntHeatmap(isolate(heatdat()[[1]]),
+                              isolate(heatdat()[[2]]),
+                              isolate(init_data()), lbheat)
+          
+       })
+       observe({
+          getSelected <- reactive({
+              a<- init_data()[as.vector(
+              unique(heatdat()[[1]][lbheat$selected(), ]$Genes)), ]
+          })
+          if (!is.null(lbheat$selected()))
+              selected$data <- list(getSelected = isolate(getSelected))
+       })
+        getQCReplot <- reactive({
+          a <- NULL
+          if (!is.null(input$qcplot)) {
+              if (!is.null(cols()) && !input$dataset == "comparisons"){
+                  dataset <- datasetInput()[, cols()]
+                  metadata <- cbind(cols(), conds())
+              }else{
+                  dataset <- datasetInput()[,c(input$samples)]
+                  metadata <- cbind(colnames(dataset), "Conds")
+              }
+              if (nrow(dataset)<3) return(NULL)
+              a <- getQCPlots(dataset, input, metadata,
+                  inputQCPlot = inputQCPlot(),
+                  cex = input$cex)
+          }
+          a
+        })      
         output$qcplotout <- renderPlot({
-            a <- NULL
-            if (!is.null(input$qcplot)) {
-                if (!is.null(cols())){
-                    dataset <- datasetInput()[, cols()]
-                    metadata <- cbind(cols(), conds())
-                }else{
-                    dataset <- datasetInput()[,c(input$samples)]
-                    metadata <- cbind(colnames(dataset), "Conds")
-                }
-                if (nrow(dataset)>2)
-                    a <- getQCPlots(dataset, input, metadata,
-                        clustering_method = inputQCPlot()$clustering_method,
-                        distance_method = inputQCPlot()$distance_method,
-                        cex = input$cex)
-            }
-            a
+              getQCReplot()
         })
 
         output$pcaexplained <- renderPlot({
             a <- NULL
             if (!is.null(input$qcplot)) {
                 a <- getPCAexplained(datasetInput(), 
-                                 cols(), input )
+                    cols(), input )
             }
             a
         })
 
         inputQCPlot <- reactiveValues(clustering_method = "ward.D2",
-            distance_method = "cor")
+            distance_method = "cor", interactive = FALSE)
         inputQCPlot <- eventReactive(input$startQCPlot, {
             m <- c()
             m$clustering_method <- input$clustering_method
             m$distance_method <- input$distance_method
+            m$interactive <- input$interactive
             return(m)
         })
         inputGOstart <- eventReactive(input$startGO, {
@@ -393,7 +425,7 @@ deServer <- function(input, output, session) {
         })
         output$mergedcomp <- DT::renderDataTable({
             if (is.null(dc())) return(NULL)
-                merged <- getMergedComparison(dc(), choicecounter$nc )
+                merged <- mergedComp()
                 fcstr<-colnames(merged)[grepl("foldChange", colnames(merged))]
                 pastr<-colnames(merged)[grepl("padj", colnames(merged))]
                 DT::datatable(merged, options =
@@ -412,13 +444,23 @@ deServer <- function(input, output, session) {
                     pageLength = 25, paging = TRUE, searching = TRUE))
             }
         })
-
+        mergedComp <- reactive({
+            merged <- getMergedComparison(dc(), choicecounter$nc, input)
+            merged <- merge(Dataset()[,input$samples], merged, by=0)
+            rownames(merged) <- merged$Row.names
+            merged$Row.names <- NULL
+            merged
+        })
         datasetInput <- function(addIdFlag = FALSE){
             m <- NULL
-            if (!input$goQCplots )
+            if (!input$goQCplots ) {
+                mergedCompDat <- NULL
+                if (input$dataset == "comparisons")
+                    mergedCompDat <- getNormalizedMatrix(mergedComp()[, input$samples])
                 m <- getSelectedDatasetInput(filt_data(), 
                     selected$data$getSelected(), getMostVaried(), getGeneSet(),
-                    getMergedComparison(dc(), choicecounter$nc), input)
+                    mergedCompDat, input)
+            }
             else
                 m <- getSelectedDatasetInput(init_data(), 
                     getMostVaried = getMostVaried(), getGeneSet = getGeneSet(), 

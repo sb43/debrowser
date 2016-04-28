@@ -3,7 +3,6 @@
 #' Gathers the conditional panel for QC plots
 #'
 #' @param flag, to show the section
-#'
 #' @note \code{getQCSection}
 #' @return the panel for QC plots;
 #'
@@ -16,12 +15,14 @@ getQCPanel <- function(flag = FALSE) {
     a <- NULL
     if (flag){
         a <- list(
-            conditionalPanel(condition = "!input.startQCPlot & 
-            input.qcplot=='heatmap'",
-            helpText( "Please select parameters and press the 
+            conditionalPanel(condition = "(input.qcplot=='heatmap')",
+            helpText( "Please select the parameters and press the 
             submit button in the left menu
             for the plots" )),
-            uiOutput("plotarea"))
+            uiOutput("plotarea"),
+            conditionalPanel(condition = "input.qcplot == 'heatmap' & input.interactive",
+            column(12, ggvisOutput(paste0("heatmapplot")))
+            ))
     }
     a
 }
@@ -45,8 +46,7 @@ getQCPanel <- function(flag = FALSE) {
 #' @export
 #'
 getQCPlots <- function(dataset = NULL, input = NULL,
-    metadata = NULL, clustering_method = "complete",
-    distance_method = "cor", cex = 2) {
+    metadata = NULL, inputQCPlot = NULL, cex = 2) {
     if (is.null(dataset)) return(NULL)
     a <- NULL
     if (nrow(dataset) > 0) {
@@ -54,8 +54,8 @@ getQCPlots <- function(dataset = NULL, input = NULL,
             a <- all2all(dataset, cex)
         } else if (input$qcplot == "heatmap") {
             a <- runHeatmap(dataset, title = paste("Dataset:", input$dataset),
-                clustering_method = clustering_method,
-                distance_method = distance_method)
+                clustering_method = inputQCPlot$clustering_method,
+                distance_method = inputQCPlot$distance_method)
         } else if (input$qcplot == "pca") {
             if (!is.null(metadata)){
                 colnames(metadata) <- c("samples", "conditions")
@@ -87,8 +87,10 @@ getQCPlotArea <- function(input = NULL,flag = FALSE)
 {
     a <- NULL
     if (flag)
-        a <- list(column(12, plotOutput("qcplotout",
-            height = input$height, width = input$width)),
+        a <- list(
+            conditionalPanel(condition = "!input.interactive || input.qcplot != 'heatmap'",
+            column(12, plotOutput("qcplotout",
+            height = input$height, width = input$width))),
             conditionalPanel(condition = "input.qcplot == 'pca'",
             column(12, plotOutput("pcaexplained",
             height = input$height, width = input$width))
@@ -126,8 +128,7 @@ saveQCPlot <- function(filename = NULL, input = NULL, datasetInput = NULL,
     }
     if (nrow(dataset)>2){
         print(getQCPlots(dataset, input, metadata,
-            clustering_method = inputQCPlot$clustering_method,
-            distance_method = inputQCPlot$distance_method,
+            inputQCPlot = inputQCPlot,
             cex = input$cex))
         print(getPCAexplained(datasetInput, cols, input))
     }

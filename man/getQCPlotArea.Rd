@@ -4,15 +4,18 @@
 \alias{getQCPlotArea}
 \title{getQCPlotArea}
 \usage{
-getQCPlotArea(input = NULL, flag = FALSE)
+getQCPlotArea(input = NULL, flag = FALSE, randstr = NULL)
 }
 \arguments{
 \item{input, }{user input}
 
 \item{flag, }{flag to show the element in the ui}
+
+\item{randstr, }{random string for the ggvis plot}
 }
 \description{
-getQCPlotArea
+Displays the QC plot output area to the user within the
+DEBrowser.
 }
 \examples{
     x <- getQCPlotArea()

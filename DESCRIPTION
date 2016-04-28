@@ -21,7 +21,9 @@ Depends:
     shiny,
     ggvis,
     V8,
-    jsonlite
+    jsonlite,
+    edgeR,
+    shinyjs
 License: GPL-3 + file LICENSE
 LazyData: true
 Imports:
@@ -36,7 +38,6 @@ Imports:
     DESeq2,
     org.Hs.eg.db,
     DOSE,
-    edgeR,
     igraph,
     grDevices,
     graphics,
@@ -46,8 +47,7 @@ Imports:
     IRanges,
     S4Vectors,
     SummarizedExperiment,
-    stringi,
-    shinyjs
+    stringi
 RoxygenNote: 5.0.1
 Suggests: knitr,
     rmarkdown,
