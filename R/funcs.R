@@ -71,7 +71,7 @@ getColors <- function(domains = NULL){
     else if (domains[dn] == "MV")
         colors <- c(colors, "orange")
     else if (domains[dn] == "GS")
-        colors <- c(colors, "tomato")
+        colors <- c(colors, "blue")
     } 
     colors
 }

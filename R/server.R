@@ -25,7 +25,7 @@
 #'             h4 img icon updateTabsetPanel  updateTextInput  validate 
 #'             wellPanel checkboxInput
 #' @importFrom shinyjs show hide enable disable useShinyjs extendShinyjs
-#'             js
+#'             js inlineCSS
 #' @importFrom DT datatable dataTableOutput renderDataTable formatStyle
 #'             styleInterval
 #' @importFrom ggplot2 aes aes_string geom_bar geom_point ggplot
@@ -110,18 +110,15 @@ deServer <- function(input, output, session) {
             a
         })
         output$downloadSection <- renderUI({
-            a <- NULL
-            if (!is.null(input$goQCplots) && input$goQCplots)
-                getDownloadSection(!is.null(init_data()), "QC")
-            else if (!is.null(comparison()$init_data))
-                getDownloadSection(!is.null(comparison()$init_data), 
+            a <- getDownloadSection(TRUE, "QC")
+            if (!is.null(input$startDESeq) && input$startDESeq &&
+                !is.null(comparison()$init_data))
+                a <- getDownloadSection(!is.null(comparison()$init_data), 
                     "main")
+            a
         })
         output$preppanel <- renderUI({
             getDataPrepPanel(!is.null(init_data))
-        })
-        output$comparisonPanel <- renderUI({
-            getComparisonPanel(!is.null(comparison()$init_data))
         })
         output$leftMenu  <- renderUI({
            getLeftMenu()
@@ -153,6 +150,12 @@ deServer <- function(input, output, session) {
         })
         outputOptions(output, "dataready", 
             suspendWhenHidden = FALSE)
+        
+        output$definished <- reactive({
+            return(!is.null(filt_data()))
+        })
+        outputOptions(output, "definished", 
+                      suspendWhenHidden = FALSE)
         Dataset <- reactive({
             load_data(input, session)
         })
@@ -207,7 +210,7 @@ deServer <- function(input, output, session) {
             input, session)
         })
         observeEvent(input$goQCplots, {
-            togglePanels(2, c(2, 4, 7, 8), session)
+            togglePanels(2, c(2, 4), session)
         })
 
         comparison <- reactive({
@@ -225,7 +228,7 @@ deServer <- function(input, output, session) {
                 qcdata()
         })
         filt_data <- reactive({
-            if (!is.null(comparison()$init_data) && 
+            if (!is.null(comparison()$init_data) &&
                 !is.null(input$padjtxt) &&
                 !is.null(input$foldChangetxt))
             applyFilters(init_data(), isolate(cols()), input)
@@ -280,7 +283,8 @@ deServer <- function(input, output, session) {
             prepDataForQC(Dataset()[,input$samples])
         })
         heatdat <- reactive({
-            dat <- getQCReplot()
+            if (is.null(heatmapVals$data)) getQCReplot()
+            dat <- heatmapVals$data
             if (is.null(dat)) return (NULL)
             count = nrow(t(dat$carpet))
             dat <- reshape2::melt(t(dat$carpet), 
@@ -299,14 +303,16 @@ deServer <- function(input, output, session) {
                               isolate(init_data()), lbheat)
           
        })
-       observe({
-          getSelected <- reactive({
+
+        observe({
+            getSelected <- reactive({
               a<- init_data()[as.vector(
-              unique(heatdat()[[1]][lbheat$selected(), ]$Genes)), ]
-          })
-          if (!is.null(lbheat$selected()))
-              selected$data <- list(getSelected = isolate(getSelected))
-       })
+                unique(heatdat()[[1]][lbheat$selected(), ]$Genes)), ]
+            })
+            if (!is.null(lbheat$selected()))
+                selected$data <- list(getSelected = isolate(getSelected))
+        })
+        heatmapVals <- reactiveValues(data = NULL)
         getQCReplot <- reactive({
           a <- NULL
           if (!is.null(input$qcplot)) {
@@ -322,6 +328,7 @@ deServer <- function(input, output, session) {
                   inputQCPlot = inputQCPlot(),
                   cex = input$cex)
           }
+          heatmapVals$data <- a
           a
         })      
         output$qcplotout <- renderPlot({
@@ -354,45 +361,53 @@ deServer <- function(input, output, session) {
             inputGOstart()
         })
 
-        output$table <- DT::renderDataTable({
-            if (!is.null(init_data()))
-                dat <- getSearchData(init_data(), input)
-                m <- DT::datatable(dat, options =
-                list(lengthMenu = list(c(10, 25, 50, 100),
-                c("10", "25", "50", "100")),
-                pageLength = 25, paging = TRUE, searching = TRUE)) %>% 
-                getTableStyle(input)
+        output$tables <- DT::renderDataTable({
+            pastr <- "padj"
+            fcstr <- "foldChange"
+            dat <- NULL
+            if (input$dataset == "alldetected"){
+                if (!is.null(init_data()))
+                    dat <- getSearchData(init_data(), input)
+            }
+            else if (input$dataset == "up+down"){
+                if (!is.null(filt_data()))
+                    dat <- getSearchData(filt_data()[
+                      filt_data()[, "Legend"] == "Up" | 
+                      filt_data()[, "Legend"] == "Down" , ], input)
+            }
+            else if (input$dataset == "up"){
+                if (!is.null(filt_data()))
+                    dat <- getSearchData(filt_data()[
+                         filt_data()[, "Legend"] == "Up", ], input)
+            }
+            else if (input$dataset == "down"){
+                 if (!is.null(filt_data()))
+                      dat <- getSearchData(filt_data()[
+                          filt_data()[, "Legend"] == "Down", ], input)
+            }
+            else if (input$dataset == "selected"){
+                if (is.null(isolate(selected$data))) return(NULL)
+                    dat <- getSearchData(selected$data$getSelected(), input)
+            }
+            else if (input$dataset == "most-varied"){
+                dat <- getSearchData(getMostVaried(), input)
+            }
+            else if (input$dataset == "comparisons"){
+                if (is.null(dc())) return(NULL)
+                merged <- mergedComp()
+                fcstr<-colnames(merged)[grepl("foldChange", colnames(merged))]
+                pastr<-colnames(merged)[grepl("padj", colnames(merged))]
+                dat <- getSearchData(merged, input)
+            }
+            dat <- removeCols(c("ID", "x", "y", "Legend", "Size"), dat)
+            m <- DT::datatable(dat, searchHighlight = TRUE,
+            options = list(lengthMenu = list(c(10, 25, 50, 100),
+            c("10", "25", "50", "100")),
+            pageLength = 25, paging = TRUE, searching = TRUE)) %>%
+            getTableStyle(input, pastr, fcstr)
             m
         })
 
-        output$up <- DT::renderDataTable({
-            if (!is.null(filt_data()))
-                dat <- getSearchData(filt_data()[filt_data()[, "Legend"] == "Up", ], input)
-                DT::datatable(dat,
-                options = list(lengthMenu = list(c(10, 25, 50, 100),
-                c("10", "25", "50", "100")),
-                pageLength = 25, paging = TRUE, searching = TRUE)) %>%
-                getTableStyle(input)
-        })
-        output$down <- DT::renderDataTable({
-            if (!is.null(filt_data()))
-                dat <- getSearchData(filt_data()[filt_data()[, "Legend"] == "Down", ], input)
-                DT::datatable(dat, 
-                options = list(lengthMenu = list(c(10, 25, 50, 100),
-                c("10", "25", "50", "100")),
-                pageLength = 25, paging = TRUE, searching = TRUE)) %>%
-                getTableStyle(input)
-        })
-        output$selected <- DT::renderDataTable({
-            if (is.null(selected$data)) return(NULL)
-                dat <- getSearchData(selected$data$getSelected(), input)
-                m <- DT::datatable(dat, 
-                options = list(lengthMenu = list(c(10, 25, 50, 100),
-                c("10", "25", "50", "100")),
-                pageLength = 25, paging = TRUE, searching = TRUE)) %>% 
-                getTableStyle(input)    
-            m
-        })
         getGeneSet <- reactive({
             a <- NULL
             if (!input$goQCplots)
@@ -411,27 +426,7 @@ deServer <- function(input, output, session) {
                 c(input$samples), input$topn, input$mincount)
         a
         })
-        output$mostvaried <- DT::renderDataTable({
-            dat <- getSearchData(getMostVaried(), input)
-            m <- DT::datatable(dat, options =
-                list(lengthMenu = list(c(10, 25, 50, 100),
-                c("10", "25", "50", "100")),
-                pageLength = 25, paging = TRUE, searching = TRUE)) %>% 
-                getTableStyle(input)
-            m
-        })
-        output$mergedcomp <- DT::renderDataTable({
-            if (is.null(dc())) return(NULL)
-                merged <- mergedComp()
-                fcstr<-colnames(merged)[grepl("foldChange", colnames(merged))]
-                pastr<-colnames(merged)[grepl("padj", colnames(merged))]
-                dat <- getSearchData(merged, input)
-                DT::datatable(dat, options =
-                    list(lengthMenu = list(c(10, 25, 50, 100),
-                    c("10", "25", "50", "100")),
-                    pageLength = 25, paging = TRUE, searching = TRUE)) %>%
-                getTableStyle(input, pastr, fcstr)
-        })
+      
         output$gotable <- DT::renderDataTable({
             if (!is.null(datasetInput()) && input$startGO){
                 gorestable <- getGOPlots(datasetInput()[, cols()],
@@ -443,7 +438,8 @@ deServer <- function(input, output, session) {
             }
         })
         mergedComp <- reactive({
-            merged <- getMergedComparison(dc(), choicecounter$nc, input)
+            merged <- isolate(getMergedComparison(
+              isolate(dc()), choicecounter$nc, input))
             merged <- merge(Dataset()[,input$samples], merged, by=0)
             rownames(merged) <- merged$Row.names
             merged$Row.names <- NULL
@@ -454,14 +450,15 @@ deServer <- function(input, output, session) {
             if (!input$goQCplots ) {
                 mergedCompDat <- NULL
                 if (input$dataset == "comparisons")
-                    mergedCompDat <- getNormalizedMatrix(mergedComp()[, input$samples])
+                    mergedCompDat <- getNormalizedMatrix(isolate(
+                      mergedComp()[, input$samples]))
                 m <- getSelectedDatasetInput(filt_data(), 
-                    selected$data$getSelected(), getMostVaried(), getGeneSet(),
+                    selected$data$getSelected(), getMostVaried(),
                     mergedCompDat, input)
             }
             else
                 m <- getSelectedDatasetInput(init_data(), 
-                    getMostVaried = getMostVaried(), getGeneSet = getGeneSet(), 
+                    getMostVaried = getMostVaried(),
                     input = input)
             if(addIdFlag)
                 m <- addID(m)

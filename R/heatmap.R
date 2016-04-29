@@ -63,8 +63,10 @@ cellInfo <- function(x = NULL) {
 #'
 #' getIntHeatmap
 #'
-#' @param heatData, heatData
-#' @param inputQCPlot, input params for QC
+#' @param heatdat, heatData
+#' @param count, count
+#' @param init_data, initial data
+#' @param lbheat, linked brush object
 #' @param linked brush object for selection
 #' @return plot
 #' @export

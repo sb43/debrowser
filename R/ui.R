@@ -17,7 +17,7 @@ deUI <- function() {
                                 package = "debrowser"))
     shinyUI(fluidPage(
         shinyjs::useShinyjs(),
-        inlineCSS("
+        shinyjs::inlineCSS("
         #loading-debrowser {
           position: absolute;
           background: #000000;
@@ -42,10 +42,14 @@ deUI <- function() {
             uiOutput("loading"),
             width = 2,
             uiOutput("initialmenu"),
+            conditionalPanel(condition = "((output.definished | 
+                             input.goQCplots) & output.dataready)",
+                uiOutput("downloadSection")),
             conditionalPanel(condition = "(input.goButton & output.dataready)",
                 uiOutput('cutoffSelection')),
-            uiOutput("downloadSection"),
-            uiOutput("leftMenu")
+            conditionalPanel(condition = "((output.definished | 
+                             input.goQCplots) & output.dataready)",
+               uiOutput("leftMenu"))
         ),
         mainPanel(
             tags$head(
@@ -62,18 +66,8 @@ deUI <- function() {
                     uiOutput("qcpanel")),
                 tabPanel(title = "GO Term", value = "panel3", id="panel3",
                     uiOutput("gopanel")),
-                tabPanel(title = "All Detected", value = "panel4", id="panel4",
-                    DT::dataTableOutput("table")),
-                tabPanel(title = "Up", value = "panel5", id="panel5",
-                    DT::dataTableOutput("up")),
-                tabPanel(title = "Down", value = "panel6", id="panel6",
-                    DT::dataTableOutput("down")),
-                tabPanel(title = "Selected", value = "panel7", id="panel7",
-                    DT::dataTableOutput("selected")),
-                tabPanel(title = "Most Varied", value = "panel8", id="panel8",
-                    DT::dataTableOutput("mostvaried")),
-                tabPanel(title = "Comparisons", value = "panel9", id="panel9",
-                    uiOutput("comparisonPanel"))
+                tabPanel(title = "Tables", value = "panel4", id="panel4",
+                    DT::dataTableOutput("tables"))
             )
         )
     )
