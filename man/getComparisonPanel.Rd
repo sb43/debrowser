@@ -13,6 +13,6 @@ getComparisonPanel(flag = NULL)
 It shows comparison tab
 }
 \examples{
-    x <- getComparisonPanel()
+    x <- getComparisonPanel(TRUE)
 }
 

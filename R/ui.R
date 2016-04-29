@@ -10,9 +10,30 @@
 #'
 #' @export
 #'
+
 deUI <- function() {
+    addResourcePath(prefix = "www", directoryPath =
+                    system.file("extdata", "www", 
+                                package = "debrowser"))
     shinyUI(fluidPage(
         shinyjs::useShinyjs(),
+        inlineCSS("
+        #loading-debrowser {
+          position: absolute;
+          background: #000000;
+          opacity: 0.9;
+          z-index: 100;
+          left: 0;
+          right: 0;
+          height: 100%;
+          text-align: center;
+          color: #EFEFEF;
+        }"),
+        
+        # Loading message
+        tags$div(h4("Loading DEBrowser"), id = "loading-debrowser",
+                   tags$img(src = "www/images/initial_loading.gif"
+                   )),
         uiOutput("logo"),
         uiOutput("programtitle"),
         textOutput("text"),
@@ -49,11 +70,9 @@ deUI <- function() {
                     DT::dataTableOutput("down")),
                 tabPanel(title = "Selected", value = "panel7", id="panel7",
                     DT::dataTableOutput("selected")),
-                tabPanel(title = "Gene Set", value = "panel8", id="panel8",
-                    DT::dataTableOutput("geneset")),
-                tabPanel(title = "Most Varied", value = "panel9", id="panel9",
+                tabPanel(title = "Most Varied", value = "panel8", id="panel8",
                     DT::dataTableOutput("mostvaried")),
-                tabPanel(title = "Comparisons", value = "panel10", id="panel10",
+                tabPanel(title = "Comparisons", value = "panel9", id="panel9",
                     uiOutput("comparisonPanel"))
             )
         )

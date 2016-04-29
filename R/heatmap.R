@@ -70,11 +70,7 @@ cellInfo <- function(x = NULL) {
 #' @export
 #'
 #' @examples
-#'     load(system.file("extdata", "demo", "demodata.Rda", package = "debrowser"))
-#'     varied <- getMostVariedList(demodata, c(2:7), 50, 100)[,c(2:7)]
-#'     heatdat<- runHeatmap(varied)
-#'     lbheat <- linked_brush(keys = rownames(t(heatdat$carpet)))
-#'     getIntHeatmap(t(heatdat$carpet), lbheat)
+#'     getIntHeatmap()
 #'
 getIntHeatmap <- function(heatdat = NULL, count = NULL, 
     init_data = NULL, lbheat = NULL) {

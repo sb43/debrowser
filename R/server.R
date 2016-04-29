@@ -120,7 +120,6 @@ deServer <- function(input, output, session) {
         output$preppanel <- renderUI({
             getDataPrepPanel(!is.null(init_data))
         })
-        
         output$comparisonPanel <- renderUI({
             getComparisonPanel(!is.null(comparison()$init_data))
         })
@@ -149,6 +148,7 @@ deServer <- function(input, output, session) {
                 condmsg$text 
         })
         output$dataready <- reactive({
+            hide(id = "loading-debrowser", anim = TRUE, animType = "fade")    
             return(!is.null(Dataset()))
         })
         outputOptions(output, "dataready", 
@@ -207,7 +207,7 @@ deServer <- function(input, output, session) {
             input, session)
         })
         observeEvent(input$goQCplots, {
-            togglePanels(2, c(2, 4, 7, 8, 9), session)
+            togglePanels(2, c(2, 4, 7, 8), session)
         })
 
         comparison <- reactive({
@@ -277,13 +277,14 @@ deServer <- function(input, output, session) {
             }
         })
         qcdata <- reactive({
-            prepDataForQC(Dataset()[input$samples])
+            prepDataForQC(Dataset()[,input$samples])
         })
         heatdat <- reactive({
             dat <- getQCReplot()
             if (is.null(dat)) return (NULL)
             count = nrow(t(dat$carpet))
-            dat <- melt(t(dat$carpet), varnames=c("Genes","Samples"), value.name="Values")
+            dat <- reshape2::melt(t(dat$carpet), 
+            varnames=c("Genes","Samples"), value.name="Values")
             ID <- paste0(dat$Genes, "_", dat$Samples)
             dat <- cbind(dat, ID)
             rownames(dat) <- dat$ID
@@ -355,7 +356,8 @@ deServer <- function(input, output, session) {
 
         output$table <- DT::renderDataTable({
             if (!is.null(init_data()))
-                m <- DT::datatable(init_data(), options =
+                dat <- getSearchData(init_data(), input)
+                m <- DT::datatable(dat, options =
                 list(lengthMenu = list(c(10, 25, 50, 100),
                 c("10", "25", "50", "100")),
                 pageLength = 25, paging = TRUE, searching = TRUE)) %>% 
@@ -364,16 +366,18 @@ deServer <- function(input, output, session) {
         })
 
         output$up <- DT::renderDataTable({
-            if (!is.null(init_data()))
-                DT::datatable(filt_data()[filt_data()[, "Legend"] == "Up", ], 
+            if (!is.null(filt_data()))
+                dat <- getSearchData(filt_data()[filt_data()[, "Legend"] == "Up", ], input)
+                DT::datatable(dat,
                 options = list(lengthMenu = list(c(10, 25, 50, 100),
                 c("10", "25", "50", "100")),
                 pageLength = 25, paging = TRUE, searching = TRUE)) %>%
                 getTableStyle(input)
         })
         output$down <- DT::renderDataTable({
-            if (!is.null(init_data()))
-                DT::datatable(filt_data()[filt_data()[, "Legend"] == "Down", ], 
+            if (!is.null(filt_data()))
+                dat <- getSearchData(filt_data()[filt_data()[, "Legend"] == "Down", ], input)
+                DT::datatable(dat, 
                 options = list(lengthMenu = list(c(10, 25, 50, 100),
                 c("10", "25", "50", "100")),
                 pageLength = 25, paging = TRUE, searching = TRUE)) %>%
@@ -381,20 +385,12 @@ deServer <- function(input, output, session) {
         })
         output$selected <- DT::renderDataTable({
             if (is.null(selected$data)) return(NULL)
-                m <- DT::datatable(selected$data$getSelected(), 
+                dat <- getSearchData(selected$data$getSelected(), input)
+                m <- DT::datatable(dat, 
                 options = list(lengthMenu = list(c(10, 25, 50, 100),
                 c("10", "25", "50", "100")),
                 pageLength = 25, paging = TRUE, searching = TRUE)) %>% 
                 getTableStyle(input)    
-            m
-        })
-        output$geneset <- DT::renderDataTable({
-            if (is.null(getGeneSet())) return(NULL)
-                m <- DT::datatable(getGeneSet(), options =
-                    list(lengthMenu = list(c(10, 25, 50, 100),
-                    c("10", "25", "50", "100")),
-                    pageLength = 25, paging = TRUE, searching = TRUE)) %>% 
-                    getTableStyle(input)
             m
         })
         getGeneSet <- reactive({
@@ -416,7 +412,8 @@ deServer <- function(input, output, session) {
         a
         })
         output$mostvaried <- DT::renderDataTable({
-            m <- DT::datatable(getMostVaried(), options =
+            dat <- getSearchData(getMostVaried(), input)
+            m <- DT::datatable(dat, options =
                 list(lengthMenu = list(c(10, 25, 50, 100),
                 c("10", "25", "50", "100")),
                 pageLength = 25, paging = TRUE, searching = TRUE)) %>% 
@@ -428,7 +425,8 @@ deServer <- function(input, output, session) {
                 merged <- mergedComp()
                 fcstr<-colnames(merged)[grepl("foldChange", colnames(merged))]
                 pastr<-colnames(merged)[grepl("padj", colnames(merged))]
-                DT::datatable(merged, options =
+                dat <- getSearchData(merged, input)
+                DT::datatable(dat, options =
                     list(lengthMenu = list(c(10, 25, 50, 100),
                     c("10", "25", "50", "100")),
                     pageLength = 25, paging = TRUE, searching = TRUE)) %>%
