@@ -444,7 +444,7 @@ getCondMsg <- function(cols = NULL, conds = NULL) {
 #'
 togglePanels <- function(num = NULL, nums = NULL, session = NULL){
     if (is.null(num)) return (NULL)
-    for(i in 0:10){
+    for(i in 0:9){
         if (i %in% nums)
             shinyjs::show(selector =
                 paste0("#methodtabs li a[data-value=panel",i,"]"))
@@ -580,14 +580,14 @@ jscode <- "shinyjs.refresh = function() { history.go(0); }"
 #'
 #' @param flag, to show the panel
 #' @examples
-#'     x <- getComparisonPanel()
+#'     x <- getComparisonPanel(TRUE)
 #' @export
 #'
 getComparisonPanel <- function(flag = NULL) {
     a <- NULL
     if (flag)
         a <- list(
-        DT::dataTableOutput("mergedcomp")
+            DT::dataTableOutput("mergedcomp")
         )
     a
 }

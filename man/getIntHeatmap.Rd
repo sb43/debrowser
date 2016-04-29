@@ -5,7 +5,7 @@
 \title{getIntHeatmap}
 \usage{
 getIntHeatmap(heatdat = NULL, count = NULL, init_data = NULL,
-  lbheat = NULL, randstr = NULL)
+  lbheat = NULL)
 }
 \arguments{
 \item{heatData, }{heatData}
@@ -21,11 +21,7 @@ plot
 getIntHeatmap
 }
 \examples{
-    load(system.file("extdata", "demo", "demodata.Rda", package = "debrowser"))
-    varied <- getMostVariedList(demodata, c(2:7), 50, 100)[,c(2:7)]
-    heatdat<- runHeatmap(varied)
-    lbheat <- linked_brush(keys = rownames(t(heatdat$carpet)))
-    getIntHeatmap(t(heatdat$carpet), lbheat)
+    getIntHeatmap()
 
 }
 

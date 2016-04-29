@@ -164,7 +164,6 @@ applyFilters <- function(filt_data = NULL, cols = NULL,
     input = NULL){
     if (is.null(input$padjtxt) || is.null(input$foldChangetxt) 
         || is.null(filt_data)) return(NULL)
-
     padj_cutoff <- as.numeric(input$padjtxt)
     foldChange_cutoff <- as.numeric(input$foldChangetxt)
     m <- filt_data
@@ -255,8 +254,7 @@ prepDataForQC<-function(dataset = NULL){
     dataset[, columns] <- apply(dataset[, columns], 2,
         function(x) as.integer(x))
     dataset1 <- rowSums(dataset[,1:ncol(dataset)])
-    filtd <- subset(dataset, rowSums(dataset[,1:ncol(dataset)]) > 10)
-
+    filtd <- data.frame(subset(dataset, rowSums(dataset[,1:ncol(dataset)]) > 10))
     norm_data <- getNormalizedMatrix(filtd)
     return(norm_data)
 }
@@ -293,6 +291,28 @@ getMostVariedList <- function(datavar = NULL, cols = NULL,
     selected_var <- data.frame(datavar[rownames(cvsort_top),])
 }
 
+#' getSearchData
+#'
+#' search the geneset in the tables and return it
+#'
+#' @param dat, table data
+#' @param input, input params
+#' @return data
+#' @export
+#'
+#' @examples
+#'     x <- getSearchData()
+#'
+getSearchData <- function(dat = NULL, input = NULL)
+{
+  if (is.null(dat)) return(NULL)
+  if (input$dataset == "geneset"){
+    dat <- getGeneSetData(dat, c(input$genesetarea))
+  }
+  dat
+}
+
+
 #' getGeneSetData
 #'
 #' Gathers the specified gene set list to be used within the
@@ -312,13 +332,13 @@ getGeneSetData <- function(data = NULL, geneset = NULL) {
     geneset <- geneset[geneset != ""]
     dat1 <- data.frame(data)
     if(!("ID" %in% names(dat1)))
-        dat1 <- addID(data)
+        dat1 <- addID(dat1)
 
-    rownames(dat1) <- toupper(dat1$ID)
-        #geneset<-toupper(geneset[(toupper(geneset) %in% toupper(data$ID))])
+    #rownames(dat1) <- toupper(dat1$ID)
+    geneset<-toupper(geneset[(toupper(geneset) %in% toupper(dat1[,"ID"]))])
     geneset <- unique(as.vector(unlist(lapply(toupper(geneset), 
-        function(x){ dat1$ID[(grepl(x, toupper(dat1$ID)))] }))))
-    retset <- data[geneset, ]
+        function(x){ dat1[(grepl(x, toupper(dat1[,"ID"]))), "ID"] }))))
+    retset <- data.frame(dat1[geneset, ])
     retset
 }
 
