@@ -2,7 +2,7 @@
 #'
 #' Gathers the conditional panel for QC plots
 #'
-#' @param flag, to show the section
+#' @param randstr, randstr
 #' @note \code{getQCSection}
 #' @return the panel for QC plots;
 #'
@@ -11,20 +11,18 @@
 #'
 #' @export
 #'
-getQCPanel <- function(flag = FALSE) {
-    a <- NULL
-    if (flag){
-        a <- list(
-            conditionalPanel(condition = "(input.qcplot=='heatmap')",
-            helpText( "Please select the parameters and press the 
-            submit button in the left menu
-            for the plots" )),
-            uiOutput("plotarea"),
-            conditionalPanel(condition = "input.qcplot == 'heatmap' & input.interactive",
-            column(12, ggvisOutput(paste0("heatmapplot")))
-            ))
-    }
-    a
+getQCPanel <- function(randstr = NULL) {
+
+    a <- list(
+        conditionalPanel(condition = "(input.qcplot=='heatmap')",
+        helpText( "Please select the parameters and press the 
+        submit button in the left menu
+        for the plots" )),
+        uiOutput("plotarea"),
+        conditionalPanel(condition = "input.qcplot == 'heatmap' & input.interactive",
+        column(12, ggvisOutput(paste0("heatmapplot-", randstr)))
+        ))
+
 }
 
 #' getQCPlots

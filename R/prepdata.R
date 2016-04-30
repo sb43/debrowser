@@ -101,6 +101,45 @@ getMean<-function(norm_data = NULL, de_res = NULL,
     mean_cond
 }
 
+#' setFilterParams
+#'
+#' It sets the filter parameters 
+#'
+#' @param session, session variable
+#' @param input, input parameters
+#' @export
+#'
+#' @examples
+#'     x <- setFilterParams()
+#'
+setFilterParams <- function(session = NULL, input = NULL) {
+    if (!is.null(input$padj)){
+        if (input$padj %% 2)
+            valpadj = (10 ^ (-1*as.integer(
+                (10-input$padj)/2 )) ) /2
+        else
+            valpadj = (10 ^ (-1*(10-input$padj)/2))
+        if(input$padj == 0) valpadj = 0
+        updateTextInput(session, "padjtxt",
+            value = valpadj ) 
+    }
+    if (!is.null(input$gopvalue)){
+      if (input$gopvalue%%2)
+        gopval = (10 ^ (-1*as.integer(
+          (10-input$gopvalue)/2 )) ) /2
+      else
+        gopval = (10 ^ (-1*(10-input$gopvalue)/2))
+      if(input$gopvalue==0) gopval = 0
+      updateTextInput(session, "pvaluetxt",
+                      value = gopval ) 
+    }
+    if (!is.null(input$foldChange)){
+      valpadjfoldChange = input$foldChange
+      updateTextInput(session, "foldChangetxt",
+                      value = valpadjfoldChange)
+    }
+}
+
 #' prepDESeqOutput
 #'
 #' Prepares the output data from DESeq to be used within
@@ -171,25 +210,23 @@ applyFilters <- function(filt_data = NULL, cols = NULL,
     m$Legend <- character(nrow(m))
     m$Size <- character(nrow(m))
     m[, "Size"] <- "40"
-    m$Legend[abs(m$log2FoldChange) <= log2(foldChange_cutoff)] <- "NS"
-    m$Legend[is.null(m$log10padj) ||  m$Legend==""] <- "NS"
+    m$Legend <- "NS"
+    if (input$dataset == "up" || input$dataset == "up+down") 
+        m$Legend[m$foldChange >= foldChange_cutoff &
+               m$padj <= padj_cutoff] <- "Up"
+    if (input$dataset == "down" || input$dataset == "up+down")
+        m$Legend[m$foldChange <= (1 / foldChange_cutoff) &
+               m$padj <= padj_cutoff] <- "Down"
     if (input$dataset == "most-varied" && !is.null(cols)) {
-        m[, "Legend"] <- "NA"
         most_varied <- getMostVariedList(m, cols, input$topn, input$mincount)
         m[rownames(most_varied), c("Legend")] <- "MV"
     }
-    else if (input$dataset == "geneset") {
+    
+    if (!is.null(input$genesetarea) && input$genesetarea != "") {
         genelist <- getGeneSetData(m, c(input$genesetarea))
-        m[, "Legend"] <- "NA"
         m[rownames(genelist), "Legend"] <- "GS"
         m[rownames(genelist), "Size"] <- "100"
         m <- m[rev(order(m$Legend)),]
-    }
-    else{
-        m$Legend[m$log2FoldChange > log2(foldChange_cutoff) &
-            m$padj < padj_cutoff] <- "Up"
-        m$Legend[m$log2FoldChange < log2(1 / foldChange_cutoff) &
-            m$padj < padj_cutoff] <- "Down"
     }
     m
 }
@@ -202,7 +239,7 @@ applyFilters <- function(filt_data = NULL, cols = NULL,
 #' @param getSelected, selected data
 #' @param getMostVaried, most varied data
 #' @param getGeneSet, given gene set
-#' @param getMergedComparison, merged comparison data
+#' @param getSelectedDatasetInput, merged comparison data
 #' @param input, input parameters
 #' @return data
 #' @export
@@ -211,7 +248,7 @@ applyFilters <- function(filt_data = NULL, cols = NULL,
 #'     x <- getSelectedDatasetInput()
 #'
 getSelectedDatasetInput<-function(rdata = NULL, getSelected = NULL, 
-    getMostVaried = NULL, getGeneSet = NULL, getMergedComparison = NULL, 
+    getMostVaried = NULL, getMergedComparison = NULL, 
     input = NULL) {
     if (is.null(rdata)) return (NULL)
     m <- rdata
@@ -226,8 +263,6 @@ getSelectedDatasetInput<-function(rdata = NULL, getSelected = NULL,
         m <- rdata
     } else if (input$dataset == "selected") {
         m <- getSelected
-    } else if (input$dataset == "geneset") {
-      m <- getGeneSet
     } else if (input$dataset == "most-varied") {
         m <- getMostVaried
     } else if (input$dataset == "comparisons") {
@@ -306,12 +341,11 @@ getMostVariedList <- function(datavar = NULL, cols = NULL,
 getSearchData <- function(dat = NULL, input = NULL)
 {
   if (is.null(dat)) return(NULL)
-  if (input$dataset == "geneset"){
+  if (input$genesetarea != ""){
     dat <- getGeneSetData(dat, c(input$genesetarea))
   }
   dat
 }
-
 
 #' getGeneSetData
 #'
@@ -328,17 +362,15 @@ getSearchData <- function(dat = NULL, input = NULL)
 #'
 getGeneSetData <- function(data = NULL, geneset = NULL) {
     if (is.null(data)) return (NULL)
-    geneset <- unique(unlist(strsplit(geneset, split="[:;, \t\n\t]")))
-    geneset <- geneset[geneset != ""]
+    geneset1 <- unique(unlist(strsplit(geneset, split="[:;, \t\n\t]")))
+    geneset2 <- geneset1[geneset1 != ""]
     dat1 <- data.frame(data)
     if(!("ID" %in% names(dat1)))
         dat1 <- addID(dat1)
 
-    #rownames(dat1) <- toupper(dat1$ID)
-    geneset<-toupper(geneset[(toupper(geneset) %in% toupper(dat1[,"ID"]))])
-    geneset <- unique(as.vector(unlist(lapply(toupper(geneset), 
+    geneset4 <- unique(as.vector(unlist(lapply(toupper(geneset2), 
         function(x){ dat1[(grepl(x, toupper(dat1[,"ID"]))), "ID"] }))))
-    retset <- data.frame(dat1[geneset, ])
+    retset <- data.frame(dat1[geneset4, ])
     retset
 }
 
@@ -406,4 +438,24 @@ getMergedComparison <- function(dc = NULL, nc = NULL, input = NULL){
     merged <- merged[merged$Legend == "Sig", ]
     merged[,c("Legend")]<- NULL
     merged
+}
+
+#' removeCols
+#'
+#' remove unnecessary columns
+#'
+#' @param cols, columns that are going to be removed from data frame
+#' @param dat, data
+#' @return data
+#' @export
+#'
+#' @examples
+#'     x <- removeCols()
+#'
+removeCols <- function( cols = NULL, dat = NULL) {
+    for (colnum in seq(1:length(cols))){
+         if (cols[colnum] %in% colnames(dat) )
+              dat[, cols[colnum]]<- NULL
+    }
+    dat
 }
