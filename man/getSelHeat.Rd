@@ -4,15 +4,14 @@
 \alias{getSelHeat}
 \title{getSelHeat}
 \usage{
-getSelHeat(init_data = NULL, inputQCPlot = NULL, heatdat = NULL,
-  input = NULL)
+getSelHeat(init_data = NULL, heatdat = NULL, count = NULL)
 }
 \arguments{
 \item{init_data, }{initial data}
 
-\item{inputQCPlot, }{count}
-
 \item{heatdat, }{heatData}
+
+\item{inputQCPlot, }{count}
 
 \item{input, }{input params}
 }

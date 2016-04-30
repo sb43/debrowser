@@ -325,51 +325,17 @@ deServer <- function(input, output, session) {
         output$GOPlots1 <- renderPlot({
             inputGOstart()
         })
-
+      
         output$tables <- DT::renderDataTable({
-            pastr <- "padj"
-            fcstr <- "foldChange"
-            dat <- NULL
-            if (input$dataset == "alldetected"){
-                if (!is.null(init_data()))
-                    dat <- getSearchData(init_data(), input)
-            }
-            else if (input$dataset == "up+down"){
-                if (!is.null(filt_data()))
-                    dat <- getSearchData(filt_data()[
-                      filt_data()[, "Legend"] == "Up" | 
-                      filt_data()[, "Legend"] == "Down" , ], input)
-            }
-            else if (input$dataset == "up"){
-                if (!is.null(filt_data()))
-                    dat <- getSearchData(filt_data()[
-                         filt_data()[, "Legend"] == "Up", ], input)
-            }
-            else if (input$dataset == "down"){
-                 if (!is.null(filt_data()))
-                      dat <- getSearchData(filt_data()[
-                          filt_data()[, "Legend"] == "Down", ], input)
-            }
-            else if (input$dataset == "selected"){
-                if (is.null(isolate(selected$data))) return(NULL)
-                    dat <- getSearchData(selected$data$getSelected(), input)
-            }
-            else if (input$dataset == "most-varied"){
-                dat <- getSearchData(getMostVaried(), input)
-            }
-            else if (input$dataset == "comparisons"){
-                if (is.null(dc())) return(NULL)
-                merged <- mergedComp()
-                fcstr<-colnames(merged)[grepl("foldChange", colnames(merged))]
-                pastr<-colnames(merged)[grepl("padj", colnames(merged))]
-                dat <- getSearchData(merged, input)
-            }
-            dat <- removeCols(c("ID", "x", "y", "Legend", "Size"), dat)
-            m <- DT::datatable(dat,
+            dat <- getDataForTables(input, init_data(),
+                  filt_data(), selected,
+                  getMostVaried(),  mergedComp())
+            dat2 <- removeCols(c("ID", "x", "y","Legend", "Size"), dat[[1]])
+            m <- DT::datatable(dat2,
             options = list(lengthMenu = list(c(10, 25, 50, 100),
             c("10", "25", "50", "100")),
             pageLength = 25, paging = TRUE, searching = TRUE)) %>%
-            getTableStyle(input, pastr, fcstr)
+            getTableStyle(input, dat[[2]], dat[[3]])
             m
         })
 
@@ -385,7 +351,8 @@ deServer <- function(input, output, session) {
         getMostVaried <- reactive({
             a <- NULL
             if (!input$goQCplots)
-                a <- filt_data()[filt_data()$Legend=="MV", ]
+                a <- filt_data()[filt_data()$Legend=="MV" | 
+                                 filt_data()$Legend=="GS", ]
             else
                 a <- getMostVariedList(data.frame(init_data()), 
                 c(input$samples), input$topn, input$mincount)
@@ -404,7 +371,7 @@ deServer <- function(input, output, session) {
         })
         mergedComp <- reactive({
             merged <- isolate(getMergedComparison(
-              isolate(dc()), choicecounter$nc, input))
+                isolate(dc()), choicecounter$nc, input))
             merged <- merge(Dataset()[,input$samples], merged, by=0)
             rownames(merged) <- merged$Row.names
             merged$Row.names <- NULL
