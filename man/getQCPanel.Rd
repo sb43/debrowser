@@ -4,10 +4,10 @@
 \alias{getQCPanel}
 \title{getQCPanel}
 \usage{
-getQCPanel(flag = FALSE)
+getQCPanel(randstr = NULL)
 }
 \arguments{
-\item{flag, }{to show the section}
+\item{randstr, }{randstr}
 }
 \value{
 the panel for QC plots;

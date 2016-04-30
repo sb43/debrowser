@@ -150,7 +150,7 @@ getQCLeftMenu <- function() {
             conditionalPanel( (condition <- "input.qcplot=='heatmap'"),
                 checkboxInput("interactive", "Interactive", value = FALSE),
                 selectInput("clustering_method", "Clustering Method:",
-                choices <- c("complete", "ward.D2", "single", "average",
+                choices <- c("nmf", "complete", "ward.D2", "single", "average",
                 "mcquitty", "median", "centroid")),
                 selectInput("distance_method", "Distance Method:",
                 choices <- c("cor", "euclidean", "maximum", "manhattan",

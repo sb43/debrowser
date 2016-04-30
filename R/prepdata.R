@@ -222,7 +222,8 @@ applyFilters <- function(filt_data = NULL, cols = NULL,
         m[rownames(most_varied), c("Legend")] <- "MV"
     }
     
-    if (!is.null(input$genesetarea) && input$genesetarea != "") {
+    if (!is.null(input$genesetarea) && input$genesetarea != ""
+        && input$methodtabs == "panel1") {
         genelist <- getGeneSetData(m, c(input$genesetarea))
         m[rownames(genelist), "Legend"] <- "GS"
         m[rownames(genelist), "Size"] <- "100"
@@ -253,12 +254,11 @@ getSelectedDatasetInput<-function(rdata = NULL, getSelected = NULL,
     if (is.null(rdata)) return (NULL)
     m <- rdata
     if (input$dataset == "up") {
-        m <- rdata[rdata[, "Legend"] == "Up", ]
+        m <- getUp(rdata)
     } else if (input$dataset == "down") {
-        m <- rdata[rdata[, "Legend"] == "Down", ]
+        m <- getDown(rdata)
     } else if (input$dataset == "up+down") {
-        m <- rdata[which(rdata[, "Legend"] == "Down" |
-            rdata[, "Legend"] == "Up"), ]
+        m <- getUpDown(rdata)
     } else if (input$dataset == "alldetected") {
         m <- rdata
     } else if (input$dataset == "selected") {
@@ -326,6 +326,7 @@ getMostVariedList <- function(datavar = NULL, cols = NULL,
     selected_var <- data.frame(datavar[rownames(cvsort_top),])
 }
 
+
 #' getSearchData
 #'
 #' search the geneset in the tables and return it
@@ -366,12 +367,113 @@ getGeneSetData <- function(data = NULL, geneset = NULL) {
     geneset2 <- geneset1[geneset1 != ""]
     dat1 <- data.frame(data)
     if(!("ID" %in% names(dat1)))
-        dat1 <- addID(dat1)
+        dat2 <- addID(dat1)
+    else
+        dat2 <- dat1
 
     geneset4 <- unique(as.vector(unlist(lapply(toupper(geneset2), 
-        function(x){ dat1[(grepl(x, toupper(dat1[,"ID"]))), "ID"] }))))
-    retset <- data.frame(dat1[geneset4, ])
+        function(x){ dat2[(grepl(x, toupper(dat2[,"ID"]))), "ID"] }))))
+    retset <- data.frame(dat2[geneset4, ])
     retset
+}
+
+#' getUp
+#' get up regulated data
+#'
+#' @param filt_data, filt_data
+#' @return data
+#' @export
+#'
+#' @examples
+#'     x <- getUp()
+#'
+getUp <- function(filt_data = NULL){
+    if(is.null(filt_data)) return(NULL)
+    filt_data[
+        filt_data[, "Legend"] == "Up" | 
+        filt_data[, "Legend"] == "GS", ]
+}
+#' getDown
+#' get down regulated data
+#'
+#' @param filt_data, filt_data
+#' @return data
+#' @export
+#'
+#' @examples
+#'     x <- getDown()
+#'
+getDown <- function(filt_data = NULL){
+    if(is.null(filt_data)) return(NULL)
+    filt_data[
+        filt_data[, "Legend"] == "Down"|
+        filt_data[, "Legend"] == "GS", ]
+}
+
+#' getUpDown
+#' get up+down regulated data
+#'
+#' @param filt_data, filt_data
+#' @return data
+#' @export
+#'
+#' @examples
+#'     x <- getUpDown()
+#'
+getUpDown <- function(filt_data = NULL){
+    if(is.null(filt_data)) return(NULL)
+    filt_data[
+        filt_data[, "Legend"] == "Up" | 
+        filt_data[, "Legend"] == "Down"|
+        filt_data[, "Legend"] == "GS", ]
+}
+
+#' getDataForTables
+#' get data to fill up tables tab
+#'
+#' @param filt_data, filt_data
+#' @return data
+#' @export
+#'
+#' @examples
+#'     x <- getDataForTables()
+#'
+getDataForTables <- function(input = NULL, init_data = NULL,
+                             filt_data = NULL, selected = NULL,
+                             getMostVaried = NULL,  mergedComp = NULL){
+    pastr <- "padj"
+    fcstr <- "foldChange"
+    dat <- NULL
+    if (input$dataset == "alldetected"){
+        if (!is.null(init_data))
+          dat <- getSearchData(init_data, input)
+    }
+    else if (input$dataset == "up+down"){
+      if (!is.null(filt_data))
+        dat <- getSearchData(getUpDown(filt_data), input)
+    }
+    else if (input$dataset == "up"){
+      if (!is.null(filt_data))
+        dat <- getSearchData(getUp(filt_data), input)
+    }
+    else if (input$dataset == "down"){
+      if (!is.null(filt_data))
+        dat <- getSearchData(getDown(filt_data), input)
+    }
+    else if (input$dataset == "selected"){
+      if (is.null(isolate(selected$data))) return(NULL)
+      dat <- getSearchData(selected$data$getSelected(), input)
+    }
+    else if (input$dataset == "most-varied"){
+      dat <- getSearchData(getMostVaried, input)
+    }
+    else if (input$dataset == "comparisons"){
+      if (is.null(mergedComp)) return(NULL)
+      fcstr<-colnames(mergedComp)[grepl("foldChange", colnames(mergedComp))]
+      pastr<-colnames(mergedComp)[grepl("padj", colnames(mergedComp))]
+      dat <- getSearchData(mergedComp, input)
+    }
+    list(dat, pastr, fcstr)
 }
 
 #' addID
