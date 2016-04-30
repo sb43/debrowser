@@ -127,30 +127,33 @@ the all-to-all plot.
 Additionally, two addition QC plots are available for you to use: Heatmap and
 PCA plots.  The heatmap will display genes for each sample within your dataset
 in the form of a heatmap and PCA will display Principal component analysis of
-your dataset. You can select these various plot options by selecting the type
+your dataset. You have the option of veiwing an interactive heatmap by selecting
+the 'Interactive' checkbox in the left side panel when you have selected the
+Heatmap option.  You can select these various plot options by selecting the type
 of plot you wish to view on the left panel.
 
-![alt text](https://i.imgur.com/rPBdUX4.png "QC plots"){#img width=70%}
+![alt text](http://i.imgur.com/rS1n0hd.png "QC plots")
 
 **Figure 2:** *Display of the all-to-all plot in the initial QC plots page.*
 
 You can also view the genes within your quantification file in various
-ways.  The 'All Detected' tab will list all of the genes present within
-your file. The 'Gene Set' tab displays all of the genes within a specific
-search.  You can enter genes into the search box by selecting the 'geneset'
-dropdown option on the left.  The Last tab 'Most Varied' will display your
+ways.  The 'Tables' tab will bring you to a table setup based on the dataset
+you have selected on the left options panel. The 'All detected' option
+lists all of the genes present within your file.  The 'Selected' option
+lets your browser your gene selection based on your interactive heatmap
+selection.  The Last option, 'Most Varied', will display your
 top N varied genes.  You can alter the value of N by selecting 'most-varied'
 from the dropdown menu on the left.
 
-![alt text](https://i.imgur.com/ZMellGp.png "Heatmap"){#img width=90%}
+![alt text](http://i.imgur.com/WPqscLL.png "Heatmap")
 
 **Figure 3:** *Display of the heatmap in the initial QC plots page.*
 
-![alt text](https://i.imgur.com/k3Xw4q8.png "PCA")
+![alt text](http://i.imgur.com/VWaMHWl.png "PCA")
 
 **Figure 4:** *Display of the PCA plot in the initial QC plots page.*
 
-![alt text](https://i.imgur.com/JaYsazO.png "Most varied")
+![alt text](http://i.imgur.com/rwdrnZQ.png "Most varied")
 
 **Figure 5:** *Display of most varied genes.*
 
@@ -175,7 +178,7 @@ button.  It is important to note that the resulting data produced from DESeq
 is normalized. Upon finishing the DESeq analysis, a tab-based menu will appear
 with multiple options.
 
-![alt text](https://i.imgur.com/yKQYQOl.png 'tab selection')
+![alt text](https://i.imgur.com/hXRcDQt.png 'tab selection')
 
 **Figure 7:** *List of the tabbed menus in DEBrowser.*
 
@@ -221,17 +224,21 @@ By clicking and dragging your mouse to create a selection over the main graph,
 you will create the top right plot, or the zoomed in version of your
 selection.  If you are going to change any of the parameters on the left,
 please make sure to re-click the 'Submit!' button to update the graphs.
+You can also change which type of dataset to use within the main plots by
+selecting from the drop down dataset box.  Additionally, you can further
+filter these datasets by typeing in the genes of interest, or regex for
+specific genes, to search for those specific genes within the dataset.
 It's also worth noting that the plots are resizable as well as downloable.
 
-![alt text](https://i.imgur.com/0OYGZTb.png "Main plots"){#img width=80%}
+![alt text](http://i.imgur.com/iAwNkPV.png "Main plots")
 
 **Figure 11:** *The main plots page within DEBrowser.*
 
-![alt text](https://i.imgur.com/Q5cv6hY.png "varied plots"){#img width=60%}
+![alt text](http://i.imgur.com/5bxkF7Y.png "varied plots")
 
 **Figure 12:** *Display of the most varied genes as a scatter plot.*
 
-![alt text](https://i.imgur.com/JqLh3ga.png "geneset plots")
+![alt text](http://i.imgur.com/TikED4T.png "geneset plots")
 
 **Figure 13:** *Display of the geneset list as a scatter plot.*
 
@@ -243,7 +250,7 @@ within the previous QC analysis, users can also view a heatmap and PCA
 plot of their analyzed data by selecting the proper plot on the left
 menu.
 
-![alt text](https://i.imgur.com/QUZJDUQ.png "Heatmap")
+![alt text](http://i.imgur.com/aNQFR4i.png "Heatmap")
 
 **Figure 14:** *Display of the heatmap within DEBrowser.*
 
@@ -263,11 +270,11 @@ within the GO term plots.  This will allow you to compare interesting clusters
 found within the the heatmap within our GO Term analysis section which will
 be discussed later within the materials.
 
-![alt text](https://i.imgur.com/nVXmXOv.png "Interactive Heatmap")
+![alt text](http://i.imgur.com/36nMJul.png "Interactive Heatmap")
 
 **Figure 15:** *View of the interactive Heatmap*
 
-![alt text](https://i.imgur.com/byp74dP.png "PCA")
+![alt text](http://i.imgur.com/uf9tM6J.png "PCA")
 
 **Figure 16:** *Display of the PCA plot within DEBrowser.*
 
@@ -292,19 +299,19 @@ By selecting the 'selection' dataset on the left panel after selecting
 specific genes from the interactive heatmap, you will be able to compare
 your specific gene selection within the various GO Term databases.
 
-![alt text](https://i.imgur.com/43ApxMf.png "GO")
+![alt text](http://i.imgur.com/yXFJtXl.png "GO")
 
 **Figure 17:** *Display of the GO Plot section within DEBrowser.*
 
-![alt text](https://i.imgur.com/8Krc0QQ.png "dotplot GO")
+![alt text](http://i.imgur.com/YaRgK5m.png "dotplot GO")
 
 **Figure 18:** *Display of the GO dotplot section within DEBrowser.*
 
-![alt text](https://i.imgur.com/WXXUo3D.png "DO")
+![alt text](http://i.imgur.com/Q8qiA4A.png "DO")
 
 **Figure 19:** *Display of the DO plot section within DEBrowser.*
 
-![alt text](https://i.imgur.com/7wKHKdF.png "DO dotplot")
+![alt text](http://i.imgur.com/BY4XPpz.png "DO dotplot")
 
 **Figure 20:** *Display of the DO dotplot section within DEBrowser.*
 
@@ -312,59 +319,55 @@ your specific gene selection within the various GO Term databases.
 
 **Figure 21:** *Display of the KEGG plot section within DEBrowser.*
 
-The next six tabs contain various result information in table formats.
-The 'All Detected' tab contains the list of all the genes within the
+The last tab, 'Tables', contains various result information in table formats.
+The 'All Detected' option contains the list of all the genes within the
 TSV/CSV provided with the corresponding DESeq analyses.
 Up-regulated values are shown in green while down-regulated values
-are displayed in red.  To view any particular tab's custom options,
-the dataset type in the left panel must match that of the tab you are
-viewing.
+are displayed in red.  To view any particular dataset's custom options,
+the dataset type must be selected.
 
-The 'Up' tab contains a list of all the up-regulated genes based on the
-options selected on the left panel.  The 'Down' tab contains a list of all
+The 'Up' option contains a list of all the up-regulated genes based on the
+options selected on the left panel.  The 'Down' option contains a list of all
 the down-regulated genes based on the options selected.
-The 'Selected' tab contains the list of genes selected from the main plots
+The 'Selected' option contains the list of genes selected from the main plots
 section.  By clicking and dragging your mouse on the main plot within the
 'Main Plots' tab, you will then be able to see that selection in list form
-within the 'Selected' tab.
-The 'Gene Set' tab allows you to filter out gene data based on
-genes selected via a text box.  To create a gene set, select the
-'geneset' option on the left panel under the 'Choose a dataset' option.
-Once selected, a text box will appear where you can input various genes
-of interest.  You can also use regular expressions in order to search
+within the 'Selected' option.
+The 'Gene Set' option allows you to filter out gene data based on
+genes selected via a text box.  To create a gene set, simply type the names
+of the genes you wish to view in the text box on the left panel in a comma-
+seperated format.  You can also use regular expressions in order to search
 for specific gene sets.
-The 'Most Varied' tab, much like the original QC 'Most Varied' tab,
+The 'Most Varied' option, much like the original QC 'Most Varied' tab,
 allows you to view the list of most varied genes based on user input
 parameters on the left panel.
-The Last tab, 'Comparisons', allows you to view the
+The 'Comparisons' option allows you to view the
 differences between your different condition comparisons.
 Comparisons between datasets are shown if at least one of the conditional
 comparisons has passed the padj value or fold change cut off.
 
-Make sure that when you are comparing/viewing tables within the specified
-tables tabs, that you select the correct dataset you would like to used on
-the left panel.  It is also important to note that comparisons with only
+It is also important to note that comparisons with only
 one sample cannot create statistically significant p-adjust values.  The
 more replicates you have within a condition, the greater the statistical
 significance of your comparisons.
 
-![alt text](https://i.imgur.com/ysDpMtG.png "Up+Down Regulated")
+![alt text](http://i.imgur.com/70WsI73.png "Up+Down Regulated")
 
 **Figure 22:** *Display of the up+down-regulated genes table.*
 
-![alt text](https://i.imgur.com/2vbVvKO.png "Down Regulated")
+![alt text](http://i.imgur.com/edDlfF4.png "Down Regulated")
 
 **Figure 23:** *Display of the down-regulated genes table.*
 
-![alt text](https://i.imgur.com/Dl9xFQI.png "geneset"){#img width=50%}
+![alt text](http://i.imgur.com/oiWLDX0.png "geneset")
 
 **Figure 24:** *Display of the geneset input box.*
 
-![alt text](https://i.imgur.com/qJFkghv.png "geneset table")
+![alt text](https://i.imgur.com/76hDD1l.png "geneset table")
 
 **Figure 25:** *Display of the gene set search of the term '^al'.*
 
-![alt text](https://i.imgur.com/Ki0f5Uo.png "Comparisons")
+![alt text](http://i.imgur.com/lzD4MBx.png "Comparisons")
 
 **Figure 26:** *Condition comparisons table within DEBrowser.*
 
