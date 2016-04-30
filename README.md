@@ -32,53 +32,17 @@ openssl-devel, libxml2-devel, libcurl-devel, libpng-devel)
 
 ```
 # Installation instructions from source:
-# 1. Install the dependencies by running the lines below in R or RStudio. 
-### Packages for R.
-
-install.packages(“ggvis”)
-
-install.packages(“ggplot2”)
-
-install.packages(“RColorBrewer”)
-
-install.packages(“DT”)
-
-install.packages(“gplots”)
-
-install.packages(“devtools”)
-### BioC Packages for R.
+# 1. Install DEBrowser and required packages using the command below
 
 source(“http://www.bioconductor.org/biocLite.R”)
 
-biocLite()
+biocLite("debrowser")
 
-biocLite(“clusterProfiler”)
-
-biocLite(“ReactomePA”)
-
-biocLite(“shiny”)
-
-biocLite(“DESeq2”)
-
-biocLite(“annotate”)
-
-biocLite(“AnnotationDbi”)
-
-biocLite(“org.Hs.eg.db”)
-
-biocLite(“DOSE”)
-
-biocLite(“edgeR”)
-
-# 2. install DEBrowser using the command below
-
-R CMD INSTALL DEBrowser_0.99.0.tar.gz
-
-# 3. Start R and load the library
+# 2. Start R and load the library
 
 library(DEBrowser)
 
-#  4. start DEBrowser
+# 3. start DEBrowser
 
 startDEBrowser()
 ```
