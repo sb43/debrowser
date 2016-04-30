@@ -101,7 +101,7 @@ the 'Interactive' checkbox in the left side panel when you have selected the
 Heatmap option.  You can select these various plot options by selecting the type
 of plot you wish to view on the left panel.
 
-![alt text](http://i.imgur.com/rS1n0hd.png "QC plots"){#img width=70%}
+![alt text](http://i.imgur.com/rS1n0hd.png "QC plots")
 
 **Figure 2:** *Display of the all-to-all plot in the initial QC plots page.*
 
@@ -114,7 +114,7 @@ selection.  The Last option, 'Most Varied', will display your
 top N varied genes.  You can alter the value of N by selecting 'most-varied'
 from the dropdown menu on the left.
 
-![alt text](http://i.imgur.com/WPqscLL.png "Heatmap"){#img width=90%}
+![alt text](http://i.imgur.com/WPqscLL.png "Heatmap")
 
 **Figure 3:** *Display of the heatmap in the initial QC plots page.*
 
@@ -199,11 +199,11 @@ filter these datasets by typeing in the genes of interest, or regex for
 specific genes, to search for those specific genes within the dataset.
 It's also worth noting that the plots are resizable as well as downloable.
 
-![alt text](http://i.imgur.com/iAwNkPV.png "Main plots"){#img width=80%}
+![alt text](http://i.imgur.com/iAwNkPV.png "Main plots")
 
 **Figure 11:** *The main plots page within DEBrowser.*
 
-![alt text](http://i.imgur.com/5bxkF7Y.png "varied plots"){#img width=60%}
+![alt text](http://i.imgur.com/5bxkF7Y.png "varied plots")
 
 **Figure 12:** *Display of the most varied genes as a scatter plot.*
 
@@ -235,7 +235,10 @@ You can also select to view an interactive version of the heatmap by clicking
 on the 'Interactive' button on the left panel under the height and width
 options.  Selecting this feature changes the heatmap into an interactive
 version with two colors, allowing you to select specific genes to be compared
-within the GO term plots.  This will allow you to compare interesting clusters
+within the GO term plots.  In order to use the interactive heatmap selection
+within your GO term query, you must use either the up+down dataset or the
+most varied dataset for the heatmap display.
+This will allow you to compare interesting clusters
 found within the the heatmap within our GO Term analysis section which will
 be discussed later within the materials.
 
@@ -268,25 +271,35 @@ By selecting the 'selection' dataset on the left panel after selecting
 specific genes from the interactive heatmap, you will be able to compare
 your specific gene selection within the various GO Term databases.
 
-![alt text](http://i.imgur.com/yXFJtXl.png "GO")
+In order to use your selected genes from the interactive heatmap, you must
+first make your selection within the interactive heatmap.  Next you will want
+to switch to the GO Terms tab and use the 'selected' dataset.  Once all your
+other parameters have been selected, hit submit and you will use your selected
+genes from the interactive heatmap in your GO Term analysis.
+
+![alt text](http://i.imgur.com/UtlERoG.png "GO")
 
 **Figure 17:** *Display of the GO Plot section within DEBrowser.*
 
-![alt text](http://i.imgur.com/YaRgK5m.png "dotplot GO")
+![alt text](http://i.imgur.com/UCn8LaA.png "dotplot GO")
 
 **Figure 18:** *Display of the GO dotplot section within DEBrowser.*
 
-![alt text](http://i.imgur.com/Q8qiA4A.png "DO")
+![alt text](http://i.imgur.com/qjdTWNV.png "DO")
 
 **Figure 19:** *Display of the DO plot section within DEBrowser.*
 
-![alt text](http://i.imgur.com/BY4XPpz.png "DO dotplot")
+![alt text](http://i.imgur.com/paT3TYC.png "DO dotplot")
 
 **Figure 20:** *Display of the DO dotplot section within DEBrowser.*
 
-![alt text](https://i.imgur.com/WXXUo3D.png "KEGG")
+![alt text](http://i.imgur.com/vlOuYKu.png "KEGG")
 
-**Figure 21:** *Display of the KEGG plot section within DEBrowser.*
+**Figure 21:** *Display of the KEGG dotplot section within DEBrowser.*
+
+![alt text](https://i.imgur.com/hNB9lO9.png "heatmap enrich")
+
+**Figure 22:** *Display of Heatmap selected enriched GO Term search*
 
 The last tab, 'Tables', contains various result information in table formats.
 The 'All Detected' option contains the list of all the genes within the
@@ -322,23 +335,23 @@ significance of your comparisons.
 
 ![alt text](http://i.imgur.com/70WsI73.png "Up+Down Regulated")
 
-**Figure 22:** *Display of the up+down-regulated genes table.*
+**Figure 23:** *Display of the up+down-regulated genes table.*
 
 ![alt text](http://i.imgur.com/edDlfF4.png "Down Regulated")
 
-**Figure 23:** *Display of the down-regulated genes table.*
+**Figure 24:** *Display of the down-regulated genes table.*
 
-![alt text](http://i.imgur.com/oiWLDX0.png "geneset"){#img width=50%}
+![alt text](http://i.imgur.com/oiWLDX0.png "geneset")
 
-**Figure 24:** *Display of the geneset input box.*
+**Figure 25:** *Display of the geneset input box.*
 
 ![alt text](https://i.imgur.com/76hDD1l.png "geneset table")
 
-**Figure 25:** *Display of the gene set search of the term '^al'.*
+**Figure 26:** *Display of the gene set search of the term '^al'.*
 
 ![alt text](http://i.imgur.com/lzD4MBx.png "Comparisons")
 
-**Figure 26:** *Condition comparisons table within DEBrowser.*
+**Figure 27:** *Condition comparisons table within DEBrowser.*
 
 Lastly, the tables have a bunch of features that allow you to view your DESeq
 results more conviently.  By clicking on a column header, you can sort the
