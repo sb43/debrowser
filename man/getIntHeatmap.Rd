@@ -4,19 +4,16 @@
 \alias{getIntHeatmap}
 \title{getIntHeatmap}
 \usage{
-getIntHeatmap(heatdat = NULL, count = NULL, init_data = NULL,
-  lbheat = NULL)
+getIntHeatmap(heatdat = NULL, count = NULL, lbheat = NULL)
 }
 \arguments{
 \item{heatdat, }{heatData}
 
 \item{count, }{count}
 
-\item{init_data, }{initial data}
-
 \item{lbheat, }{linked brush object}
 
-\item{linked}{brush object for selection}
+\item{init_data, }{initial data}
 }
 \value{
 plot

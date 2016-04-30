@@ -92,7 +92,7 @@ deServer <- function(input, output, session) {
             a
         })
         output$qcpanel <- renderUI({
-            getQCPanel(!is.null(init_data()))
+            getQCPanel(randstr())
         })
         output$plotarea <- renderUI({
             getQCPlotArea(input, !is.null(init_data()))
@@ -241,31 +241,7 @@ deServer <- function(input, output, session) {
         })
         selected <- reactiveValues(data = NULL)
         observe({
-            if (!is.null(input$padj)){
-                if (input$padj %% 2)
-                    valpadj = (10 ^ (-1*as.integer(
-                    (10-input$padj)/2 )) ) /2
-                else
-                    valpadj = (10 ^ (-1*(10-input$padj)/2))
-                if(input$padj == 0) valpadj = 0
-                updateTextInput(session, "padjtxt",
-                    value = valpadj ) 
-            }
-            if (!is.null(input$gopvalue)){
-                if (input$gopvalue%%2)
-                    gopval = (10 ^ (-1*as.integer(
-                    (10-input$gopvalue)/2 )) ) /2
-            else
-                gopval = (10 ^ (-1*(10-input$gopvalue)/2))
-            if(input$gopvalue==0) gopval = 0
-            updateTextInput(session, "pvaluetxt",
-                value = gopval ) 
-            }
-            if (!is.null(input$foldChange)){
-                valpadjfoldChange = input$foldChange
-                updateTextInput(session, "foldChangetxt",
-                        value = valpadjfoldChange)
-            }
+            setFilterParams(session, input)
         })
         condmsg <- reactiveValues(text = NULL)
         observeEvent(input$startPlots, {
@@ -294,24 +270,13 @@ deServer <- function(input, output, session) {
             rownames(dat) <- dat$ID
             list(dat, count)
         })
-        lbheat <- link_brush()
-
         observe({
-            if (inputQCPlot()$interactive && input$qcplot == "heatmap")
-                getIntHeatmap(isolate(heatdat()[[1]]),
-                              isolate(heatdat()[[2]]),
-                              isolate(init_data()), lbheat)
-          
-       })
-
-        observe({
-            getSelected <- reactive({
-              a<- init_data()[as.vector(
-                unique(heatdat()[[1]][lbheat$selected(), ]$Genes)), ]
-            })
-            if (!is.null(lbheat$selected()))
-                selected$data <- list(getSelected = isolate(getSelected))
+            if (inputQCPlot()$interactive==1 && input$qcplot == "heatmap")
+                selected$data <- 
+                    getSelHeat(isolate(init_data()), isolate(heatdat()[[1]]),
+                               isolate(heatdat()[[2]])) 
         })
+
         heatmapVals <- reactiveValues(data = NULL)
         getQCReplot <- reactive({
           a <- NULL
@@ -400,7 +365,7 @@ deServer <- function(input, output, session) {
                 dat <- getSearchData(merged, input)
             }
             dat <- removeCols(c("ID", "x", "y", "Legend", "Size"), dat)
-            m <- DT::datatable(dat, searchHighlight = TRUE,
+            m <- DT::datatable(dat,
             options = list(lengthMenu = list(c(10, 25, 50, 100),
             c("10", "25", "50", "100")),
             pageLength = 25, paging = TRUE, searching = TRUE)) %>%

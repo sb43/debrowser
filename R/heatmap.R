@@ -67,7 +67,6 @@ cellInfo <- function(x = NULL) {
 #' @param count, count
 #' @param init_data, initial data
 #' @param lbheat, linked brush object
-#' @param linked brush object for selection
 #' @return plot
 #' @export
 #'
@@ -75,7 +74,7 @@ cellInfo <- function(x = NULL) {
 #'     getIntHeatmap()
 #'
 getIntHeatmap <- function(heatdat = NULL, count = NULL, 
-    init_data = NULL, lbheat = NULL) {
+    lbheat = NULL) {
     if (is.null(heatdat)) return (NULL)
     graphheight = "auto"
     if (count > 50)
@@ -100,5 +99,38 @@ getIntHeatmap <- function(heatdat = NULL, count = NULL,
         a <- a %>% hide_axis("y")
     else
         a <- a %>% add_axis("y", title_offset=80)
-    a %>% bind_shiny(paste0("heatmapplot"))
+    a
+}
+
+#' getSelHeat
+#'
+#' heatmap selection functionality
+#'
+#' @param init_data, initial data
+#' @param inputQCPlot, count
+#' @param heatdat, heatData
+#' @param input, input params
+#' @return plot
+#' @export
+#'
+#' @examples
+#'     getSelHeat()
+#'
+getSelHeat <- function(init_data = NULL, heatdat = NULL, count = NULL) {
+    lbheat <- link_brush()
+    randstr <- reactive({
+      stri_rand_strings(n=1, length=8, pattern="[A-Za-z0-9]")
+    })
+    heatdat %>% getIntHeatmap( count,
+        lbheat) %>%
+        bind_shiny(paste0("heatmapplot-", randstr()))
+    heat_selected <- reactive({
+        init_data[as.vector(
+            unique(heatdat[lbheat$selected(), ]$Genes)), ]
+    })
+    getSelected <- reactive({
+        heat_selected()
+    })
+    list( getSelected = isolate(getSelected), 
+        randstr=isolate(randstr) )
 }
