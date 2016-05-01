@@ -12,8 +12,6 @@ getIntHeatmap(heatdat = NULL, count = NULL, lbheat = NULL)
 \item{count, }{count}
 
 \item{lbheat, }{linked brush object}
-
-\item{init_data, }{initial data}
 }
 \value{
 plot

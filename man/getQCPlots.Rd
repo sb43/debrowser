@@ -14,11 +14,9 @@ getQCPlots(dataset = NULL, input = NULL, metadata = NULL,
 
 \item{metadata, }{coupled samples and conditions}
 
+\item{inputQCPlot, }{input QC params}
+
 \item{cex, }{font size}
-
-\item{clustering_method, }{clustering method used}
-
-\item{distance_method, }{distance method used}
 }
 \value{
 the panel for QC plots;

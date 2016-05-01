@@ -9,7 +9,17 @@ getDataForTables(input = NULL, init_data = NULL, filt_data = NULL,
   selected = NULL, getMostVaried = NULL, mergedComp = NULL)
 }
 \arguments{
+\item{input, }{input parameters}
+
+\item{init_data, }{initial dataset}
+
 \item{filt_data, }{filt_data}
+
+\item{selected, }{selected genes}
+
+\item{getMostVaried, }{most varied genes}
+
+\item{mergedComp, }{merged comparison set}
 }
 \value{
 data

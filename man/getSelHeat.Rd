@@ -11,7 +11,7 @@ getSelHeat(init_data = NULL, heatdat = NULL, count = NULL)
 
 \item{heatdat, }{heatData}
 
-\item{inputQCPlot, }{count}
+\item{count, }{selected gene count}
 
 \item{input, }{input params}
 }
@@ -22,7 +22,7 @@ plot
 heatmap selection functionality
 }
 \examples{
-    getSelHeat()
+    x <- getSelHeat()
 
 }
 

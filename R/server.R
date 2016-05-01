@@ -34,7 +34,8 @@
 #' @importFrom ggvis add_axis add_legend add_tooltip axis_props
 #'             bind_shiny create_broker ggvis ggvisOutput handle_brush
 #'             hide_legend layer_bars layer_boxplots layer_points
-#'             scale_nominal set_options %>% group_by
+#'             scale_nominal set_options %>% group_by layer_rects
+#'             band
 #' @importFrom gplots heatmap.2 redblue
 #' @importFrom igraph layout.kamada.kawai  
 #' @importFrom grDevices dev.off pdf
