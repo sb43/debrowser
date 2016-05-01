@@ -12,17 +12,16 @@
 #' @export
 #'
 getQCPanel <- function(randstr = NULL) {
-
     a <- list(
         conditionalPanel(condition = "(input.qcplot=='heatmap')",
         helpText( "Please select the parameters and press the 
         submit button in the left menu
         for the plots" )),
         uiOutput("plotarea"),
-        conditionalPanel(condition = "input.qcplot == 'heatmap' & input.interactive",
+        conditionalPanel(condition = "input.qcplot == 'heatmap' 
+            & input.interactive",
         column(12, ggvisOutput(paste0("heatmapplot-", randstr)))
         ))
-
 }
 
 #' getQCPlots
@@ -34,8 +33,7 @@ getQCPanel <- function(randstr = NULL) {
 #' @param dataset, the dataset to use
 #' @param input, user input
 #' @param metadata, coupled samples and conditions
-#' @param clustering_method, clustering method used
-#' @param distance_method, distance method used
+#' @param inputQCPlot, input QC params
 #' @param cex, font size
 #' @return the panel for QC plots;
 #' @examples
@@ -86,7 +84,8 @@ getQCPlotArea <- function(input = NULL,flag = FALSE)
     a <- NULL
     if (flag)
         a <- list(
-            conditionalPanel(condition = "!input.interactive || input.qcplot != 'heatmap'",
+            conditionalPanel(condition = "!input.interactive || 
+                input.qcplot != 'heatmap'",
             column(12, plotOutput("qcplotout",
             height = input$height, width = input$width))),
             conditionalPanel(condition = "input.qcplot == 'pca'",

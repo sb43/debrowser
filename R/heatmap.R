@@ -65,7 +65,6 @@ cellInfo <- function(x = NULL) {
 #'
 #' @param heatdat, heatData
 #' @param count, count
-#' @param init_data, initial data
 #' @param lbheat, linked brush object
 #' @return plot
 #' @export
@@ -107,19 +106,19 @@ getIntHeatmap <- function(heatdat = NULL, count = NULL,
 #' heatmap selection functionality
 #'
 #' @param init_data, initial data
-#' @param inputQCPlot, count
 #' @param heatdat, heatData
-#' @param input, input params
+#' @param count, selected gene count
 #' @return plot
 #' @export
 #'
 #' @examples
-#'     getSelHeat()
+#'     x <- getSelHeat()
 #'
 getSelHeat <- function(init_data = NULL, heatdat = NULL, count = NULL) {
+    if (is.null(init_data)) return(NULL)
     lbheat <- link_brush()
     randstr <- reactive({
-      stri_rand_strings(n=1, length=8, pattern="[A-Za-z0-9]")
+        stri_rand_strings(n=1, length=8, pattern="[A-Za-z0-9]")
     })
     heatdat %>% getIntHeatmap( count,
         lbheat) %>%
