@@ -363,3 +363,29 @@ With that, you've now successfully navigated the DEBrowser and are ready to
 start inserting your own data files and browsing your own experiments.  Enjoy
 the DEBrowser!
 
+#       Case Study
+
+Taking a look at the case study (Vernia S. et al 2014), Multiple heatmaps were
+created to display findings within the research.  The heatmaps generated
+for the study were customized to a high level of specificity.  However,
+using a sample dataset generated from this study, it is possible to
+recreate similar heatmaps displayed within the studies findings.
+
+![alt text](http://i.imgur.com/a2ZTcfd.png "Comparisons")
+
+**Figure 28:** *All detected genes heatmap using case study data.*
+
+![alt text](http://i.imgur.com/rLF6DJ3.png "Comparisons")
+
+**Figure 29:** *Most varied genes heatmap using case study data.*
+
+The only main difference between the plots created within DEBrowser
+and the plots created within the research paper is that the clustering
+method used within the paper was a k-means method with k equalling 6.
+
+Using the 'advanced demo' dataset we mentioned earlier, you too can
+recreate these tables using the same data.  Browsing, changing parameters,
+and creating unique plots to view and analyze data can be a creative way
+to recreate the same analytical results produced.  DEBrowser can be used in
+multiple ways to check the reproducibility of research results in a highly
+interactive format!
