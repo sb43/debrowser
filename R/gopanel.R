@@ -148,3 +148,27 @@ getOrganism <- function(org){
                           "org.Sc.sgd.db")
     organisms[org][[1]]
 }
+
+#' getOrganismPathway
+#'
+#' @param org, organism
+#' @note \code{getOrganismPathway}
+#'
+#' @export
+#' @return organism name for pathway
+#'
+#' @examples
+#'     x <- getOrganismPathway()
+#'
+getOrganismPathway <- function(org){
+    organisms =  list("human", "mouse", "rat", 
+                      "zebrafish", "fly", "celegans", "yeast")
+    names(organisms) <- c("org.Hs.eg.db", 
+                          "org.Mm.eg.db", 
+                          "org.Rn.eg.db", 
+                          "org.Dr.eg.db",
+                          "org.Dm.eg.db",
+                          "org.Ce.eg.db",
+                          "org.Sc.sgd.db")
+    organisms[org][[1]]
+}
