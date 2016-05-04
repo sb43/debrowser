@@ -47,12 +47,12 @@ Imports:
     SummarizedExperiment,
     stringi,
     reshape2,
-    org.Hs.eg.db
+    org.Hs.eg.db,
+    org.Mm.eg.db
 RoxygenNote: 5.0.1
-Suggests: knitr,
-    rmarkdown,
-    R.rsp,
-    testthat
+Suggests: testthat,
+    knitr,  
+    R.rsp
 VignetteBuilder: knitr,  R.rsp
 URL: https://github.com/UMMS-Biocore/debrowser
 BugReports: https://github.com/UMMS-Biocore/debrowser/issues/new

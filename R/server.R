@@ -35,7 +35,7 @@
 #'             bind_shiny create_broker ggvis ggvisOutput handle_brush
 #'             hide_legend layer_bars layer_boxplots layer_points
 #'             scale_nominal set_options %>% group_by layer_rects
-#'             band
+#'             band scale_numeric hide_axis
 #' @importFrom gplots heatmap.2 redblue
 #' @importFrom igraph layout.kamada.kawai  
 #' @importFrom grDevices dev.off pdf
@@ -60,7 +60,7 @@
 #' @importFrom annotate geneSymbols
 #' @importFrom reshape2 melt
 #' @import org.Hs.eg.db
-#'
+#' @import org.Mm.eg.db
 deServer <- function(input, output, session) {
     tryCatch(
     {

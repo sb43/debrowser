@@ -17,12 +17,16 @@
 #'
 getGeneList <- function(genes = NULL, org = "org.Hs.eg.db") {
     # Get the entrez gene identifiers that are mapped to a gene symbol
-    if (is.null(org)) org = "org.Hs.eg.db"
-    installpack(org)
-    allkeys <- AnnotationDbi::keys(eval(parse(text = org)), keytype="SYMBOL")
+    if (is.null(org)) 
+        organism <- "org.Hs.eg.db"
+    else
+        organism <- org
+    installpack(organism)
+    allkeys <- AnnotationDbi::keys(eval(parse(text = organism)), 
+        keytype="SYMBOL")
     existinggenes <- unique(as.vector(unlist(lapply(toupper(genes), 
         function(x){ allkeys[x == toupper(allkeys)] }))))
-    mapped_genes <- mapIds(eval(parse(text = org)), keys = existinggenes, 
+    mapped_genes <- mapIds(eval(parse(text = organism)), keys = existinggenes, 
         column="ENTREZID", keytype="SYMBOL",
         multiVals = "first")
     genelist <- unique(as.vector(unlist(mapped_genes)))
@@ -50,7 +54,7 @@ getEnrichGO <- function(genelist = NULL, pvalueCutoff = 0.01,
     if (is.null(genelist)) return(NULL)
     res <- c()
     installpack(org)
-    res$enrich_p <- enrichGO(gene = genelist, OrgDb = org,
+    res$enrich_p <- clusterProfiler::enrichGO(gene = genelist, OrgDb = org,
     # res$enrich_p <- enrichGO(gene = genelist, organism = "human",
             ont = ont, pvalueCutoff = pvalueCutoff)
                              
@@ -176,20 +180,19 @@ compareClust <- function(dat = NULL, ont = "CC", org = "org.Hs.eg.db",
         p <- tryCatch({
             title <- paste(fun, title)
             xx <- c()
-            if (fun == "enrichKEGG" || fun == "enrichPathway")
+            if (fun == "enrichKEGG" || fun == "enrichPathway"){
+                installpack("ReactomePA")
                 xx <- compareCluster(genecluster, fun = fun, 
                     organism = getOrganism(org),
                     pvalueCutoff = pvalueCutoff)
-            else if (fun == "enrichDO"){
-                 require("DOSE")
+            } else if (fun == "enrichDO") {
+                 installpack("DOSE")
                  xx <- compareCluster(genecluster, fun = fun,
                      pvalueCutoff = pvalueCutoff) 
-                     #pvalueCutoff = pvalueCutoff)
-            }
-            else {
+            } else {
                 title <- paste(ont, title)
                 xx <- compareCluster(genecluster, fun = fun,
-                        ont = ont, OrgDb = org, pvalueCutoff = pvalueCutoff)
+                    ont = ont, OrgDb = org, pvalueCutoff = pvalueCutoff)
                 #ont = ont, organism = "human", pvalueCutoff = pvalueCutoff)
             }
             if (!is.null(xx@compareClusterResult) )

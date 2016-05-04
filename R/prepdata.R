@@ -548,7 +548,8 @@ getMergedComparison <- function(dc = NULL, nc = NULL){
 #' @examples
 #'     x <- applyFiltersToMergedComparison()
 #'
-applyFiltersToMergedComparison <- function (merged = NULL, nc = NULL, input = NULL)
+applyFiltersToMergedComparison <- function (merged = NULL, 
+    nc = NULL, input = NULL)
 {
     if (is.null(merged)) return (NULL)
     padj_cutoff <- as.numeric(input$padjtxt)
