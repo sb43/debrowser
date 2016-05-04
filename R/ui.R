@@ -17,6 +17,8 @@ deUI <- function() {
         package = "debrowser"))
     shinyUI(fluidPage(
     shinyjs::useShinyjs(),
+    shinyjs::extendShinyjs(text = "shinyjs.refresh = 
+        function() { location.reload(); }"),
     shinyjs::inlineCSS("
         #loading-debrowser {
         position: absolute;

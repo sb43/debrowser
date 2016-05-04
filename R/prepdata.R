@@ -446,7 +446,7 @@ getUpDown <- function(filt_data = NULL){
 getDataForTables <- function(input = NULL, init_data = NULL,
     filt_data = NULL, selected = NULL,
     getMostVaried = NULL,  mergedComp = NULL){
-    if (is.null(filt_data )) return(NULL)
+    if (is.null(init_data )) return(NULL)
     pastr <- "padj"
     fcstr <- "foldChange"
     dat <- NULL
