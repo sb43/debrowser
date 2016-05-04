@@ -51,6 +51,7 @@ Imports:
     org.Mm.eg.db
 RoxygenNote: 5.0.1
 Suggests: testthat,
+    rmarkdown,
     knitr,  
     R.rsp
 VignetteBuilder: knitr,  R.rsp
