@@ -35,17 +35,17 @@
 #'             bind_shiny create_broker ggvis ggvisOutput handle_brush
 #'             hide_legend layer_bars layer_boxplots layer_points
 #'             scale_nominal set_options %>% group_by layer_rects
-#'             band
+#'             band scale_numeric hide_axis
 #' @importFrom gplots heatmap.2 redblue
 #' @importFrom igraph layout.kamada.kawai  
 #' @importFrom grDevices dev.off pdf
 #' @importFrom graphics barplot hist pairs par rect text
 #' @importFrom stats aggregate as.dist cor cor.test dist
 #'             hclust kmeans na.omit prcomp var sd
-#' @importFrom utils read.table write.table
+#' @importFrom utils read.table write.table update.packages
 #' @importFrom DOSE enrichDO enrichMap gseaplot
 #' @importMethodsFrom AnnotationDbi as.data.frame as.list colnames
-#'             head mappedkeys ncol nrow subset
+#'             head mappedkeys ncol nrow subset keys mapIds
 #' @importMethodsFrom GenomicRanges as.factor
 #' @importMethodsFrom IRanges as.matrix "colnames<-" mean
 #'             nchar paste rownames toupper unique which
@@ -57,23 +57,21 @@
 #' @importFrom ReactomePA enrichPathway
 #' @importFrom edgeR calcNormFactors equalizeLibSizes DGEList
 #' @importFrom DESeq2 DESeq results DESeqDataSetFromMatrix
-#' @importFrom org.Hs.eg.db org.Hs.egSYMBOL2EG
 #' @importFrom annotate geneSymbols
 #' @importFrom reshape2 melt
-#' @import     V8
-#'
+#' @import org.Hs.eg.db
+#' @import org.Mm.eg.db
 deServer <- function(input, output, session) {
     tryCatch(
     {
         if (!interactive()) {
-            ctx <- v8();
             options( shiny.maxRequestSize = 30 * 1024 ^ 2,
                 shiny.fullstacktrace = TRUE, shiny.trace=TRUE, 
                 shiny.autoreload=TRUE)
             #library(debrowser)
         }
         observeEvent(input$refresh, {
-            js$refresh();
+            shinyjs::js$refresh()
         })
         #observeEvent(input$stopapp, {
         #    stopApp();
@@ -370,9 +368,15 @@ deServer <- function(input, output, session) {
                     pageLength = 25, paging = TRUE, searching = TRUE))
             }
         })
+
         mergedComp <- reactive({
+            applyFiltersToMergedComparison(
+                isolate(mergedCompInit()), choicecounter$nc, input)
+        })
+        
+        mergedCompInit <- reactive({
             merged <- isolate(getMergedComparison(
-                isolate(dc()), choicecounter$nc, input))
+                isolate(dc()), choicecounter$nc))
             merged <- merge(Dataset()[,input$samples], merged, by=0)
             rownames(merged) <- merged$Row.names
             merged$Row.names <- NULL

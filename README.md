@@ -33,7 +33,7 @@ machine:
 ```
 # Installation instructions:
 # 1. Install DEBrowser and its dependencies by running the lines below
-#    in R or RStudio.
+# in R or RStudio.
 
 source(“http://www.bioconductor.org/biocLite.R”)
 
@@ -52,20 +52,12 @@ startDEBrowser()
 
 Once you have the DEBrowser running, a page will load asking to choose a CSV
 file or to load the demo data.  In order to run DESeq2, we are going to need
-gene quantifications for those genes contained in a comma-seperated values
-(CSV) or tab-seperated values (TSV) format.  The file values must contain the
-gene, transcript, and the samples count values you wish to enter into
-DEBrowser.
+gene quantifications for those genes contained in a tab-seperated values (TSV) 
+format.  The file values must contain the gene, transcript, and the samples 
+count values you wish to enter into DEBrowser.
 
 ```
 IE:
-
-# CSV:
-
-gene,transcript,exper_rep1,exper_rep2,control_rep1,control_rep2
-DQ714826,uc007tfl.1,0.00,0.00,0.00,0.00
-DQ551521,uc008bml.1,0.00,0.00,0.00,0.00
-AK028549,uc011wpi.1,2.00,1.29,0.00,0.00
 
 # TSV:
 
