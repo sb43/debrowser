@@ -231,7 +231,6 @@ applyFilters <- function(filt_data = NULL, cols = NULL,
     }
     m
 }
-
 #' getSelectedDatasetInput
 #'
 #' Gathers the user selected dataset output to be displayed.
@@ -239,7 +238,6 @@ applyFilters <- function(filt_data = NULL, cols = NULL,
 #' @param rdata, filtered dataset
 #' @param getSelected, selected data
 #' @param getMostVaried, most varied data
-#' @param getGeneSet, given gene set
 #' @param getSelectedDatasetInput, merged comparison data
 #' @param input, input parameters
 #' @return data
@@ -249,7 +247,7 @@ applyFilters <- function(filt_data = NULL, cols = NULL,
 #'     x <- getSelectedDatasetInput()
 #'
 getSelectedDatasetInput<-function(rdata = NULL, getSelected = NULL, 
-    getMostVaried = NULL, getGeneSet = NULL, getSelectedDatasetInput = NULL, 
+    getMostVaried = NULL, getSelectedDatasetInput = NULL, 
     input = NULL) {
     if (is.null(rdata)) return (NULL)
     m <- rdata
@@ -510,18 +508,15 @@ addID <- function(data = NULL) {
 #'
 #' @param dc, data container
 #' @param nc, the number of comparisons
-#' @param input, input params
 #' @return data
 #' @export
 #'
 #' @examples
 #'     x <- getMergedComparison()
 #'
-getMergedComparison <- function(dc = NULL, nc = NULL, input = NULL){
+getMergedComparison <- function(dc = NULL, nc = NULL){
     merged <- c()
     if (is.null(dc)) return (NULL)
-    padj_cutoff <- as.numeric(input$padjtxt)
-    foldChange_cutoff <- as.numeric(input$foldChangetxt)
     for ( ni in seq(1:nc)) {
         tmp <- dc[[ni]]$init_data[,c("foldChange", "padj")]
         tt <- paste0("C", (2*ni-1),".vs.C",(2*ni))
@@ -535,10 +530,35 @@ getMergedComparison <- function(dc = NULL, nc = NULL, input = NULL){
             rownames(merged) <- merged$Row.names
             merged$Row.names <- NULL
         }
-        if (is.null(merged$Legend)){
-          merged$Legend <- character(nrow(merged))
-          merged$Legend <- "NS"
-        }
+    }
+    merged
+}
+
+#' applyFiltersToMergedComparison
+#'
+#' Gathers the merged comparison data to be used within the
+#' DEBrowser.
+#'
+#' @param merged, merged data 
+#' @param nc, the number of comparisons
+#' @param input, input params
+#' @return data
+#' @export
+#'
+#' @examples
+#'     x <- applyFiltersToMergedComparison()
+#'
+applyFiltersToMergedComparison <- function (merged = NULL, nc = NULL, input = NULL)
+{
+    if (is.null(merged)) return (NULL)
+    padj_cutoff <- as.numeric(input$padjtxt)
+    foldChange_cutoff <- as.numeric(input$foldChangetxt)
+    if (is.null(merged$Legend)){
+        merged$Legend <- character(nrow(merged))
+        merged$Legend <- "NS"
+    }
+    for ( ni in seq(1:nc)) {
+        tt <- paste0("C", (2*ni-1),".vs.C",(2*ni))
         merged[which(merged[,c(paste0("foldChange.", tt))] >= 
             foldChange_cutoff & merged[,c(paste0("padj", tt))] <= 
             padj_cutoff), "Legend"] <- "Sig"

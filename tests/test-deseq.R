@@ -1,6 +1,9 @@
 library(debrowser)
 library(DESeq2)
 library(testthat)
+library(org.Hs.eg.db)
+library(AnnotationDbi)
+library(annotate)
 
 load(system.file("extdata", "demo", "demodata.Rda",
     package = "debrowser"))

@@ -5,8 +5,7 @@
 \title{getSelectedDatasetInput}
 \usage{
 getSelectedDatasetInput(rdata = NULL, getSelected = NULL,
-  getMostVaried = NULL, getGeneSet = NULL, getSelectedDatasetInput = NULL,
-  input = NULL)
+  getMostVaried = NULL, getSelectedDatasetInput = NULL, input = NULL)
 }
 \arguments{
 \item{rdata, }{filtered dataset}
@@ -14,8 +13,6 @@ getSelectedDatasetInput(rdata = NULL, getSelected = NULL,
 \item{getSelected, }{selected data}
 
 \item{getMostVaried, }{most varied data}
-
-\item{getGeneSet, }{given gene set}
 
 \item{getSelectedDatasetInput, }{merged comparison data}
 
