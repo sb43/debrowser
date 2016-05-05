@@ -70,13 +70,6 @@ deServer <- function(input, output, session) {
                 shiny.autoreload=TRUE)
             #library(debrowser)
         }
-        observeEvent(input$refresh, {
-            shinyjs::js$refresh()
-        })
-        #observeEvent(input$stopapp, {
-        #    stopApp();
-        #})
-
         observeEvent(input$stopApp, {
             stopApp(returnValue = invisible())
         })
