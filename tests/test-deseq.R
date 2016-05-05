@@ -96,31 +96,10 @@ test_that("Check GO plots", {
     dataset <- rdata[which(rdata$Legend=="Up" | rdata$Legend == "Down"), columns]
     gotest <- getGOPlots(dataset, goInput, table = FALSE)
     expect_false(is.null(gotest))
-    goInput$ontology <- "MF"
-    gotest <- getGOPlots(dataset, goInput, table = FALSE)
-    expect_false(is.null(gotest))
-    goInput$ontology <- "BP"
-    gotest <- getGOPlots(dataset, goInput, table = FALSE)
-    expect_false(is.null(gotest))
-    goInput$goplot <- "enrichKEGG"
-    gotest <- getGOPlots(dataset, goInput, table = FALSE)
-    expect_false(is.null(gotest))
-    goInput$goextplot <- "Dotplot"
-    gotest <- getGOPlots(dataset, goInput, table = FALSE)
-    expect_false(is.null(gotest))
     goInput$goplot <- "disease"
     gotest <- getGOPlots(dataset, goInput, table = FALSE)
     expect_false(is.null(gotest))
     goInput$goextplot <- "Summary"
-    gotest <- getGOPlots(dataset, goInput, table = FALSE)
-    expect_false(is.null(gotest))
-    goInput$goplot <- "compare"
-    gotest <- getGOPlots(dataset, goInput, table = FALSE)
-    expect_false(is.null(gotest))
-    goInput$ontology <- "MF"
-    gotest <- getGOPlots(dataset, goInput, table = FALSE)
-    expect_false(is.null(gotest))
-    goInput$ontology <- "CC"
     gotest <- getGOPlots(dataset, goInput, table = FALSE)
     expect_false(is.null(gotest))
 })

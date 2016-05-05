@@ -157,8 +157,8 @@ getQCLeftMenu <- function() {
                 "mcquitty", "median", "centroid")),
                 selectInput("distance_method", "Distance Method:",
                 choices <- c("cor", "euclidean", "maximum", "manhattan",
-                "canberra", "binary", "minkowski")),
-        actionButton("startQCPlot", "Submit")),
+                "canberra", "binary", "minkowski"))),
+        actionButton("startQCPlot", "Submit"),
         conditionalPanel( (condition <- "input.qcplot=='pca'"),
             getPCselection(1, "x"),
             getPCselection(2, "y")
@@ -284,7 +284,7 @@ getProgramTitle <- function(session = NULL) {
     if (is.null(title) || title != "no" ) 
         a <- list(refreshbtn, titlePanel("DEBrowser"))
     else
-        a <- list(refreshbtn, titlePanel("v1.0.0"))
+        a <- list(refreshbtn, titlePanel(" "))
     a
 }
 
