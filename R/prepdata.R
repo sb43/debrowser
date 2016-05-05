@@ -238,7 +238,7 @@ applyFilters <- function(filt_data = NULL, cols = NULL,
 #' @param rdata, filtered dataset
 #' @param getSelected, selected data
 #' @param getMostVaried, most varied data
-#' @param getSelectedDatasetInput, merged comparison data
+#' @param mergedComparison, merged comparison data
 #' @param input, input parameters
 #' @return data
 #' @export
@@ -247,8 +247,7 @@ applyFilters <- function(filt_data = NULL, cols = NULL,
 #'     x <- getSelectedDatasetInput()
 #'
 getSelectedDatasetInput<-function(rdata = NULL, getSelected = NULL, 
-    getMostVaried = NULL, getSelectedDatasetInput = NULL, 
-    input = NULL) {
+    getMostVaried = NULL, mergedComparison = NULL, input = NULL) {
     if (is.null(rdata)) return (NULL)
     m <- rdata
     if (input$dataset == "up") {
@@ -264,7 +263,7 @@ getSelectedDatasetInput<-function(rdata = NULL, getSelected = NULL,
     } else if (input$dataset == "most-varied") {
         m <- getMostVaried
     } else if (input$dataset == "comparisons") {
-        m <- getMergedComparison
+        m <- mergedComparison
     }
     m
 }
