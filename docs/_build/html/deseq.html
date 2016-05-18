@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>DESeq/DEBrowser &mdash; debrowser 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="debrowser 1.0.0 documentation" href="index.html" />
+    <link rel="prev" title="Local Install Guide" href="local.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="deseq-debrowser">
+<h1>DESeq/DEBrowser<a class="headerlink" href="#deseq-debrowser" title="Permalink to this headline">¶</a></h1>
+<p>This guide contains a breif discription of DESeq2 used within the DEBrowser</p>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Differential gene expression analysis has become an increasingly popular tool
+in determining and viewing up and/or down experssed genes between two sets of
+samples.  The goal of Differential gene expression analysis is to find genes
+or transcripts whose difference in expression, when accounting for the
+variance within condition, is higher than expected by chance.  <a class="reference external" href="https://bioconductor.org/packages/release/bioc/html/DESeq2.html">DESeq2</a> is an R
+package available via Bioconductor and is designed to normalize count data
+from high-throughput sequencing assays such as RNA-Seq and test for
+differential expression (Love et al. 2014).  For more information on the
+DESeq2 algorithm, you can visit <a class="reference external" href="https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.pdf">this website</a>  With multiple parameters such as
+padjust values, log fold changes, and plot styles, altering plots
+created with your DE data can be a hassle as well as time consuming.  The
+Differential Expression Browser uses DESeq2 coupled with shiny to produce
+real-time changes within your plot queries and allows for interactive browsing
+of your DESeq results. In addition to DESeq analysis, DEBrowser also offers
+a variety of other plots and analysis tools to help visualize your data
+even further.</p>
+</div>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>In order to conduct differential expression analysis, we first need data to analyze.  In order to call DESeq2,
+we&#8217;re going to need gene quantifications and expected counts for those genes.
+To obtain these quantifications, we typically use <a class="reference external" href="http://deweylab.github.io/RSEM/">RSEM</a>,
+however there are other ways to obtain this data.</p>
+<p>The TSV files used to describe the quantification counts are similar to this:</p>
+<blockquote>
+<div><p>gene    transcript      exper_rep1      exper_rep2      exper_rep3      control_rep1    control_rep2    control_rep3</p>
+<p>DQ714826        uc007tfl.1      0.00    0.00    0.00    0.00    0.00    0.00</p>
+<p>DQ551521        uc008bml.1      0.00    0.00    0.00    0.00    0.00    0.00</p>
+<p>AK028549        uc011wpi.1      2.00    1.29    0.00    0.00    0.00    1.40</p>
+</div></blockquote>
+<p>Where the gene column represent the gene name, the transcript column represents the transcript(s) name (comma separated for multiple),
+and the rest of the columns are the raw counts for your samples.</p>
+</div>
+<div class="section" id="deseq2-workflow">
+<h2>DESeq2 Workflow<a class="headerlink" href="#deseq2-workflow" title="Permalink to this headline">¶</a></h2>
+<p>DESeq2 performs multiple steps in order to analyze the data you&#8217;ve provided for it.
+The first step is to indicate the condition that each column (experiment) in the table represent.
+You can group multiple samples into one condition column.
+DESeq2 will compute the probability that a gene is differentially expressed (DE) for ALL genes in the table. It outputs
+both a nominal and a multiple hypothesis corrected p-value (padj) using a negative binomial distribution.</p>
+</div>
+<div class="section" id="debrowser">
+<h2>DEBrowser<a class="headerlink" href="#debrowser" title="Permalink to this headline">¶</a></h2>
+<p>DEBrowser utilizes <a class="reference external" href="http://shiny.rstudio.com/">Shiny</a>, a R based application development tool that creates a wonderful interactive user interface (UI)
+combinded with all of the computing prowess of R.  After the user has selected the data to analyze and has used the shiny
+UI to run DESeq2, the results are then input to DEBrowser.  DEBrowser manipulates your results in a way that allows for
+interactive plotting by which changing padj or fold change limits also changes the displayed graph(s).
+For more details about these plots and tables, please visit our quickstart guide for some helpful tutorials.</p>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><dl class="first docutils">
+<dt>Love MI, Huber W and Anders S (2014). Moderated estimation of fold change and</dt>
+<dd><p class="first last">dispersion for RNA-seq data with DESeq2.  Genome Biology, 15, pp. 550.
+<a class="reference external" href="http://doi.org/10.1186/s13059-014-0550-8">http://doi.org/10.1186/s13059-014-0550-8</a>.</p>
+</dd>
+</dl>
+</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">DESeq/DEBrowser</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li><a class="reference internal" href="#deseq2-workflow">DESeq2 Workflow</a></li>
+<li><a class="reference internal" href="#debrowser">DEBrowser</a></li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="local.html" title="previous chapter">Local Install Guide</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/deseq.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Alper Kucukural, Nicholas Merowsky.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.6</a>
+      
+      |
+      <a href="_sources/deseq.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
