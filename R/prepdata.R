@@ -161,7 +161,7 @@ prepDESeqOutput <- function(data = NULL, cols = NULL,
     if (is.null(data)) return (NULL)
     if (length(cols) == length(conds))
         de_res <- runDESeq(data, cols, conds, inputconds$fittype,
-            non_expressed_cutoff = 10)
+            non_expressed_cutoff = 500)
     de_res <- data.frame(de_res)
     norm_data <- getNormalizedMatrix(data[, cols])
     mean_cond <- c()
