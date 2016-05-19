@@ -50,20 +50,20 @@ getGOPlots <- function(dataset, input = NULL, table = FALSE){
     org <- input$organism
     if (input$goplot == "disease")
         org <- "org.Hs.eg.db"
-    genelist <- getGeneList(rownames(dataset), org)
+    genelist <- reactive({getGeneList(rownames(dataset), org)})
     if (input$goplot == "enrichGO"){
-        res <- getEnrichGO(genelist, ont = input$ontology,
-            pvalueCutoff = input$gopvalue, org = input$organism)
+        res <- reactive({getEnrichGO(genelist(), ont = input$ontology,
+            pvalueCutoff = input$gopvalue, org = input$organism)})
         if (table)
-            a<-res$table
+            a<-res()$table
         else{
-        a <- res$p
+        a <- res()$p
         if (input$goextplot == "Dotplot")
-            a <- dotplot(res$enrich_p, showCategory=30)
+            a <- dotplot(res()$enrich_p, showCategory=30)
         }
     }
     else if (input$goplot == "enrichKEGG"){
-        res <- getEnrichKEGG(genelist, pvalueCutoff=
+        res <- getEnrichKEGG(genelist(), pvalueCutoff=
             as.numeric(input$pvaluetxt), org = input$organism)
         if (table)
             a<-res$table
@@ -83,7 +83,7 @@ getGOPlots <- function(dataset, input = NULL, table = FALSE){
             a<-res$p
     }
     else if (input$goplot == "disease"){
-        res <- getEnrichDO(genelist, pvalueCutoff=as.numeric(input$pvaluetxt) )
+        res <- getEnrichDO(genelist(), pvalueCutoff=as.numeric(input$pvaluetxt) )
         if (table)
             a<-res$table
         else{
