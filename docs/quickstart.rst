@@ -11,8 +11,6 @@ First off, we need to head to the DEBrowser webpage at this url:
 
 http://debrowser.umassmed.edu/
 
-**Due to the power maintanence, debrowser.umassmed.edu will be offline till May 18, 2016 - 5:00pm**
-
 Alternatively, if you have the R package installed, you can call these R commands:
 
 library(debrowser)
