@@ -50,11 +50,14 @@ startDEBrowser()
 
 # Browsing your Data
 
-Once you have the DEBrowser running, a page will load asking to choose a CSV
+Once you have the DEBrowser running, a page will load asking to choose a TSV
 file or to load the demo data.  In order to run DESeq2, we are going to need
 gene quantifications for those genes contained in a tab-seperated values (TSV) 
-format.  The file values must contain the gene, transcript, and the samples 
-count values you wish to enter into DEBrowser.
+format.  The file values must contain the gene, transcript(s), and the samples 
+raw count values you wish to enter into DEBrowser.
+
+It's important to note that if your rows contain duplicate gene names,
+DEBrowser will reject your TSV file.  Please try to keep unique gene names.
 
 ```
 IE:
@@ -62,9 +65,10 @@ IE:
 # TSV:
 
 gene  transcript  exper_rep1 exper_rep2 control_rep1 control_rep2
-DQ714826  uc007tfl.1  0.00  0.00  0.00  0.00
-DQ551521  uc008bml.1  0.00  0.00  0.00  0.00
-AK028549  uc011wpi.1  2.00  1.29  0.00  0.00
+DQ714826	uc007tfl.1	0.00	0.00	0.00	0.00
+DQ551521	uc008bml.1	0.00	0.00	0.00	0.00
+AK028549	uc011wpi.1	2.00	1.29	0.00	0.00
+...
 ```
 
 You can also view/use the demo data by clicking the 'Load Demo!' text as an
@@ -370,6 +374,29 @@ recreate similar heatmaps displayed within the studies findings.
 ![alt text](http://i.imgur.com/rLF6DJ3.png "Comparisons")
 
 **Figure 29:** *Most varied genes heatmap using case study data.*
+
+JNK1 and JNK2 serve partially redundant functions:
+hfd JNK1 and hfd JNK2 double KO has 1018 significantly different genes.  When
+we compare hfd JNK1 KO only (177 Genes) and had JNK2 KO only (17 genes)  with 
+hfd wt  side by side, most of the up and down regulated genes are not 
+overlapping. Up regulated genes (Table 1.) and down regulated (Table 2.) in
+JNK1 KO. There is only 1 gene overlapping out of 17 that they were
+significantly different in JNK1 KO comparisons with padj <0.01 and |
+log2foldchange| > 1 cutoffs.  It shows that both individual KO might have 
+individual functions too in addition to their redundant functions. 
+When we looked at the genes in JNK1 KO in KEGG database,  they are enriched
+in "Fatty acid elongation”. JNK2 KO are enriched in "PPAR signaling pathway”
+and "Biosynthesis of unsaturated fatty acids”. DEBrowser’s powerful comparison
+function makes different condition comparisons and running GO Term analysis
+on selected genes much easier.
+
+![alt text](http://i.imgur.com/EiUdSSm.png "Comparisons")
+
+**Figure 30:** *Upregulated genes in hfd JNK1 KO (C1) vs. hfd wt (C2) DE comparison shows 4 upregulated genes (padj <0.01 and |log2foldchange| > 1).*
+
+![alt text](http://i.imgur.com/3MxR6I8.png "Comparisons")
+
+**Figure 31:** *Downregulated genes in hfd JNK1 KO (C1) vs. hfd wt (C2) DE comparison shows 13 downregulated genes (padj <0.01 and |log2foldchange| > 1). Only one of them is in JNK2 KO (C3) vs. hfd wt (C4) DE comparison.*
 
 The only main difference between the plots created within DEBrowser
 and the plots created within the research paper is that the clustering

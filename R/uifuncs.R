@@ -354,7 +354,7 @@ getLogo <- function(){
 getStartupMsg <- function() {
 a <- list( column( 12, wellPanel(
 helpText("Please select a file or load the demo data!"),
-helpText( "For mor information;" ),
+helpText( "For more information;" ),
 helpText(   a("Quick Start Guide",
 href = "http://dolphin.readthedocs.org/en/master/debrowser/quickstart.html",
 target = "_blank")) ) ))
