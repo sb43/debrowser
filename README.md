@@ -1,3 +1,7 @@
+---
+output: pdf_document
+---
+
 # DEBrowser: 
 Interactive Differential Expression Analysis Tool
 
@@ -68,7 +72,6 @@ gene  transcript  exper_rep1 exper_rep2 control_rep1 control_rep2
 DQ714826	uc007tfl.1	0.00	0.00	0.00	0.00
 DQ551521	uc008bml.1	0.00	0.00	0.00	0.00
 AK028549	uc011wpi.1	2.00	1.29	0.00	0.00
-...
 ```
 
 You can also view/use the demo data by clicking the 'Load Demo!' text as an
@@ -78,9 +81,55 @@ After obtaining and loading in the gene quantifications file, you
 are then able to view QC information of your quantifications or to continue
 on to running DESeq2.
 
-![alt text](https://i.imgur.com/CkPTon9.png "Initial option selection")
+DEBrowser also accepts TSV's via hyperlink by following a few conversion steps.  
+First, using the API provided by Dolphin, we will convert TSV into an html 
+represented TSV using this website:
 
-**Figure 1:** *The initial options selection.*
+```
+http://dolphin.umassmed.edu/public/api/
+```
+
+The Two parameters it accepts (and examples) are:
+
+	1. source=http://bioinfo.umassmed.edu/pub/debrowser/advanced_demo.tsv
+	2. format=JSON
+	
+Leaving you with a hyperlink for:
+
+```
+http://dolphin.umassmed.edu/public/api/?source=http://bioinfo.umassmed.edu/pub/debrowser/
+advanced_demo.tsv&format=JSON
+```
+
+Next you will need to encode the url so you can pass it to the DEBrowser website.
+You can find multiple url encoders online.
+Encoding our URL will turn it into this:
+
+```
+http%3A%2F%2Fdolphin.umassmed.edu%2Fpublic%2Fapi%2F%3Fsource%3Dhttp%3A%2F%2Fbioinfo
+.umassmed.edu%2Fpub%2Fdebrowser%2Fadvanced_demo.tsv%26format%3DJSON
+```
+
+Now this link can be be used in debrowser as:
+
+```
+http://debrowser.umassmed.edu:443/debrowser/R/
+```
+
+It accepts two parameters:
+
+	1. jsonobject=http%3A%2F%2Fdolphin.umassmed.edu%2Fpublic%2Fapi%2F%3Fsource%3Dhttp%3A%2F%2F
+	   bioinfo.umassmed.edu%2Fpub%2Fdebrowser%2Fadvanced_demo.tsv%26format%3DJSON
+	2. title=no
+
+The finished product of the link will look like this:
+
+```
+http://debrowser.umassmed.edu:443/debrowser/R/?jsonobject=http://dolphin.umassmed.edu/public/
+api/?source=http://bioinfo.umassmed.edu/pub/debrowser/advanced_demo.tsv&format=JSON&title=no
+```
+
+![The initial options selection.](https://i.imgur.com/CkPTon9.png "Initial option selection")
 
 Upon selection of QC information, you will be
 shown an all-to-all plot of your samples.  This sample-by-sample comparison
@@ -97,9 +146,7 @@ the 'Interactive' checkbox in the left side panel when you have selected the
 Heatmap option.  You can select these various plot options by selecting the type
 of plot you wish to view on the left panel.
 
-![alt text](http://i.imgur.com/rS1n0hd.png "QC plots")
-
-**Figure 2:** *Display of the all-to-all plot in the initial QC plots page.*
+![Display of the all-to-all plot in the initial QC plots page.](http://i.imgur.com/rS1n0hd.png "QC plots")
 
 You can also view the genes within your quantification file in various
 ways.  The 'Tables' tab will bring you to a table setup based on the dataset
@@ -110,17 +157,11 @@ selection.  The Last option, 'Most Varied', will display your
 top N varied genes.  You can alter the value of N by selecting 'most-varied'
 from the dropdown menu on the left.
 
-![alt text](http://i.imgur.com/WPqscLL.png "Heatmap")
+![Display of the heatmap in the initial QC plots page.](http://i.imgur.com/WPqscLL.png "Heatmap")
 
-**Figure 3:** *Display of the heatmap in the initial QC plots page.*
+![Display of the PCA plot in the initial QC plots page.](http://i.imgur.com/VWaMHWl.png "PCA")
 
-![alt text](http://i.imgur.com/VWaMHWl.png "PCA")
-
-**Figure 4:** *Display of the PCA plot in the initial QC plots page.*
-
-![alt text](http://i.imgur.com/rwdrnZQ.png "Most varied")
-
-**Figure 5:** *Display of most varied genes.*
+![Display of most varied genes.](http://i.imgur.com/rwdrnZQ.png "Most varied")
 
 Upon selecting to run DESeq, you are then able to select
 which samples will be selected for your first condition and second condition
@@ -130,9 +171,7 @@ Sample names are created based on the column headers within your data file.
 Once you've selected your comparisons, you are then ready to run DESeq2 to
 calculate differential expression by clicking on the 'Submit!' button.
 
-![alt text](https://i.imgur.com/XhxEfJO.png "Loading in samples")
-
-**Figure 6:** *Menus after loading in a sample.*
+![Menus after loading in a sample.](https://i.imgur.com/XhxEfJO.png "Loading in samples")
 
 #Analyzing the Results
 
@@ -143,10 +182,7 @@ button.  It is important to note that the resulting data produced from DESeq
 is normalized. Upon finishing the DESeq analysis, a tab-based menu will appear
 with multiple options.
 
-![alt text](https://i.imgur.com/hXRcDQt.png 'tab selection')
-
-**Figure 7:** *List of the tabbed menus in DEBrowser.*
-
+![List of the tabbed menus in DEBrowser.](https://i.imgur.com/hXRcDQt.png 'tab selection')
 
 The first tab, the 'Main Plots' section, is where you will be able to view
 the interactive results plots.  On the left hand side of the screen will be
@@ -162,17 +198,11 @@ choices include:
 
 * MA plot
 
-![alt text](https://i.imgur.com/xjtcqrk.png 'scatterplot')
+![Main scatter plot and the zoomed in main scatterplot.](https://i.imgur.com/xjtcqrk.png 'scatterplot')
 
-**Figure 8:** *Main scatter plot and the zoomed in main scatterplot.*
+![Main volcano Plot and the zoomed in main volcano plot.](https://i.imgur.com/DinxEaW.png 'volcano')
 
-![alt text](https://i.imgur.com/DinxEaW.png 'volcano')
-
-**Figure 9:** *Main volcano Plot and the zoomed in main volcano plot.*
-
-![alt text](https://i.imgur.com/lysUKfZ.png 'ma')
-
-**Figure 10:** *Main MA plot and the zoomed in main MA plot.*
+![Main MA plot and the zoomed in main MA plot.](https://i.imgur.com/lysUKfZ.png 'ma')
 
 Once you have selected your values, you can hit the 'Submit!' button to create
 your interactive plots!
@@ -195,17 +225,11 @@ filter these datasets by typeing in the genes of interest, or regex for
 specific genes, to search for those specific genes within the dataset.
 It's also worth noting that the plots are resizable as well as downloable.
 
-![alt text](http://i.imgur.com/iAwNkPV.png "Main plots")
+![The main plots page within DEBrowser.](http://i.imgur.com/iAwNkPV.png "Main plots")
 
-**Figure 11:** *The main plots page within DEBrowser.*
+![Display of the most varied genes as a scatter plot.](http://i.imgur.com/5bxkF7Y.png "varied plots")
 
-![alt text](http://i.imgur.com/5bxkF7Y.png "varied plots")
-
-**Figure 12:** *Display of the most varied genes as a scatter plot.*
-
-![alt text](http://i.imgur.com/TikED4T.png "geneset plots")
-
-**Figure 13:** *Display of the geneset list as a scatter plot.*
+![Display of the geneset list as a scatter plot.](http://i.imgur.com/TikED4T.png "geneset plots")
 
 Selecting the 'QC Plots' tab will take you to the quality control plots
 section.  These QC plots are very similar to the QC plots shown before
@@ -215,9 +239,7 @@ within the previous QC analysis, users can also view a heatmap and PCA
 plot of their analyzed data by selecting the proper plot on the left
 menu.
 
-![alt text](http://i.imgur.com/aNQFR4i.png "Heatmap")
-
-**Figure 14:** *Display of the heatmap within DEBrowser.*
+![Display of the heatmap within DEBrowser.](http://i.imgur.com/aNQFR4i.png "Heatmap")
 
 The heatmap is a great way to analyze replicate results of genes all in
 one simple plot.  Users have the option to change the clustering method used
@@ -238,13 +260,9 @@ This will allow you to compare interesting clusters
 found within the the heatmap within our GO Term analysis section which will
 be discussed later within the materials.
 
-![alt text](http://i.imgur.com/36nMJul.png "Interactive Heatmap")
+![View of the interactive Heatmap.](http://i.imgur.com/36nMJul.png "Interactive Heatmap")
 
-**Figure 15:** *View of the interactive Heatmap*
-
-![alt text](http://i.imgur.com/uf9tM6J.png "PCA")
-
-**Figure 16:** *Display of the PCA plot within DEBrowser.*
+![Display of the PCA plot within DEBrowser.](http://i.imgur.com/uf9tM6J.png "PCA")
 
 Prinicipal Component Analysis (PCA) is another excellent method of checking
 replicates.  PCA calculates the variance between all of the samples genes
@@ -273,29 +291,17 @@ to switch to the GO Terms tab and use the 'selected' dataset.  Once all your
 other parameters have been selected, hit submit and you will use your selected
 genes from the interactive heatmap in your GO Term analysis.
 
-![alt text](http://i.imgur.com/UtlERoG.png "GO")
+![Display of the GO Plot section within DEBrowser.](http://i.imgur.com/UtlERoG.png "GO")
 
-**Figure 17:** *Display of the GO Plot section within DEBrowser.*
+![Display of the GO dotplot section within DEBrowser.](http://i.imgur.com/UCn8LaA.png "dotplot GO")
 
-![alt text](http://i.imgur.com/UCn8LaA.png "dotplot GO")
+![Display of the DO plot section within DEBrowser.](http://i.imgur.com/qjdTWNV.png "DO")
 
-**Figure 18:** *Display of the GO dotplot section within DEBrowser.*
+![Display of the DO dotplot section within DEBrowser.](http://i.imgur.com/paT3TYC.png "DO dotplot")
 
-![alt text](http://i.imgur.com/qjdTWNV.png "DO")
+![Display of the KEGG dotplot section within DEBrowser.](http://i.imgur.com/vlOuYKu.png "KEGG")
 
-**Figure 19:** *Display of the DO plot section within DEBrowser.*
-
-![alt text](http://i.imgur.com/paT3TYC.png "DO dotplot")
-
-**Figure 20:** *Display of the DO dotplot section within DEBrowser.*
-
-![alt text](http://i.imgur.com/vlOuYKu.png "KEGG")
-
-**Figure 21:** *Display of the KEGG dotplot section within DEBrowser.*
-
-![alt text](https://i.imgur.com/hNB9lO9.png "heatmap enrich")
-
-**Figure 22:** *Display of Heatmap selected enriched GO Term search*
+![Display of Heatmap selected enriched GO Term search.](https://i.imgur.com/hNB9lO9.png "heatmap enrich")
 
 The last tab, 'Tables', contains various result information in table formats.
 The 'All Detected' option contains the list of all the genes within the
@@ -329,25 +335,15 @@ one sample cannot create statistically significant p-adjust values.  The
 more replicates you have within a condition, the greater the statistical
 significance of your comparisons.
 
-![alt text](http://i.imgur.com/70WsI73.png "Up+Down Regulated")
+![Display of the up+down-regulated genes table.](http://i.imgur.com/70WsI73.png "Up+Down Regulated")
 
-**Figure 23:** *Display of the up+down-regulated genes table.*
+![Display of the down-regulated genes table.](http://i.imgur.com/edDlfF4.png "Down Regulated")
 
-![alt text](http://i.imgur.com/edDlfF4.png "Down Regulated")
+![Display of the geneset input box.](http://i.imgur.com/oiWLDX0.png "geneset")
 
-**Figure 24:** *Display of the down-regulated genes table.*
+![Display of the gene set search of the term '^al'.](https://i.imgur.com/76hDD1l.png "geneset table")
 
-![alt text](http://i.imgur.com/oiWLDX0.png "geneset")
-
-**Figure 25:** *Display of the geneset input box.*
-
-![alt text](https://i.imgur.com/76hDD1l.png "geneset table")
-
-**Figure 26:** *Display of the gene set search of the term '^al'.*
-
-![alt text](http://i.imgur.com/lzD4MBx.png "Comparisons")
-
-**Figure 27:** *Condition comparisons table within DEBrowser.*
+![Condition comparisons table within DEBrowser.](http://i.imgur.com/lzD4MBx.png "Comparisons")
 
 Lastly, the tables have a bunch of features that allow you to view your DESeq
 results more conviently.  By clicking on a column header, you can sort the
@@ -367,22 +363,31 @@ for the study were customized to a high level of specificity.  However,
 using a sample dataset generated from this study, it is possible to
 recreate similar heatmaps displayed within the studies findings.
 
-![alt text](http://i.imgur.com/a2ZTcfd.png "Comparisons")
+![All detected genes heatmap using case study data.](http://i.imgur.com/a2ZTcfd.png "Comparisons")
 
-**Figure 28:** *All detected genes heatmap using case study data.*
+![Most varied genes heatmap using case study data.](http://i.imgur.com/rLF6DJ3.png "Comparisons")
 
-![alt text](http://i.imgur.com/rLF6DJ3.png "Comparisons")
+**The JNK2 knock out has a stronger effect:**
 
-**Figure 29:** *Most varied genes heatmap using case study data.*
+High fat diet JNK1 knock out and JNK2 knock out samples compered with high fat
+diet wild type samples.  From the figures below, JNK2 knock out has a 
+stronger effect than JNK1 KO samples. There are 177 genes (Fig. 30) have 
+padj < 0.01 and |log2 foldchange| > 1 in JNK2 KO comparison while there are 
+only 17 genes (Fig. 31) detected in JNK1 knockout comparison with same cutoffs.
 
-JNK1 and JNK2 serve partially redundant functions:
-hfd JNK1 and hfd JNK2 double KO has 1018 significantly different genes.  When
-we compare hfd JNK1 KO only (177 Genes) and had JNK2 KO only (17 genes)  with 
-hfd wt  side by side, most of the up and down regulated genes are not 
-overlapping. Up regulated genes (Table 1.) and down regulated (Table 2.) in
+![High fat diet JNK2 vs. High fat diet wild type.](https://i.imgur.com/FqixmyK.png "Comparisons")
+
+![High fat diet JNK1 vs. High fat diet wild type.](https://i.imgur.com/LHEod5I.png "Comparisons")
+
+**JNK1 and JNK2 serve partially redundant functions:**
+
+HFD (High fat diet) JNK1 and HFD JNK2 double KO has 1018 significantly different genes.  When
+we compare HFD JNK1 KO only (177 Genes) and HFD JNK2 KO only (17 genes)  with 
+HFD wild type side by side, most of the up and down regulated genes are not 
+overlapping. Up regulated genes (Figure 32.) and down regulated (Figure 33.) in
 JNK1 KO. There is only 1 gene overlapping out of 17 that they were
-significantly different in JNK1 KO comparisons with padj <0.01 and |
-log2foldchange| > 1 cutoffs.  It shows that both individual KO might have 
+significantly different in JNK1 KO comparisons with padj < 0.01 and 
+|log2foldchange| > 1 cutoffs.  It shows that both individual KO might have 
 individual functions too in addition to their redundant functions. 
 When we looked at the genes in JNK1 KO in KEGG database,  they are enriched
 in "Fatty acid elongation”. JNK2 KO are enriched in "PPAR signaling pathway”
@@ -390,13 +395,9 @@ and "Biosynthesis of unsaturated fatty acids”. DEBrowser’s powerful comparis
 function makes different condition comparisons and running GO Term analysis
 on selected genes much easier.
 
-![alt text](http://i.imgur.com/EiUdSSm.png "Comparisons")
+![Upregulated genes in hfd JNK1 KO (C1) vs. hfd wt (C2) DE comparison shows 4 upregulated genes (padj <0.01 and |log2foldchange| > 1).](http://i.imgur.com/EiUdSSm.png "Comparisons")
 
-**Figure 30:** *Upregulated genes in hfd JNK1 KO (C1) vs. hfd wt (C2) DE comparison shows 4 upregulated genes (padj <0.01 and |log2foldchange| > 1).*
-
-![alt text](http://i.imgur.com/3MxR6I8.png "Comparisons")
-
-**Figure 31:** *Downregulated genes in hfd JNK1 KO (C1) vs. hfd wt (C2) DE comparison shows 13 downregulated genes (padj <0.01 and |log2foldchange| > 1). Only one of them is in JNK2 KO (C3) vs. hfd wt (C4) DE comparison.*
+![Downregulated genes in hfd JNK1 KO (C1) vs. hfd wt (C2) DE comparison shows 13 downregulated genes (padj <0.01 and |log2foldchange| > 1). Only one of them is in JNK2 KO (C3) vs. hfd wt (C4) DE comparison.](http://i.imgur.com/3MxR6I8.png "Comparisons")
 
 The only main difference between the plots created within DEBrowser
 and the plots created within the research paper is that the clustering
