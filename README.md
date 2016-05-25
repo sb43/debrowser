@@ -57,8 +57,8 @@ startDEBrowser()
 Once you have the DEBrowser running, a page will load asking to choose a TSV
 file or to load the demo data.  In order to run DESeq2, we are going to need
 gene quantifications for those genes contained in a tab-seperated values (TSV) 
-format.  The file values must contain the gene, transcript, and the samples 
-count values you wish to enter into DEBrowser.
+format.  The file values must contain the gene, transcript(s), and the samples 
+raw count values you wish to enter into DEBrowser.
 
 It's important to note that if your rows contain duplicate gene names,
 DEBrowser will reject your TSV file.  Please try to keep unique gene names.
@@ -81,8 +81,9 @@ After obtaining and loading in the gene quantifications file, you
 are then able to view QC information of your quantifications or to continue
 on to running DESeq2.
 
-DEBrowser also accepts TSV's via hyperlink by following a few conversion steps.  First, using the API provided by
-Dolphin, we will convert TSV into an html represented TSV using this website:
+DEBrowser also accepts TSV's via hyperlink by following a few conversion steps.  
+First, using the API provided by Dolphin, we will convert TSV into an html 
+represented TSV using this website:
 
 ```
 http://dolphin.umassmed.edu/public/api/
