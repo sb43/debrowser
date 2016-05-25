@@ -60,15 +60,18 @@ gene quantifications for those genes contained in a tab-seperated values (TSV)
 format.  The file values must contain the gene, transcript, and the samples 
 count values you wish to enter into DEBrowser.
 
+It's important to note that if your rows contain duplicate gene names,		
+-DEBrowser will reject your TSV file.  Please try to keep unique gene names.
+
 ```
 IE:
 
 # TSV:
 
 gene  transcript  exper_rep1 exper_rep2 control_rep1 control_rep2
-DQ714826  uc007tfl.1  0.00  0.00  0.00  0.00
-DQ551521  uc008bml.1  0.00  0.00  0.00  0.00
-AK028549  uc011wpi.1  2.00  1.29  0.00  0.00
+DQ714826	uc007tfl.1	0.00	0.00	0.00	0.00
+DQ551521	uc008bml.1	0.00	0.00	0.00	0.00
+AK028549	uc011wpi.1	2.00	1.29	0.00	0.00
 ```
 
 You can also view/use the demo data by clicking the 'Load Demo!' text as an
