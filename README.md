@@ -60,8 +60,8 @@ gene quantifications for those genes contained in a tab-seperated values (TSV)
 format.  The file values must contain the gene, transcript, and the samples 
 count values you wish to enter into DEBrowser.
 
-It's important to note that if your rows contain duplicate gene names,		
--DEBrowser will reject your TSV file.  Please try to keep unique gene names.
+It's important to note that if your rows contain duplicate gene names,
+DEBrowser will reject your TSV file.  Please try to keep unique gene names.
 
 ```
 IE:
