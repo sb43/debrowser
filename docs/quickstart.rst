@@ -46,7 +46,10 @@ Leaving you with a hyperlink for:
 
 http://dolphin.umassmed.edu/public/api/?source=http://bioinfo.umassmed.edu/pub/debrowser/advanced_demo.tsv&format=JSON
 
-Next you will need to encode the url so you can pass it to the DEBrowser website.  You can find multiple url encoders online.
+Next you will need to encode the url so you can pass it to the DEBrowser website.
+You can find multiple url encoders online, such as the one located at this
+web address: http://www.url-encode-decode.com/.
+
 Encoding our URL will turn it into this:
 
 http%3A%2F%2Fdolphin.umassmed.edu%2Fpublic%2Fapi%2F%3Fsource%3Dhttp%3A%2F%2Fbioinfo.umassmed.edu%2Fpub%2Fdebrowser%2Fadvanced_demo.tsv%26format%3DJSON
@@ -65,7 +68,6 @@ The finished product of the link will look like this:
 http://debrowser.umassmed.edu:443/debrowser/R/?jsonobject=http://dolphin.umassmed.edu/public/api/?source=http://bioinfo.umassmed.edu/pub/debrowser/advanced_demo.tsv&format=JSON&title=no
 
 Inputting this URL into your browser will automatically load in that tsv to be analyzed by DEBrowser!
-
 
 For more information about the input file, please visit our DESeq/DEBrowser tab within Readthedocs.
 Once you've selected your file and the upload has completed, you will then be shown the samples listed within your
