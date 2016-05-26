@@ -1,5 +1,7 @@
 ---
-output: pdf_document
+output: 
+  pdf_document: 
+    keep_tex: yes
 ---
 # DEBrowser: 
 Interactive Differential Expression Analysis Tool
@@ -83,7 +85,7 @@ After obtaining and loading in the gene quantifications file, you
 are then able to view QC information of your quantifications or to continue
 on to running DESeq2 (Figure 1).
 
-![*The initial options selection.*](https://i.imgur.com/CkPTon9.png "Initial option selection")
+![*The initial options selection.*](https://i.imgur.com/7ZWbpz4.png "Initial option selection")
 
 ## Data via JSON objects
 
@@ -137,8 +139,6 @@ http://debrowser.umassmed.edu:443/debrowser/R/?jsonobject=http://dolphin.umassme
 api/?source=http://bioinfo.umassmed.edu/pub/debrowser/advanced_demo.tsv&format=JSON&title=no
 ```
 
-![*The initial options selection.*](https://i.imgur.com/CkPTon9.png "Initial option selection")
-
 ## Manipulating your data
 
 Upon selection of QC information, you will be shown an all-to-all plot of your 
@@ -155,8 +155,7 @@ the 'Interactive' checkbox in the left side panel when you have selected the
 Heatmap option.  You can select these various plot options by selecting the type
 of plot you wish to view on the left panel.
 
-![*Display of the all-to-all plot in the initial QC plots page.*](https://i.imgur.com/GUuK92U.png "QC plots")
-
+![*Display of the all-to-all plot in the initial QC plots page.*](https://i.imgur.com/CitQaoT.png "QC plots")
 
 You can also view the genes within your quantification file in various
 ways.  The 'Tables' tab will bring you to a table setup based on the dataset
@@ -167,11 +166,11 @@ selection.  The Last option, 'Most Varied' (Figure 5), will display your
 top N varied genes.  You can alter the value of N by selecting 'most-varied'
 from the dropdown menu on the left.
 
-![*Display of the heatmap in the initial QC plots page.*](https://i.imgur.com/dobcXLd.png "Heatmap")
+![*Display of the heatmap in the initial QC plots page.*](https://i.imgur.com/H4hVDYj.png "Heatmap")
 
 ![*Display of the PCA plot in the initial QC plots page.*](https://i.imgur.com/m6Dw86y.png "PCA")
 
-![*Display of most varied genes.*](https://i.imgur.com/OTfZyKv.png "Most varied")
+![*Displayed table of most varied genes.*](https://i.imgur.com/F3F9DWQ.png "Most varied")
 
 Upon selecting to run DESeq, you are then able to select
 which samples will be selected for your first condition and second condition
@@ -181,7 +180,7 @@ Sample names are created based on the column headers within your data file.
 Once you've selected your comparisons, you are then ready to run DESeq2 to
 calculate differential expression by clicking on the 'Submit!' button (Figure 6).
 
-![*Menus after loading in a sample.*](https://i.imgur.com/W5z0iRr.png "Loading in samples")
+![*Menus after loading in a sample.*](https://i.imgur.com/ZA0LfD2.png "Loading in samples")
 
 #Analyzing the Results
 
@@ -192,7 +191,7 @@ button.  It is important to note that the resulting data produced from DESeq
 is normalized. Upon finishing the DESeq analysis, a tab-based menu will appear
 with multiple options (Figure 7).
 
-![*List of the tabbed menus in DEBrowser.*](https://i.imgur.com/hXRcDQt.png "tab selection")
+![*List of the tabbed menus in DEBrowser.*](https://i.imgur.com/BPhxNR1.png "tab selection")
 
 The first tab, the 'Main Plots' section, is where you will be able to view
 the interactive results plots.  On the left hand side of the screen will be
@@ -207,12 +206,6 @@ choices include:
 * Volcano plot (Figure 9)
 
 * MA plot (Figure 10)
-
-![*Main scatter plot and the zoomed in main scatterplot.*](https://i.imgur.com/xjtcqrk.png 'scatterplot')
-
-![*Main volcano Plot and the zoomed in main volcano plot.*](https://i.imgur.com/DinxEaW.png 'volcano')
-
-![*Main MA plot and the zoomed in main MA plot.*](https://i.imgur.com/lysUKfZ.png 'ma')
 
 Once you have selected your values, you can hit the 'Submit!' button to create
 your interactive plots!
@@ -233,13 +226,23 @@ You can also change which type of dataset to use within the main plots by
 selecting from the drop down dataset box (Figure 12).  Additionally, you can further
 filter these datasets by typing in the genes of interest, or regex for
 specific genes, to search for those specific genes within the dataset (Figrue 13).
+All of these filtration options can be located on the left side panel which will
+also change based on the plot or dataset you wish to view/manipulate (Figure 14).
 It's also worth noting that the plots are resizable as well as downloable.
 
-![*The main plots page within DEBrowser.*](https://i.imgur.com/E7MDodO.png "Main plots")
+![*Main scatter plot.*](https://i.imgur.com/2UjGH4G.png 'scatterplot')
 
-![*Display of the most varied genes as a scatter plot.*](https://i.imgur.com/9avUG0e.png "varied plots")
+![*Main volcano plot.*](https://i.imgur.com/k08UJ9F.png 'volcano')
 
-![*Display of the geneset list as a scatter plot.*](https://i.imgur.com/Aluk5fR.png "geneset plots")
+![*Main MA plot.*](https://i.imgur.com/qXCUCwK.png 'ma')
+
+![*The main plots page within DEBrowser.*](https://i.imgur.com/n45tueA.png "Main plots")
+
+![*Display of the most varied genes as a scatter plot.*](https://i.imgur.com/ZKAnzPZ.png "varied plots")
+
+![*Display of the geneset list as a scatter plot.*](https://i.imgur.com/noAD8HQ.png "geneset plots")
+
+![*The Left parameter options panel*](https://i.imgur.com/WglVBQh.png "geneset plots")
 
 Selecting the 'QC Plots' tab will take you to the quality control plots
 section.  These QC plots are very similar to the QC plots shown before
@@ -249,10 +252,10 @@ within the previous QC analysis, users can also view a heatmap and PCA
 plot of their analyzed data by selecting the proper plot on the left
 menu.
 
-![*Display of the heatmap within DEBrowser.*](https://i.imgur.com/Z6O64gg.png "Heatmap")
+![*Display of the heatmap within DEBrowser.*](https://i.imgur.com/2YO2Ali.png "Heatmap")
 
 The heatmap is a great way to analyze replicate results of genes all in
-one simple plot (Figure 14).  Users have the option to change the clustering method used
+one simple plot (Figure 15).  Users have the option to change the clustering method used
 as well as the distance method used to display their heatmap.  In addition,
 you can also change the size of the heatmap produced and adjust the p-adjust
 and fold change cut off for this plot as well.  Once all of the parameters
@@ -261,7 +264,7 @@ generate your heatmap.
 
 You can also select to view an interactive version of the heatmap by clicking
 on the 'Interactive' checkbox on the left panel under the height and width
-options (Figure 15).  Selecting this feature changes the heatmap into an interactive
+options (Figure 16).  Selecting this feature changes the heatmap into an interactive
 version with two colors, allowing you to select specific genes to be compared
 within the GO term plots.  In order to use the interactive heatmap selection
 within your GO term query, you must use either the up+down dataset or the
@@ -270,12 +273,12 @@ This will allow you to compare interesting clusters
 found within the the heatmap within our GO Term analysis section which will
 be discussed later within the materials.
 
-![*View of the interactive Heatmap.*](https://i.imgur.com/M0akExs.png "Interactive Heatmap")
+![*View of the interactive Heatmap.*](https://i.imgur.com/3uXWSbq.png "Interactive Heatmap")
 
-![*Display of the PCA plot within DEBrowser.*](http://i.imgur.com/uf9tM6J.png "PCA")
+![*Display of the PCA plot within DEBrowser.*](https://i.imgur.com/FSI4b6s.png "PCA")
 
 Prinicipal Component Analysis (PCA) is another excellent method of checking
-replicates (Figure 16).  PCA calculates the variance between all of the samples genes
+replicates (Figure 17).  PCA calculates the variance between all of the samples genes
 within your current comparison set and creates a two-dimensional
 graph to represent the proportion of variance explained in different
 components.  Within the PCA plot section you can select the p-adjust
@@ -288,8 +291,8 @@ The next tab, 'GO Term', takes you to the ontology comparison portion of
 DEBrowser.  From here you can select the standard dataset options such as
 p-adjust value, fold change cut off value, which comparison set to use, and
 which dataset to use on the left menu.  In addition to these parameters, you
-also can choose from the 4 different ontology plot options: 'enrichGO' (Figure 17-18),
-'Disease' (Figure 19-20), 'enrichKEGG' (Figure 21),  and 'compareCluster'.  Selecting one of these plot
+also can choose from the 4 different ontology plot options: 'enrichGO' (Figure 18-19),
+'Disease' (Figure 20-21), 'enrichKEGG' (Figure 22),  and 'compareCluster'.  Selecting one of these plot
 options queries their specific databases with your current DESeq results.
 By selecting the 'selection' dataset on the left panel after selecting
 specific genes from the interactive heatmap, you will be able to compare
@@ -297,7 +300,7 @@ your specific gene selection within the various GO Term databases.
 
 In order to use your selected genes from the interactive heatmap, you must
 first make your selection within the interactive heatmap.  Next you will want
-to switch to the GO Terms tab and use the 'selected' dataset (Figure 22).  Once all your
+to switch to the GO Terms tab and use the 'selected' dataset (Figure 23).  Once all your
 other parameters have been selected, hit submit and you will use your selected
 genes from the interactive heatmap in your GO Term analysis.
 
@@ -320,10 +323,10 @@ Up-regulated values are shown in green while down-regulated values
 are displayed in red.  To view any particular dataset's custom options,
 the dataset type must be selected.
 The 'Up+Down' option contains a list of all the up and down-regulated genes based on the
-options selected on the left panel (Figure 23). 
+options selected on the left panel (Figure 24). 
 The 'Up' option contains a list of all the up-regulated genes based on the
 options selected on the left panel.  The 'Down' option contains a list of all
-the down-regulated genes based on the options selected (Figure 24).
+the down-regulated genes based on the options selected (Figure 25).
 The 'Selected' option contains the list of genes selected from the main plots
 section.  By clicking and dragging your mouse on the main plot within the
 'Main Plots' tab, you will then be able to see that selection in list form
@@ -332,12 +335,12 @@ The 'Gene Set' option allows you to filter out gene data based on
 genes selected via a text box.  To create a gene set, simply type the names
 of the genes you wish to view in the text box on the left panel in a comma-
 seperated format.  You can also use regular expressions in order to search
-for specific gene sets (Figure 25-26).
+for specific gene sets (Figure 26-27).
 The 'Most Varied' option, much like the original QC 'Most Varied' tab,
 allows you to view the list of most varied genes based on user input
 parameters on the left panel.
 The 'Comparisons' option allows you to view the
-differences between your different condition comparisons (Figure 27).
+differences between your different condition comparisons (Figure 28).
 Comparisons between datasets are shown if at least one of the conditional
 comparisons has passed the padj value or fold change cut off.
 
@@ -346,15 +349,15 @@ one sample cannot create statistically significant p-adjust values.  The
 more replicates you have within a condition, the greater the statistical
 significance of your comparisons.
 
-![*Display of the up+down-regulated genes table.*](https://i.imgur.com/CE1Y3zl.png "Up+Down Regulated")
+![*Display of the up+down-regulated genes table.*](https://i.imgur.com/QppYKiT.png "Up+Down Regulated")
 
-![*Display of the down-regulated genes table.*](https://i.imgur.com/wmgmehO.png "Down Regulated")
+![*Display of the down-regulated genes table.*](https://i.imgur.com/d6UeLHJ.png "Down Regulated")
 
-![*Display of the geneset input box.*](https://i.imgur.com/oK7ngFf.png "geneset")
+![*Display of the geneset input box.*](https://i.imgur.com/FTOK8M6.png "geneset")
 
-![*Display of the gene set search of the term '^al'.*](https://i.imgur.com/76hDD1l.png "geneset table")
+![*Display of the gene set search of the term '^al'.*](https://i.imgur.com/WmM2hXX.png "geneset table")
 
-![*Condition comparisons table within DEBrowser.*](https://i.imgur.com/AbXViNh.png "Comparisons")
+![*Condition comparisons table within DEBrowser.*](https://i.imgur.com/ODFa2YA.png "Comparisons")
 
 Lastly, the tables have a bunch of features that allow you to view your DESeq
 results more conviently.  By clicking on a column header, you can sort the
@@ -372,7 +375,7 @@ Taking a look at the case study (Vernia S. et al 2014), Multiple heatmaps were
 created to display findings within the research.  The heatmaps generated
 for the study were customized to a high level of specificity.  However,
 using a sample dataset generated from this study, it is possible to
-recreate similar heatmaps (Figure 28-29) displayed within the studies findings.
+recreate similar heatmaps (Figure 29-30) displayed within the studies findings.
 
 ![*All detected genes heatmap using case study data.*](http://i.imgur.com/a2ZTcfd.png "Comparisons")
 
@@ -382,9 +385,9 @@ recreate similar heatmaps (Figure 28-29) displayed within the studies findings.
 
 High fat diet JNK1 knock out and JNK2 knock out samples compered with high fat
 diet wild type samples.  From the figures below, JNK2 knock out has a 
-stronger effect than JNK1 KO samples. There are 177 genes (Fig. 30) have 
+stronger effect than JNK1 KO samples. There are 177 genes (Fig. 31) have 
 padj < 0.01 and |log2 foldchange| > 1 in JNK2 KO comparison while there are 
-only 17 genes (Fig. 31) detected in JNK1 knockout comparison with same cutoffs.
+only 17 genes (Fig. 32) detected in JNK1 knockout comparison with same cutoffs.
 
 ![*High fat diet JNK2 vs. High fat diet wild type.*](https://i.imgur.com/FqixmyK.png "Comparisons")
 
@@ -395,7 +398,7 @@ only 17 genes (Fig. 31) detected in JNK1 knockout comparison with same cutoffs.
 HFD (High fat diet) JNK1 and HFD JNK2 double KO has 1018 significantly different genes.  When
 we compare HFD JNK1 KO only (177 Genes) and HFD JNK2 KO only (17 genes)  with 
 HFD wild type side by side, most of the up and down regulated genes are not 
-overlapping. Up regulated genes (Figure 32.) and down regulated (Figure 33.) in
+overlapping. Up regulated genes (Figure 33.) and down regulated (Figure 34.) in
 JNK1 KO. There is only 1 gene overlapping out of 17 that they were
 significantly different in JNK1 KO comparisons with padj < 0.01 and 
 |log2foldchange| > 1 cutoffs.  It shows that both individual KO might have 
