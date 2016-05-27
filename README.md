@@ -59,7 +59,7 @@ startDEBrowser()
 
 Once you have the DEBrowser running, a page will load asking to choose a TSV
 file or to load the demo data.  In order to run DESeq2, we are going to need
-gene quantifications for those genes contained in a tab-seperated values (TSV) 
+gene quantifications for genes contained in a tab-seperated values (TSV) 
 format.  The file values must contain the gene, transcript(s), and the samples 
 count values you wish to enter into DEBrowser.
 
@@ -81,11 +81,6 @@ You can also view/use the demo data by clicking the 'Load Demo!' text as an
 example.  For the case study demo data, feel free to download our case study
 demo files at http://bioinfo.umassmed.edu/pub/debrowser/advanced_demo.tsv or 
 a simplified version http://bioinfo.umassmed.edu/pub/debrowser/simple_demo.tsv. 
-After obtaining and loading in the gene quantifications file, you
-are then able to view QC information of your quantifications or to continue
-on to running DESeq2 (Figure 1).
-
-![*The initial options selection.*](https://i.imgur.com/7ZWbpz4.png "Initial option selection")
 
 ## Data via JSON objects
 
@@ -139,21 +134,32 @@ http://debrowser.umassmed.edu:443/debrowser/R/?jsonobject=http://dolphin.umassme
 api/?source=http://bioinfo.umassmed.edu/pub/debrowser/advanced_demo.tsv&format=JSON&title=no
 ```
 
-## Manipulating your data
+Entering this URL into your web browser will automatically load in your data as a JSON
+object, allowing you to start browsing your data right away.
+
+After obtaining and loading in the gene quantifications file, you
+are then able to view QC information of your quantifications or to continue
+on to running DESeq2 (Figure 1).
+
+![*The initial options selection.*](https://i.imgur.com/7ZWbpz4.png "Initial option selection")
+
+## Quality Control Information:
 
 Upon selection of QC information, you will be shown an all-to-all plot of your 
-samples. This sample-by-sample comparison will help you visualize possible 
+samples (Figure 2). This sample-by-sample comparison will help you visualize possible 
 descrepencies between replicate samples, in case you may want to omit them 
-for further analysis.  To the left of this plot are various plot-shaping 
-options you can alter to more easily view the all-to-all plot (Figure 2).
+for further analysis.  This graph includes sample-to-sample dotplot correlations
+as well as sample histograms. To the left of this plot are various plot-shaping 
+options you can alter to more easily view the all-to-all plot.
 
-Additionally, two addition QC plots are available for you to use: Heatmap and
+Additionally, two more QC plots are available for you to use: Heatmap and
 PCA plots.  The heatmap (Figure 3) will display genes for each sample within your dataset
-in the form of a heatmap and PCA (Figure 4) will display Principal component analysis of
-your dataset. You have the option of veiwing an interactive heatmap by selecting
-the 'Interactive' checkbox in the left side panel when you have selected the
-Heatmap option.  You can select these various plot options by selecting the type
-of plot you wish to view on the left panel.
+in the form of a heatmap based on your dataset selection and PCA (Figure 4) will display
+Principal component analysis of your dataset. All of these plots will aid in viewing your preliminary data
+to see if there are any potential erros between replicates.  You have the option of veiwing an 
+interactive heatmap by selecting the 'Interactive' checkbox in the left side panel when 
+you have selected the Heatmap option.  You can select these various plot options by
+selecting the type of plot you wish to view on the left panel.
 
 ![*Display of the all-to-all plot in the initial QC plots page.*](https://i.imgur.com/CitQaoT.png "QC plots")
 
@@ -166,11 +172,13 @@ selection.  The Last option, 'Most Varied' (Figure 5), will display your
 top N varied genes.  You can alter the value of N by selecting 'most-varied'
 from the dropdown menu on the left.
 
-![*Display of the heatmap in the initial QC plots page.*](https://i.imgur.com/H4hVDYj.png "Heatmap")
+![*Display of the most varied genes heatmap in the initial QC plots page.*](https://i.imgur.com/H4hVDYj.png "Heatmap")
 
 ![*Display of the PCA plot in the initial QC plots page.*](https://i.imgur.com/m6Dw86y.png "PCA")
 
 ![*Displayed table of most varied genes.*](https://i.imgur.com/F3F9DWQ.png "Most varied")
+
+## Starting DESeq:
 
 Upon selecting to run DESeq, you are then able to select
 which samples will be selected for your first condition and second condition
@@ -195,24 +203,26 @@ with multiple options (Figure 7).
 
 The first tab, the 'Main Plots' section, is where you will be able to view
 the interactive results plots.  On the left hand side of the screen will be
-the options you have  to alter the padj and fold change
+the options panel used to alter the padj and fold change
 cutoff values, what specific data set to use such as up or down regulated
 genes, what comparison dataset you would like to use to plot,
-and what type of plot you would like to view your results in.  Plot
+and what type of plot you would like to view your results in (Figure 8).  Plot
 choices include:
 
-* Scatter plot (Figure 8)
+* Scatter plot (Figure 9)
 
-* Volcano plot (Figure 9)
+* Volcano plot (Figure 10)
 
-* MA plot (Figure 10)
+* MA plot (Figure 11)
 
 Once you have selected your values, you can hit the 'Submit!' button to create
 your interactive plots!
 
+![*The Left parameter options panel*](https://i.imgur.com/WglVBQh.png "geneset plots")
+
 The top left plot is whichever plot you have
 selected to use to analyze your results.  Up-regulated genes are displayed
-in green while down-regulated genes are displayed in red (Figure 11).
+in green while down-regulated genes are displayed in red (Figure 12).
 Hovering over a gene on this plot will display the bottom two plots: the
 genes normalized variation and colored by condition in the left graph,
 and the normalized variation between conditions within the right graph.
@@ -223,11 +233,11 @@ you will create the top right plot, or the zoomed in version of your
 selection.  If you are going to change any of the parameters on the left,
 please make sure to re-click the 'Submit!' button to update the graphs.
 You can also change which type of dataset to use within the main plots by
-selecting from the drop down dataset box (Figure 12).  Additionally, you can further
+selecting from the drop down dataset box (Figure 13).  Additionally, you can further
 filter these datasets by typing in the genes of interest, or regex for
-specific genes, to search for those specific genes within the dataset (Figrue 13).
+specific genes, to search for those specific genes within the dataset (Figrue 14).
 All of these filtration options can be located on the left side panel which will
-also change based on the plot or dataset you wish to view/manipulate (Figure 14).
+also change based on the plot or dataset you wish to view/manipulate.
 It's also worth noting that the plots are resizable as well as downloable.
 
 ![*Main scatter plot.*](https://i.imgur.com/2UjGH4G.png 'scatterplot')
@@ -241,8 +251,6 @@ It's also worth noting that the plots are resizable as well as downloable.
 ![*Display of the most varied genes as a scatter plot.*](https://i.imgur.com/ZKAnzPZ.png "varied plots")
 
 ![*Display of the geneset list as a scatter plot.*](https://i.imgur.com/noAD8HQ.png "geneset plots")
-
-![*The Left parameter options panel*](https://i.imgur.com/WglVBQh.png "geneset plots")
 
 Selecting the 'QC Plots' tab will take you to the quality control plots
 section.  These QC plots are very similar to the QC plots shown before
