@@ -66,16 +66,13 @@ count values you wish to enter into DEBrowser.
 It's important to note that if your rows contain duplicate gene names,
 DEBrowser will reject your TSV file.  Please try to keep unique gene names.
 
-```
 IE:
 
-# TSV:
-
-gene  transcript  exper_rep1 exper_rep2 control_rep1 control_rep2
-DQ714826  uc007tfl.1  0.00  0.00  0.00  0.00
-DQ551521  uc008bml.1  0.00  0.00  0.00  0.00
-AK028549  uc011wpi.1  2.00  1.29  0.00  0.00
-```
+| gene     | transcript | exper_rep1 | exper_rep2 | control_rep1 | control_rep2 |
+|----------|------------|------------|------------|--------------|--------------|
+| DQ714826 | uc007tfl.1 | 0.00       | 0.00       | 0.00         | 0.00         |
+| DQ551521 | uc008bml.1 | 0.00       | 0.00       | 0.00         | 0.00         |
+| AK028549 | uc011wpi.1 | 2.00       | 1.29       | 0.00         | 0.00         |
 
 You can also view/use the demo data by clicking the 'Load Demo!' text as an
 example.  For the case study demo data, feel free to download our case study
@@ -174,7 +171,7 @@ from the dropdown menu on the left.
 
 ![*Display of the most varied genes heatmap in the initial QC plots page.*](https://i.imgur.com/H4hVDYj.png "Heatmap")
 
-![*Display of the PCA plot in the initial QC plots page.*](https://i.imgur.com/m6Dw86y.png "PCA")
+![*Display of the PCA plot in the initial QC plots page.*](https://i.imgur.com/c8CmKOk.png "PCA")
 
 ![*Displayed table of most varied genes.*](https://i.imgur.com/F3F9DWQ.png "Most varied")
 
@@ -300,10 +297,10 @@ DEBrowser.  From here you can select the standard dataset options such as
 p-adjust value, fold change cut off value, which comparison set to use, and
 which dataset to use on the left menu.  In addition to these parameters, you
 also can choose from the 4 different ontology plot options: 'enrichGO' (Figure 18-19),
-'Disease' (Figure 20-21), 'enrichKEGG' (Figure 22),  and 'compareCluster'.  Selecting one of these plot
-options queries their specific databases with your current DESeq results.
-By selecting the 'selection' dataset on the left panel after selecting
-specific genes from the interactive heatmap, you will be able to compare
+'Disease' (Figure 20-21), 'enrichKEGG' (Figure 22),  and 'compareCluster'.  
+Selecting one of these plot options queries their specific databases with your 
+current DESeq results. By selecting the 'selection' dataset on the left panel after 
+selecting specific genes from the interactive heatmap, you will be able to compare
 your specific gene selection within the various GO Term databases.
 
 In order to use your selected genes from the interactive heatmap, you must
@@ -330,6 +327,7 @@ TSV/CSV provided with the corresponding DESeq analyses.
 Up-regulated values are shown in green while down-regulated values
 are displayed in red.  To view any particular dataset's custom options,
 the dataset type must be selected.
+
 The 'Up+Down' option contains a list of all the up and down-regulated genes based on the
 options selected on the left panel (Figure 24). 
 The 'Up' option contains a list of all the up-regulated genes based on the
@@ -385,9 +383,13 @@ for the study were customized to a high level of specificity.  However,
 using a sample dataset generated from this study, it is possible to
 recreate similar heatmaps (Figure 29-30) displayed within the studies findings.
 
-![*All detected genes heatmap using case study data.*](http://i.imgur.com/a2ZTcfd.png "Comparisons")
+![*All detected genes heatmap using case study data.*](http://i.imgur.com/a2ZTcfd.png "")
 
-![*Most varied genes heatmap using case study data.*](http://i.imgur.com/rLF6DJ3.png "Comparisons")
+![*Most varied genes heatmap using case study data.*](http://i.imgur.com/rLF6DJ3.png "")
+
+The only main difference between the heatmaps created within DEBrowser
+and the heatmaps created within the research paper is that the clustering
+method used within the paper was a k-means method with k equaling 6.
 
 **The JNK2 knock out has a stronger effect:**
 
@@ -397,9 +399,9 @@ stronger effect than JNK1 KO samples. There are 177 genes (Fig. 31) have
 padj < 0.01 and |log2 foldchange| > 1 in JNK2 KO comparison while there are 
 only 17 genes (Fig. 32) detected in JNK1 knockout comparison with same cutoffs.
 
-![*High fat diet JNK2 vs. High fat diet wild type.*](https://i.imgur.com/FqixmyK.png "Comparisons")
+![*High fat diet JNK2 vs. High fat diet wild type.*](https://i.imgur.com/FqixmyK.png "")
 
-![*High fat diet JNK1 vs. High fat diet wild type.*](https://i.imgur.com/LHEod5I.png "Comparisons")
+![*High fat diet JNK1 vs. High fat diet wild type.*](https://i.imgur.com/LHEod5I.png "")
 
 **JNK1 and JNK2 serve partially redundant functions:**
 
@@ -417,13 +419,19 @@ and "Biosynthesis of unsaturated fatty acids”. DEBrowser’s powerful comparis
 function makes different condition comparisons and running GO Term analysis
 on selected genes much easier.
 
-![*Upregulated genes in hfd JNK1 KO (C1) vs. hfd wt (C2) DE comparison shows 4 upregulated genes (padj <0.01 and |log2foldchange| > 1).*](https://i.imgur.com/BdVWlF1.png "Comparisons")
+![*Upregulated genes in hfd JNK1 KO (C1) vs. hfd wt (C2) DE comparison shows 4 upregulated genes (padj <0.01 and |log2foldchange| > 1).*](https://i.imgur.com/BdVWlF1.png "")
 
-![*Downregulated genes in hfd JNK1 KO (C1) vs. hfd wt (C2) DE comparison shows 13 downregulated genes (padj <0.01 and |log2foldchange| > 1). Only one of them is in JNK2 KO (C3) vs. hfd wt (C4) DE comparison.*](https://i.imgur.com/Xf0RNfu.png "Comparisons")
+![*Downregulated genes in hfd JNK1 KO (C1) vs. hfd wt (C2) DE comparison shows 13 downregulated genes (padj <0.01 and |log2foldchange| > 1). Only one of them is in JNK2 KO (C3) vs. hfd wt (C4) DE comparison.*](https://i.imgur.com/Xf0RNfu.png "")
 
-The only main difference between the plots created within DEBrowser
-and the plots created within the research paper is that the clustering
-method used within the paper was a k-means method with k equalling 6.
+Comparing the HFD wild type and the normal chow wild type also shows significant differences between regulated genes (Figure 35).
+Expanding on the analysis further, the upregulated genes analyzed are then compared to KEGG and Disease ontologies
+to show a variety of metabolism related correlations (Figures 36-37).
+
+![*Up and Down regulated genes volcano plot of HFD WT vs Chow WT.*](https://i.imgur.com/izfASf9.png "")
+
+![*HFD upregulated gene list used for DO enrichment*](https://i.imgur.com/mTAF2a0.png "")
+
+![*HFD upregulated gene list used for KEGG enrichment*](https://i.imgur.com/3K4o7tO.png "")
 
 Using the 'advanced demo' dataset we mentioned earlier, you too can
 recreate these tables using the same data.  Browsing, changing parameters,
