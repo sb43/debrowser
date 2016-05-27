@@ -272,9 +272,9 @@ generate your heatmap.
 
 You can also select to view an interactive version of the heatmap by clicking
 on the 'Interactive' checkbox on the left panel under the height and width
-options (Figure 16).  Selecting this feature changes the heatmap into an interactive
+options.  Selecting this feature changes the heatmap into an interactive
 version with two colors, allowing you to select specific genes to be compared
-within the GO term plots.  In order to use the interactive heatmap selection
+within the GO term plots (Figure 16).  In order to use the interactive heatmap selection
 within your GO term query, you must use either the up+down dataset or the
 most varied dataset for the heatmap display.
 This will allow you to compare interesting clusters
