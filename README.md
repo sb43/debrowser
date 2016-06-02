@@ -60,8 +60,8 @@ startDEBrowser()
 Once you have the DEBrowser running, a page will load asking to choose a TSV
 file or to load the demo data.  In order to run DESeq2, we are going to need
 gene quantifications for genes contained in a tab-seperated values (TSV) 
-format.  The file values must contain the gene, transcript(s), and the samples 
-count values you wish to enter into DEBrowser.
+format.  The file values must contain the gene, transcript(s), and the sample 
+raw count values you wish to enter into DEBrowser.
 
 It's important to note that if your rows contain duplicate gene names,
 DEBrowser will reject your TSV file.  Please try to keep unique gene names.
@@ -135,10 +135,10 @@ Entering this URL into your web browser will automatically load in your data as 
 object, allowing you to start browsing your data right away.
 
 After obtaining and loading in the gene quantifications file, you
-are then able to view QC information of your quantifications or to continue
-on to running DESeq2 (Figure 1).
+then have the option to view QC information of your quantifications or you can 
+continue on to running DESeq2 (Figure 1).
 
-![*The initial options selection.*](https://i.imgur.com/7ZWbpz4.png "Initial option selection")
+![*The initial options selection.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_1.png "Initial option selection")
 
 ## Quality Control Information:
 
@@ -151,60 +151,67 @@ options you can alter to more easily view the all-to-all plot.
 
 Additionally, two more QC plots are available for you to use: Heatmap and
 PCA plots.  The heatmap (Figure 3) will display genes for each sample within your dataset
-in the form of a heatmap based on your dataset selection and PCA (Figure 4) will display
-Principal component analysis of your dataset. All of these plots will aid in viewing your preliminary data
-to see if there are any potential erros between replicates.  You have the option of veiwing an 
-interactive heatmap by selecting the 'Interactive' checkbox in the left side panel when 
-you have selected the Heatmap option.  You can select these various plot options by
+in the form of a heatmap based on your dataset selection and PCA (Figure 4) 
+will display Principal component analysis of your dataset. All of these plots 
+will aid in viewing your preliminary data to see if 
+there are any potential errors between replicates or batch effects.  
+You have the option of veiwing an interactive heatmap by selecting the 
+'Interactive' checkbox in the left side panel when you have selected the 
+Heatmap option.  This Interactive heatmap will display genes as you hover over 
+them for a more in-depth understanding.  You can select these various plot options by
 selecting the type of plot you wish to view on the left panel.
 
-![*Display of the all-to-all plot in the initial QC plots page.*](https://i.imgur.com/CitQaoT.png "QC plots")
+![*Display of the all-to-all plot in the initial QC plots page.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_2.png "QC plots")
 
 You can also view the genes within your quantification file in various
 ways.  The 'Tables' tab will bring you to a table setup based on the dataset
 you have selected on the left options panel. The 'All detected' option
 lists all of the genes present within your file.  The 'Selected' option
-lets your browser your gene selection based on your interactive heatmap
+lets you browse your gene selection based on your interactive heatmap
 selection.  The Last option, 'Most Varied' (Figure 5), will display your
 top N varied genes.  You can alter the value of N by selecting 'most-varied'
 from the dropdown menu on the left.
 
-![*Display of the most varied genes heatmap in the initial QC plots page.*](https://i.imgur.com/H4hVDYj.png "Heatmap")
+![*Display of the most varied genes heatmap in the initial QC plots page.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_3.png "Heatmap")
 
-![*Display of the PCA plot in the initial QC plots page.*](https://i.imgur.com/c8CmKOk.png "PCA")
+![*Display of the PCA plot in the initial QC plots page.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_4.png "PCA")
 
-![*Displayed table of most varied genes.*](https://i.imgur.com/F3F9DWQ.png "Most varied")
+![*Displayed table of most varied genes.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_5.png "Most varied")
 
 ## Starting DESeq:
 
 Upon selecting to run DESeq, you are then able to select
-which samples will be selected for your first condition and second condition
-to use for differential expression analysis.  By clicking the 'Add New
-Comparison' button, you can add as many different comparisons as you want.
+which samples will be used within your differential expression analysis
+By clicking the 'Add New Comparison' button, you can add as many different 
+sample comparisons as you want.  To alter the samples within each comparison,
+you can click on a sample and press delete to remove it or you can click the empty
+whitespace within the tab to bring a dropdown of samples to select from.
 Sample names are created based on the column headers within your data file.
 Once you've selected your comparisons, you are then ready to run DESeq2 to
 calculate differential expression by clicking on the 'Submit!' button (Figure 6).
 
-![*Menus after loading in a sample.*](https://i.imgur.com/ZA0LfD2.png "Loading in samples")
+![*Menus after loading in a sample.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_6.png "Loading in samples")
 
 #Analyzing the Results
 
 After clicking on the 'Submit!' button, DESeq2 will analyze your comparisons
 and store the results into seperate data tables.  Shiny will then allow you
-to access this data, with multiple interactive features, at the click of a
+to access this data, with multiple interactive features, and at the click of a
 button.  It is important to note that the resulting data produced from DESeq
 is normalized. Upon finishing the DESeq analysis, a tab-based menu will appear
-with multiple options (Figure 7).
+with multiple options (Figure 7) at the top-center of the page.
 
-![*List of the tabbed menus in DEBrowser.*](https://i.imgur.com/BPhxNR1.png "tab selection")
+![*List of the tabbed menus in DEBrowser.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_7.png "tab selection")
 
 The first tab, the 'Main Plots' section, is where you will be able to view
 the interactive results plots.  On the left hand side of the screen will be
 the options panel used to alter the padj and fold change
 cutoff values, what specific data set to use such as up or down regulated
 genes, what comparison dataset you would like to use to plot,
-and what type of plot you would like to view your results in (Figure 8).  Plot
-choices include:
+and what type of plot you would like to view your results in (Figure 8).  
+Comparisons are ordered based on how they were entered by the user and 
+for information about samples within each comparison are displayed right under
+the option tabs.  Plot choices include:
 
 * Scatter plot (Figure 9)
 
@@ -213,14 +220,15 @@ choices include:
 * MA plot (Figure 11)
 
 Once you have selected your values, you can hit the 'Submit!' button to create
-your interactive plots!
+your interactive plots!  Depending on whether you are using the local install
+or the web-based application, rendering times my vary.
 
-![*The Left parameter options panel*](https://i.imgur.com/WglVBQh.png "geneset plots")
+![*The Left parameter options panel*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_8.png "geneset plots")
 
-The top left plot is whichever plot you have
+The top left plot is the main plot of whichever plot you have
 selected to use to analyze your results.  Up-regulated genes are displayed
 in green while down-regulated genes are displayed in red (Figure 12).
-Hovering over a gene on this plot will display the bottom two plots: the
+Hovering over a gene on this plot will display the bottom two bar graphs: the
 genes normalized variation and colored by condition in the left graph,
 and the normalized variation between conditions within the right graph.
 Hovering over a gene will also display information about that gene in
@@ -230,24 +238,26 @@ you will create the top right plot, or the zoomed in version of your
 selection.  If you are going to change any of the parameters on the left,
 please make sure to re-click the 'Submit!' button to update the graphs.
 You can also change which type of dataset to use within the main plots by
-selecting from the drop down dataset box (Figure 13).  Additionally, you can further
+selecting from the drop down dataset box such as looking at the N most varied genes
+which are displayed in yellow(Figure 13).  Additionally, you can further
 filter these datasets by typing in the genes of interest, or regex for
 specific genes, to search for those specific genes within the dataset (Figrue 14).
+Specific gene searches are displayed in blue.
 All of these filtration options can be located on the left side panel which will
 also change based on the plot or dataset you wish to view/manipulate.
 It's also worth noting that the plots are resizable as well as downloable.
 
-![*Main scatter plot.*](https://i.imgur.com/2UjGH4G.png 'scatterplot')
+![*Main scatter plot.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_9.png 'scatterplot')
 
-![*Main volcano plot.*](https://i.imgur.com/k08UJ9F.png 'volcano')
+![*Main volcano plot.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_10.png 'volcano')
 
-![*Main MA plot.*](https://i.imgur.com/qXCUCwK.png 'ma')
+![*Main MA plot.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_11.png 'ma')
 
 ![*The main plots page within DEBrowser.*](https://i.imgur.com/n45tueA.png "Main plots")
 
-![*Display of the most varied genes as a scatter plot.*](https://i.imgur.com/ZKAnzPZ.png "varied plots")
+![*Display of the most varied genes as a scatter plot.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_13.png "varied plots")
 
-![*Display of the geneset list as a scatter plot.*](https://i.imgur.com/noAD8HQ.png "geneset plots")
+![*Display of the geneset list as a scatter plot.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_14.png "geneset plots")
 
 Selecting the 'QC Plots' tab will take you to the quality control plots
 section.  These QC plots are very similar to the QC plots shown before
@@ -257,7 +267,7 @@ within the previous QC analysis, users can also view a heatmap and PCA
 plot of their analyzed data by selecting the proper plot on the left
 menu.
 
-![*Display of the heatmap within DEBrowser.*](https://i.imgur.com/2YO2Ali.png "Heatmap")
+![*Display of the heatmap within DEBrowser.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_15.png "Heatmap")
 
 The heatmap is a great way to analyze replicate results of genes all in
 one simple plot (Figure 15).  Users have the option to change the clustering method used
@@ -278,9 +288,9 @@ This will allow you to compare interesting clusters
 found within the the heatmap within our GO Term analysis section which will
 be discussed later within the materials.
 
-![*View of the interactive Heatmap.*](https://i.imgur.com/3uXWSbq.png "Interactive Heatmap")
+![*View of the interactive Heatmap.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_16.png "Interactive Heatmap")
 
-![*Display of the PCA plot within DEBrowser.*](https://i.imgur.com/FSI4b6s.png "PCA")
+![*Display of the PCA plot within DEBrowser.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_17.png "PCA")
 
 Prinicipal Component Analysis (PCA) is another excellent method of checking
 replicates (Figure 17).  PCA calculates the variance between all of the samples genes
@@ -309,17 +319,17 @@ to switch to the GO Terms tab and use the 'selected' dataset (Figure 23).  Once 
 other parameters have been selected, hit submit and you will use your selected
 genes from the interactive heatmap in your GO Term analysis.
 
-![*Display of the GO Plot section within DEBrowser.*](https://i.imgur.com/fYY1MTi.png "GO")
+![*Display of the GO Plot section within DEBrowser.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_18.png "GO")
 
-![*Display of the GO dotplot section within DEBrowser.*](https://i.imgur.com/0jO8SlC.png "dotplot GO")
+![*Display of the GO dotplot section within DEBrowser.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_19.png "dotplot GO")
 
-![*Display of the DO plot section within DEBrowser.*](https://i.imgur.com/ALl9LKp.png "DO")
+![*Display of the DO plot section within DEBrowser.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_20.png "DO")
 
-![*Display of the DO dotplot section within DEBrowser.*](https://i.imgur.com/6woFMAc.png "DO dotplot")
+![*Display of the DO dotplot section within DEBrowser.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_21.png "DO dotplot")
 
-![*Display of the KEGG dotplot section within DEBrowser.*](https://i.imgur.com/abf7eRA.png "KEGG")
+![*Display of the KEGG dotplot section within DEBrowser.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_22.png "KEGG")
 
-![*Display of Heatmap selected enriched GO Term search.*](https://i.imgur.com/5LolPbk.png "heatmap enrich")
+![*Display of Heatmap selected enriched GO Term search.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_23.png "heatmap enrich")
 
 The last tab, 'Tables', contains various result information in table formats.
 The 'All Detected' option contains the list of all the genes within the
@@ -355,21 +365,21 @@ one sample cannot create statistically significant p-adjust values.  The
 more replicates you have within a condition, the greater the statistical
 significance of your comparisons.
 
-![*Display of the up+down-regulated genes table.*](https://i.imgur.com/QppYKiT.png "Up+Down Regulated")
+![*Display of the up+down-regulated genes table.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_24.png "Up+Down Regulated")
 
-![*Display of the down-regulated genes table.*](https://i.imgur.com/d6UeLHJ.png "Down Regulated")
+![*Display of the down-regulated genes table.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_25.png "Down Regulated")
 
-![*Display of the geneset input box.*](https://i.imgur.com/FTOK8M6.png "geneset")
+![*Display of the geneset input box.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_26.png "geneset")
 
-![*Display of the gene set search of the term '^al'.*](https://i.imgur.com/WmM2hXX.png "geneset table")
+![*Display of the gene set search of the term '^al'.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_27.png "geneset table")
 
-![*Condition comparisons table within DEBrowser.*](https://i.imgur.com/ODFa2YA.png "Comparisons")
+![*Condition comparisons table within DEBrowser.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_28.png "Comparisons")
 
 Lastly, the tables have a bunch of features that allow you to view your DESeq
 results more conviently.  By clicking on a column header, you can sort the
 data within the table based either alphabetical or numeric sorting.
-You can also enter a term within the search box to search for a specific
-gene within the table.
+You can also enter a term, or regex query, within the search box on the left
+panel to filter for a specificgene within the table.
 
 With that, you've now successfully navigated the DEBrowser and are ready to
 start inserting your own data files and browsing your own experiments.  Enjoy
@@ -383,55 +393,57 @@ for the study were customized to a high level of specificity.  However,
 using a sample dataset generated from this study, it is possible to
 recreate similar heatmaps (Figure 29-30) displayed within the studies findings.
 
-![*All detected genes heatmap using case study data.*](http://i.imgur.com/a2ZTcfd.png "")
+![*All detected genes heatmap using case study data.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_29.png "")
 
-![*Most varied genes heatmap using case study data.*](http://i.imgur.com/rLF6DJ3.png "")
+![*Most varied genes heatmap using case study data.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_30.png "")
 
-The only main difference between the heatmaps created within DEBrowser
+The main difference between the heatmaps created within DEBrowser
 and the heatmaps created within the research paper is that the clustering
 method used within the paper was a k-means method with k equaling 6.
 
-**The JNK2 knock out has a stronger effect:**
+**The JNK2 Knock-out versus JNK1 Knock-out:**
 
-High fat diet JNK1 knock out and JNK2 knock out samples compered with high fat
-diet wild type samples.  From the figures below, JNK2 knock out has a 
-stronger effect than JNK1 KO samples. There are 177 genes (Fig. 31) have 
-padj < 0.01 and |log2 foldchange| > 1 in JNK2 KO comparison while there are 
-only 17 genes (Fig. 32) detected in JNK1 knockout comparison with same cutoffs.
+High fat diet JNK1 knock-out and JNK2 knock-out samples compared against high fat
+diet wild type samples showed a stronger effect from JNK2 KO.  
+From the figures below, JNK2 KO has a 
+stronger effect than JNK1 KO samples. There are 177 genes (Fig. 31) that have 
+padj < 0.01 and |log2 foldchange| > 1 in the JNK2 KO comparison while there are 
+only 17 genes (Fig. 32) detected in the JNK1 KO comparison with the same cutoffs.
 
-![*High fat diet JNK2 vs. High fat diet wild type.*](https://i.imgur.com/FqixmyK.png "")
+![*High fat diet JNK2 vs. High fat diet wild type.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_31.png "")
 
-![*High fat diet JNK1 vs. High fat diet wild type.*](https://i.imgur.com/LHEod5I.png "")
+![*High fat diet JNK1 vs. High fat diet wild type.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_32.png "")
 
 **JNK1 and JNK2 serve partially redundant functions:**
 
-HFD (High fat diet) JNK1 and HFD JNK2 double KO has 1018 significantly different genes.  When
-we compare HFD JNK1 KO only (177 Genes) and HFD JNK2 KO only (17 genes)  with 
-HFD wild type side by side, most of the up and down regulated genes are not 
-overlapping. Up regulated genes (Figure 33.) and down regulated (Figure 34.) in
-JNK1 KO. There is only 1 gene overlapping out of 17 that they were
+High fat diet JNK1 and High fat diet JNK2 double KO has 1018 significantly different genes.
+When we compare HFD JNK1 KO only (177 Genes) and HFD JNK2 KO only (17 genes)  with 
+HFD wild type side-by-side, most of the up and down regulated genes are not 
+overlapping.  Up regulated genes (Figure 33.) and down regulated (Figure 34.) in
+JNK1 KO was easy to analyze for these gene comparisons. 
+There is only 1 gene overlapping out of the 17 that were
 significantly different in JNK1 KO comparisons with padj < 0.01 and 
 |log2foldchange| > 1 cutoffs.  It shows that both individual KO might have 
-individual functions too in addition to their redundant functions. 
-When we looked at the genes in JNK1 KO in KEGG database,  they are enriched
+individual functions in addition to their redundant functions. 
+When we looked at the genes in JNK1 KO in the KEGG database,  they are enriched
 in "Fatty acid elongation”. JNK2 KO are enriched in "PPAR signaling pathway”
 and "Biosynthesis of unsaturated fatty acids”. DEBrowser’s powerful comparison
 function makes different condition comparisons and running GO Term analysis
 on selected genes much easier.
 
-![*Upregulated genes in hfd JNK1 KO (C1) vs. hfd wt (C2) DE comparison shows 4 upregulated genes (padj <0.01 and |log2foldchange| > 1).*](https://i.imgur.com/BdVWlF1.png "")
+![*Upregulated genes in hfd JNK1 KO (C1) vs. hfd wt (C2) DE comparison shows 4 upregulated genes (padj <0.01 and |log2foldchange| > 1).*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_33.png "")
 
-![*Downregulated genes in hfd JNK1 KO (C1) vs. hfd wt (C2) DE comparison shows 13 downregulated genes (padj <0.01 and |log2foldchange| > 1). Only one of them is in JNK2 KO (C3) vs. hfd wt (C4) DE comparison.*](https://i.imgur.com/Xf0RNfu.png "")
+![*Downregulated genes in hfd JNK1 KO (C1) vs. hfd wt (C2) DE comparison shows 13 downregulated genes (padj <0.01 and |log2foldchange| > 1). Only one of them is in JNK2 KO (C3) vs. hfd wt (C4) DE comparison.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_34.png "")
 
 Comparing the HFD wild type and the normal chow wild type also shows significant differences between regulated genes (Figure 35).
 Expanding on the analysis further, the upregulated genes analyzed are then compared to KEGG and Disease ontologies
 to show a variety of metabolism related correlations (Figures 36-37).
 
-![*Up and Down regulated genes volcano plot of HFD WT vs Chow WT.*](https://i.imgur.com/izfASf9.png "")
+![*Up and Down regulated genes volcano plot of HFD WT vs Chow WT.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_35.png "")
 
-![*HFD upregulated gene list used for DO enrichment*](https://i.imgur.com/mTAF2a0.png "")
+![*HFD upregulated gene list used for DO enrichment*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_36.png "")
 
-![*HFD upregulated gene list used for KEGG enrichment*](https://i.imgur.com/3K4o7tO.png "")
+![*HFD upregulated gene list used for KEGG enrichment*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_37.png "")
 
 Using the 'advanced demo' dataset we mentioned earlier, you too can
 recreate these tables using the same data.  Browsing, changing parameters,
