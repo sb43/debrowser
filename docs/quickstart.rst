@@ -35,7 +35,7 @@ To view the entire demo data file, you can download this `demo set`_.  For an ex
 DEBrowser also accepts TSV's via hyperlink by following a few conversion steps.  First, using the API provided by
 Dolphin, we will convert TSV into an html represented TSV using this website:
 
-``http://dolphin.umassmed.edu/public/api/``
+*http://dolphin.umassmed.edu/public/api/*
 
 The Two parameters it accepts (and examples) are:
 
@@ -44,8 +44,9 @@ The Two parameters it accepts (and examples) are:
 	
 Leaving you with a hyperlink for:
 
-``http://dolphin.umassmed.edu/public/api/?source=http://bioinfo.umassmed.edu/pub/deb
-rowser/advanced_demo.tsv&format=JSON``
+*http://dolphin.umassmed.edu/public/api/?source=http://bioinfo.umass*
+
+*med.edu/pub/debrowser/advanced_demo.tsv&format=JSON*
 
 Next you will need to encode the url so you can pass it to the DEBrowser website.
 You can find multiple url encoders online, such as the one located at this
@@ -53,25 +54,33 @@ web address: http://www.url-encode-decode.com/.
 
 Encoding our URL will turn it into this:
 
-``http%3A%2F%2Fdolphin.umassmed.edu%2Fpublic%2Fapi%2F%3Fsource%3Dhttp%3A%2F%2Fbioinf
-o.umassmed.edu%2Fpub%2Fdebrowser%2Fadvanced_demo.tsv%26format%3DJSON``
+*http%3A%2F%2Fdolphin.umassmed.edu%2Fpublic%2Fapi%2F%3Fsource%3Dhttp*
+
+*%3A%2F%2Fbioinfo.umassmed.edu%2Fpub%2Fdebrowser%2Fadvanced_demo.tsv*
+
+*%26format%3DJSON*
 
 Now this link can be be used in debrowser as:
 
-``http://debrowser.umassmed.edu:443/debrowser/R/``
+*http://debrowser.umassmed.edu:443/debrowser/R/*
 
 It accepts two parameters:
 
-	1. jsonobject=http%3A%2F%2Fdolphin.umassmed.edu%2Fpublic%2Fapi%2F%3Fsource%3Dhttp%3A%2F%2Fbioinfo
-	.umassmed.edu%2Fpub%2Fdebrowser%2Fadvanced_demo.tsv%26format%3DJSON
-	2. title=no
+	1. *jsonobject=http%3A%2F%2Fdolphin.umassmed.edu%2Fpublic%2Fapi%2F%3F*
+	
+	   *source%3Dhttp%3A%2F%2Fbioinfo.umassmed.edu%2Fpub%2Fdebrowser%2F*
+	   
+	   *advanced_demo.tsv%26format%3DJSON*
+	2. *title=no*
 
 The finished product of the link will look like this:
 
 
-``http://debrowser.umassmed.edu:443/debrowser/R/?jsonobject=http://dolphin.umassmed
-.edu/public/api/?source=http://bioinfo.umassmed.edu/pub/debrowser/advanced_demo.tsv
-&format=JSON&title=no``
+*http://debrowser.umassmed.edu:443/debrowser/R/?jsonobject=http://do*
+
+*lphin.umassmed.edu/public/api/?source=http://bioinfo.umassmed.edu/p*
+
+*ub/debrowser/advanced_demo.tsv&format=JSON&title=no*
 
 Inputting this URL into your browser will automatically load in that tsv to be analyzed by DEBrowser!
 
