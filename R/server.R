@@ -352,16 +352,16 @@ deServer <- function(input, output, session) {
         })
 
         mergedComp <- reactive({
-            applyFiltersToMergedComparison(
+            dat <- applyFiltersToMergedComparison(
                 isolate(mergedCompInit()), choicecounter$nc, input)
+            dat[dat$Legend == "Sig", ]
+            dat[dat$Legend == "Sig", ] <- NULL
+            dat
         })
         
         mergedCompInit <- reactive({
-            merged <- isolate(getMergedComparison(
-                isolate(dc()), choicecounter$nc))
-            merged <- merge(Dataset()[,input$samples], merged, by=0)
-            rownames(merged) <- merged$Row.names
-            merged$Row.names <- NULL
+            merged <- getMergedComparison(
+                isolate(Dataset()), isolate(dc()), choicecounter$nc, input)
             merged
         })
         datasetInput <- function(addIdFlag = FALSE){
@@ -369,8 +369,7 @@ deServer <- function(input, output, session) {
             if (!input$goQCplots ) {
                 mergedCompDat <- NULL
                 if (input$dataset == "comparisons")
-                    mergedCompDat <- getNormalizedMatrix(isolate(
-                      mergedComp()[, input$samples]))
+                    mergedCompDat <- isolate(mergedComp())
                 m <- getSelectedDatasetInput(filt_data(), 
                     selected$data$getSelected(), getMostVaried(),
                     mergedCompDat, input)

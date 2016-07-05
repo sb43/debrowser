@@ -161,7 +161,7 @@ prepDESeqOutput <- function(data = NULL, cols = NULL,
     if (is.null(data)) return (NULL)
     if (length(cols) == length(conds))
         de_res <- runDESeq(data, cols, conds, inputconds$fittype,
-            non_expressed_cutoff = 500)
+            non_expressed_cutoff = 10)
     de_res <- data.frame(de_res)
     norm_data <- getNormalizedMatrix(data[, cols])
     mean_cond <- c()
@@ -504,31 +504,35 @@ addID <- function(data = NULL) {
 #'
 #' Gathers the merged comparison data to be used within the
 #' DEBrowser.
-#'
+#' @param Dataset, whole data
 #' @param dc, data container
 #' @param nc, the number of comparisons
+#' @param input, input params
 #' @return data
 #' @export
 #'
 #' @examples
 #'     x <- getMergedComparison()
 #'
-getMergedComparison <- function(dc = NULL, nc = NULL){
+getMergedComparison <- function(Dataset = NULL, dc = NULL, nc = NULL, input = NULL){
     merged <- c()
     if (is.null(dc)) return (NULL)
+    merged <- Dataset[,input$samples]
+
     for ( ni in seq(1:nc)) {
         tmp <- dc[[ni]]$init_data[,c("foldChange", "padj")]
+        
         tt <- paste0("C", (2*ni-1),".vs.C",(2*ni))
-        colnames(tmp) <- c(paste0("foldChange.", tt),  
-            paste0("padj", tt))
-        if (ni==1){
-            merged <- tmp
-        }
-        else{
-            merged <- merge(merged, tmp, all = TRUE, by=0)
-            rownames(merged) <- merged$Row.names
-            merged$Row.names <- NULL
-        }
+        fctt <- paste0("foldChange.", tt)
+        patt <-  paste0("padj.", tt)
+        colnames(tmp) <- c(fctt,  patt)
+
+        merged[,fctt] <- character(nrow(merged))
+        merged[,patt] <- character(nrow(merged))
+        merged[rownames(tmp),c(fctt, patt)] <- tmp[rownames(tmp),c(fctt, patt)]
+        merged[rownames(tmp),patt] <- tmp[rownames(tmp),patt]
+        merged[merged[,fctt]=="",fctt] <- 1 
+        merged[merged[,patt]=="",patt] <- 1 
     }
     merged
 }
@@ -559,16 +563,15 @@ applyFiltersToMergedComparison <- function (merged = NULL,
     }
     for ( ni in seq(1:nc)) {
         tt <- paste0("C", (2*ni-1),".vs.C",(2*ni))
-        merged[which(merged[,c(paste0("foldChange.", tt))] >= 
-            foldChange_cutoff & merged[,c(paste0("padj", tt))] <= 
+        merged[which(as.numeric(merged[,c(paste0("foldChange.", tt))]) >= 
+            foldChange_cutoff & as.numeric(merged[,c(paste0("padj.", tt))]) <= 
             padj_cutoff), "Legend"] <- "Sig"
-        merged[which(merged[,c(paste0("foldChange.", tt))] <= 
-            1/foldChange_cutoff & merged[,c(paste0("padj", tt))] <= 
+        merged[which(as.numeric(merged[,c(paste0("foldChange.", tt))]) <= 
+            1/foldChange_cutoff & as.numeric(merged[,c(paste0("padj.", tt))]) <= 
             padj_cutoff), "Legend"] <- "Sig"
     }
-    merged <- merged[merged$Legend == "Sig", ]
-    merged[,c("Legend")]<- NULL
-    merged
+
+    merged 
 }
 
 #' removeCols
