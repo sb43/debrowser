@@ -310,7 +310,7 @@ deServer <- function(input, output, session) {
         output$tables <- DT::renderDataTable({
             dat <- getDataForTables(input, init_data(),
                   filt_data(), selected,
-                  getMostVaried(),  mergedComp())
+                  getMostVaried(),  isolate(mergedComp()))
             dat2 <- removeCols(c("ID", "x", "y","Legend", "Size"), dat[[1]])
             m <- DT::datatable(dat2,
             options = list(lengthMenu = list(c(10, 25, 50, 100),
@@ -354,9 +354,9 @@ deServer <- function(input, output, session) {
         mergedComp <- reactive({
             dat <- applyFiltersToMergedComparison(
                 isolate(mergedCompInit()), choicecounter$nc, input)
-            dat[dat$Legend == "Sig", ]
-            dat[dat$Legend == "Sig", ] <- NULL
-            dat
+            ret <- dat[dat$Legend == "Sig", ]
+            #ret[ret$Legend == "Sig", ] <- NULL
+            ret
         })
         
         mergedCompInit <- reactive({
