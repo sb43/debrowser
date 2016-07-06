@@ -4,12 +4,16 @@
 \alias{getMergedComparison}
 \title{getMergedComparison}
 \usage{
-getMergedComparison(dc = NULL, nc = NULL)
+getMergedComparison(Dataset = NULL, dc = NULL, nc = NULL, input = NULL)
 }
 \arguments{
+\item{Dataset, }{whole data}
+
 \item{dc, }{data container}
 
 \item{nc, }{the number of comparisons}
+
+\item{input, }{input params}
 }
 \value{
 data

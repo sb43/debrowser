@@ -85,21 +85,3 @@ test_that("Check the QC plots", {
     expect_false(is.null(test_ma_zoom))
 })
 
-test_that("Check GO plots", {
-    goInput <- NULL
-    goInput$gofunc <- "enrichGO"
-    goInput$goplot <- "enrichGO"
-    goInput$goextplot <- "Summary"
-    goInput$gopvalue <- 0.01
-    goInput$ontology <- "CC"
-    goInput$organism <- "org.Mm.eg.db"
-    dataset <- rdata[which(rdata$Legend=="Up" | rdata$Legend == "Down"), columns]
-    gotest <- getGOPlots(dataset, goInput, table = FALSE)
-    expect_false(is.null(gotest))
-    goInput$goplot <- "disease"
-    gotest <- getGOPlots(dataset, goInput, table = FALSE)
-    expect_false(is.null(gotest))
-    goInput$goextplot <- "Summary"
-    gotest <- getGOPlots(dataset, goInput, table = FALSE)
-    expect_false(is.null(gotest))
-})

@@ -361,13 +361,19 @@ getSearchData <- function(dat = NULL, input = NULL)
 #'
 getGeneSetData <- function(data = NULL, geneset = NULL) {
     if (is.null(data)) return (NULL)
+    
     geneset1 <- unique(unlist(strsplit(geneset, split="[:;, \t\n\t]")))
     geneset2 <- geneset1[geneset1 != ""]
-    dat1 <- data.frame(data)
+    if(length(geneset2) > 20)
+        geneset2 <- paste0("^", geneset2, "$")
+    
+    dat1 <- as.data.frame(data)
     if(!("ID" %in% names(dat1)))
         dat2 <- addID(dat1)
     else
         dat2 <- dat1
+
+    dat2$ID<-factor(as.character(dat2$ID))
 
     geneset4 <- unique(as.vector(unlist(lapply(toupper(geneset2), 
         function(x){ dat2[(grepl(x, toupper(dat2[,"ID"]))), "ID"] }))))
