@@ -385,7 +385,13 @@ deServer <- function(input, output, session) {
         output$downloadData <- downloadHandler(filename = function() {
             paste(input$dataset, "csv", sep = ".")
         }, content = function(file) {
-            write.table(datasetInput(TRUE), file, sep = ",", row.names = FALSE)
+            dat <- getDataForTables(input, init_data(),
+                 filt_data(), selected,
+                 getMostVaried(),  isolate(mergedComp()))
+            dat2 <- removeCols(c("x", "y","Legend", "Size"), dat[[1]])
+            if(!("ID" %in% names(dat2)))
+                dat2 <- addID(dat2)
+            write.table(dat2, file, sep = ",", row.names = FALSE)
         })
 
         output$downloadPlot <- downloadHandler(filename = function() {
