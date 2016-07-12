@@ -299,12 +299,19 @@ deServer <- function(input, output, session) {
             m$height <- input$height
             return(m)
         })
+        goplots <- reactive({
+            dat <- getDataForTables(input, init_data(),
+                                    filt_data(), selected,
+                                    getMostVaried(),  isolate(mergedComp()))
+            getGOPlots(dat[[1]][, isolate(cols())], input)
+        })
         inputGOstart <- eventReactive(input$startGO, {
-            return(getGOPlots(isolate(datasetInput())[, isolate(cols())],
-                input, table = FALSE))
+            return(goplots())
         })
         output$GOPlots1 <- renderPlot({
-            inputGOstart()
+            if (!is.null(inputGOstart()$p) && input$startGO){
+                return(inputGOstart()$p)
+            }
         })
       
         output$tables <- DT::renderDataTable({
@@ -319,16 +326,6 @@ deServer <- function(input, output, session) {
             getTableStyle(input, dat[[2]], dat[[3]])
             m
         })
-
-        getGeneSet <- reactive({
-            a <- NULL
-            if (!input$goQCplots)
-                a <- filt_data()[filt_data()$Legend=="GS", ]
-            else
-                a <- getGeneSetData(data.frame(init_data()), 
-                    c(input$genesetarea))
-            a
-        })
         getMostVaried <- reactive({
             a <- NULL
             if (!input$goQCplots)
@@ -341,13 +338,11 @@ deServer <- function(input, output, session) {
         })
       
         output$gotable <- DT::renderDataTable({
-            if (!is.null(datasetInput()) && input$startGO){
-                gorestable <- getGOPlots(datasetInput()[, cols()],
-                    input, table = TRUE)
-                DT::datatable(gorestable,
-                    list(lengthMenu = list(c(10, 25, 50, 100),
-                    c("10", "25", "50", "100")),
-                    pageLength = 25, paging = TRUE, searching = TRUE))
+            if (!is.null(inputGOstart()$table)){
+                DT::datatable(inputGOstart()$table,
+                list(lengthMenu = list(c(10, 25, 50, 100),
+                c("10", "25", "50", "100")),
+                pageLength = 25, paging = TRUE, searching = TRUE))
             }
         })
 
@@ -409,7 +404,7 @@ deServer <- function(input, output, session) {
             paste(input$goplot, ".pdf", sep = "")
         }, content = function(file) {
             pdf(file)
-            print( getGOPlots(datasetInput()[, cols()], input, table = FALSE) )
+            print( goplots()$p )
             dev.off()
         })
     },
