@@ -109,9 +109,6 @@ deServer <- function(input, output, session) {
                     "main")
             a
         })
-        output$preppanel <- renderUI({
-            getDataPrepPanel(!is.null(init_data))
-        })
         output$leftMenu  <- renderUI({
            getLeftMenu()
         })
@@ -127,15 +124,17 @@ deServer <- function(input, output, session) {
         output$startup <- renderUI({
             getStartupMsg()
         })
-        output$afterload <- renderUI({
-            getAfterLoadMsg()
-        })
         output$mainmsgs <- renderUI({
             if (is.null(condmsg$text))
                 getStartPlotsMsg()
             else
                 condmsg$text 
         })
+        
+        #### DATA load #############
+        output$afterload <- renderUI({
+            getAfterLoadMsg()
+        })    
         output$dataready <- reactive({
             hide(id = "loading-debrowser", anim = TRUE, animType = "fade")    
             return(!is.null(Dataset()))
@@ -151,7 +150,16 @@ deServer <- function(input, output, session) {
         Dataset <- reactive({
             load_data(input, session)
         })
-        choicecounter <- reactiveValues(nc = 0)
+        #### DATA load #############
+        
+        #### Prep panel ############
+        # Comparison and sample selection section
+        
+        output$preppanel <- renderUI({
+            getDataPrepPanel(!is.null(init_data))
+        })
+        
+        choicecounter <- reactiveValues(nc = 0, choices = NULL)
         observeEvent(input$add_btn, {
             shinyjs::enable("goButton")
             choicecounter$nc <- choicecounter$nc + 1}
@@ -175,7 +183,7 @@ deServer <- function(input, output, session) {
             hideObj(c("add_btn","rm_btn","goButton", "fittype"))
             choicecounter$nc <- 0
         })
-
+        
         samples <- reactive({
             if (is.null(Dataset())) return(NULL)
                 getSamples(colnames(Dataset()), index = 2)
@@ -201,6 +209,10 @@ deServer <- function(input, output, session) {
             prepDataContainer(Dataset(), choicecounter$nc, 
             input, session)
         })
+        
+        #### Prep panel ############
+        
+        
         observeEvent(input$goQCplots, {
             togglePanels(2, c(2, 4), session)
         })
