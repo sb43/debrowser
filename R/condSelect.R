@@ -40,7 +40,7 @@ getMethodDetails <- function(num = 0, input = NULL) {
                    getSelectInputBox("limma_fitType", "Fit Type", num,
                        c("ls", "robust"), 
                            selectedInput("limma_fitType", num, "ls", input)),
-                   getSelectInputBox("normBetween", "Normalization Between Arrays", num,
+                   getSelectInputBox("normBetween", "Norm. Bet. Arrays", num,
                        c("none", "scale", "quantile", "cyclicloess",
                            "Aquantile", "Gquantile", "Rquantile","Tquantile"),
                            selectedInput("normBetween", num, "none", input))),

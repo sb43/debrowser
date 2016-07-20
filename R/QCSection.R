@@ -19,10 +19,10 @@ getQCPanel <- function(input = NULL) {
         width = input$width
     }
     a <- list(
-        helpText( "Please select the parameters and press the 
+        wellPanel(helpText( "Please select the parameters and press the 
         submit button in the left menu for the plots" ),
         getHelpButton("method", 
-        "http://debrowser.readthedocs.io/en/develop/quickstart.html#quality-control-plots"),
+        "http://debrowser.readthedocs.io/en/develop/quickstart.html#quality-control-plots")),
         conditionalPanel(condition = 
             "(!(input.interactive && input.qcplot == 'heatmap'))",
             column(12, plotOutput("qcplotout",
