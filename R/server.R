@@ -39,7 +39,7 @@
 #' @importFrom gplots heatmap.2 redblue
 #' @importFrom igraph layout.kamada.kawai  
 #' @importFrom grDevices dev.off pdf
-#' @importFrom graphics barplot hist pairs par rect text
+#' @importFrom graphics barplot hist pairs par rect text plot
 #' @importFrom stats aggregate as.dist cor cor.test dist
 #'             hclust kmeans na.omit prcomp var sd model.matrix
 #'             p.adjust
@@ -56,7 +56,6 @@
 #' @importFrom jsonlite fromJSON
 #' @importFrom stringi stri_rand_strings
 #' @importFrom ReactomePA enrichPathway
-#' @importFrom DESeq2 DESeq results DESeqDataSetFromMatrix
 #' @importFrom annotate geneSymbols
 #' @importFrom reshape2 melt
 #' @importFrom baySeq getLibsizes getLikelihoods getLikelihoods.NB

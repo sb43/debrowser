@@ -1,5 +1,6 @@
 library(debrowser)
 library(DESeq2)
+library(EdgeR)
 library(testthat)
 
 load(system.file("extdata", "demo", "demodata.Rda",
@@ -12,7 +13,6 @@ data <- data.frame(demodata[, columns])
 
 test_that("Able to run DESeq2", {
     deseqrun <- runDESeq(data, columns, conds)
-    edgeRrun <- runEdgeR(data, columns, conds)
     expect_true(exists("deseqrun"))
 })
 

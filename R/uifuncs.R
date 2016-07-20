@@ -617,6 +617,7 @@ actionButton <- function(inputId, label, styleclass = "", size = "",
 #' prepares a helpbutton for to go to a specific site in the documentation
 #'
 #' @param name, name that are going to come after info
+#' @param link, link of the help
 #' @return the info button
 #'
 #' @examples
