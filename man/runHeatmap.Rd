@@ -24,6 +24,8 @@ runHeatmap(data, title = "Title", dend = "both", names = FALSE,
 
 \item{distance_method}{= c('cor','euclidean', 'maximum', 'manhattan',
 'canberra', 'binary' ,'minkowski')}
+
+\item{interactive, }{interactive heatmap}
 }
 \value{
 heatmap.2 plot

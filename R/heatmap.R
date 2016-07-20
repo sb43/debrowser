@@ -10,6 +10,7 @@
 #' 'mcquitty', 'median' , 'centroid')
 #' @param distance_method = c('cor','euclidean', 'maximum', 'manhattan',
 #' 'canberra', 'binary' ,'minkowski')
+#' @param interactive, interactive heatmap
 #' @return heatmap.2 plot
 #'
 #' @examples
@@ -57,34 +58,6 @@ runHeatmap <- function(data, title="Title", dend = "both",
     m
 }
 
-#' getIntHeatmap
-#'
-#' jsHeatmap
-#'
-#' @return js
-#' @export
-#'
-#' @examples
-#'     jsHeatmap()
-#'
-jsHeatmap <- function(){
-    return ("shinyjs.getNames = function(){
-    var count = document.getElementsByClassName('tick').length; 
-    var start = 0;  
-    while(document.getElementsByClassName('tick')[start].getElementsByTagName('line')[0].getAttribute('x2') == 0){
-    start += 1;
-    }  
-    var out = ''; 
-    for (i = start; i < count; i++) 
-    { 
-    if('opacity: 1;' == document.getElementsByClassName('tick')[i].getAttribute('style')){ 
-    out += document.getElementsByClassName('tick')[i].getElementsByTagName('text')[0].innerHTML + ',';
-    }
-    } 
-    //document.getElementById('genenames').innerHTML = out;
-    Shiny.onInputChange('genenames', out);
-}")
-}
 
 #' getIntHeatmap
 #'

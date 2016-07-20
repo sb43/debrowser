@@ -1,6 +1,6 @@
 library(debrowser)
 library(DESeq2)
-library(EdgeR)
+library(edgeR)
 library(testthat)
 
 load(system.file("extdata", "demo", "demodata.Rda",

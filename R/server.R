@@ -44,7 +44,7 @@
 #'             hclust kmeans na.omit prcomp var sd model.matrix
 #'             p.adjust
 #' @importFrom utils read.table write.table update.packages
-#' @importFrom DOSE enrichDO enrichMap gseaplot
+#' @importFrom DOSE enrichDO enrichMap gseaplot dotplot
 #' @importMethodsFrom AnnotationDbi as.data.frame as.list colnames
 #'             head mappedkeys ncol nrow subset keys mapIds
 #' @importMethodsFrom GenomicRanges as.factor
@@ -60,6 +60,12 @@
 #' @importFrom reshape2 melt
 #' @importFrom baySeq getLibsizes getLikelihoods getLikelihoods.NB
 #'             getPriors getPriors.NB nbinomDensity
+#' @importMethodsFrom baySeq "densityFunction<-" "libsizes<-"
+#' @importFrom clusterProfiler compareCluster enrichKEGG dotplot 
+#' @importFrom DESeq2 DESeq DESeqDataSetFromMatrix
+#' @importFrom edgeR calcNormFactors equalizeLibSizes DGEList glmLRT
+#'             exactTest estimateCommonDisp glmFit
+#' @importFrom limma lmFit voom eBayes topTable
 #' @import org.Hs.eg.db
 #' @import org.Mm.eg.db
 deServer <- function(input, output, session) {

@@ -38,12 +38,13 @@ however there are other ways to obtain this data.
 The TSV files used to describe the quantification counts are similar to this:
 
 IE:
-
-| gene     | transcript | exper_rep1 | exper_rep2 | control_rep1 | control_rep2 |
-|----------|------------|------------|------------|--------------|--------------|
-| DQ714826 | uc007tfl.1 | 0.00       | 0.00       | 0.00         | 0.00         |
-| DQ551521 | uc008bml.1 | 0.00       | 0.00       | 0.00         | 0.00         |
-| AK028549 | uc011wpi.1 | 2.00       | 1.29       | 0.00         | 0.00         |
+========  ==========   ==========  ==========   ============   ============
+gene      transcript   exper_rep1  exper_rep2  control_rep1  control_rep2
+========  ==========   ==========  ==========   ============   ============
+DQ714826  uc007tfl.1         0.00        0.00          0.00            0.00
+DQ551521  uc008bml.1         0.00        0.00          0.00            0.00
+AK028549  uc011wpi.1         2.00        1.29          0.00            0.00
+========  ==========   ==========  ==========   ============   ============
 
 
 Where the gene column represent the gene name, the transcript column represents the transcript(s) name (comma separated for multiple),
@@ -53,7 +54,8 @@ DESeq2
 =========
 
 For the details please check the user guide.
-`DESeq2 userguide, <https://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.pdf>`_
+`DESeq2 userguide <https://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.pdf>`_
+
 DESeq2 performs multiple steps in order to analyze the data you've provided for it.
 The first step is to indicate the condition that each column (experiment) in the table represent.
 You can group multiple samples into one condition column.
@@ -90,7 +92,7 @@ Used parameters for DESeq2
 EdgeR
 ========
 For the details please check the user guide.
-`EdgeR userguide, <https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf>`_.
+`EdgeR userguide <https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf>`_.
 
 Used parameters for EdgeR
 =========================
@@ -123,7 +125,8 @@ Used parameters for EdgeR
 Limma
 ========
 For the details please check the user guide.
-`Limma userguide, <https://bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf>`_.
+`Limma userguide <https://bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf>`_.
+
 Limma is a package to analyse of microarray or RNA-Seq data. If data is normalized with spike-in or any other scaling, tranforamtion or normalization method, Limma can be ideal. In that case, prefer limma rather than DESeq2 or EdgeR.
 
 Used parameters for Limma

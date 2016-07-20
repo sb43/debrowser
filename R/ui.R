@@ -17,7 +17,7 @@ deUI <- function() {
         package = "debrowser"))
     shinyUI(fluidPage(
     shinyjs::useShinyjs(),
-    extendShinyjs(text = jsHeatmap()),
+    shinyjs::extendShinyjs(script = "funcs.js", functions = c("getNames")),
     shinyjs::inlineCSS("
         #loading-debrowser {
         position: absolute;

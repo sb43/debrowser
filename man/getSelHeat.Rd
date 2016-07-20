@@ -8,6 +8,8 @@ getSelHeat(data = NULL, input = NULL)
 }
 \arguments{
 \item{data, }{selected genes}
+
+\item{input, }{input params}
 }
 \value{
 plot
