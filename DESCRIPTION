@@ -51,7 +51,8 @@ Imports:
     org.Mm.eg.db,
     limma,
     edgeR,  
-    clusterProfiler
+    clusterProfiler,
+    V8
 RoxygenNote: 5.0.1
 Suggests: testthat,
     rmarkdown,
