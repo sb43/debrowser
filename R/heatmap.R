@@ -46,7 +46,7 @@ runHeatmap <- function(data, title="Title", dend = "both",
     }
     else {
         m <- d3heatmap(cld,
-                  col = redblue(256),
+                  colors = redblue(256),
                   RowV = TRUE,
                   ColV = TRUE,
                   distfun = dist2, hclustfun = hclust2,
@@ -112,6 +112,7 @@ getIntHeatmap <- function(data = NULL,  input = NULL, inputQCPlot = NULL) {
 #' heatmap selection functionality
 #'
 #' @param data, selected genes
+#' @param input, input params
 #' @return plot
 #' @export
 #'

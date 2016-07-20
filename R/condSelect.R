@@ -77,6 +77,7 @@ getConditionSelector<- function(num=0, choices = NULL, selected = NULL) {
 #' @param id, input id
 #' @param num, panel that is going to be shown
 #' @param default, default text
+#' @param input, input params
 #' @examples
 #'     x <- selectedInput()
 #'
@@ -97,6 +98,8 @@ selectedInput <- function(id = NULL, num = 0, default = NULL,
 #'
 #' Selects user input conditions to run in DESeq.
 #'
+#' @param id, input id
+#' @param name, label of the box
 #' @param num, panel that is going to be shown
 #' @param choices, sample list
 #' @param selected, selected smaple list

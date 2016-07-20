@@ -72,10 +72,31 @@ EdgeR[2]
 For the details please check the user guide.
 `EdgeR userguide, <https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf>`_.
 
-
 Used parameters for EdgeR
 =========================
 
+  - Normalization: Calculate normalization factors to scale the raw 
+  library sizes. Values can be "TMM","RLE","upperquartile","none".
+
+  - Dispersion, either a numeric vector of dispersions or a character 
+     string indicating that dispersions should be taken from the data 
+     object. If a numeric vector, then can be either of length one or 
+     of length equal to the number of genes. Allowable character 
+     values are "common", "trended", "tagwise" or "auto". 
+     Default behavior ("auto" is to use most complex dispersions 
+     found in data object.
+
+  - testType: exactTest or glmLRT. exactTest: Computes p-values for differential 
+     abundance for each gene between two digital libraries, conditioning 
+     on the total count for each gene. The counts in each group as a 
+     proportion of the whole are assumed to follow a binomial distribution. 
+     glmLRT: Fit a negative binomial generalized log-linear model to the read 
+     counts for each gene. Conduct genewise statistical tests for a given 
+     coefficient or coefficient contrast.
+     
+  -  rowsum.filter: regions/genes/isoforms with total count 
+  (across all samples) below this value will be filtered out
+  
 Limma[3]
 ========
 For the details please check the user guide.
@@ -85,6 +106,17 @@ Limma is a package to analyse of microarray or RNA-Seq data. If data is normaliz
 Used parameters for Limma
 =========================
 
+  - Normalization: Calculate normalization factors to scale the raw 
+  library sizes. Values can be "TMM","RLE","upperquartile","none".
+  
+  - Fit Type: fitting method; "ls" for least squares or "robust" 
+  for robust regression
+  
+  - Norm. Bet. Arrays: Normalization Between Arrays; Normalizes expression intensities so that the    
+  intensities or log-ratios have similar distributions across a set of arrays.
+
+  - rowsum.filter, regions/genes/isoforms with total count 
+  (across all samples) below this value will be filtered out
 
 DEBrowser
 =========

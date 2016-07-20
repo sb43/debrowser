@@ -190,7 +190,7 @@ runEdgeR<- function(data = NULL, columns = NULL, conds = NULL,
 #'     library sizes. Values can be "TMM","RLE","upperquartile","none".
 #' @param fitType, fitting method; "ls" for least squares or "robust" 
 #'     for robust regression
-#' @param normBetween, Normalizes expression intensities so that the 
+#' @param normBet, Normalizes expression intensities so that the 
 #'     intensities or log-ratios have similar distributions across a set of arrays.
 #' @param rowsum.filter, regions/genes/isoforms with total count 
 #'     (across all samples) below this value will be filtered out
