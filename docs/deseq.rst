@@ -37,23 +37,23 @@ however there are other ways to obtain this data.
 
 The TSV files used to describe the quantification counts are similar to this:
 
-	gene	transcript	exper_rep1	exper_rep2	exper_rep3	control_rep1	control_rep2	control_rep3
+IE:
 
-	DQ714826	uc007tfl.1	0.00	0.00	0.00	0.00	0.00	0.00
-
-	DQ551521	uc008bml.1	0.00	0.00	0.00	0.00	0.00	0.00
-
-	AK028549	uc011wpi.1	2.00	1.29	0.00	0.00	0.00	1.40
+| gene     | transcript | exper_rep1 | exper_rep2 | control_rep1 | control_rep2 |
+|----------|------------|------------|------------|--------------|--------------|
+| DQ714826 | uc007tfl.1 | 0.00       | 0.00       | 0.00         | 0.00         |
+| DQ551521 | uc008bml.1 | 0.00       | 0.00       | 0.00         | 0.00         |
+| AK028549 | uc011wpi.1 | 2.00       | 1.29       | 0.00         | 0.00         |
 
 
 Where the gene column represent the gene name, the transcript column represents the transcript(s) name (comma separated for multiple),
 and the rest of the columns are the raw counts for your samples.
 
-DESeq2[1]
+DESeq2
 =========
 
 For the details please check the user guide.
-`DESeq2 userguide, <https://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.pdf>_`
+`DESeq2 userguide, <https://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.pdf>`_
 DESeq2 performs multiple steps in order to analyze the data you've provided for it.
 The first step is to indicate the condition that each column (experiment) in the table represent.
 You can group multiple samples into one condition column.
@@ -66,8 +66,28 @@ DESeq2 rquires count data as input obtained from RNA-Seq or another high-thorugh
 
 Used parameters for DESeq2
 ==========================
+  - fitType:
+     either "parametric", "local", or "mean" for the type 
+     of fitting of dispersions to the mean intensity. 
+     See estimateDispersions for description.
 
-EdgeR[2]
+  - betaPrior: 
+     whether or not to put a zero-mean normal prior
+     on the non-intercept coefficients See nbinomWaldTest for 
+     description of the calculation of the beta prior. By default, 
+     the beta prior is used only for the Wald test, but can also be 
+     specified for the likelihood ratio test.
+
+  - testType: 
+     either "Wald" or "LRT", which will then use either 
+     Wald significance tests (defined by nbinomWaldTest), or the 
+     likelihood ratio test on the difference in deviance between a 
+     full and reduced model formula (defined by nbinomLRT)
+
+  - rowsum.filter: 
+     regions/genes/isoforms with total count (across all samples) below this value will be filtered out
+
+EdgeR
 ========
 For the details please check the user guide.
 `EdgeR userguide, <https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf>`_.
@@ -75,10 +95,12 @@ For the details please check the user guide.
 Used parameters for EdgeR
 =========================
 
-  - Normalization: Calculate normalization factors to scale the raw 
-  library sizes. Values can be "TMM","RLE","upperquartile","none".
+  - Normalization:
+     Calculate normalization factors to scale the raw 
+     library sizes. Values can be "TMM","RLE","upperquartile","none".
 
-  - Dispersion, either a numeric vector of dispersions or a character 
+  - Dispersion:
+     either a numeric vector of dispersions or a character 
      string indicating that dispersions should be taken from the data 
      object. If a numeric vector, then can be either of length one or 
      of length equal to the number of genes. Allowable character 
@@ -86,7 +108,8 @@ Used parameters for EdgeR
      Default behavior ("auto" is to use most complex dispersions 
      found in data object.
 
-  - testType: exactTest or glmLRT. exactTest: Computes p-values for differential 
+  - testType: 
+     exactTest or glmLRT. exactTest: Computes p-values for differential 
      abundance for each gene between two digital libraries, conditioning 
      on the total count for each gene. The counts in each group as a 
      proportion of the whole are assumed to follow a binomial distribution. 
@@ -94,10 +117,10 @@ Used parameters for EdgeR
      counts for each gene. Conduct genewise statistical tests for a given 
      coefficient or coefficient contrast.
      
-  -  rowsum.filter: regions/genes/isoforms with total count 
-  (across all samples) below this value will be filtered out
+  - rowsum.filter: 
+     regions/genes/isoforms with total count (across all samples) below this value will be filtered out
   
-Limma[3]
+Limma
 ========
 For the details please check the user guide.
 `Limma userguide, <https://bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf>`_.
@@ -106,17 +129,18 @@ Limma is a package to analyse of microarray or RNA-Seq data. If data is normaliz
 Used parameters for Limma
 =========================
 
-  - Normalization: Calculate normalization factors to scale the raw 
-  library sizes. Values can be "TMM","RLE","upperquartile","none".
+  - Normalization: 
+     Calculate normalization factors to scale the raw library sizes. Values can be "TMM","RLE","upperquartile","none".
   
-  - Fit Type: fitting method; "ls" for least squares or "robust" 
-  for robust regression
+  - Fit Type: 
+     fitting method; "ls" for least squares or "robust" for robust regression
   
-  - Norm. Bet. Arrays: Normalization Between Arrays; Normalizes expression intensities so that the    
-  intensities or log-ratios have similar distributions across a set of arrays.
+  - Norm. Bet. Arrays: 
+     Normalization Between Arrays; Normalizes expression intensities so that the    
+     intensities or log-ratios have similar distributions across a set of arrays.
 
-  - rowsum.filter, regions/genes/isoforms with total count 
-  (across all samples) below this value will be filtered out
+  - rowsum.filter:
+      regions/genes/isoforms with total count (across all samples) below this value will be filtered out
 
 DEBrowser
 =========
