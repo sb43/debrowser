@@ -38,14 +38,14 @@ however there are other ways to obtain this data.
 The TSV files used to describe the quantification counts are similar to this:
 
 IE:
-========  ==========   ==========  ==========   ============   ============
-gene      transcript   exper_rep1  exper_rep2  control_rep1  control_rep2
-========  ==========   ==========  ==========   ============   ============
-DQ714826  uc007tfl.1         0.00        0.00          0.00            0.00
-DQ551521  uc008bml.1         0.00        0.00          0.00            0.00
-AK028549  uc011wpi.1         2.00        1.29          0.00            0.00
-========  ==========   ==========  ==========   ============   ============
 
+=====  =====  =====  =====  =====  =====
+gene   trans   exp1   exp2  cont1  cont2
+=====  =====  =====  =====  =====  =====
+DQ714  uc007   0.00   0.00   0.00   0.00
+DQ554  uc008   0.00   0.00   0.00   0.00
+AK028  uc011   2.00   1.29   0.00   0.00
+=====  =====  =====  =====  =====  =====
 
 Where the gene column represent the gene name, the transcript column represents the transcript(s) name (comma separated for multiple),
 and the rest of the columns are the raw counts for your samples.
