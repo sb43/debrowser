@@ -17,6 +17,7 @@ deUI <- function() {
         package = "debrowser"))
     shinyUI(fluidPage(
     shinyjs::useShinyjs(),
+    extendShinyjs(text = jsHeatmap()),
     shinyjs::inlineCSS("
         #loading-debrowser {
         position: absolute;
@@ -42,12 +43,12 @@ deUI <- function() {
         uiOutput("initialmenu"),
         conditionalPanel(condition = "((output.definished | 
             input.goQCplots) & output.dataready)",
-            uiOutput("downloadSection")),
-        conditionalPanel(condition = "(input.goButton & output.dataready)",
-            uiOutput('cutoffSelection')),
+                         uiOutput("leftMenu")),
         conditionalPanel(condition = "((output.definished | 
             input.goQCplots) & output.dataready)",
-            uiOutput("leftMenu"))
+            uiOutput("downloadSection")),
+        conditionalPanel(condition = "(input.goButton & output.dataready)",
+            uiOutput('cutoffSelection'))
     ),
     mainPanel(
     tags$head(

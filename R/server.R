@@ -12,7 +12,6 @@
 #'     deServer
 #'
 #' @export
-#' @import     clusterProfiler
 #' @importFrom shiny  actionButton  actionLink  addResourcePath  column 
 #'             conditionalPanel  downloadButton  downloadHandler 
 #'             eventReactive  fileInput  fluidPage  helpText  isolate 
@@ -23,9 +22,10 @@
 #'             sidebarPanel  sliderInput  stopApp  tabPanel  tabsetPanel 
 #'             textInput  textOutput  titlePanel  uiOutput tags HTML
 #'             h4 img icon updateTabsetPanel  updateTextInput  validate 
-#'             wellPanel checkboxInput
+#'             wellPanel checkboxInput br checkboxGroupInput
 #' @importFrom shinyjs show hide enable disable useShinyjs extendShinyjs
 #'             js inlineCSS
+#' @importFrom d3heatmap d3heatmap renderD3heatmap d3heatmapOutput
 #' @importFrom DT datatable dataTableOutput renderDataTable formatStyle
 #'             styleInterval
 #' @importFrom ggplot2 aes aes_string geom_bar geom_point ggplot
@@ -41,7 +41,8 @@
 #' @importFrom grDevices dev.off pdf
 #' @importFrom graphics barplot hist pairs par rect text
 #' @importFrom stats aggregate as.dist cor cor.test dist
-#'             hclust kmeans na.omit prcomp var sd
+#'             hclust kmeans na.omit prcomp var sd model.matrix
+#'             p.adjust
 #' @importFrom utils read.table write.table update.packages
 #' @importFrom DOSE enrichDO enrichMap gseaplot
 #' @importMethodsFrom AnnotationDbi as.data.frame as.list colnames
@@ -55,10 +56,11 @@
 #' @importFrom jsonlite fromJSON
 #' @importFrom stringi stri_rand_strings
 #' @importFrom ReactomePA enrichPathway
-#' @importFrom edgeR calcNormFactors equalizeLibSizes DGEList
 #' @importFrom DESeq2 DESeq results DESeqDataSetFromMatrix
 #' @importFrom annotate geneSymbols
 #' @importFrom reshape2 melt
+#' @importFrom baySeq getLibsizes getLikelihoods getLikelihoods.NB
+#'             getPriors getPriors.NB nbinomDensity
 #' @import org.Hs.eg.db
 #' @import org.Mm.eg.db
 deServer <- function(input, output, session) {
@@ -66,7 +68,7 @@ deServer <- function(input, output, session) {
     {
         if (!interactive()) {
             options( shiny.maxRequestSize = 30 * 1024 ^ 2,
-                shiny.fullstacktrace = TRUE, shiny.trace=TRUE, 
+                shiny.fullstacktrace = FALSE, shiny.trace=FALSE, 
                 shiny.autoreload=TRUE)
             #library(debrowser)
         }
@@ -85,9 +87,6 @@ deServer <- function(input, output, session) {
         })
         output$qcpanel <- renderUI({
             getQCPanel(input)
-        })
-        output$intheatmap <- renderUI({
-            getIntHeatmapVis(randstr())
         })
         output$gopanel <- renderUI({
             getGoPanel(!is.null(init_data()))
@@ -151,7 +150,7 @@ deServer <- function(input, output, session) {
         Dataset <- reactive({
             load_data(input, session)
         })
-        choicecounter <- reactiveValues(nc = 0)
+        choicecounter <- reactiveValues(nc = 0, qc = 0)
         observeEvent(input$add_btn, {
             shinyjs::enable("goButton")
             choicecounter$nc <- choicecounter$nc + 1}
@@ -167,20 +166,17 @@ deServer <- function(input, output, session) {
             hideObj(c("goQCplots", "startDESeq"))
             showObj(c("add_btn","rm_btn","goButton", "fittype"))
         })
-
         observeEvent(input$resetsamples, {
             updateTextInput(session, "samples",value = "" )
             session$sendCustomMessage("startDESeq", NULL)
             showObj(c("goQCplots", "startDESeq"))
-            hideObj(c("add_btn","rm_btn","goButton", "fittype"))
+            hideObj(c("add_btn","rm_btn","goButton"))
             choicecounter$nc <- 0
         })
-
         samples <- reactive({
             if (is.null(Dataset())) return(NULL)
                 getSamples(colnames(Dataset()), index = 2)
         })
-
         output$sampleSelector <- renderUI({
             if (is.null(samples())) return(NULL)
             if (is.null(input$samples))
@@ -201,10 +197,14 @@ deServer <- function(input, output, session) {
             prepDataContainer(Dataset(), choicecounter$nc, 
             input, session)
         })
-        observeEvent(input$goQCplots, {
-            togglePanels(2, c(2, 4), session)
+        observeEvent(input$goButton, {
+            init_data <- NULL 
+            choicecounter$qc <- 0
         })
-
+        observeEvent(input$goQCplots, {
+            choicecounter$qc <- 1
+            togglePanels(2, c( 2, 4), session)
+        })
         comparison <- reactive({
             compselect <- 1
             if (!is.null(input$compselect))
@@ -250,35 +250,36 @@ deServer <- function(input, output, session) {
         qcdata <- reactive({
             prepDataForQC(Dataset()[,input$samples])
         })
-        heatdat <- reactive({
-            if (is.null(heatmapVals$data))
-                heatmapVals$data <- getQCReplot(cols(), conds(), 
-                    datasetInput(), input, inputQCPlot())
-            dat <- heatmapVals$data
-            if (is.null(dat)) return (NULL)
-            count = nrow(t(dat$carpet))
-            dat <- reshape2::melt(t(dat$carpet), 
-            varnames=c("Genes","Samples"), value.name="Values")
-            ID <- paste0(dat$Genes, "_", dat$Samples)
-            dat <- cbind(dat, ID)
-            rownames(dat) <- dat$ID
-            list(dat, count)
-        })
-        observe({
-            if (inputQCPlot()$interactive == 1 && input$qcplot == "heatmap")
-                selected$data <- 
-                    getSelHeat(isolate(init_data()), isolate(heatdat()[[1]]),
-                        isolate(heatdat()[[2]])) 
-        })
-
-        heatmapVals <- reactiveValues(data = NULL)
    
         output$qcplotout <- renderPlot({
-            heatmapVals$data <- getQCReplot(cols(), conds(), 
+            getQCReplot(cols(), conds(), 
                  datasetInput(), input, inputQCPlot())
-            return( heatmapVals$data )
+        })
+        df_select <- reactive({
+            m <- NULL
+            if (input$dataset != "selected"){
+                all <- input$samples
+                selection <- input$col_list
+                if("All" %in% input$col_list || length(input$col_list) == 0){
+                    selection <- all
+                }else{
+                    selection <- input$col_list
+                }
+                m <- isolate(datasetInput())[, selection]
+            }
+            m
+        })
+        v <- c()
+        output$intheatmap <- renderD3heatmap({
+            shinyjs::onclick("intheatmap", js$getNames(v))
+            getIntHeatmap(isolate(df_select()), input, inputQCPlot())
         })
 
+        output$columnSelForHeatmap <- renderUI({
+            checkboxGroupInput("col_list", "Select col to include:",
+                isolate(input$samples), 
+                selected=isolate(input$samples))
+        })
         output$pcaexplained <- renderPlot({
             a <- NULL
             if (!is.null(input$qcplot)) {
@@ -299,18 +300,20 @@ deServer <- function(input, output, session) {
             m$height <- input$height
             return(m)
         })
+        
         goplots <- reactive({
             dat <- getDataForTables(input, init_data(),
-                                    filt_data(), selected,
-                                    getMostVaried(),  isolate(mergedComp()))
+                      filt_data(), selected,
+                      getMostVaried(),  isolate(mergedComp()))
             getGOPlots(dat[[1]][, isolate(cols())], input)
         })
+
         inputGOstart <- eventReactive(input$startGO, {
-            return(goplots())
+            goplots()
         })
         output$GOPlots1 <- renderPlot({
             if (!is.null(inputGOstart()$p) && input$startGO){
-                return(inputGOstart()$p)
+               return(inputGOstart()$p)
             }
         })
       
@@ -328,7 +331,7 @@ deServer <- function(input, output, session) {
         })
         getMostVaried <- reactive({
             a <- NULL
-            if (!input$goQCplots)
+            if (choicecounter$qc == 0)
                 a <- filt_data()[filt_data()$Legend=="MV" | 
                                  filt_data()$Legend=="GS", ]
             else
@@ -340,9 +343,9 @@ deServer <- function(input, output, session) {
         output$gotable <- DT::renderDataTable({
             if (!is.null(inputGOstart()$table)){
                 DT::datatable(inputGOstart()$table,
-                list(lengthMenu = list(c(10, 25, 50, 100),
-                c("10", "25", "50", "100")),
-                pageLength = 25, paging = TRUE, searching = TRUE))
+                    list(lengthMenu = list(c(10, 25, 50, 100),
+                    c("10", "25", "50", "100")),
+                    pageLength = 25, paging = TRUE, searching = TRUE))
             }
         })
 
@@ -361,7 +364,7 @@ deServer <- function(input, output, session) {
         })
         datasetInput <- function(addIdFlag = FALSE){
             m <- NULL
-            if (!input$goQCplots ) {
+            if (choicecounter$qc == 0 ) {
                 mergedCompDat <- NULL
                 if (input$dataset == "comparisons")
                     mergedCompDat <- isolate(mergedComp())
@@ -381,8 +384,8 @@ deServer <- function(input, output, session) {
             paste(input$dataset, "csv", sep = ".")
         }, content = function(file) {
             dat <- getDataForTables(input, init_data(),
-                 filt_data(), selected,
-                 getMostVaried(),  isolate(mergedComp()))
+                                    filt_data(), selected,
+                                    getMostVaried(),  isolate(mergedComp()))
             dat2 <- removeCols(c("x", "y","Legend", "Size"), dat[[1]])
             if(!("ID" %in% names(dat2)))
                 dat2 <- addID(dat2)
@@ -392,7 +395,7 @@ deServer <- function(input, output, session) {
         output$downloadPlot <- downloadHandler(filename = function() {
             paste(input$qcplot, ".pdf", sep = "")
         }, content = function(file) {
-            if (!input$goQCplots)
+            if (choicecounter$qc == 0)
                 saveQCPlot(file, input, datasetInput(), 
                     cols(), conds(), inputQCPlot())
             else
@@ -404,7 +407,7 @@ deServer <- function(input, output, session) {
             paste(input$goplot, ".pdf", sep = "")
         }, content = function(file) {
             pdf(file)
-            print( goplots()$p )
+            print( inputGOstart()$p )
             dev.off()
         })
     },

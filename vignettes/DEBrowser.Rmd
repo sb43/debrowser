@@ -25,7 +25,6 @@ suppressPackageStartupMessages({
     library(ReactomePA)
 })
 ```
-
 # DEBrowser: 
 Interactive Differential Expression Analysis Tool
 
@@ -474,3 +473,4 @@ and creating unique plots to view and analyze data can be a creative way
 to recreate the same analytical results produced.  DEBrowser can be used in
 multiple ways to check the reproducibility of research results in a highly
 interactive format!
+

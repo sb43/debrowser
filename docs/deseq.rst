@@ -49,14 +49,42 @@ The TSV files used to describe the quantification counts are similar to this:
 Where the gene column represent the gene name, the transcript column represents the transcript(s) name (comma separated for multiple),
 and the rest of the columns are the raw counts for your samples.
 
-DESeq2 Workflow
-===============
+DESeq2[1]
+=========
 
+For the details please check the user guide.
+`DESeq2 userguide, <https://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.pdf>_`
 DESeq2 performs multiple steps in order to analyze the data you've provided for it.
 The first step is to indicate the condition that each column (experiment) in the table represent.
 You can group multiple samples into one condition column.
 DESeq2 will compute the probability that a gene is differentially expressed (DE) for ALL genes in the table. It outputs
 both a nominal and a multiple hypothesis corrected p-value (padj) using a negative binomial distribution.
+
+Un-normalized counts
+====================
+DESeq2 rquires count data as input obtained from RNA-Seq or another high-thorughput sequencing experiment in the form of matrix values. Here we convert un-integer values to integer to be able to run DESeq2. The matrix values should be un-normalized, since DESeq2 model internally corrects for library size. So, transformed or normalized values such as counts scaled by library size should not be used as input. Please use edgeR or limma for normalized counts.
+
+Used parameters for DESeq2
+==========================
+
+EdgeR[2]
+========
+For the details please check the user guide.
+`EdgeR userguide, <https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf>`_.
+
+
+Used parameters for EdgeR
+=========================
+
+Limma[3]
+========
+For the details please check the user guide.
+`Limma userguide, <https://bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf>`_.
+Limma is a package to analyse of microarray or RNA-Seq data. If data is normalized with spike-in or any other scaling, tranforamtion or normalization method, Limma can be ideal. In that case, prefer limma rather than DESeq2 or EdgeR.
+
+Used parameters for Limma
+=========================
+
 
 DEBrowser
 =========
@@ -73,3 +101,8 @@ References
 1. Love MI, Huber W and Anders S (2014). Moderated estimation of fold change and
     dispersion for RNA-seq data with DESeq2.  Genome Biology, 15, pp. 550.
     http://doi.org/10.1186/s13059-014-0550-8.
+2. Robinson, MD, and Smyth, GK (2008). Small sample estimation of negative binomial dispersion,
+    with applications to SAGE data. Biostatistics 9, 321–332.
+3. Ritchie, ME, Phipson, B, Wu, D, Hu, Y, Law, CW, Shi, W, and Smyth, GK (2015).
+    limma powers differential expression analyses for RNA-sequencing and microarray studies.
+    Nucleic Acids Research 43(7), e47.
