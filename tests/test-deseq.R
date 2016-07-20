@@ -12,6 +12,7 @@ data <- data.frame(demodata[, columns])
 
 test_that("Able to run DESeq2", {
     deseqrun <- runDESeq(data, columns, conds)
+    edgeRrun <- runEdgeR(data, columns, conds)
     expect_true(exists("deseqrun"))
 })
 
@@ -57,6 +58,8 @@ rdata[, "Size"] <- "40"
 dat <- rdata
 dat$M <- rdata$Cond1 - rdata$Cond2
 dat$A <- (rdata$Cond1 + rdata$Cond2) / 2
+
+updown <- rdata[rdata$Legend=="Up" | rdata$Legend=="Down",columns]
 ##################################################
 
 test_that("Check the QC plots", {

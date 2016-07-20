@@ -20,8 +20,9 @@ getQCPanel <- function(input = NULL) {
     }
     a <- list(
         helpText( "Please select the parameters and press the 
-        submit button in the left menu
-        for the plots" ),
+        submit button in the left menu for the plots" ),
+        getHelpButton("method", 
+        "http://debrowser.readthedocs.io/en/develop/quickstart.html#quality-control-plots"),
         conditionalPanel(condition = 
             "(!(input.interactive && input.qcplot == 'heatmap'))",
             column(12, plotOutput("qcplotout",
@@ -29,7 +30,14 @@ getQCPanel <- function(input = NULL) {
         conditionalPanel(condition = "input.qcplot == 'pca'",
             column(12, plotOutput("pcaexplained",
             height = height, width = width))),
-        uiOutput("intheatmap")
+        d3heatmapOutput("intheatmap", width = width, height=height),
+        tags$script('
+         $(document).ready(function() {
+                    $("#heatmap").on("shiny:recalculating", function(event) {
+                    $(".d3heatmap-tip").remove();
+                    });
+                });
+        ')
        )
     return(a)
 }
@@ -81,7 +89,7 @@ getQCPlots <- function(dataset = NULL, input = NULL,
         } else if (input$qcplot == "heatmap") {
             a <- runHeatmap(dataset, title = paste("Dataset:", input$dataset),
                 clustering_method = inputQCPlot$clustering_method,
-                distance_method = inputQCPlot$distance_method)
+                distance_method = inputQCPlot$distance_method,  interactive = FALSE)
         } else if (input$qcplot == "pca") {
             if (!is.null(metadata)){
                 colnames(metadata) <- c("samples", "conditions")
