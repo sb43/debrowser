@@ -32,6 +32,18 @@ To view the entire demo data file, you can download this `demo set`_.  For an ex
 
 .. _advanced demo: http://bioinfo.umassmed.edu/pub/debrowser/advanced_demo.tsv
 
+The TSV files used to describe the quantification counts are similar to this:
+
+IE:
+
+=====  =====  =====  =====  =====  =====
+gene   trans   exp1   exp2  cont1  cont2
+=====  =====  =====  =====  =====  =====
+DQ714  uc007   0.00   0.00   0.00   0.00
+DQ554  uc008   0.00   0.00   0.00   0.00
+AK028  uc011   2.00   1.29   0.00   0.00
+=====  =====  =====  =====  =====  =====
+
 DEBrowser also accepts TSV's via hyperlink by following a few conversion steps.  First, using the API provided by
 Dolphin, we will convert TSV into an html represented TSV using this website:
 
