@@ -49,15 +49,14 @@ Imports:
     d3heatmap,
     org.Hs.eg.db,
     org.Mm.eg.db,
-    testthat,
-    rmarkdown,
-    knitr,
-    R.rsp
-RoxygenNote: 5.0.1
-Suggests: DESeq2,
     limma,
     edgeR,  
     clusterProfiler
+RoxygenNote: 5.0.1
+Suggests: testthat,
+    rmarkdown,
+    knitr,
+    R.rsp
 VignetteBuilder: knitr,  R.rsp
 URL: https://github.com/UMMS-Biocore/debrowser
 BugReports: https://github.com/UMMS-Biocore/debrowser/issues/new

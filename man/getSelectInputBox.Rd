@@ -8,6 +8,10 @@ getSelectInputBox(id = NULL, name = NULL, num = 0, choices = NULL,
   selected = NULL)
 }
 \arguments{
+\item{id, }{input id}
+
+\item{name, }{label of the box}
+
 \item{num, }{panel that is going to be shown}
 
 \item{choices, }{sample list}

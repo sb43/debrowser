@@ -25,11 +25,11 @@ library sizes. Values can be "TMM","RLE","upperquartile","none".}
 \item{fitType, }{fitting method; "ls" for least squares or "robust" 
 for robust regression}
 
+\item{normBet, }{Normalizes expression intensities so that the 
+intensities or log-ratios have similar distributions across a set of arrays.}
+
 \item{rowsum.filter, }{regions/genes/isoforms with total count 
 (across all samples) below this value will be filtered out}
-
-\item{normBetween, }{Normalizes expression intensities so that the 
-intensities or log-ratios have similar distributions across a set of arrays.}
 }
 \value{
 Limma results

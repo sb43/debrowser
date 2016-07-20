@@ -9,6 +9,8 @@ getHelpButton(name = NULL, link = NULL)
 }
 \arguments{
 \item{name, }{name that are going to come after info}
+
+\item{link, }{link of the help}
 }
 \value{
 the info button

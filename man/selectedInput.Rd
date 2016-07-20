@@ -12,6 +12,8 @@ selectedInput(id = NULL, num = 0, default = NULL, input = NULL)
 \item{num, }{panel that is going to be shown}
 
 \item{default, }{default text}
+
+\item{input, }{input params}
 }
 \description{
 Selects user input conditions to run in DESeq.
