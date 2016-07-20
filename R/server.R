@@ -62,7 +62,7 @@
 #'             getPriors getPriors.NB nbinomDensity
 #' @importMethodsFrom baySeq "densityFunction<-" "libsizes<-"
 #' @importFrom clusterProfiler compareCluster enrichKEGG dotplot 
-#' @importFrom DESeq2 DESeq DESeqDataSetFromMatrix
+#' @importFrom DESeq2 DESeq DESeqDataSetFromMatrix results
 #' @importFrom edgeR calcNormFactors equalizeLibSizes DGEList glmLRT
 #'             exactTest estimateCommonDisp glmFit
 #' @importFrom limma lmFit voom eBayes topTable

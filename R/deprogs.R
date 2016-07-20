@@ -225,7 +225,7 @@ runLimma<- function(data = NULL, columns = NULL, conds = NULL,
     
     dge <- calcNormFactors(dge, method=normfact, samples=columns)
     
-    v <- voom(dge, design=design, normalize = normBet, plot=FALSE)
+    v <- voom(dge, design=design, normalize.method = normBet, plot=FALSE)
     
     fit <- lmFit(v, design=design)
     fit <- eBayes(fit)

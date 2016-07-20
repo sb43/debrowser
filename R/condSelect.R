@@ -87,10 +87,10 @@ selectedInput <- function(id = NULL, num = 0, default = NULL,
     input = NULL) {
     if (is.null(id)) return(NULL)
     m <- NULL
-    if (is.null(input[[paste0("id", num)]]))
+    if (is.null(input[[paste0(id, num)]]))
         m <- default
     else
-        m <- input[[paste0("id", num)]]
+        m <- input[[paste0(id, num)]]
     m
 }
 
