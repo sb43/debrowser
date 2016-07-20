@@ -1,35 +1,6 @@
 ************************************
-Version 1.0.9 Release
+Version 1.1.7 Release
 ***********************************
 - Limma, EdgeR and DESeq2 support
-
-************************************
-Version 1.0.8 Release
-***********************************
-- GO Term table loads quicker
-
-************************************
-Version 1.0.7 Release
-***********************************
-- Download data works for searched genes too
-
-************************************
-Version 1.0.6 Release
-***********************************
-- Gene list search bug fix
-
-************************************
-Version 1.0.5 Release
-***********************************
-
-- Comparison table faster load
-- Comparison table download fix
-- Gene list search fix
-
-
-************************************
-Version 1.0.0 Release
-***********************************
-
-- First installation of debrowser
+- Interactive Heatmap
 
