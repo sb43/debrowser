@@ -154,6 +154,11 @@ UI to run DESeq2, the results are then input to DEBrowser.  DEBrowser manipulate
 interactive plotting by which changing padj or fold change limits also changes the displayed graph(s).
 For more details about these plots and tables, please visit our quickstart guide for some helpful tutorials.
 
+For comparisons against other popular data visualization tools, see the table below.
+
+.. image:: debrowser_pics/comparison_table.png
+	:align: center
+
 References
 ==========
 
