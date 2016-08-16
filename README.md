@@ -451,3 +451,17 @@ and creating unique plots to view and analyze data can be a creative way
 to recreate the same analytical results produced.  DEBrowser can be used in
 multiple ways to check the reproducibility of research results in a highly
 interactive format!
+
+**DEBrowser vs other Differential Expression analysis software:**
+
+![*Comparison table of DEBrowser, MeV, Chipster, Galaxy, and CummeRBund*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_38.png "")
+
+The comparison table (Figure 38) displays multiple comparisons between debrowser and other various methods of viewing Differential Expression Analysis results.
+
+For more information on MeV please visit this link: http://www.tm4.org/mev.html
+
+For more information about Chipster, please visit this link: http://chipster.csc.fi/manual/
+
+For more information about Galaxy, please visit this link: https://usegalaxy.org/
+
+For more information about CummeRBund, please visit this link: http://compbio.mit.edu/cummeRbund/manual_2_0.html
