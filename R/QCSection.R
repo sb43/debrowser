@@ -203,14 +203,15 @@ getIQRPlot <- function(data=NULL, cols=NULL, title = ""){
     
     data <- addID(data)
     mdata <- melt(as.data.frame(data[,c("ID", cols)]),"ID")
-    colnames(mdata)<-c("ID", "libs", "logcount")
-    ypos <- -5 * max(nchar(as.vector(mdata$libs)))
+    colnames(mdata)<-c("ID", "samples", "logcount")
+    ypos <- -5 * max(nchar(as.vector(mdata$samples)))
     visIQR <- mdata %>%
-        ggvis(x = ~libs, y = ~logcount, fill := "green") %>%
+        ggvis(x = ~samples, y = ~logcount, fill := "green") %>%
         layer_boxplots() %>% 
         set_options(width = "auto", height = 350, resizable=FALSE) %>%
         add_title_pos(title = "", angle = 310,
             dy = ypos, dx = 0) %>%
+        add_tooltip(getToolTipPCA, "hover") %>%
         add_axis("y", title = "logcount")
 }
 
@@ -235,14 +236,15 @@ getDensityPlot <- function(data=NULL, cols=NULL, title = ""){
     
     data <- addID(data)
     mdata <- melt(as.data.frame(data[,c("ID", cols)]),"ID")
-    colnames(mdata)<-c("ID", "libs", "density")
-    ypos <- -5 * max(nchar(as.vector(mdata$libs)))
+    colnames(mdata)<-c("ID", "samples", "density")
+    ypos <- -5 * max(nchar(as.vector(mdata$samples)))
     visDensity <- mdata %>%
-        ggvis(~density, fill = ~libs) %>%
-        group_by(libs) %>%
+        ggvis(~density, fill = ~samples) %>%
+        group_by(samples) %>%
         set_options(width = "auto", height = 350, resizable=FALSE) %>%
         layer_densities() %>% 
-        add_axis("x", title = "libs") %>%
+        add_axis("x", title = "samples") %>%
+        add_tooltip(getToolTipPCA, "hover") %>%
         add_axis("y", title = "logcount")
 }
 
