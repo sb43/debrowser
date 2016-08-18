@@ -17,7 +17,7 @@ Description: Bioinformatics platform containing interactive plots and tables
     made on site and the results are shown in various plots such as scatter,
     bar, box, volcano, ma plots and Heatmaps.
 Depends:
-    R (>= 3.3.1),
+    R (>= 3.3.0),
     shiny,
     ggvis,
     jsonlite,
