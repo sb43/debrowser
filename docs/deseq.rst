@@ -104,20 +104,15 @@ Used parameters for EdgeR
   - Dispersion:
      either a numeric vector of dispersions or a character 
      string indicating that dispersions should be taken from the data 
-     object. If a numeric vector, then can be either of length one or 
-     of length equal to the number of genes. Allowable character 
-     values are "common", "trended", "tagwise" or "auto". 
-     Default behavior ("auto" is to use most complex dispersions 
-     found in data object.
+     object.
 
   - testType: 
      exactTest or glmLRT. exactTest: Computes p-values for differential 
-     abundance for each gene between two digital libraries, conditioning 
-     on the total count for each gene. The counts in each group as a 
-     proportion of the whole are assumed to follow a binomial distribution. 
-     glmLRT: Fit a negative binomial generalized log-linear model to the read 
-     counts for each gene. Conduct genewise statistical tests for a given 
-     coefficient or coefficient contrast.
+     abundance for each gene between two samples, conditioning 
+     on the total count for each gene. The counts in each group are assumed to 
+     follow a binomial distribution. 
+     glmLRT: Fits a negative binomial generalized log-linear model to the read 
+     counts for each gene and conducts genewise statistical tests.
      
   - rowsum.filter: 
      regions/genes/isoforms with total count (across all samples) below this value will be filtered out
