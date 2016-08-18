@@ -209,7 +209,8 @@ getIQRPlot <- function(data=NULL, cols=NULL, title = ""){
         ggvis(x = ~libs, y = ~logcount, fill := "green") %>%
         layer_boxplots() %>% 
         set_options(width = "auto", height = 350, resizable=FALSE) %>%
-        add_axis("x", title = "libs") %>%
+        add_title_pos(title = "", angle = 310,
+            dy = ypos, dx = 0) %>%
         add_axis("y", title = "logcount")
 }
 
@@ -305,7 +306,8 @@ getSelectedCols <- function(data = NULL, datasetInput = NULL, input=NULL){
         }else{
             selection <- input$col_list
         }
-        m <- data[rownames(datasetInput), selection]
+        if (!is.null(selection))
+            m <- data[rownames(datasetInput), selection]
     }
     m
 }
