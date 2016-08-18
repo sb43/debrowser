@@ -75,7 +75,9 @@ deServer <- function(input, output, session) {
             options( shiny.maxRequestSize = 30 * 1024 ^ 2,
                 shiny.fullstacktrace = FALSE, shiny.trace=FALSE, 
                 shiny.autoreload=TRUE)
-            #library(debrowser)
+            library(debrowser)
+            library(d3heatmap)
+            library(edgeR)
         }
         observeEvent(input$stopApp, {
             stopApp(returnValue = invisible())
@@ -117,7 +119,7 @@ deServer <- function(input, output, session) {
             getDataPrepPanel(!is.null(init_data))
         })
         output$leftMenu  <- renderUI({
-           getLeftMenu()
+            getLeftMenu()
         })
         output$initialmenu <-renderUI({
             getInitialMenu(input, output, session)
@@ -188,7 +190,8 @@ deServer <- function(input, output, session) {
                 samp <- samples()
             else
                 samp <- input$samples
-            a <- list(selectInput("samples",
+            a <- list(
+                selectInput("samples",
                 label = "Samples",
                 choices = samp, multiple = TRUE,
                 selected = samp)
@@ -239,6 +242,7 @@ deServer <- function(input, output, session) {
         selected <- reactiveValues(data = NULL)
         observe({
             setFilterParams(session, input)
+            prepAddQCPlots(df_select(), input)
         })
         condmsg <- reactiveValues(text = NULL)
         observeEvent(input$startPlots, {
@@ -255,25 +259,14 @@ deServer <- function(input, output, session) {
         qcdata <- reactive({
             prepDataForQC(Dataset()[,input$samples])
         })
-   
         output$qcplotout <- renderPlot({
-            getQCReplot(cols(), conds(), 
-                 datasetInput(), input, inputQCPlot())
+            getQCReplot(isolate(cols()), isolate(conds()), 
+                isolate(df_select()), isolate(input), inputQCPlot())
         })
         df_select <- reactive({
-            m <- NULL
-            if (input$dataset != "selected"){
-                all <- input$samples
-                selection <- input$col_list
-                if("All" %in% input$col_list || length(input$col_list) == 0){
-                    selection <- all
-                }else{
-                    selection <- input$col_list
-                }
-                m <- isolate(datasetInput())[, selection]
-            }
-            m
+            getSelectedCols(Dataset(), datasetInput(), input)
         })
+        
         v <- c()
         output$intheatmap <- renderD3heatmap({
             shinyjs::onclick("intheatmap", js$getNames(v))
@@ -281,15 +274,17 @@ deServer <- function(input, output, session) {
         })
 
         output$columnSelForHeatmap <- renderUI({
-            checkboxGroupInput("col_list", "Select col to include:",
+            wellPanel(id = "tPanel",
+                style = "overflow-y:scroll; max-height: 200px",
+                checkboxGroupInput("col_list", "Select col to include:",
                 isolate(input$samples), 
                 selected=isolate(input$samples))
+            )
         })
         output$pcaexplained <- renderPlot({
             a <- NULL
             if (!is.null(input$qcplot)) {
-                a <- getPCAexplained(datasetInput(), 
-                    cols(), input )
+                a <- getPCAexplained(datasetInput(), input )
             }
             a
         })

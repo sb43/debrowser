@@ -246,7 +246,11 @@ applyFilters <- function(filt_data = NULL, cols = NULL,
         most_varied <- getMostVariedList(m, cols, input$topn, input$mincount)
         m[rownames(most_varied), c("Legend")] <- "MV"
     }
-    
+    #if (input$dataset == "selected" && !is.null(cols) &&
+    #    !is.null(input$genenames)) {
+    #    selectedGenes <- unlist(strsplit(input$genenames, ","))
+    #    m[selectedGenes, c("Legend")] <- "GS"
+    #}
     if (!is.null(input$genesetarea) && input$genesetarea != ""
         && input$methodtabs == "panel1") {
         genelist <- getGeneSetData(m, c(input$genesetarea))

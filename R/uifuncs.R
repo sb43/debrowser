@@ -22,11 +22,11 @@ getDataPrepPanel <- function(flag = FALSE){
         actionButton("goQCplots", "Go to QC plots!"),
         actionButton("resetsamples", "Reset Samples!"),
         conditionalPanel(condition = "input.startDESeq",
-            helpText( "Please add  new comparisons for DE analysis!" ),
+            helpText( "Please add new comparisons for DE analysis!" ),
             uiOutput("conditionSelector"),
             column(12,actionButton("add_btn", "Add New Comparison"),
             actionButton("rm_btn", "Remove"),
-            getHelpButton("method", "http://debrowser.readthedocs.org")),
+            getHelpButton("method", "http://debrowser.readthedocs.io/en/develop/deseq.html#id1")),
             actionButton("goButton", "Submit!"),
            tags$style(type='text/css', "#goButton { margin-top: 10px;}")  ))),
         conditionalPanel(condition = "!input.demo &&
@@ -57,7 +57,8 @@ a <- list( conditionalPanel( (condition <- "input.methodtabs=='panel1'"),
         conditionalPanel( (condition <- "input.methodtabs=='panel2'"),
             wellPanel(radioButtons("qcplot",
                 paste("QC Plots:", sep = ""),
-                c(All2All = "all2all", Heatmap = "heatmap", PCA = "pca"))),
+                c(All2All = "all2all", Heatmap = "heatmap", PCA = "pca", IQR = "IQR", 
+                  Density = "Density"))),
             getQCLeftMenu()),
         conditionalPanel( (condition <- "input.methodtabs=='panel3'"),
             wellPanel(radioButtons("goplot", paste("Go Plots:", sep = ""),
@@ -133,7 +134,10 @@ getPCselection <- function(num = 1, xy = "x" ) {
 #' @export
 #'
 getQCLeftMenu <- function() {
-    a <- list(conditionalPanel( (condition <- "input.qcplot=='all2all' ||
+    a <- list(selectInput("norm_method", "Normalization Method:",
+                          choices <- c("TMM", "RLE", "upperquartile", "none")),
+            uiOutput("columnSelForHeatmap"),
+            conditionalPanel( (condition <- "input.qcplot=='all2all' ||
             input.qcplot=='heatmap' ||
             input.qcplot=='pca'"),
             actionButton("startQCPlot", "Submit!"),
@@ -147,8 +151,6 @@ getQCLeftMenu <- function() {
                 step = 0.1, value = 2)),
             conditionalPanel( (condition <- "input.qcplot=='heatmap'"),
                 checkboxInput("interactive", "Interactive", value = FALSE),
-                conditionalPanel( (condition <- 'input.interactive'),
-                    uiOutput("columnSelForHeatmap")),
                 selectInput("clustering_method", "Clustering Method:",
                 choices <- c("complete", "ward.D2", "single", "average",
                 "mcquitty", "median", "centroid")),
