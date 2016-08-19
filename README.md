@@ -469,6 +469,10 @@ interactive format!
 
 The comparison table (Figure 40) displays multiple comparisons between debrowser and other various methods of viewing Differential Expression Analysis results.
 
+Some of the comparisons can be viewed either within the tool itself or within some of the figures provided. A multiple tool comparisons
+can be observed within firgure 34, an interactive visualization of gene highlighting can be observed for figures 12-14, and an interactive
+visualization of biological variation or condition comparisons can also be observed for figure 34.
+
 For more information on MeV please visit this link: http://www.tm4.org/mev.html
 
 For more information about Chipster, please visit this link: http://chipster.csc.fi/manual/
