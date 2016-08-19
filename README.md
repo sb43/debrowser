@@ -152,8 +152,15 @@ options you can alter to more easily view the all-to-all plot.
 Additionally, two more QC plots are available for you to use: Heatmap and
 PCA plots.  The heatmap (Figure 3) will display genes for each sample within your dataset
 in the form of a heatmap based on your dataset selection and PCA (Figure 4) 
-will display Principal component analysis of your dataset. All of these plots 
-will aid in viewing your preliminary data to see if 
+will display Principal component analysis of your dataset. Additionally,
+you can view the IRQ (InnerQuartile Range) for both your raw data and your
+data after normalization (Figure 5).  You can also view a density plot for your
+sample data for your raw data and the data after normilzation (Figure 6).
+IQR and Density plots are another great visualization too to help you spot
+outliers within your sample data incase you want to remove or look into
+any possible discrepancies.
+
+All of these plots will aid in viewing your preliminary data to see if 
 there are any potential errors between replicates or batch effects.  
 You have the option of veiwing an interactive heatmap by selecting the 
 'Interactive' checkbox in the left side panel when you have selected the 
@@ -168,7 +175,7 @@ ways.  The 'Tables' tab will bring you to a table setup based on the dataset
 you have selected on the left options panel. The 'All detected' option
 lists all of the genes present within your file.  The 'Selected' option
 lets you browse your gene selection based on your interactive heatmap
-selection.  The Last option, 'Most Varied' (Figure 5), will display your
+selection.  The Last option, 'Most Varied' (Figure 7), will display your
 top N varied genes.  You can alter the value of N by selecting 'most-varied'
 from the dropdown menu on the left.
 
@@ -176,7 +183,11 @@ from the dropdown menu on the left.
 
 ![*Display of the PCA plot in the initial QC plots page.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_4.png "PCA")
 
-![*Displayed table of most varied genes.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_5.png "Most varied")
+![*Display of the IQR in the initial QC plots page.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_5.png "QC plots")
+
+![*Display of the density plot in the initial QC plots page.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_6.png "QC plots")
+
+![*Displayed table of most varied genes.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_7.png "Most varied")
 
 ## Starting DESeq:
 
@@ -188,9 +199,9 @@ you can click on a sample and press delete to remove it or you can click the emp
 whitespace within the tab to bring a dropdown of samples to select from.
 Sample names are created based on the column headers within your data file.
 Once you've selected your comparisons, you are then ready to run DESeq2 to
-calculate differential expression by clicking on the 'Submit!' button (Figure 6).
+calculate differential expression by clicking on the 'Submit!' button (Figure 8).
 
-![*Menus after loading in a sample.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_6.png "Loading in samples")
+![*Menus after loading in a sample.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_8.png "Loading in samples")
 
 #Analyzing the Results
 
@@ -199,35 +210,35 @@ and store the results into seperate data tables.  Shiny will then allow you
 to access this data, with multiple interactive features, and at the click of a
 button.  It is important to note that the resulting data produced from DESeq
 is normalized. Upon finishing the DESeq analysis, a tab-based menu will appear
-with multiple options (Figure 7) at the top-center of the page.
+with multiple options (Figure 9) at the top-center of the page.
 
-![*List of the tabbed menus in DEBrowser.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_7.png "tab selection")
+![*List of the tabbed menus in DEBrowser.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_9.png "tab selection")
 
 The first tab, the 'Main Plots' section, is where you will be able to view
 the interactive results plots.  On the left hand side of the screen will be
 the options panel used to alter the padj and fold change
 cutoff values, what specific data set to use such as up or down regulated
 genes, what comparison dataset you would like to use to plot,
-and what type of plot you would like to view your results in (Figure 8).  
+and what type of plot you would like to view your results in (Figure 10).  
 Comparisons are ordered based on how they were entered by the user and 
 for information about samples within each comparison are displayed right under
 the option tabs.  Plot choices include:
 
-* Scatter plot (Figure 9)
+* Scatter plot (Figure 11)
 
-* Volcano plot (Figure 10)
+* Volcano plot (Figure 12)
 
-* MA plot (Figure 11)
+* MA plot (Figure 13)
 
 Once you have selected your values, you can hit the 'Submit!' button to create
 your interactive plots!  Depending on whether you are using the local install
 or the web-based application, rendering times my vary.
 
-![*The Left parameter options panel*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_8.png "geneset plots")
+![*The Left parameter options panel*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_10.png "geneset plots")
 
 The top left plot is the main plot of whichever plot you have
 selected to use to analyze your results.  Up-regulated genes are displayed
-in green while down-regulated genes are displayed in red (Figure 12).
+in green while down-regulated genes are displayed in red (Figure 14).
 Hovering over a gene on this plot will display the bottom two bar graphs: the
 genes normalized variation and colored by condition in the left graph,
 and the normalized variation between conditions within the right graph.
@@ -239,7 +250,7 @@ selection.  If you are going to change any of the parameters on the left,
 please make sure to re-click the 'Submit!' button to update the graphs.
 You can also change which type of dataset to use within the main plots by
 selecting from the drop down dataset box such as looking at the N most varied genes
-which are displayed in yellow(Figure 13).  Additionally, you can further
+which are displayed in yellow(Figure 15).  Additionally, you can further
 filter these datasets by typing in the genes of interest, or regex for
 specific genes, to search for those specific genes within the dataset (Figrue 14).
 Specific gene searches are displayed in blue.
@@ -247,11 +258,11 @@ All of these filtration options can be located on the left side panel which will
 also change based on the plot or dataset you wish to view/manipulate.
 It's also worth noting that the plots are resizable as well as downloable.
 
-![*Main scatter plot.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_9.png 'scatterplot')
+![*Main scatter plot.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_11.png 'scatterplot')
 
-![*Main volcano plot.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_10.png 'volcano')
+![*Main volcano plot.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_12.png 'volcano')
 
-![*Main MA plot.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_11.png 'ma')
+![*Main MA plot.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_13.png 'ma')
 
 ![*The main plots page within DEBrowser.*](https://i.imgur.com/n45tueA.png "Main plots")
 
