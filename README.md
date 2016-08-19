@@ -161,7 +161,7 @@ outliers within your sample data incase you want to remove or look into
 any possible discrepancies.
 
 All of these plots will aid in viewing your preliminary data to see if 
-there are any potential errors between replicates or batch effects.  
+there are any potential errors between replicates or batch effects.
 You have the option of veiwing an interactive heatmap by selecting the 
 'Interactive' checkbox in the left side panel when you have selected the 
 Heatmap option.  This Interactive heatmap will display genes as you hover over 
