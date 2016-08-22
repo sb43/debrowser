@@ -244,7 +244,6 @@ deServer <- function(input, output, session) {
         selected <- reactiveValues(data = NULL)
         observe({
             setFilterParams(session, input)
-            prepAddQCPlots(df_select(), input)
         })
         condmsg <- reactiveValues(text = NULL)
         observeEvent(input$startPlots, {
@@ -268,7 +267,7 @@ deServer <- function(input, output, session) {
         })
         df_select <- reactive({
             if (!is.null(isolate(Dataset())))
-                getSelectedCols(Dataset(), datasetInput(), input)
+                getSelectedCols(isolate(Dataset()), datasetInput(), input)
         })
         
         v <- c()
@@ -372,7 +371,7 @@ deServer <- function(input, output, session) {
                 mergedCompDat <- NULL
                 if (input$dataset == "comparisons")
                     mergedCompDat <- isolate(mergedComp())
-                m <- getSelectedDatasetInput(filt_data(), 
+                m <- getSelectedDatasetInput(isolate(filt_data()), 
                     selected$data$getSelected(), getMostVaried(),
                     mergedCompDat, input)
             }
