@@ -32,4 +32,8 @@ button}
 Creates an action button whose value is initially zero, and increments by one
 each time it is pressed.
 }
+\examples{
+    actionButton("startDESeq", "Go to DE Analysis!")
+
+}
 

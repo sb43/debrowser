@@ -592,6 +592,10 @@ hideObj <- function(btns = NULL) {
 #' @param ... Other argument to feed into shiny::actionButton
 #'
 #' @export
+#' 
+#' @examples
+#'     actionButton("startDESeq", "Go to DE Analysis!")
+#' 
 actionButton <- function(inputId, label, styleclass = "", size = "", 
                          block = FALSE, icon = NULL, css.class = "", ...) {
     if (styleclass %in% c("primary", "info", "success", "warning", 

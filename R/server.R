@@ -35,7 +35,7 @@
 #'             bind_shiny create_broker ggvis ggvisOutput handle_brush
 #'             hide_legend layer_bars layer_boxplots layer_points
 #'             scale_nominal set_options %>% group_by layer_rects
-#'             band scale_numeric hide_axis
+#'             band scale_numeric hide_axis layer_densities
 #' @importFrom gplots heatmap.2 redblue
 #' @importFrom igraph layout.kamada.kawai  
 #' @importFrom grDevices dev.off pdf
@@ -54,6 +54,7 @@
 #' @importMethodsFrom S4Vectors t grepl
 #' @importMethodsFrom SummarizedExperiment cbind order
 #' @importFrom jsonlite fromJSON
+#' @importFrom methods new
 #' @importFrom stringi stri_rand_strings
 #' @importFrom ReactomePA enrichPathway
 #' @importFrom annotate geneSymbols
@@ -68,6 +69,7 @@
 #' @importFrom limma lmFit voom eBayes topTable
 #' @import org.Hs.eg.db
 #' @import org.Mm.eg.db
+#' @import V8
 deServer <- function(input, output, session) {
     tryCatch(
     {
@@ -260,11 +262,13 @@ deServer <- function(input, output, session) {
             prepDataForQC(Dataset()[,input$samples])
         })
         output$qcplotout <- renderPlot({
-            getQCReplot(isolate(cols()), isolate(conds()), 
-                isolate(df_select()), isolate(input), inputQCPlot())
+            if (!is.null(input$col_list) || !is.null(isolate(df_select())))
+                getQCReplot(isolate(cols()), isolate(conds()), 
+                   df_select(), isolate(input), inputQCPlot())
         })
         df_select <- reactive({
-            getSelectedCols(Dataset(), datasetInput(), input)
+            if (!is.null(isolate(Dataset())))
+                getSelectedCols(Dataset(), datasetInput(), input)
         })
         
         v <- c()

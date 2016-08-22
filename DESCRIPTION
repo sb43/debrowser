@@ -52,7 +52,8 @@ Imports:
     limma,
     edgeR,  
     clusterProfiler,
-    V8
+    V8,
+    methods
 RoxygenNote: 5.0.1
 Suggests: testthat,
     rmarkdown,

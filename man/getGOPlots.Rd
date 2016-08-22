@@ -4,7 +4,7 @@
 \alias{getGOPlots}
 \title{getGOPlots}
 \usage{
-getGOPlots(dataset, input = NULL)
+getGOPlots(dataset = NULL, input = NULL)
 }
 \arguments{
 \item{dataset, }{the dataset used}
@@ -22,6 +22,6 @@ based on user selection.
 \code{getGOPlots}
 }
 \examples{
-    x<- getGOPlots(mtcars)
+    x<- getGOPlots()
 }
 
