@@ -19,11 +19,11 @@ from high-throughput sequencing assays such as RNA-Seq and test for
 differential expression (Love et al. 2014).  With multiple parameters such as
 padjust values, log fold changes, plot styles, and so on, altering plots
 created with your DE data can be a hassle as well as time consuming. The
-Differential Expression Browser uses DESeq2 coupled with shiny to produce
-real-time changes within your plot queries and allows for interactive browsing
-of your DESeq results. In addition to DESeq analysis, DEBrowser also offers a
-variety of other plots and analysis tools to help visualize your data even
-further.
+Differential Expression Browser uses DESeq2, EdgeR, and Limma coupled with 
+shiny to produce real-time changes within your plot queries and allows for 
+interactive browsing of your DESeq results. In addition to DESeq analysis, 
+DEBrowser also offers a variety of other plots and analysis tools to help 
+visualize your data even further.
 
 # Differntial Expression Calculations
 

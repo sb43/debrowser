@@ -20,7 +20,7 @@ differential expression (Love et al. 2014).  For more information on the
 DESeq2 algorithm, you can visit `this website <https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.pdf>`_  With multiple parameters such as
 padjust values, log fold changes, and plot styles, altering plots
 created with your DE data can be a hassle as well as time consuming.  The
-Differential Expression Browser uses DESeq2 coupled with shiny to produce
+Differential Expression Browser uses DESeq2, EdgeR, and Limma coupled with shiny to produce
 real-time changes within your plot queries and allows for interactive browsing
 of your DESeq results. In addition to DESeq analysis, DEBrowser also offers
 a variety of other plots and analysis tools to help visualize your data
