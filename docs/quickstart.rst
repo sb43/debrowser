@@ -123,7 +123,11 @@ own unique parameters to change and alter your QC plots.
 In addition to the all-to-all plot,
 you can also view a heatmap representation of your data as well as a Principal Component Analysis (PCA) plot by selecting
 the specific plot option on the left panel under 'QC Plots'.  You can also select the type of clustering and distance method for
-the heatmap produced to further customize your quality control measures.
+the heatmap produced to further customize your quality control measures.  Additionally, you can also view a density plot for your
+sample data for your raw data and the data after normalization (Figure 6).
+IQR and Density plots are another great visualization too to help you spot
+outliers within your sample data incase you want to remove or look into
+any possible discrepancies.
 
 .. image:: debrowser_pics/intro_sidebar.png
 	:align: center
@@ -135,6 +139,12 @@ the heatmap produced to further customize your quality control measures.
 	:align: center
 	
 .. image:: debrowser_pics/intro_qc_pca.png
+	:align: center
+	
+.. image:: debrowser_pics/iqr_plot.png
+	:align: center
+	
+.. image:: debrowser_pics/density_plot.png
 	:align: center
 
 You can also view specific tables of your input data for each type of dataset available and search for a specific geneset
@@ -223,8 +233,8 @@ Selecting the 'QC Plots' tab will take you to the quality control plots
 section.  These QC plots are very similar to the QC plots shown before
 running DESeq and the dataset being used here depends on the one
 you select in the left panel.  In addition to the all-to-all plot shown
-within the previous QC analysis, users can also view a heatmap and PCA
-plot of their analyzed data by selecting the proper plot on the left
+within the previous QC analysis, users can also view a heatmap,PCA, IQR, and density
+plots of their analyzed data by selecting the proper plot on the left
 menu.  You can also choose the appropriate clustering and distance method you would
 like to use for this heatmap just abot the plot just like in the previous QC section.
 
@@ -332,7 +342,6 @@ within the GO term plots.  In order to use the interactive heatmap selection
 within your GO term query, you must use either the up+down dataset or the
 most varied dataset for the heatmap display.
 	
-
 GO Term Plots
 =============
 
