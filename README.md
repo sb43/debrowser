@@ -29,13 +29,13 @@ and analysis tools to help visualize your data even further.
 ## DEBrowser
 
 DEBrowser utilizes Shiny, a R based application development tool that creates
-a wonderful interactive user interface (UI) combinded with all of the
+a wonderful interactive user interface (UI) combined with all of the
 computing prowess of R. After the user has selected the data to analyze and
 has used the shiny UI to run DESeq2, the results are then input to DEBrowser.
 DEBrowser manipulates your results in a way that allows for interactive
 plotting by which changing padj or fold change limits also changes the
 displayed graph(s). For more details about these plots and tables, please
-visit our quickstart guide for some helpful tutorials.
+visit our quick start guide for some helpful tutorials.
 
 For comparisons against other popular data visualization tools, see the
 comparison table below (Figure 40).
@@ -74,11 +74,11 @@ startDEBrowser()
 
 Once you have the DEBrowser running, a page will load asking to choose a TSV
 file or to load the demo data.  In order to run DESeq2, we are going to need
-gene quantifications for genes contained in a tab-seperated values (TSV) 
-format. Gene quantifications table can be obtain running standard softwares like 
-HTSeq (Anders,S. et al, 2014) or RSEM (Li and Dewey, 2011). The file values must 
-contain the gene, transcript(s), and the sample raw count values you wish to 
-enter into DEBrowser.
+gene quantifications for genes contained in a tab-separated values (TSV) 
+format. Gene quantifications table can be obtained running standard software 
+like HTSeq (Anders,S. et al, 2014) or RSEM (Li and Dewey, 2011). The file 
+values must contain the gene, transcript(s), and the sample raw count values 
+you wish to enter into DEBrowser.
 
 It's important to note that if your rows contain duplicate gene names,
 DEBrowser will reject your TSV file.  Please try to keep unique gene names.
@@ -118,8 +118,8 @@ http://dolphin.umassmed.edu/public/api/?source=http://bioinfo.umassmed.edu/pub/d
 advanced_demo.tsv&format=JSON
 ```
 
-Next you will need to encode the url so you can pass it to the DEBrowser website.
-You can find multiple url encoders online, such as the one located at this
+Next you will need to encode the URL so you can pass it to the DEBrowser website.
+You can find multiple URL encoders online, such as the one located at this
 web address: http://www.url-encode-decode.com/.
 
 Encoding our URL will turn it into this:
@@ -161,25 +161,25 @@ continue on to running DESeq2 (Figure 1).
 
 Upon selection of QC information, you will be shown an all-to-all plot of your 
 samples (Figure 2). This sample-by-sample comparison will help you visualize possible 
-descrepencies between replicate samples, in case you may want to omit them 
+discrepancies between replicate samples, in case you may want to omit them 
 for further analysis.  This graph includes sample-to-sample dotplot correlations
 as well as sample histograms. To the left of this plot are various plot-shaping 
 options you can alter to more easily view the all-to-all plot.
 
-Additionally, two more QC plots are available for you to use: Heatmap and
+Additionally, two more QC plots are available for you to use: heatmap and
 PCA plots.  The heatmap (Figure 3) will display genes for each sample within your dataset
 in the form of a heatmap based on your dataset selection and PCA (Figure 4) 
 will display Principal component analysis of your dataset. Additionally,
-you can view the IRQ (InnerQuartile Range) for both your raw data and your
+you can view the IRQ (Interquartile  Range) for both your raw data and your
 data after normalization (Figure 5).  You can also view a density plot for your
-sample data for your raw data and the data after normilzation (Figure 6).
+sample data for your raw data and the data after normalization (Figure 6).
 IQR and Density plots are another great visualization too to help you spot
 outliers within your sample data incase you want to remove or look into
 any possible discrepancies.
 
 All of these plots will aid in viewing your preliminary data to see if 
 there are any potential errors between replicates or batch effects 
-(Reese et. al, 2013; Risso et al., 2014). You have the option of veiwing an 
+(Reese et. al, 2013; Risso et al., 2014). You have the option of viewing an 
 interactive heatmap by selecting the 'Interactive' checkbox in the left side 
 panel when you have selected the Heatmap option.  This Interactive heatmap will 
 display genes as you hover over them for a more in-depth understanding.  
@@ -221,7 +221,7 @@ calculate differential expression by clicking on the 'Submit!' button (Figure 8)
 
 ![*Menus after loading in a sample.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_8.png "Loading in samples")
 
-# Differntial Expression Calculations
+# Differential Expression Calculations
 
 ## DESeq2
 
@@ -237,8 +237,8 @@ nominal and a multiple hypothesis corrected p-value (padj) using a negative
 binomial distribution.
 
 ## Un-normalized counts
-DESeq2 rquires count data as input obtained from RNA-Seq or another
-high-thorughput sequencing experiment in the form of matrix values. Here we
+DESeq2 requires count data as input obtained from RNA-Seq or another
+high-throughput sequencing experiment in the form of matrix values. Here we
 convert un-integer values to integer to be able to run DESeq2. The matrix
 values should be un-normalized, since DESeq2 model internally corrects for
 library size. So, transformed or normalized values such as counts scaled by
@@ -298,8 +298,8 @@ For the details please check the user guide at this location:
 For the details please check the user guide at this location:
 <https://bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf>
 
-Limma is a package to analyse of microarray or RNA-Seq data. If data is
-normalized with spike-in or any other scaling, tranforamtion or
+Limma is a package to analyze  of microarray or RNA-Seq data. If data is
+normalized with spike-in or any other scaling, transformation  or
 normalization method, Limma can be ideal. In that case, prefer limma rather
 than DESeq2 or EdgeR.
 
@@ -324,7 +324,7 @@ than DESeq2 or EdgeR.
 #Analyzing the Results
 
 After clicking on the 'Submit!' button, DESeq2 will analyze your comparisons
-and store the results into seperate data tables.  Shiny will then allow you
+and store the results into separate data tables.  Shiny will then allow you
 to access this data, with multiple interactive features, and at the click of a
 button.  It is important to note that the resulting data produced from DESeq
 is normalized. Upon finishing the DESeq analysis, a tab-based menu will appear
@@ -476,21 +476,21 @@ within the GO term plots (Figure 18).  In order to use the interactive heatmap s
 within your GO term query, you must use either the up+down dataset or the
 most varied dataset for the heatmap display.
 This will allow you to compare interesting clusters
-found within the the heatmap within our GO Term analysis section which will
+found within the heatmap within our GO Term analysis section which will
 be discussed later within the materials.
 
 ![*View of the interactive Heatmap.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_18.png "Interactive Heatmap")
 
 ![*Display of the PCA plot within DEBrowser.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_19.png "PCA")
 
-Prinicipal Component Analysis (PCA) is another excellent method of checking
+Principal Component Analysis (PCA) is another excellent method of checking
 replicates (Figure 19).  PCA calculates the variance between all of the samples genes
 within your current comparison set and creates a two-dimensional
 graph to represent the proportion of variance explained in different
 components.  Within the PCA plot section you can select the p-adjust
 value, fold change cut off value, which comparison set to use, which dataset
 to use, the height and width of the corresponding plots, as well as which
-prinicipal components to analyze by changing the appropriate values on the
+principal components to analyze by changing the appropriate values on the
 left menu.
 
 The next tab, 'GO Term', takes you to the ontology comparison portion of
@@ -498,7 +498,7 @@ DEBrowser.  From here you can select the standard dataset options such as
 p-adjust value, fold change cut off value, which comparison set to use, and
 which dataset to use on the left menu.  In addition to these parameters, you
 also can choose from the 4 different ontology plot options: 'enrichGO' (Figure 20-21),
-'Disease' (Figure 22-23), 'enrichKEGG' (Figure 24),  and 'compareCluster'.  
+'Disease' (Figure 22-23), 'enrichKEGG' (Figure 24), and 'compareCluster'.  
 Selecting one of these plot options queries their specific databases with your 
 current DESeq results. By selecting the 'selection' dataset on the left panel after 
 selecting specific genes from the interactive heatmap, you will be able to compare
@@ -567,10 +567,10 @@ significance of your comparisons.
 ![*Condition comparisons table within DEBrowser.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_30.png "Comparisons")
 
 Lastly, the tables have a bunch of features that allow you to view your DESeq
-results more conviently.  By clicking on a column header, you can sort the
+results more conveniently.  By clicking on a column header, you can sort the
 data within the table based either alphabetical or numeric sorting.
 You can also enter a term, or regex query, within the search box on the left
-panel to filter for a specificgene within the table.
+panel to filter for a specific gene within the table.
 
 With that, you've now successfully navigated the DEBrowser and are ready to
 start inserting your own data files and browsing your own experiments.  Enjoy
@@ -650,7 +650,7 @@ interactive format!
 The comparison table (Figure 40) displays multiple comparisons between debrowser and other various methods of viewing Differential Expression Analysis results.
 
 Some of the comparisons can be viewed either within the tool itself or within some of the figures provided. A multiple tool comparisons
-can be observed within firgure 34, an interactive visualization of gene highlighting can be observed for figures 12-14, and an interactive
+can be observed within figure 34, an interactive visualization of gene highlighting can be observed for figures 12-14, and an interactive
 visualization of biological variation or condition comparisons can also be observed for figure 34.
 
 For more information on MeV (Howe et al., 2011) please visit this link: http://www.tm4.org/mev.html
@@ -676,5 +676,5 @@ Reich,M. et al. (2006) GenePattern 2.0. Nat. Genet., 38, 500–501.
 Risso,D. et al. (2014) Normalization of RNA-seq data using factor analysis of control genes or samples. Nat. Biotechnol., 32, 896–902.
 Ritchie,M.E. et al. (2015) limma powers differential expression analyses for RNA-sequencing and microarray studies. Nucleic Acids Res., 43, e47–e47.
 Trapnell,C. et al. (2012) Differential gene and transcript expression analysis of RNA-seq experiments with TopHat and Cufflinks. Nat. Protoc., 7, 562–578.
-Vernia,S. et al. (2014) The PPARα-FGF21 hormone axis contributes to metabolic regulation by the hepatic JNK signaling pathway. Cell Metab., 20, 512–525.
+Vernia,S. et al. (2014) The PPARA-FGF21 hormone axis contributes to metabolic regulation by the hepatic JNK signaling pathway. Cell Metab., 20, 512–525.
 Murtagh, Fionn and Legendre, Pierre (2014). Ward's hierarchical agglomerative clustering method: which algorithms implement Ward's criterion? Journal of Classification 31 (forthcoming).
