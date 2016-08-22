@@ -25,6 +25,120 @@ of your DESeq results. In addition to DESeq analysis, DEBrowser also offers a
 variety of other plots and analysis tools to help visualize your data even
 further.
 
+# Differntial Expression Calculations
+
+## DESeq2
+
+For the details please check the user guide at this location:
+<https://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.pdf>
+
+DESeq2 performs multiple steps in order to analyze the data you’ve provided
+for it. The first step is to indicate the condition that each column
+(experiment) in the table represent. You can group multiple samples into
+one condition column. DESeq2 will compute the probability that a gene is
+differentially expressed (DE) for ALL genes in the table. It outputs both a
+nominal and a multiple hypothesis corrected p-value (padj) using a negative
+binomial distribution.
+
+## Un-normalized counts
+DESeq2 rquires count data as input obtained from RNA-Seq or another
+high-thorughput sequencing experiment in the form of matrix values. Here we
+convert un-integer values to integer to be able to run DESeq2. The matrix
+values should be un-normalized, since DESeq2 model internally corrects for
+library size. So, transformed or normalized values such as counts scaled by
+library size should not be used as input. Please use edgeR or limma for
+normalized counts.
+
+## Used parameters for DESeq2
+
+* **fitType:**
+	Either “parametric”, “local”, or “mean” for the type of fitting of
+	dispersions to the mean intensity. See estimate Dispersions for description.
+
+* **betaPrior:**
+	Whether or not to put a zero-mean normal prior on the non-intercept
+	coefficients See nbinomWaldTest for description of the calculation of the
+	beta prior. By default, the beta prior is used only for the Wald test, but
+	can also be specified for the likelihood ratio test.
+
+* **testType:**
+	Either “Wald” or “LRT”, which will then use either Wald significance tests
+	(defined by nbinomWaldTest), or the likelihood ratio test on the difference
+	in deviance between a full and reduced model formula (defined by nbinomLRT)
+
+* **rowsum.filter:**
+	Regions/Genes/Isoforms with total count (across all samples) below this
+	value will be filtered out
+
+## EdgeR
+
+For the details please check the user guide at this location:
+<https://www.bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf>
+
+## Used parameters for EdgeR
+
+* **Normalization:**
+	Calculate normalization factors to scale the raw library sizes. Values
+	can be “TMM”,”RLE”,”upperquartile”, or ”none”.
+
+* **Dispersion:**
+	Either a numeric vector of dispersions or a character string indicating
+	that dispersions should be taken from the data object.
+
+* **testType:**
+	exactTest or glmLRT. exactTest: Computes p-values for differential
+	abundance for each gene between two samples, conditioning on the total
+	count for each gene. The counts in each group are assumed to follow a
+	binomial distribution.  glmLRT: Fits a negative binomial generalized
+	log-linear model to the read counts for each gene and conducts
+	genewise statistical tests.
+
+* **rowsum.filter:**
+	Regions/Genes/Isoforms with total count (across all samples) below this
+	value will be filtered out
+
+## Limma
+
+For the details please check the user guide at this location:
+<https://bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf>
+
+Limma is a package to analyse of microarray or RNA-Seq data. If data is
+normalized with spike-in or any other scaling, tranforamtion or
+normalization method, Limma can be ideal. In that case, prefer limma rather
+than DESeq2 or EdgeR.
+
+## Used parameters for Limma
+
+* **Normalization:**
+	Calculate normalization factors to scale the raw library sizes. Values
+	can be “TMM”,”RLE”,”upperquartile”, or ”none”.
+
+* **Fit Type:**
+	Fitting method: “ls” for least squares or “robust” for robust regression
+
+* **Norm. Bet. Arrays:**
+	Normalization Between Arrays; Normalizes expression intensities so that
+	the intensities or log-ratios have similar distributions across a set of
+	arrays.
+
+* **rowsum.filter:**
+	Regions/Genes/Isoforms with total count (across all samples) below this
+	value will be filtered out
+
+## DEBrowser
+
+DEBrowser utilizes Shiny, a R based application development tool that creates
+a wonderful interactive user interface (UI) combinded with all of the
+computing prowess of R. After the user has selected the data to analyze and
+has used the shiny UI to run DESeq2, the results are then input to DEBrowser.
+DEBrowser manipulates your results in a way that allows for interactive
+plotting by which changing padj or fold change limits also changes the
+displayed graph(s). For more details about these plots and tables, please
+visit our quickstart guide for some helpful tutorials.
+
+For comparisons against other popular data visualization tools, see the
+comparison table below (Figure 40).
+
 # Quick start
 
 Before you start;
