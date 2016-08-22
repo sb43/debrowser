@@ -25,6 +25,11 @@ suppressPackageStartupMessages({
     library(ReactomePA)
 })
 ```
+---
+output: 
+  pdf_document: 
+    keep_tex: yes
+---
 # DEBrowser: 
 Interactive Differential Expression Analysis Tool
 
@@ -700,3 +705,4 @@ Ritchie,M.E. et al. (2015) limma powers differential expression analyses for RNA
 Trapnell,C. et al. (2012) Differential gene and transcript expression analysis of RNA-seq experiments with TopHat and Cufflinks. Nat. Protoc., 7, 562–578.
 Vernia,S. et al. (2014) The PPARA-FGF21 hormone axis contributes to metabolic regulation by the hepatic JNK signaling pathway. Cell Metab., 20, 512–525.
 Murtagh, Fionn and Legendre, Pierre (2014). Ward's hierarchical agglomerative clustering method: which algorithms implement Ward's criterion? Journal of Classification 31 (forthcoming).
+
