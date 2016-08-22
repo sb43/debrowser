@@ -107,6 +107,8 @@ getQCPlots <- function(dataset = NULL, input = NULL,
                 size = 5, shape = "conditions",
                 factors = c("samples", "conditions"))
             pcaplot %>% bind_shiny("ggvisQC1")
+        } else if (input$qcplot == "IQR" || input$qcplot == "Density" ) {
+            prepAddQCPlots(dat, input)
         }
     }
     a
@@ -309,7 +311,7 @@ getSelectedCols <- function(data = NULL, datasetInput = NULL, input=NULL){
             selection <- input$col_list
         }
         if (!is.null(selection))
-            m <- data[rownames(datasetInput), selection]
+            m <- datasetInput[rownames(datasetInput), selection]
     }
     m
 }
