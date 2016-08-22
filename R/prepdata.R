@@ -38,7 +38,6 @@ getSamples <- function (cnames = NULL, index = 2) {
 #'
 prepDataContainer <- function(data = NULL, counter=NULL, 
     input = NULL, session=NULL) {
-
     if (is.null(input$goButton) || input$goButton[1]==0 ||
          is.null(data) || counter == 0)
         return(NULL)

@@ -205,7 +205,7 @@ deServer <- function(input, output, session) {
         })
         dc <- reactive({
             prepDataContainer(Dataset(), choicecounter$nc, 
-            input, session)
+            isolate(input), session)
         })
         observeEvent(input$goButton, {
             init_data <- NULL 
