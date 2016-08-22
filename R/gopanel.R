@@ -41,11 +41,11 @@ getGoPanel <- function(flag = FALSE){
 #' @return the panel for go plots;
 #'
 #' @examples
-#'     x<- getGOPlots(mtcars)
+#'     x<- getGOPlots()
 #' @export
 #' 
-getGOPlots <- function(dataset, input = NULL){
-    if (is.null(dataset) || is.null(input)) return(NULL)
+getGOPlots <- function(dataset = NULL, input = NULL){
+    if (is.null(dataset)) return(NULL)
     a <- NULL
     org <- input$organism
     if (input$goplot == "disease")

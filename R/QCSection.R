@@ -208,7 +208,7 @@ getIQRPlot <- function(data=NULL, cols=NULL, title = ""){
     visIQR <- mdata %>%
         ggvis(x = ~samples, y = ~logcount, fill := "green") %>%
         layer_boxplots() %>% 
-        set_options(width = "auto", height = 350, resizable=FALSE) %>%
+        set_options(width = "auto", height = 350, resizable=TRUE) %>%
         add_title_pos(title = "", angle = 310,
             dy = ypos, dx = 0) %>%
         add_tooltip(getToolTipPCA, "hover") %>%
@@ -241,11 +241,11 @@ getDensityPlot <- function(data=NULL, cols=NULL, title = ""){
     visDensity <- mdata %>%
         ggvis(~density, fill = ~samples) %>%
         group_by(samples) %>%
-        set_options(width = "auto", height = 350, resizable=FALSE) %>%
+        set_options(width = "auto", height = 350, resizable=TRUE) %>%
         layer_densities() %>% 
-        add_axis("x", title = "samples") %>%
+        add_axis("x", title = "logcount") %>%
         add_tooltip(getToolTipPCA, "hover") %>%
-        add_axis("y", title = "logcount")
+        add_axis("y", title = "density")
 }
 
 #' prepAddQCPlots
@@ -300,7 +300,7 @@ prepAddQCPlots <- function(data=NULL, input=NULL){
 getSelectedCols <- function(data = NULL, datasetInput = NULL, input=NULL){
     if(is.null(data)) return(NULL)
     m <- NULL
-    if (input$dataset != "selected"){
+    if (!is.null(input$dataset) && input$dataset != "selected"){
         all <- input$samples
         selection <- input$col_list
         if("All" %in% input$col_list || length(input$col_list) == 0){

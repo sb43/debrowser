@@ -78,8 +78,8 @@ getIntHeatmap <- function(data = NULL,  input = NULL, inputQCPlot = NULL) {
     if(is.null(data)) return(NULL)
     if (input$interactive == TRUE)
         runHeatmap(data, title = paste("Dataset:", input$dataset),
-                   clustering_method = inputQCPlot$clustering_method,
-                   distance_method = inputQCPlot$distance_method, interactive = TRUE)
+            clustering_method = inputQCPlot$clustering_method,
+            distance_method = inputQCPlot$distance_method, interactive = TRUE)
 }
 
 #' getSelHeat
