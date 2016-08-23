@@ -101,17 +101,13 @@ deServer <- function(input, output, session) {
             getGoPanel(!is.null(init_data()))
         })
         output$cutoffSelection <- renderUI({
-            a <- NULL
             nc <- 1
             if (!is.null(choicecounter$nc)) nc <- choicecounter$nc
-            if (!is.null(isolate(comparison()$init_data)))
-                a <- getCutOffSelection(!is.null(
-                isolate(comparison()$init_data)), nc)
-            a
+            getCutOffSelection(nc)
         })
         output$downloadSection <- renderUI({
             a <- getDownloadSection(TRUE, "QC")
-            if (!is.null(input$startDESeq) && input$startDESeq &&
+            if (!is.null(input$goDE) && input$goDE &&
                 !is.null(comparison()$init_data))
                 a <- getDownloadSection(!is.null(comparison()$init_data), 
                     "main")
@@ -144,6 +140,10 @@ deServer <- function(input, output, session) {
             else
                 condmsg$text 
         })
+        
+        buttonValues <- reactiveValues(goQCplots = FALSE, goDE = FALSE,
+            startDE = FALSE)
+        
         output$dataready <- reactive({
             hide(id = "loading-debrowser", anim = TRUE, animType = "fade")    
             return(!is.null(Dataset()))
@@ -161,25 +161,26 @@ deServer <- function(input, output, session) {
         })
         choicecounter <- reactiveValues(nc = 0, qc = 0)
         observeEvent(input$add_btn, {
-            shinyjs::enable("goButton")
+            shinyjs::enable("startDE")
+            buttonValues$startDE <- FALSE
             choicecounter$nc <- choicecounter$nc + 1}
         )
         observeEvent(input$rm_btn, {
-        if (choicecounter$nc > 0) 
-            choicecounter$nc <- choicecounter$nc - 1
-        if (choicecounter$nc == 0) 
-           shinyjs::disable("goButton")
+            buttonValues$startDE <- FALSE
+            if (choicecounter$nc > 0) 
+                choicecounter$nc <- choicecounter$nc - 1
+            if (choicecounter$nc == 0) 
+               shinyjs::disable("startDE")
         })
-        observeEvent(input$startDESeq, {
-            shinyjs::disable("goButton")
-            hideObj(c("goQCplots", "startDESeq"))
-            showObj(c("add_btn","rm_btn","goButton", "fittype"))
+        observeEvent(input$goDE, {
+            shinyjs::disable("startDE")
+            hideObj(c("goQCplots", "goDE"))
+            showObj(c("add_btn","rm_btn","startDE", "fittype"))
         })
         observeEvent(input$resetsamples, {
-            updateTextInput(session, "samples",value = "" )
-            session$sendCustomMessage("startDESeq", NULL)
-            showObj(c("goQCplots", "startDESeq"))
-            hideObj(c("add_btn","rm_btn","goButton"))
+            buttonValues$startDE <- FALSE
+            showObj(c("goQCplots", "goDE"))
+            hideObj(c("add_btn","rm_btn","startDE"))
             choicecounter$nc <- 0
         })
         samples <- reactive({
@@ -199,21 +200,29 @@ deServer <- function(input, output, session) {
                 selected = samp)
             )
         })
-
         output$conditionSelector <- renderUI({
             selectConditions(Dataset(), choicecounter, input)
         })
         dc <- reactive({
-            prepDataContainer(Dataset(), choicecounter$nc, 
-            isolate(input), session)
+            dc <- NULL
+            if (buttonValues$startDE == TRUE){
+                dc <- prepDataContainer(Dataset(), choicecounter$nc, 
+                isolate(input))
+            }
+            dc
         })
-        observeEvent(input$goButton, {
+        observeEvent(input$startDE, {
+            buttonValues$startDE <- TRUE
+            buttonValues$goQCplots <- FALSE
             init_data <- NULL 
+            togglePanels(1, c( 0, 1, 2, 3, 4), session)
             choicecounter$qc <- 0
         })
         observeEvent(input$goQCplots, {
             choicecounter$qc <- 1
-            togglePanels(2, c( 2, 4), session)
+            buttonValues$startDE <- FALSE
+            buttonValues$goQCplots <- TRUE
+            togglePanels(2, c( 0, 2, 4), session)
         })
         comparison <- reactive({
             compselect <- 1
@@ -329,7 +338,7 @@ deServer <- function(input, output, session) {
             options = list(lengthMenu = list(c(10, 25, 50, 100),
             c("10", "25", "50", "100")),
             pageLength = 25, paging = TRUE, searching = TRUE)) %>%
-            getTableStyle(input, dat[[2]], dat[[3]])
+            getTableStyle(input, dat[[2]], dat[[3]], buttonValues$startDE)
             m
         })
         getMostVaried <- reactive({

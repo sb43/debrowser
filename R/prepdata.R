@@ -29,7 +29,6 @@ getSamples <- function (cnames = NULL, index = 2) {
 #' @param data, loaded dataset
 #' @param counter, the number of comparisons
 #' @param input, input parameters
-#' @param session, session var
 #' @return data
 #' @export
 #'
@@ -37,17 +36,13 @@ getSamples <- function (cnames = NULL, index = 2) {
 #'     x <- prepDataContainer()
 #'
 prepDataContainer <- function(data = NULL, counter=NULL, 
-    input = NULL, session=NULL) {
-    if (is.null(input$goButton) || input$goButton[1]==0 ||
-         is.null(data) || counter == 0)
-        return(NULL)
+    input = NULL) {
+    if (is.null(data)) return(NULL)
 
     inputconds <- reactiveValues(demethod_params = list(), conds = list())
-    inputconds <- eventReactive(input$goButton, {
+    inputconds <- eventReactive(input$startDE, {
     m <- c()
-    updateTabsetPanel(session, "methodtabs", selected = "panel1")
-    hide(selector = "#methodtabs li a[data-value=panel0]")
-    
+
     m$conds <- list()
     for (cnt in seq(1:(2*counter))){
         m$conds[cnt] <- list(input[[paste0("condition",cnt)]])
@@ -77,8 +72,6 @@ prepDataContainer <- function(data = NULL, counter=NULL,
                 input[[paste0("rowsumfilter",cnt)]], sep=",")
         }
     }
-    shinyjs::disable("resetsamples")
-    shinyjs::disable("goButton")
     m
     })
     if (is.null(input$condition1)) return(NULL)
@@ -94,7 +87,6 @@ prepDataContainer <- function(data = NULL, counter=NULL,
         m<-list(conds = conds, cols = cols, init_data=m)
         dclist[[i]] <- m
     }
-    togglePanels(1, c(1:4), session)
     return(dclist)
 }
 
@@ -611,7 +603,6 @@ applyFiltersToMergedComparison <- function (merged = NULL,
             1/foldChange_cutoff & as.numeric(merged[,c(paste0("padj.", tt))]) <= 
             padj_cutoff), "Legend"] <- "Sig"
     }
-
     merged 
 }
 

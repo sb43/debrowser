@@ -18,17 +18,17 @@ getDataPrepPanel <- function(flag = FALSE){
             output.dataready",
         wellPanel(
         uiOutput("sampleSelector"),
-        actionButton("startDESeq", "Go to DE Analysis!"),
+        actionButton("goDE", "Go to DE Analysis!"),
         actionButton("goQCplots", "Go to QC plots!"),
-        actionButton("resetsamples", "Reset Samples!"),
-        conditionalPanel(condition = "input.startDESeq",
+        actionButton("resetsamples", "Reset!"),
+        conditionalPanel(condition = "input.goDE",
             helpText( "Please add new comparisons for DE analysis!" ),
             uiOutput("conditionSelector"),
             column(12,actionButton("add_btn", "Add New Comparison"),
             actionButton("rm_btn", "Remove"),
             getHelpButton("method", "http://debrowser.readthedocs.io/en/develop/deseq.html#id1")),
-            actionButton("goButton", "Submit!"),
-           tags$style(type='text/css', "#goButton { margin-top: 10px;}")  ))),
+            actionButton("startDE", "Submit!"),
+           tags$style(type='text/css', "#startDE { margin-top: 10px;}")  ))),
         conditionalPanel(condition = "!input.demo &&
             !output.fileUploaded",
             uiOutput("startup"))
@@ -199,7 +199,6 @@ logSliderJScode <- function(slidername = NULL){
 #'
 #' Gathers the cut off selection for DE analysis
 #'
-#' @param flag, flag to show the element in the ui
 #' @param nc, total number of comparisons
 #' @note \code{getCutOffSelection}
 #' @return returns the left menu according to the selected tab;
@@ -207,25 +206,22 @@ logSliderJScode <- function(slidername = NULL){
 #'     x <- getCutOffSelection()
 #' @export
 #'
-getCutOffSelection <- function(flag = TRUE, nc = 1){
-    a <- NULL
-    if (flag) {
-        compselect <- getCompSelection(nc)
-        a <- list( 
-        conditionalPanel( (condition <- "input.dataset!='most-varied'"),
-            tags$head(tags$script(HTML(logSliderJScode("padj")))),
-            h4("Filter"),
-            sliderInput("padj", "padj value cut off",
-                min=0, max=10, value=6, sep = "", 
-                animate = FALSE),
-            textInput("padjtxt", "or padj", value = "0.01" ),
-            sliderInput("foldChange", "Fold Change cut off",
-                1, 10, 2, step = 0.1),
-            textInput("foldChangetxt", "or foldChange", value = "2" )),
-            compselect
-        )
-    }
-    a
+getCutOffSelection <- function(nc = 1){
+    compselect <- getCompSelection(nc)
+    a <- list( 
+    conditionalPanel( (condition <- "input.dataset!='most-varied' &&
+                       input.methodtabs!='panel0'"),
+        tags$head(tags$script(HTML(logSliderJScode("padj")))),
+        h4("Filter"),
+        sliderInput("padj", "padj value cut off",
+            min=0, max=10, value=6, sep = "", 
+            animate = FALSE),
+        textInput("padjtxt", "or padj", value = "0.01" ),
+        sliderInput("foldChange", "Fold Change cut off",
+            1, 10, 2, step = 0.1),
+        textInput("foldChangetxt", "or foldChange", value = "2" ),
+        compselect
+    ) )
 }
 
 #' getInitialMenu
@@ -489,16 +485,17 @@ getCompSelection <- function(count = NULL) {
 #' @param input, input params
 #' @param padj, the name of the padj value column in the dataset
 #' @param foldChange, the name of the foldChange column in the dataset
+#' @param DEsection, if it is in DESection or not
 #' @note \code{getTableStyle}
 #' @examples
 #'     x <- getTableStyle()
 #' @export
 #'
 getTableStyle <- function(dat = NULL, input = NULL, 
-    padj = c("padj"), foldChange=c("foldChange")){
+    padj = c("padj"), foldChange=c("foldChange"), DEsection = TRUE){
     if (is.null(dat)) return (NULL)
     a <- dat 
-    if(!is.null(padj) && padj != "" && !input$goQCplots)
+    if(!is.null(padj) && padj != "" && DEsection)
         a <- a %>% formatStyle(
             padj,
             color = styleInterval(c(0, input$padjtxt), 
@@ -506,7 +503,7 @@ getTableStyle <- function(dat = NULL, input = NULL,
             backgroundColor = styleInterval(
             input$padjtxt, c('green', 'white'))
         ) 
-    if(!is.null(foldChange) && foldChange != "" && !input$goQCplots)
+    if(!is.null(foldChange) && foldChange != "" && DEsection)
         a <- a %>% formatStyle(
             foldChange,
             color = styleInterval(c(1/as.numeric(input$foldChangetxt), 
@@ -594,7 +591,7 @@ hideObj <- function(btns = NULL) {
 #' @export
 #' 
 #' @examples
-#'     actionButton("startDESeq", "Go to DE Analysis!")
+#'     actionButton("goDE", "Go to DE Analysis!")
 #' 
 actionButton <- function(inputId, label, styleclass = "", size = "", 
                          block = FALSE, icon = NULL, css.class = "", ...) {
