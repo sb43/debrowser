@@ -6,6 +6,6 @@ Contents:
 .. toctree::
    :maxdepth: 2
    
-   quickstart
-   local
-   deseq
+   quickstart/index.rst
+   local/index.rst
+   deseq/index.rst
