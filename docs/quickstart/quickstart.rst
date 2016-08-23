@@ -152,7 +152,8 @@ by inputting a comma-seperated list of genes or regex terms to search for in the
 To view these tables, you must select the tab labeled 'Tables' as well as the dataset from the dropdown menu on the left panel.
 
 If you ever want to change your file/condition parameters, or even ad a new set of comparisons, you can always
-return to the 'Data Prep' to change and resubmit your data.
+return to the 'Data Prep' to change and resubmit your data.  To completely start over, you can also hit the 'Reset'
+button on the 'Data Prep' page.
 
 Once you are happy with your dataset and you have selected your conditions within the 'DE Analysis' section,
 you can then hit 'Submit!' to begin.
