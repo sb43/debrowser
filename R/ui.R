@@ -64,7 +64,7 @@ deUI <- function() {
         conditionalPanel(condition = "((output.definished | 
             input.goQCplots) & output.dataready)",
             uiOutput("downloadSection")),
-        conditionalPanel(condition = "(input.goButton & output.dataready)",
+        conditionalPanel(condition = "(output.dataready)",
             uiOutput('cutoffSelection'))
     ),
     mainPanel(
