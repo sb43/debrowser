@@ -23,7 +23,7 @@ Once you've made your way to the website, or you have a local instance of DEBrow
 
 .. image:: debrowser_pics/input_tab.png
 	:align: center
-	
+
 To begin the DESeq process, you will need to select your Data file (TSV format) to be analyzed using DESeq.
 If you do not have a dataset to use, you can select to use the built in demo by clicking on the 'Load Demo!'.
 To view the entire demo data file, you can download this `demo set`_.  For an example case study, try our `advanced demo`_.
@@ -150,7 +150,11 @@ any possible discrepancies.
 You can also view specific tables of your input data for each type of dataset available and search for a specific geneset
 by inputting a comma-seperated list of genes or regex terms to search for in the search box within the left panel.
 To view these tables, you must select the tab labeled 'Tables' as well as the dataset from the dropdown menu on the left panel.
-	
+
+If you ever want to change your file/condition parameters, or even ad a new set of comparisons, you can always
+return to the 'Data Prep' to change and resubmit your data.  To completely start over, you can also hit the 'Reset'
+button on the 'Data Prep' page.
+
 Once you are happy with your dataset and you have selected your conditions within the 'DE Analysis' section,
 you can then hit 'Submit!' to begin.
 

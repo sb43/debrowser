@@ -26,30 +26,6 @@ of your DESeq results. In addition to DESeq analysis, DEBrowser also offers
 a variety of other plots and analysis tools to help visualize your data
 even further.
 
-
-Getting Started
-===============
-
-In order to conduct differential expression analysis, we first need data to analyze.  In order to call DESeq2,
-we're going to need gene quantifications and expected counts for those genes.
-To obtain these quantifications, we typically use `RSEM <http://deweylab.github.io/RSEM/>`_,
-however there are other ways to obtain this data.
-
-The TSV files used to describe the quantification counts are similar to this:
-
-IE:
-
-=====  =====  =====  =====  =====  =====
-gene   trans   exp1   exp2  cont1  cont2
-=====  =====  =====  =====  =====  =====
-DQ714  uc007   0.00   0.00   0.00   0.00
-DQ554  uc008   0.00   0.00   0.00   0.00
-AK028  uc011   2.00   1.29   0.00   0.00
-=====  =====  =====  =====  =====  =====
-
-Where the gene column represent the gene name, the transcript column represents the transcript(s) name (comma separated for multiple),
-and the rest of the columns are the raw counts for your samples.
-
 DESeq2
 =========
 
@@ -157,11 +133,32 @@ For comparisons against other popular data visualization tools, see the table be
 References
 ==========
 
-1. Love MI, Huber W and Anders S (2014). Moderated estimation of fold change and
-    dispersion for RNA-seq data with DESeq2.  Genome Biology, 15, pp. 550.
-    http://doi.org/10.1186/s13059-014-0550-8.
-2. Robinson, MD, and Smyth, GK (2008). Small sample estimation of negative binomial dispersion,
-    with applications to SAGE data. Biostatistics 9, 321–332.
-3. Ritchie, ME, Phipson, B, Wu, D, Hu, Y, Law, CW, Shi, W, and Smyth, GK (2015).
-    limma powers differential expression analyses for RNA-sequencing and microarray studies.
-    Nucleic Acids Research 43(7), e47.
+1. Anders,S. et al. (2014) HTSeq - A Python framework to work with high-throughput sequencing data.
+
+2. Chang,W. et al. (2016) shiny: Web Application Framework for R.
+
+3. Chang,W. and Wickham,H. (2015) ggvis: Interactive Grammar of Graphics.
+
+4. Giardine,B. et al. (2005) Galaxy: a platform for interactive large-scale genome analysis. Genome Res., 15, 1451–1455.
+
+5. Howe,E.A. et al. (2011) RNA-Seq analysis in MeV. Bioinformatics, 27, 3209–3210.
+
+6. Kallio,M.A. et al. (2011) Chipster: user-friendly analysis software for microarray and other high-throughput data. BMC Genomics, 12, 507.
+
+7. Li,B. and Dewey,C.N. (2011) RSEM: accurate transcript quantification from RNA-Seq data with or without a reference genome. BMC Bioinformatics, 12, 323.
+
+8. Love,M.I. et al. (2014) Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. Genome Biol., 15, 550.
+
+9. Reese,S.E. et al. (2013) A new statistic for identifying batch effects in high-throughput genomic data that uses guided principal component analysis. Bioinformatics, 29, 2877–2883.
+
+10. Reich,M. et al. (2006) GenePattern 2.0. Nat. Genet., 38, 500–501.
+
+11. Risso,D. et al. (2014) Normalization of RNA-seq data using factor analysis of control genes or samples. Nat. Biotechnol., 32, 896–902.
+
+12. Ritchie,M.E. et al. (2015) limma powers differential expression analyses for RNA-sequencing and microarray studies. Nucleic Acids Res., 43, e47–e47.
+
+13. Trapnell,C. et al. (2012) Differential gene and transcript expression analysis of RNA-seq experiments with TopHat and Cufflinks. Nat. Protoc., 7, 562–578.
+
+14. Vernia,S. et al. (2014) The PPAR$\alpha$-FGF21 hormone axis contributes to metabolic regulation by the hepatic JNK signaling pathway. Cell Metab., 20, 512–525.
+
+15. Murtagh, Fionn and Legendre, Pierre (2014). Ward's hierarchical agglomerative clustering method: which algorithms implement Ward's criterion? Journal of Classification 31 (forthcoming).
