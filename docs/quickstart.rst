@@ -123,7 +123,11 @@ own unique parameters to change and alter your QC plots.
 In addition to the all-to-all plot,
 you can also view a heatmap representation of your data as well as a Principal Component Analysis (PCA) plot by selecting
 the specific plot option on the left panel under 'QC Plots'.  You can also select the type of clustering and distance method for
-the heatmap produced to further customize your quality control measures.
+the heatmap produced to further customize your quality control measures.  Additionally, you can also view a density plot for your
+sample data for your raw data and the data after normalization (Figure 6).
+IQR and Density plots are another great visualization too to help you spot
+outliers within your sample data incase you want to remove or look into
+any possible discrepancies.
 
 .. image:: debrowser_pics/intro_sidebar.png
 	:align: center
@@ -135,6 +139,12 @@ the heatmap produced to further customize your quality control measures.
 	:align: center
 	
 .. image:: debrowser_pics/intro_qc_pca.png
+	:align: center
+	
+.. image:: debrowser_pics/iqr_plot.png
+	:align: center
+	
+.. image:: debrowser_pics/density_plot.png
 	:align: center
 
 You can also view specific tables of your input data for each type of dataset available and search for a specific geneset
@@ -223,8 +233,8 @@ Selecting the 'QC Plots' tab will take you to the quality control plots
 section.  These QC plots are very similar to the QC plots shown before
 running DESeq and the dataset being used here depends on the one
 you select in the left panel.  In addition to the all-to-all plot shown
-within the previous QC analysis, users can also view a heatmap and PCA
-plot of their analyzed data by selecting the proper plot on the left
+within the previous QC analysis, users can also view a heatmap,PCA, IQR, and density
+plots of their analyzed data by selecting the proper plot on the left
 menu.  You can also choose the appropriate clustering and distance method you would
 like to use for this heatmap just abot the plot just like in the previous QC section.
 
@@ -251,7 +261,87 @@ Your selection will also zoom in for better viewing resolution.
 	
 .. image:: debrowser_pics/interactive_heatmap_zoom.png
 	:align: center
+	
+Heat Maps
+=========
+The heatmap is a great way to analyze replicate results of genes all in
+one simple plot (Figure 17).  Users have the option to change the clustering method used
+as well as the distance method used to display their heatmap.  In addition,
+you can also change the size of the heatmap produced and adjust the p-adjust
+and fold change cut off for this plot as well.  Once all of the parameters
+have been set, click the 'Submit!' button at the bottom of the left menu to
+generate your heatmap.
 
+## Used clustering and linkage methods in heatmap
+
+* **complete:**
+	Complete-linkage clustering is one of the linkage method used in hierarchical clustering.
+	In each step of clustering, closest cluster pairs are always merged up to a specified distance     threshold. Distance between clusters for complete link clustering is the maximum of
+	the distances between the members of the clusters.
+	
+* **ward D2:**
+	Ward method aims to find compact and spherical clusters. The distance between two clusters 
+	is calculated by the sum of squared deviations from points to centroids. "ward.D2" method uses
+	criterion (Murtagh and Legendre 2014) to minimize ward clustering method. The only difference
+	ward.D2 and ward is the dissimilarities from ward method squared before cluster updating. This
+	method tends to be sensitive to the outliers.
+
+* **single:**
+	Distance between clusters for single linkage is the minimum of	the distances between 
+	the members of the clusters.
+	
+* **average:**
+	Distance between clusters for average linkage is the average of the distances between 
+	the members of the clusters.
+
+* **mcquitty:**
+	mcquitty linkage is when two clusters are joined, the distance of the new cluster 
+	to any other cluster is calculated by the average of the distances of the soon to be 
+	joined clusters to that other cluster.
+	
+* **median:**
+	This is a different averaging method that uses the median instead of the mean.
+	It is used to reduce the effect of outliers.
+
+* **centroid:**
+	The distance between cluster pairs is defined as the Euclidean distance 
+	between their centroids or means.
+
+## Used distance methods in heatmap
+
+* **cor:**
+	1 - cor(x) are used to define the dissimilarity between samples. It is less
+	sensitive to the outliers and scaling.
+
+* **euclidean:**
+	It is the most common use of distance. It is sensitive to the outliers and scaling. 
+	It is defined as the square root of the sum of the square differences between gene counts.
+
+* **maximum:**
+	The maximum distance between two samples is the sum of the maximum expression value of the 
+	corresponding genes.
+
+* **manhattan:**
+	The Manhattan distance between two samples is the sum of the differences of their 
+	corresponding genes.
+
+* **canberra:**
+	Canberra distance is similar to the Manhattan distance and it is a special form of 
+	the Minkowski distance. The difference is that the absolute difference between the 
+	gene counts of the two genes is divided by the sum of the absolute counts 
+	prior to summing. 
+	
+* **minkowsky:**
+	It is generalized form of euclidean distance.
+	 
+You can also select to view an interactive version of the heatmap by clicking
+on the 'Interactive' checkbox on the left panel under the height and width
+options.  Selecting this feature changes the heatmap into an interactive
+version with two colors, allowing you to select specific genes to be compared
+within the GO term plots.  In order to use the interactive heatmap selection
+within your GO term query, you must use either the up+down dataset or the
+most varied dataset for the heatmap display.
+	
 GO Term Plots
 =============
 
