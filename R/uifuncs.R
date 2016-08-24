@@ -40,16 +40,13 @@ getDataPrepPanel <- function(flag = FALSE){
 #'
 #' Generates the left menu for for plots within the DEBrowser.
 #'
-#' @param flag, flag to show the element in the ui
 #' @note \code{getLeftMenu}
 #' @return returns the left menu according to the selected tab;
 #' @examples
 #'     x <- getLeftMenu()
 #' @export
 #'
-getLeftMenu <- function(flag = TRUE) {
-a <- NULL
-if(flag)
+getLeftMenu <- function() {
 a <- list( conditionalPanel( (condition <- "input.methodtabs=='panel1'"),
         wellPanel(radioButtons("mainplot", paste("Main Plots:", sep = ""),
             c(Scatter = "scatter", VolcanoPlot = "volcano",
@@ -66,7 +63,6 @@ a <- list( conditionalPanel( (condition <- "input.methodtabs=='panel1'"),
                 Disease = "disease", compareClusters = "compare"))),
                 getGOLeftMenu()
                 ))
-a
 }
 
 #' getGOLeftMenu

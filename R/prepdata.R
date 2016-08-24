@@ -45,36 +45,39 @@ prepDataContainer <- function(data = NULL, counter=NULL,
 
     m$conds <- list()
     for (cnt in seq(1:(2*counter))){
-        m$conds[cnt] <- list(input[[paste0("condition",cnt)]])
+        m$conds[cnt] <- list(isolate(input[[paste0("condition",cnt)]]))
     }
     #Get parameters for each method
     m$demethod_params <- NULL
     for (cnt in seq(1:counter)){
-        if (input[[paste0("demethod",cnt)]] == "DESeq2"){
-            m$demethod_params[cnt] <- paste(input[[paste0("demethod",cnt)]],
-                input[[paste0("fitType",cnt)]],
-                input[[paste0("betaPrior",cnt)]],
-                input[[paste0("testType",cnt)]],
-                input[[paste0("rowsumfilter",cnt)]], sep=",")
+        if (isolate(input[[paste0("demethod",cnt)]]) == "DESeq2"){
+            m$demethod_params[cnt] <- paste(
+                isolate(input[[paste0("demethod",cnt)]]),
+                isolate(input[[paste0("fitType",cnt)]]),
+                isolate(input[[paste0("betaPrior",cnt)]]),
+                isolate(input[[paste0("testType",cnt)]]),
+                isolate(input[[paste0("rowsumfilter",cnt)]]), sep=",")
         }
-        else if (input[[paste0("demethod",cnt)]] == "EdgeR"){
-            m$demethod_params[cnt]<- paste(input[[paste0("demethod",cnt)]],
-                input[[paste0("edgeR_normfact",cnt)]],
-                input[[paste0("dispersion",cnt)]],
-                input[[paste0("edgeR_testType",cnt)]],
-                input[[paste0("rowsumfilter",cnt)]], sep=",")
+        else if (isolate(input[[paste0("demethod",cnt)]]) == "EdgeR"){
+            m$demethod_params[cnt]<- paste(
+                isolate(input[[paste0("demethod",cnt)]]),
+                isolate(input[[paste0("edgeR_normfact",cnt)]]),
+                isolate(input[[paste0("dispersion",cnt)]]),
+                isolate(input[[paste0("edgeR_testType",cnt)]]),
+                isolate(input[[paste0("rowsumfilter",cnt)]]), sep=",")
         }
-        else if (input[[paste0("demethod",cnt)]] == "Limma"){
-            m$demethod_params[cnt] <- paste(input[[paste0("demethod",cnt)]],
-                input[[paste0("limma_normfact",cnt)]],
-                input[[paste0("limma_fitType",cnt)]],
-                input[[paste0("normBetween",cnt)]],
-                input[[paste0("rowsumfilter",cnt)]], sep=",")
+        else if (isolate(input[[paste0("demethod",cnt)]]) == "Limma"){
+            m$demethod_params[cnt] <- paste(
+                isolate(input[[paste0("demethod",cnt)]]),
+                isolate(input[[paste0("limma_normfact",cnt)]]),
+                isolate(input[[paste0("limma_fitType",cnt)]]),
+                isolate(input[[paste0("normBetween",cnt)]]),
+                isolate(input[[paste0("rowsumfilter",cnt)]]), sep=",")
         }
     }
     m
     })
-    if (is.null(input$condition1)) return(NULL)
+    if (is.null(isolate(input$condition1))) return(NULL)
     dclist<-list()
     for (i in seq(1:counter))
     {

@@ -276,7 +276,7 @@ deServer <- function(input, output, session) {
         })
         df_select <- reactive({
             if (!is.null(isolate(Dataset())))
-                getSelectedCols(isolate(Dataset()), datasetInput(), input)
+                getSelectedCols(Dataset(), datasetInput(), input)
         })
         
         v <- c()
@@ -379,8 +379,8 @@ deServer <- function(input, output, session) {
             if (choicecounter$qc == 0 ) {
                 mergedCompDat <- NULL
                 if (input$dataset == "comparisons")
-                    mergedCompDat <- isolate(mergedComp())
-                m <- getSelectedDatasetInput(isolate(filt_data()), 
+                    mergedCompDat <- mergedComp()
+                m <- getSelectedDatasetInput(filt_data(), 
                     selected$data$getSelected(), getMostVaried(),
                     mergedCompDat, input)
             }
