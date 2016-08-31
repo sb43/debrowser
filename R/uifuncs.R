@@ -50,7 +50,8 @@ getLeftMenu <- function() {
 a <- list( conditionalPanel( (condition <- "input.methodtabs=='panel1'"),
         wellPanel(radioButtons("mainplot", paste("Main Plots:", sep = ""),
             c(Scatter = "scatter", VolcanoPlot = "volcano",
-            MAPlot = "maplot"))), actionButton("startPlots", "Submit!")),
+            MAPlot = "maplot"))),
+                actionButton("startPlots", "Submit!")),
         conditionalPanel( (condition <- "input.methodtabs=='panel2'"),
             wellPanel(radioButtons("qcplot",
                 paste("QC Plots:", sep = ""),
@@ -130,8 +131,7 @@ getPCselection <- function(num = 1, xy = "x" ) {
 #' @export
 #'
 getQCLeftMenu <- function() {
-    a <- list(selectInput("norm_method", "Normalization Method:",
-                          choices <- c("TMM", "RLE", "upperquartile", "none")),
+    a <- list(
             uiOutput("columnSelForHeatmap"),
             conditionalPanel( (condition <- "input.qcplot=='all2all' ||
             input.qcplot=='heatmap' ||
