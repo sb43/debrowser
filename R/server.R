@@ -78,8 +78,8 @@ deServer <- function(input, output, session) {
                 shiny.fullstacktrace = FALSE, shiny.trace=FALSE, 
                 shiny.autoreload=TRUE)
             library(debrowser)
-            library(d3heatmap)
-            library(edgeR)
+            #library(d3heatmap)
+            #library(edgeR)
         }
         observeEvent(input$stopApp, {
             stopApp(returnValue = invisible())
@@ -242,7 +242,8 @@ deServer <- function(input, output, session) {
             if (!is.null(comparison()$init_data) &&
                 !is.null(input$padjtxt) &&
                 !is.null(input$foldChangetxt))
-            applyFilters(init_data(), isolate(cols()), input)
+            applyFilters(init_data(), isolate(cols()), isolate(conds()),
+                input)
         })
         randstr <- reactive({ 
             a<-NULL
@@ -280,7 +281,7 @@ deServer <- function(input, output, session) {
         })
         
         v <- c()
-        output$intheatmap <- renderD3heatmap({
+        output$intheatmap <- d3heatmap::renderD3heatmap({
             shinyjs::onclick("intheatmap", js$getNames(v))
             getIntHeatmap(isolate(df_select()), input, inputQCPlot())
         })
