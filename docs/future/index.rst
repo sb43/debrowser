@@ -1,4 +1,4 @@
-Quickstart Guide
+Future Additions
 ================
 
 Contents:
@@ -6,5 +6,4 @@ Contents:
 .. toctree::
    :maxdepth: 2
    
-   quickstart
-   
+   future

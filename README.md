@@ -7,15 +7,18 @@ Differential gene expression analysis has become an increasingly popular tool
 in determining and viewing up and/or down experssed genes between two sets of
 samples.  The goal of Differential gene expression analysis is to find genes
 or transcripts whose difference in expression, when accounting for the
-variance within condition, is higher than expected by chance.  DESeq2
-<https://bioconductor.org/packages/release/bioc/html/DESeq2.html> is an R
-package available via Bioconductor and is designed to normalize count data
-from high-throughput sequencing assays such as RNA-Seq and test for
+variance within condition, is higher than expected by chance.
+[DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html) is
+an R package available via Bioconductor and is designed to normalize count
+data from high-throughput sequencing assays such as RNA-Seq and test for
 differential expression (Love et al. 2014).  With multiple parameters such as
 padjust values, log fold changes, plot styles, and so on, altering plots
 created with your DE data can be a hassle as well as time consuming. The
-Differential Expression Browser uses DESeq2 (Love et al., 2014), EdgeR 
-(Robinson et al., 2010), and Limma (Ritchie et al., 2015) coupled with 
+Differential Expression Browser uses DESeq2 (Love et al., 2014), 
+[EdgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html)
+(Robinson et al., 2010), and 
+[Limma](https://bioconductor.org/packages/release/bioc/html/limma.html)
+(Ritchie et al., 2015) coupled with 
 shiny (Chang, W. et al., 2016)  to produce real-time changes within your 
 plot queries and allows for interactive browsing of your DESeq results. 
 In addition to DESeq analysis, DEBrowser also offers a variety of other plots 
@@ -648,13 +651,13 @@ Some of the comparisons can be viewed either within the tool itself or within so
 can be observed within figure 34, an interactive visualization of gene highlighting can be observed for figures 12-14, and an interactive
 visualization of biological variation or condition comparisons can also be observed for figure 34.
 
-For more information on MeV (Howe et al., 2011) please visit this link: http://www.tm4.org/mev.html
+For more information on MeV (Howe et al., 2011) please visit this link: [MeV](http://www.tm4.org/mev.html)
 
-For more information about Chipster (Kallio et al., 2011), please visit this link: http://chipster.csc.fi/manual/
+For more information about Chipster (Kallio et al., 2011), please visit this link: [Chipster](http://chipster.csc.fi/manual/)
 
-For more information about Galaxy (Giardine et al., 2005), please visit this link: https://usegalaxy.org/
+For more information about Galaxy (Giardine et al., 2005), please visit this link: [Galaxy](https://usegalaxy.org/)
 
-For more information about CummeRBund (Trapnell et al., 2012), please visit this link: http://compbio.mit.edu/cummeRbund/manual_2_0.html
+For more information about CummeRBund (Trapnell et al., 2012), please visit this link: [CummeRbund](http://compbio.mit.edu/cummeRbund/manual_2_0.html)
 
 
 **References:**

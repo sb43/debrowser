@@ -9,3 +9,4 @@ Contents:
    quickstart/index.rst
    local/index.rst
    deseq/index.rst
+   future/index.rst

@@ -6,4 +6,4 @@ Contents:
 .. toctree::
    :maxdepth: 2
    
-   local.rst
+   local
