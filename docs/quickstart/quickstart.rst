@@ -24,7 +24,7 @@ Once you've made your way to the website, or you have a local instance of DEBrow
 .. image:: debrowser_pics/input_tab.png
 	:align: center
 
-To begin the DESeq process, you will need to select your Data file (TSV format) to be analyzed using DESeq.
+To begin the DESeq process, you will need to select your Data file (TSV format) to be analyzed using DESeq2.
 If you do not have a dataset to use, you can select to use the built in demo by clicking on the 'Load Demo!'.
 To view the entire demo data file, you can download this `demo set`_.  For an example case study, try our `advanced demo`_.
 

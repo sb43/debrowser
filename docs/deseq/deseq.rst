@@ -129,6 +129,16 @@ For comparisons against other popular data visualization tools, see the table be
 
 .. image:: debrowser_pics/comparison_table.png
 	:align: center
+	
+For more information on the programs compared against DEBrowser, please visit these pages:
+
+	* `MeV <http://www.tm4.org/mev.html>`_
+	
+	* `Chipster <http://chipster.csc.fi>`_
+	
+	* `Galaxy <https://usegalaxy.org/>`_
+	
+	* `CummeRbund <http://compbio.mit.edu/cummeRbund/>`_
 
 References
 ==========
