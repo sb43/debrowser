@@ -26,7 +26,7 @@ getDataPrepPanel <- function(flag = FALSE){
             uiOutput("conditionSelector"),
             column(12,actionButton("add_btn", "Add New Comparison"),
             actionButton("rm_btn", "Remove"),
-            getHelpButton("method", "http://debrowser.readthedocs.io/en/develop/deseq.html#id1")),
+            getHelpButton("method", "http://debrowser.readthedocs.io/en/develop/deseq/deseq.html")),
             actionButton("startDE", "Submit!"),
            tags$style(type='text/css', "#startDE { margin-top: 10px;}")  ))),
         conditionalPanel(condition = "!input.demo &&
@@ -152,7 +152,10 @@ getQCLeftMenu <- function() {
                 "mcquitty", "median", "centroid")),
                 selectInput("distance_method", "Distance Method:",
                 choices <- c("cor", "euclidean", "maximum", "manhattan",
-                "canberra", "binary", "minkowski"))),
+                "canberra", "binary", "minkowski")),
+                getHelpButton("method", 
+                "http://debrowser.readthedocs.io/en/develop/quickstart/quickstart.html#heat-maps")),
+            ),
         conditionalPanel( (condition <- "input.qcplot=='pca'"),
             getPCselection(1, "x"),
             getPCselection(2, "y")
@@ -242,7 +245,7 @@ getInitialMenu <- function(input = NULL, output = NULL, session = NULL) {
             conditionalPanel(condition = "!input.demo &&
                 !output.dataready",
                 actionLink("demo", "Load Demo!"),
-                getHelpButton("method", " http://debrowser.readthedocs.io/en/develop/quickstart.html"),
+                getHelpButton("method", "http://debrowser.readthedocs.io/en/develop/quickstart/quickstart.html"),
                 fileInput("file1", "Choose TSV File",
                     accept = c("text/tsv",
                         "text/comma-separated-values,text/plain",
@@ -389,7 +392,7 @@ a <- list( conditionalPanel(condition <- "!input.startPlots",
     column( 12, wellPanel(
     helpText( "Please choose the appropriate parameters and 
             press submit button to draw the plots!" ),
-    getHelpButton("method", "http://debrowser.readthedocs.io/en/develop/quickstart.html#the-main-plots")))))
+    getHelpButton("method", "http://debrowser.readthedocs.io/en/develop/quickstart/quickstart.html#the-main-plots")))))
 }
 
 #' getCondMsg
@@ -418,7 +421,7 @@ getCondMsg <- function(cols = NULL, conds = NULL) {
                 paste(cnd[cnd$conds == unique(conds)[2], "cols"], 
                 collapse =",")),
             getHelpButton("method", 
-    "http://debrowser.readthedocs.io/en/develop/quickstart.html#the-main-plots")))))
+    "http://debrowser.readthedocs.io/en/develop/quickstart/quickstart.html#the-main-plots")))))
     }
     a
 }

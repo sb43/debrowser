@@ -1,5 +1,5 @@
 ***************
-DESeq/DEBrowser
+DE Analysis
 ***************
 
 This guide contains a breif discription of DESeq2 used within the DEBrowser
@@ -17,8 +17,7 @@ variance within condition, is higher than expected by chance.  `DESeq2
 package available via Bioconductor and is designed to normalize count data
 from high-throughput sequencing assays such as RNA-Seq and test for
 differential expression (Love et al. 2014).  For more information on the
-DESeq2 algorithm, you can visit `this website <https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.pdf>`_  With multiple parameters such as
-padjust values, log fold changes, and plot styles, altering plots
+DESeq2 algorithm, you can visit `this website <https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.pdf>`_  With multiple parameters such as padjust values, log fold changes, and plot styles, altering plots
 created with your DE data can be a hassle as well as time consuming.  The
 Differential Expression Browser uses DESeq2, EdgeR, and Limma coupled with shiny to produce
 real-time changes within your plot queries and allows for interactive browsing
