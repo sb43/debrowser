@@ -1,3 +1,6 @@
+---
+output: pdf_document
+---
 # DEBrowser: 
 Interactive Differential Expression Analysis Tool
 
@@ -651,9 +654,9 @@ For more information about Galaxy (Giardine et al., 2005), please visit this lin
 
 For more information about CummeRBund (Trapnell et al., 2012), please visit this link: [CummeRbund](http://compbio.mit.edu/cummeRbund/manual_2_0.html)
 
-#       Additions
+#       Future Plan:
 
-Future additions may or may not include the following:
+Future plans will include the following:
 
 	* Venn Diagrams to compare overlapping differentially expressed genes in different condition comparison results.
 	* Increase in the number of used clustering methods.
