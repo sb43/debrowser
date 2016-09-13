@@ -6,6 +6,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
    
-   quickstart
-   local
-   deseq
+   quickstart/QuickstartGuide.rst
+   local/LocalInstall.rst
+   deseq/DEBrowser.rst
+   future/FutureAdditions.rst

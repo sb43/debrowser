@@ -21,7 +21,7 @@ For more information on installing DEBrowser locally, please consult our Local I
 
 Once you've made your way to the website, or you have a local instance of DEBrowser running, you will be greeted with this tab on the left:
 
-.. image:: debrowser_pics/input_tab.png
+.. image:: ../debrowser_pics/input_tab.png
 	:align: center
 
 To begin the DESeq process, you will need to select your Data file (TSV format) to be analyzed using DESeq2.
@@ -100,7 +100,7 @@ For more information about the input file, please visit our DESeq/DEBrowser tab 
 Once you've selected your file and the upload has completed, you will then be shown the samples listed within your
 file uploaded as well as a few options.
 
-.. image:: debrowser_pics/file_load.png
+.. image:: ../debrowser_pics/file_load.png
 	:align: center
 
 The first option, 'Go to DE Analysis', takes you to the next step within the DESeq workflow.
@@ -111,7 +111,7 @@ To add a sample to a condition you simply have to click on one of the condition 
 samples you can add to that comparison.  Click on the sample you wish to add from the list and it will be added
 to the textbox for that comparison.
 
-.. image:: debrowser_pics/de_analysis.png
+.. image:: ../debrowser_pics/de_analysis.png
 	:align: center
 
 The second option, 'Go to QC plots!', takes you to a page where you can view quality control metrics on your data input.
@@ -129,22 +129,22 @@ IQR and Density plots are another great visualization too to help you spot
 outliers within your sample data incase you want to remove or look into
 any possible discrepancies.
 
-.. image:: debrowser_pics/intro_sidebar.png
+.. image:: ../debrowser_pics/intro_sidebar.png
 	:align: center
 
-.. image:: debrowser_pics/intro_qc_all2all.png
+.. image:: ../debrowser_pics/intro_qc_all2all.png
 	:align: center
 	
-.. image:: debrowser_pics/intro_qc_heatmap.png
+.. image:: ../debrowser_pics/intro_qc_heatmap.png
 	:align: center
 	
-.. image:: debrowser_pics/intro_qc_pca.png
+.. image:: ../debrowser_pics/intro_qc_pca.png
 	:align: center
 	
-.. image:: debrowser_pics/iqr_plot.png
+.. image:: ../debrowser_pics/iqr_plot.png
 	:align: center
 	
-.. image:: debrowser_pics/density_plot.png
+.. image:: ../debrowser_pics/density_plot.png
 	:align: center
 
 You can also view specific tables of your input data for each type of dataset available and search for a specific geneset
@@ -168,7 +168,7 @@ button.  It is important to note that the resulting data produced from DESeq
 is normalized. Upon finishing the DESeq analysis, a tab based menu will appear
 with multiple options.
 
-.. image:: debrowser_pics/info_tabs.png
+.. image:: ../debrowser_pics/info_tabs.png
 	:align: center
 
 The first tab, the 'Main Plots' section, is where you will be able to view
@@ -176,42 +176,42 @@ the interactive results plots.  Plot choices include:
 
 Scatter plot
 
-.. image:: debrowser_pics/scatter_plot.png
+.. image:: ../debrowser_pics/scatter_plot.png
 	:align: center
 
 Volcano plot
 
-.. image:: debrowser_pics/volcano.png
+.. image:: ../debrowser_pics/volcano.png
 	:align: center
 	
 MA plot
 
-.. image:: debrowser_pics/ma.png
+.. image:: ../debrowser_pics/ma.png
 	:align: center
 	
 You can hover over the scatterplot points to display more information about the point selected.
 A few bargraphs will be generated for the user to view as soon as a scatterplot point is hovered over.
 
-.. image:: debrowser_pics/bargraph.png
+.. image:: ../debrowser_pics/bargraph.png
 	:align: center
 	
-.. image:: debrowser_pics/barplot.png
+.. image:: ../debrowser_pics/barplot.png
 	:align: center
 	
 You can also select a specific region within the scatter plot and zoom in on the selected window.
 
-.. image:: debrowser_pics/scatter_plot_selection.png
+.. image:: ../debrowser_pics/scatter_plot_selection.png
 	:align: center
 	
 Once you've selected a specific region, a new scatterplot of the selected area will appear on the right
 
-.. image:: debrowser_pics/scatter_plot_zoom.png
+.. image:: ../debrowser_pics/scatter_plot_zoom.png
 	:align: center
 	
 You also have a wide array of options when it comes to fold change cut-off levels, padj cut-off values,
 which comparison set to use, and dataset of genes to analyze. 
 
-.. image:: debrowser_pics/filters.png
+.. image:: ../debrowser_pics/filters.png
 	:align: center
 
 It is important to note that when conducting multiple comparisons, the
@@ -219,12 +219,12 @@ comparisons are labeled based on the order that they are input.
 If you don't remember which samples are in your current comparison
 you can always view the samples in each condition at the top of the main plots.
 
-.. image:: debrowser_pics/selected_conditions.png
+.. image:: ../debrowser_pics/selected_conditions.png
 	:align: center
 
 If you can select the type of plot at the bottom of the filter tab.
 
-.. image:: debrowser_pics/main_plots.png
+.. image:: ../debrowser_pics/main_plots.png
 	:align: center
 	
 You can download the results in CSV or TSV format by selecting your 'File type' and clicking the 'download' button once you've ran DESeq.
@@ -258,12 +258,12 @@ Just like in the Main Plots, you can click and drag to create a selection.  To s
 to highlight the middle of the heatmap gene box in order to fully select a specific gene.  This selection can be used later within the
 GO Term plots for specific queries on your selection.
 
-.. image:: debrowser_pics/interactive_heatmap.png
+.. image:: ../debrowser_pics/interactive_heatmap.png
 	:align: center
 	
 Your selection will also zoom in for better viewing resolution.
 	
-.. image:: debrowser_pics/interactive_heatmap_zoom.png
+.. image:: ../debrowser_pics/interactive_heatmap_zoom.png
 	:align: center
 	
 Heat Maps
@@ -357,7 +357,7 @@ also can choose from the 4 different ontology plot options: 'enrichGO',
 'enrichKEGG', 'Disease', and 'compareCluster'.  Selecting one of these plot
 options queries their specific databases with your current DESeq results.
 
-.. image:: debrowser_pics/go_plots_opts.png
+.. image:: ../debrowser_pics/go_plots_opts.png
 	:align: center
 	
 Your GO plots include:
@@ -371,12 +371,12 @@ The types of plots you will be able to generate include:
 
 Summary plot:
 
-.. image:: debrowser_pics/go_summary.png
+.. image:: ../debrowser_pics/go_summary.png
 	:align: center
 
 GOdotplot:
 
-.. image:: debrowser_pics/go_dot_plot.png
+.. image:: ../debrowser_pics/go_dot_plot.png
 	:align: center
 
 Changing the type of ontology to use will also produce custom parameters for that specific ontology at the bottom of the
@@ -399,7 +399,7 @@ These datatables include:
 * Most varied genes
 * Comparison differences
 
-.. image:: debrowser_pics/datatable.png
+.. image:: ../debrowser_pics/datatable.png
 	:align: center
 	
 All of the tables tables, except the Comparisons table, contain the following information:
@@ -420,7 +420,7 @@ For each pairwise comparison, these values will be generated:
 * pvalue of comparison A vs B
 * padj value of comparison A vs B
 
-.. image:: debrowser_pics/comparisons.png
+.. image:: ../debrowser_pics/comparisons.png
 	:align: center
 	
 You can further customize and filter each specific table a multitude of ways.  For unique table or dataset options, select the type of
