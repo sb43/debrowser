@@ -154,7 +154,7 @@ getQCLeftMenu <- function() {
                 choices <- c("cor", "euclidean", "maximum", "manhattan",
                 "canberra", "binary", "minkowski")),
                 getHelpButton("method", 
-                "http://debrowser.readthedocs.io/en/develop/quickstart/quickstart.html#heat-maps")),
+                              "http://debrowser.readthedocs.io/en/develop/quickstart/quickstart.html#heat-maps")
             ),
         conditionalPanel( (condition <- "input.qcplot=='pca'"),
             getPCselection(1, "x"),
