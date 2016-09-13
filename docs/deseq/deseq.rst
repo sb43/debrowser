@@ -127,7 +127,7 @@ For more details about these plots and tables, please visit our quickstart guide
 
 For comparisons against other popular data visualization tools, see the table below.
 
-.. image:: debrowser_pics/comparison_table.png
+.. image:: ../debrowser_pics/comparison_table.png
 	:align: center
 	
 For more information on the programs compared against DEBrowser, please visit these pages:
