@@ -87,7 +87,8 @@ prepDataContainer <- function(data = NULL, counter=NULL,
         cols <- c(paste(inputconds()$conds[[2*i-1]]), 
         paste(inputconds()$conds[[2*i]]))
         m<-prepDEOutput(data, cols, conds, inputconds(), i)
-        m<-list(conds = conds, cols = cols, init_data=m)
+        m<-list(conds = conds, cols = cols, init_data=m, 
+            demethod_params = inputconds()$demethod_params[i])
         dclist[[i]] <- m
     }
     return(dclist)

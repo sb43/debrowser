@@ -400,6 +400,8 @@ a <- list( conditionalPanel(condition <- "!input.startPlots",
 #' Generates and displays the current conditions and their samples
 #' within the DEBrowser.
 #'
+#' @param dc, columns
+#' @param num, selected comparison
 #' @param cols, columns
 #' @param conds, selected conditions
 #' @note \code{getCondMsg}
@@ -408,22 +410,23 @@ a <- list( conditionalPanel(condition <- "!input.startPlots",
 #'     x <- getCondMsg()
 #' @export
 #'
-getCondMsg <- function(cols = NULL, conds = NULL) {
-    a <- NULL
-    if (!is.null(cols) && !is.null(conds)) {
-        cnd <- data.frame(cbind(conds, cols))
-        a <-list( conditionalPanel(condition <- "input.startPlots",
-            column( 12, wellPanel(
-            HTML( paste0( "<b>",unique(conds)[1], ":</b>"), 
-                paste(cnd[cnd$conds == unique(conds)[1], "cols"], 
-                collapse =","), 
-                paste0(" vs. ","<b>",unique(conds)[2], ":", "</b>"),
-                paste(cnd[cnd$conds == unique(conds)[2], "cols"], 
-                collapse =",")),
-            getHelpButton("method", 
-    "http://debrowser.readthedocs.io/en/develop/quickstart/quickstart.html#the-main-plots")))))
-    }
-    a
+getCondMsg <- function(dc = NULL, num = NULL, cols = NULL, conds = NULL) {
+    if (is.null(cols) || is.null(conds)) return (NULL)
+    if (is.null(num)) num <- 1
+    cnd <- data.frame(cbind(conds, cols))
+    params_str <- paste(dc[[num]]$demethod_params, collapse = ',')
+    a <-list( conditionalPanel(condition <- "input.startPlots",
+        column( 12, wellPanel(
+            style = "overflow-x:scroll",
+            HTML( paste0( "<b>Selected Parameters:</b> ", params_str,
+            "</br><b>",unique(conds)[1], ":</b> "), 
+            paste(cnd[cnd$conds == unique(conds)[1], "cols"], 
+            collapse =","), 
+            paste0(" vs. ","<b>",unique(conds)[2], ":", "</b> "),
+            paste(cnd[cnd$conds == unique(conds)[2], "cols"], 
+            collapse =",")),
+        getHelpButton("method", 
+"http://debrowser.readthedocs.io/en/develop/quickstart/quickstart.html#the-main-plots")))))
 }
 
 #' togglePanels

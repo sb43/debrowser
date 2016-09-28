@@ -262,7 +262,8 @@ deServer <- function(input, output, session) {
                 compselect <- as.integer(input$compselect)
             if (!is.null(isolate(filt_data())) && !is.null(input$padjtxt) && 
                 !is.null(input$foldChangetxt)) {
-                condmsg$text <- getCondMsg( isolate(cols()), isolate(conds()))
+                condmsg$text <- getCondMsg(isolate(dc()), input$compselect,
+                    isolate(cols()), isolate(conds()))
                 selected$data <- getMainPanelPlots(isolate(filt_data()), 
                     isolate(cols()), isolate(conds()), input, compselect)
             }
