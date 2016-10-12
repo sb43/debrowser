@@ -53,7 +53,8 @@ Imports:
     edgeR,  
     clusterProfiler,
     V8,
-    methods
+    methods,
+    sva
 RoxygenNote: 5.0.1
 Suggests: testthat,
     rmarkdown,
