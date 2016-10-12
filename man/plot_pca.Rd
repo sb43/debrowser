@@ -5,7 +5,7 @@
 \title{plot_pca}
 \usage{
 plot_pca(dat = NULL, pcx = 1, pcy = 2, metadata = NULL, color = NULL,
-  shape = NULL, size = NULL, factors = NULL)
+  shape = NULL, size = NULL, textonoff = "Off", legendSelect = "fill")
 }
 \arguments{
 \item{dat, }{data}
@@ -22,7 +22,9 @@ plot_pca(dat = NULL, pcx = 1, pcy = 2, metadata = NULL, color = NULL,
 
 \item{size, }{size of the plot}
 
-\item{factors, }{factors of the plot}
+\item{textonoff, }{text on off}
+
+\item{legendSelect, }{select legend}
 }
 \value{
 pca list

@@ -40,13 +40,15 @@ getDataPrepPanel <- function(flag = FALSE){
 #'
 #' Generates the left menu for for plots within the DEBrowser.
 #'
+#' @param input, input values
 #' @note \code{getLeftMenu}
 #' @return returns the left menu according to the selected tab;
 #' @examples
 #'     x <- getLeftMenu()
 #' @export
 #'
-getLeftMenu <- function() {
+getLeftMenu <- function(input = NULL) {
+if (is.null(input)) return(NULL)
 a <- list( conditionalPanel( (condition <- "input.methodtabs=='panel1'"),
         wellPanel(radioButtons("mainplot", paste("Main Plots:", sep = ""),
             c(Scatter = "scatter", VolcanoPlot = "volcano",
@@ -55,9 +57,9 @@ a <- list( conditionalPanel( (condition <- "input.methodtabs=='panel1'"),
         conditionalPanel( (condition <- "input.methodtabs=='panel2'"),
             wellPanel(radioButtons("qcplot",
                 paste("QC Plots:", sep = ""),
-                c(All2All = "all2all", Heatmap = "heatmap", PCA = "pca", IQR = "IQR", 
+                c(PCA = "pca", All2All = "all2all", Heatmap = "heatmap", IQR = "IQR", 
                   Density = "Density"))),
-            getQCLeftMenu()),
+            getQCLeftMenu(input)),
         conditionalPanel( (condition <- "input.methodtabs=='panel3'"),
             wellPanel(radioButtons("goplot", paste("Go Plots:", sep = ""),
                 c(enrichGO = "enrichGO", enrichKEGG = "enrichKEGG",
@@ -119,18 +121,38 @@ getPCselection <- function(num = 1, xy = "x" ) {
         paste0("PC selection[", xy, "]"), num, 1, 6)
 }
 
+#' getColorShapeSelection
+#'
+#' Generates the fill and shape selection boxes for PCA plots.
+#' metadata file has to be loaded in this case
+#'
+#' @param input, input values
+#' @return Color and shape selection boxes
+#' @examples
+#'     x <- getColorShapeSelection()
+#' @export
+#'
+getColorShapeSelection <- function(input = NULL) {
+    if (is.null(input)) return (NULL)
+    a <- list(selectBatchEffect(input, "color_pca", "Color field"),
+           selectBatchEffect(input, "shape_pca", "Shape field"))
+}
+
+
 #' getQCLeftMenu
 #'
 #' Generates the left menu to be used for QC plots within the
 #' DEBrowser.
-#'
+#' 
+#' @param input, input values
 #' @note \code{getQCLeftMenu}
 #' @return QC left menu
 #' @examples
 #'     x <- getQCLeftMenu()
 #' @export
 #'
-getQCLeftMenu <- function() {
+getQCLeftMenu <- function( input = NULL) {
+    if (is.null(input)) return(NULL)
     a <- list(
             uiOutput("columnSelForHeatmap"),
             conditionalPanel( (condition <- "input.qcplot=='all2all' ||
@@ -158,7 +180,10 @@ getQCLeftMenu <- function() {
             ),
         conditionalPanel( (condition <- "input.qcplot=='pca'"),
             getPCselection(1, "x"),
-            getPCselection(2, "y")
+            getPCselection(2, "y"),
+            getTextOnOff(),
+            getLegendSelect(),
+            getColorShapeSelection(input)
         ),
         downloadButton("downloadPlot", "Download Plot")))
 }
@@ -249,8 +274,15 @@ getInitialMenu <- function(input = NULL, output = NULL, session = NULL) {
                 fileInput("file1", "Choose TSV File",
                     accept = c("text/tsv",
                         "text/comma-separated-values,text/plain",
-                        ".tsv"))        
-                ))
+                        ".tsv")),
+                fileInput("file2", "Choose Meta Data File (Optional)",
+                          accept = c("text/tsv",
+                                     "text/comma-separated-values,text/plain",
+                        ".tsv"))
+                ,
+                uiOutput("batchEffect"),
+                actionButton("gotoanalysis", "Go to Analysis!"))
+            )
     }
     a
 }
@@ -421,7 +453,7 @@ getCondMsg <- function(dc = NULL, num = NULL, cols = NULL, conds = NULL) {
             HTML( paste0( "<b>Selected Parameters:</b> ", params_str,
             "</br><b>",unique(conds)[1], ":</b> "), 
             paste(cnd[cnd$conds == unique(conds)[1], "cols"], 
-            collapse =","), 
+            collapse =","),
             paste0(" vs. ","<b>",unique(conds)[2], ":", "</b> "),
             paste(cnd[cnd$conds == unique(conds)[2], "cols"], 
             collapse =",")),
@@ -478,6 +510,80 @@ getCompSelection <- function(count = NULL) {
   a
 }
 
+#' selectBatchEffect
+#'
+#' Batch effect column selection
+#'
+#' @param input, input values
+#' @param selectname, name of the select box 
+#' @param label, label of the select box
+#' @note \code{selectBatchEffect}
+#' @examples
+#'     x <- selectBatchEffect()
+#' @export
+#'
+selectBatchEffect <- function(input = NULL, 
+    selectname = "batchselect",
+    label = "Batch effect correction column") {
+    if (is.null(input$file2)) return (NULL)
+    
+     metadata <- readMetaData(input)
+     lst.choices <- as.list(c("None", colnames(metadata)))
+     selectInput(selectname, label = label, 
+            choices = lst.choices, 
+            selected = 1)
+}
+
+#' readMetaData
+#'
+#' read metadata file
+#'
+#' @param input, input values
+#' @note \code{readMetaData}
+#' @examples
+#'     x <- readMetaData()
+#' @export
+#'
+readMetaData <- function(input = NULL) {
+if (is.null(input$file2)) return (NULL)
+
+metadata <- read.table(input$file2$datapath, sep = "\t",
+                       header = TRUE, row.names = 1)
+}
+
+#' getTextOnOff
+#'
+#' text on PCA plot on and off
+#'
+#' @note \code{getTextOnOff}
+#' @examples
+#'     x <- getTextOnOff()
+#' @export
+#'
+getTextOnOff <- function() {
+    lst.choices <- as.list(c("On", "Off"))
+    selectInput("textonoff", label = "Text On/Off", 
+                choices = lst.choices, 
+                selected = "Off")
+}
+
+#' getLegendSelect
+#'
+#' select legend
+#'
+#' @note \code{getLegendSelect}
+#' @examples
+#'     x <- getLegendSelect()
+#' @export
+#'
+getLegendSelect <- function() {
+    lst.choices <- as.list(c("color", "shape"))
+    selectInput("legendSelect", label = "Select legend", 
+                choices = lst.choices, 
+                selected = "color")
+}
+
+
 #' getTableStyle
 #'
 #' User defined selection that selects the style of table to display
@@ -496,7 +602,7 @@ getCompSelection <- function(count = NULL) {
 getTableStyle <- function(dat = NULL, input = NULL, 
     padj = c("padj"), foldChange=c("foldChange"), DEsection = TRUE){
     if (is.null(dat)) return (NULL)
-    a <- dat 
+    a <- dat
     if(!is.null(padj) && padj != "" && DEsection)
         a <- a %>% formatStyle(
             padj,
@@ -506,7 +612,8 @@ getTableStyle <- function(dat = NULL, input = NULL,
             input$padjtxt, c('green', 'white'))
         ) 
     if(!is.null(foldChange) && foldChange != "" && DEsection)
-        a <- a %>% formatStyle(
+        a <- a %>%
+            formatStyle(
             foldChange,
             color = styleInterval(c(1/as.numeric(input$foldChangetxt), 
             as.numeric(input$foldChangetxt)), c('white', 'black', 'white')),
