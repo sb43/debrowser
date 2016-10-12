@@ -146,6 +146,7 @@ getPCAexplained <- function(datasetInput = NULL,
         datexp %>% ggvis(x = ~PCs, y = ~explained) %>% 
             layer_bars() %>%
             set_options(width = "auto", height = "auto", resizable = TRUE ) %>%
+            scale_ordinal('x', domain=datexp$PCs) %>%
             bind_shiny("ggvisQC2")
     }
     a
