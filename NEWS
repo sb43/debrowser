@@ -1,8 +1,14 @@
 ************************************
+Version 1.1.11 Release
+***********************************
+- Bug fixes
+
+************************************
 Version 1.1.10 Release
 ***********************************
 - Normalization method selection added to main plots
 and tables too
+- Batch effect correction
 
 ************************************
 Version 1.1.9 Release
