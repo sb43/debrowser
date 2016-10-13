@@ -36,14 +36,14 @@ Plots the PCA results for the selected dataset.
     load(system.file("extdata", "demo", "demodata.Rda",
             package="debrowser"))
     metadata<-cbind(colnames(demodata[,2:7]), 
+            colnames(demodata[,2:7]),
             c(rep("Cond1",3), rep("Cond2",3)))
-    colnames(metadata)<-c("samples", "conditions")
+    colnames(metadata)<-c("samples", "color", "shape")
 
     a <- plot_pca(getNormalizedMatrix(
             demodata[rowSums(demodata[,2:7])>10,2:7]),
             metadata = metadata, color = "samples",
-            size = 5, shape = "conditions",
-            factors = c("samples", "conditions"))
+            size = 5, shape = "shape")
 
 }
 

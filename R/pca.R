@@ -43,14 +43,14 @@ run_pca <- function(x=NULL, retx = TRUE,
 #'     load(system.file("extdata", "demo", "demodata.Rda",
 #'             package="debrowser"))
 #'     metadata<-cbind(colnames(demodata[,2:7]), 
+#'             colnames(demodata[,2:7]),
 #'             c(rep("Cond1",3), rep("Cond2",3)))
-#'     colnames(metadata)<-c("samples", "conditions")
+#'     colnames(metadata)<-c("samples", "color", "shape")
 #'
 #'     a <- plot_pca(getNormalizedMatrix(
 #'             demodata[rowSums(demodata[,2:7])>10,2:7]),
 #'             metadata = metadata, color = "samples",
-#'             size = 5, shape = "conditions",
-#'             factors = c("samples", "conditions"))
+#'             size = 5, shape = "shape")
 #'
 #' @export
 #'
@@ -79,7 +79,7 @@ plot_pca <- function(dat = NULL, pcx = 1, pcy = 2,
 
         a <- p_data %>% ggvis(x = ~x, y = ~y) %>% 
             layer_points(size := 100, 
-                fill = ~color, shape =~ shape, key := ~samples) %>%
+                fill =~ color, shape =~ shape, key := ~samples) %>%
             add_tooltip(getToolTipPCA, "hover") %>%
             add_axis("x", title = xaxis) %>%
             add_axis("y", title = yaxis) %>%
