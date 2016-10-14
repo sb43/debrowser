@@ -1,3 +1,6 @@
+---
+output: pdf_document
+---
 # DEBrowser: 
 Interactive Differential Expression Analysis Tool
 
@@ -154,6 +157,24 @@ then have the option to view QC information of your quantifications or you can
 continue on to running DESeq2 (Figure 1).
 
 ![*The initial options selection.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_1.png "Initial option selection")
+
+## Batch Effect Conditioning
+
+In addition to the sample TSV file you will provide; you can also correct for batch effects or any other normalizing conditions you might want to address
+that might be within your results.  To handle for these conditions, simple create a TSV file such as the on located below:
+
+
+| sample   | batch      | condition  |
+|----------|------------|------------|
+| s1_b1_cA | 1          | A          |
+| s2_b1_cA | 1          | A          |
+| s3_b2_cB | 2          | B          |
+| s4_b2_cB | 2          | B          |
+| s5_b1_cB | 1          | B          |
+
+You can have as many conditions as you may require, as long as all of the samples are present.  Once the TSV file has been loaded in along with your
+data TSV file, DEBrowser uses ComBat (part of the SVA bioconductor package) to adjust for possible batch effect or conditional biases.  For more information
+about ComBat within the SVA package you can visit here: https://bioconductor.org/packages/release/bioc/vignettes/sva/inst/doc/sva.pdf.
 
 ## Quality Control Information:
 
@@ -651,6 +672,13 @@ For more information about Galaxy (Giardine et al., 2005), please visit this lin
 
 For more information about CummeRBund (Trapnell et al., 2012), please visit this link: [CummeRbund](http://compbio.mit.edu/cummeRbund/manual_2_0.html)
 
+#       Batch Effect Correction Example
+
+Batch effects can have negative effects on your overall data as a whole.  If samples were not handled at the same time, or just do not
+have the sample level of technical variance as the rest of your samples, this can lead to specific batch effects that might skew test results.  In
+Figures 41-43, we show how forgetting to deposit one enzyme can have skewing effects as well as the results of batch effect correction using
+ComBat.
+
 #       Future Plan:
 
 Future plans will include the following:
@@ -694,8 +722,14 @@ Future plans will include the following:
 
 ![*Up and Down regulated genes volcano plot of HFD WT vs Chow WT.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_37.png "")
 
-![*HFD upregulated gene list used for DO enrichment*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_37.png "")
+![*HFD upregulated gene list used for DO enrichment*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_38.png "")
 
-![*HFD upregulated gene list used for KEGG enrichment*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_38.png "")
+![*HFD upregulated gene list used for KEGG enrichment*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_39.png "")
 
 ![*Comparison table of DEBrowser, MeV, Chipster, Galaxy, and CummeRBund*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_40.png "")
+
+![*RSeQC results displaying the differences between the normally conducted samples and the two samples that lack a specific enzyme.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_41.png "")
+
+![*All-2-All scatter plots showing QC without batch correction.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_42.png "")
+
+![*All-2-All scatter plots showing QC with batch correction.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_43.png "")
