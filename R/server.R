@@ -165,8 +165,10 @@ deServer <- function(input, output, session) {
         
         Dataset <- reactive({
             a <- NULL
+            query <- parseQueryString(session$clientData$url_search)
+            jsonobj<-query$jsonobject
             if ( buttonValues$gotoanalysis == TRUE || (!is.null(input$demo) && 
-                 input$demo == TRUE)){
+                 input$demo == TRUE) || !is.null(jsonobj) ){
                 a <- load_data(input, session)
                 if (!is.null(input$batchselect) && input$batchselect!="None")
                 {
