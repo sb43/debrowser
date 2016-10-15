@@ -1,6 +1,3 @@
----
-output: pdf_document
----
 # DEBrowser: 
 Interactive Differential Expression Analysis Tool
 
