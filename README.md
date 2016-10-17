@@ -177,7 +177,7 @@ meta data file containing your batch correction fields, you
 then have the option to view QC information of your quantifications or you can 
 continue on to running DESeq2 (Figure 1).
 
-![*The initial options selection.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_1.png "Initial option selection")
+![*(A) The initial data selection menu.  Intial TSV data is loaded in the 'Choose TSV File' while the optional meta data file is loaded in under 'Choose Mera Data File (Optional)'.  (B) Options list once data/meta data have been loaded in.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_1.png "Initial option selection")
 
 ## Quality Control Information:
 
