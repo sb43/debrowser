@@ -148,13 +148,13 @@ api/?source=http://bioinfo.umassmed.edu/pub/debrowser/advanced_demo.tsv&format=J
 Entering this URL into your web browser will automatically load in your data as a JSON
 object, allowing you to start browsing your data right away.
 
-## Batch Effect Conditioning
+## Batch Effect Corrections
 
-In addition to the sample TSV file you will provide; you can also correct for batch effects or any other normalizing conditions you might want to address
-that might be within your results.  To handle for these conditions, simply create a TSV file such as the one located below:
+In addition to the sample TSV file you will provide; you can also correct for batch effects or any other normalizing corrections you might want to address
+that might be within your results.  To handle for these corrections, simply create a TSV file such as the one located below:
 
 
-| sample   | batch      | condition  |
+| sample   | batch      | correction |
 |----------|------------|------------|
 | s1_b1_cA | 1          | A          |
 | s2_b1_cA | 1          | A          |
@@ -162,8 +162,8 @@ that might be within your results.  To handle for these conditions, simply creat
 | s4_b2_cB | 2          | B          |
 | s5_b1_cB | 1          | B          |
 
-This meta data file is custom made TSV created by the user and is used in order to establish different batch effects for multiple conditions.
-You can have as many conditions as you may require, as long as all of the samples are present.  Once the TSV file has been loaded in along with your
+This meta data file is custom made TSV created by the user and is used in order to establish different batch effects for multiple corrections.
+You can have as many corrections as you may require, as long as all of the samples are present.  Once the TSV file has been loaded in along with your
 data TSV file, DEBrowser uses ComBat (part of the SVA bioconductor package) to adjust for possible batch effect or conditional biases.  For more information
 about ComBat within the SVA package you can visit here: https://bioconductor.org/packages/release/bioc/vignettes/sva/inst/doc/sva.pdf.
 
