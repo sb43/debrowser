@@ -110,6 +110,7 @@ s4_b2_cB  2         B
 s5_b1_cB  1         B
 ========  ========  ========
 
+This meta data file is custom made TSV created by the user and is used in order to establish different batch effects for multiple conditions.
 You can have as many conditions as you may require, as long as all of the samples are present.  Once the TSV file has been loaded in, along with your
 data TSV file, DEBrowser uses ComBat (part of the SVA bioconductor package) to adjust for possible batch effect or conditional biases.  For more information
 about ComBat within the SVA package you can visit here: `ComBat`_.
