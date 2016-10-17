@@ -114,6 +114,14 @@ Used parameters for Limma
 
   - rowsum.filter:
       regions/genes/isoforms with total count (across all samples) below this value will be filtered out
+	  
+ComBat
+=========
+For more details on ComBat, please check the user guide.
+`ComBat userguide <https://bioconductor.org/packages/release/bioc/vignettes/sva/inst/doc/sva.pdf>`_.
+
+ComBat is part of the SVA R Bioconductor package which specializes in corecting for known batch effects.
+No additional parameters are selected or altered when running SVA's ComBat.
 
 DEBrowser
 =========
