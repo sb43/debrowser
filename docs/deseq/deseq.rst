@@ -113,8 +113,8 @@ Used parameters for Limma
      intensities or log-ratios have similar distributions across a set of arrays.
 
   - rowsum.filter:
-      regions/genes/isoforms with total count (across all samples) below this value will be filtered out
-	  
+     regions/genes/isoforms with total count (across all samples) below this value will be filtered out
+
 ComBat
 =========
 For more details on ComBat, please check the user guide.
