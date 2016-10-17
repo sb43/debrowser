@@ -179,7 +179,7 @@ object, allowing you to start browsing your data right away.
 ## Batch Effect Conditioning
 
 In addition to the sample TSV file you will provide; you can also correct for batch effects or any other normalizing conditions you might want to address
-that might be within your results.  To handle for these conditions, simple create a TSV file such as the on located below:
+that might be within your results.  To handle for these conditions, simply create a TSV file such as the one located below:
 
 
 | sample   | batch      | condition  |
@@ -190,6 +190,7 @@ that might be within your results.  To handle for these conditions, simple creat
 | s4_b2_cB | 2          | B          |
 | s5_b1_cB | 1          | B          |
 
+This meta data file is custom made TSV created by the user and is used in order to establish different batch effects for multiple conditions.
 You can have as many conditions as you may require, as long as all of the samples are present.  Once the TSV file has been loaded in along with your
 data TSV file, DEBrowser uses ComBat (part of the SVA bioconductor package) to adjust for possible batch effect or conditional biases.  For more information
 about ComBat within the SVA package you can visit here: https://bioconductor.org/packages/release/bioc/vignettes/sva/inst/doc/sva.pdf.
@@ -711,7 +712,7 @@ For more information about CummeRBund (Trapnell et al., 2012), please visit this
 
 Batch effects can have negative effects on your overall data as a whole.  If samples were not handled at the same time, or just do not
 have the sample level of technical variance as the rest of your samples, this can lead to specific batch effects that might skew test results.  In
-Figures 42-44, we show how forgetting to deposit one enzyme can have skewing effects as well as the results of batch effect correction using
+Figures 42-45, we show how forgetting to deposit one enzyme can have skewing effects as well as the results of batch effect correction using
 ComBat.
 
 #       Future Plan:
@@ -754,6 +755,8 @@ Future plans will include the following:
 
 15. Murtagh, Fionn and Legendre, Pierre (2014). Ward's hierarchical agglomerative clustering method: which algorithms implement Ward's criterion? Journal of Classification 31 (forthcoming).
 
+16. Johnson et al. (2007) Adjusting batch effects in microarray expression data using empirical Bayes methods.  Biostatistics, 8, 118-127.
+
 ![*Up and Down regulated genes volcano plot of HFD WT vs Chow WT.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_38.png "")
 
 ![*HFD upregulated gene list used for DO enrichment*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_39.png "")
@@ -762,9 +765,10 @@ Future plans will include the following:
 
 ![*Comparison table of DEBrowser, MeV, Chipster, Galaxy, and CummeRBund*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_41.png "")
 
-![*RSeQC results displaying the differences between the normally conducted samples and the two samples that lack a specific enzyme.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_42.png "")
+![*IQR of samples before batch correction*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_42.png "")
 
-![*All-2-All scatter plots showing QC without batch correction.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_43.png "")
+![*IQR of samples after batch correction*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_43.png "")
 
-![*All-2-All scatter plots showing QC with batch correction.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_44.png "")
+![*All-2-All scatter plots showing QC without batch correction.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_44.png "")
 
+![*All-2-All scatter plots showing QC with batch correction.*](http://debrowser.umassmed.edu/imgs/debrowser_pics/figure_45.png "")

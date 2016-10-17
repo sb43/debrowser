@@ -98,7 +98,7 @@ The finished product of the link will look like this:
 Inputting this URL into your browser will automatically load in that tsv to be analyzed by DEBrowser!
 
 In addition to the sample TSV file you will provide; you can also correct for batch effects or any other normalizing conditions you might want to address
-that might be within your results.  To handle for these conditions, simply create a meta data TSV file such as the on located below:
+that might be within your results.  To handle for these conditions, simply create a meta data TSV file such as the one located below:
 
 ========  ========  ========
 sample    batch     condition
