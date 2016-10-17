@@ -113,7 +113,15 @@ Used parameters for Limma
      intensities or log-ratios have similar distributions across a set of arrays.
 
   - rowsum.filter:
-      regions/genes/isoforms with total count (across all samples) below this value will be filtered out
+     regions/genes/isoforms with total count (across all samples) below this value will be filtered out
+
+ComBat
+=========
+For more details on ComBat, please check the user guide.
+`ComBat userguide <https://bioconductor.org/packages/release/bioc/vignettes/sva/inst/doc/sva.pdf>`_.
+
+ComBat is part of the SVA R Bioconductor package which specializes in corecting for known batch effects.
+No additional parameters are selected or altered when running SVA's ComBat.
 
 DEBrowser
 =========
@@ -171,3 +179,5 @@ References
 14. Vernia,S. et al. (2014) The PPAR$\alpha$-FGF21 hormone axis contributes to metabolic regulation by the hepatic JNK signaling pathway. Cell Metab., 20, 512–525.
 
 15. Murtagh, Fionn and Legendre, Pierre (2014). Ward's hierarchical agglomerative clustering method: which algorithms implement Ward's criterion? Journal of Classification 31 (forthcoming).
+
+16. Johnson et al. (2007) Adjusting batch effects in microarray expression data using empirical Bayes methods.  Biostatistics, 8, 118-127.

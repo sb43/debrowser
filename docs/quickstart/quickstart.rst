@@ -24,9 +24,10 @@ Once you've made your way to the website, or you have a local instance of DEBrow
 .. image:: ../debrowser_pics/input_tab.png
 	:align: center
 
-To begin the DESeq process, you will need to select your Data file (TSV format) to be analyzed using DESeq2.
-If you do not have a dataset to use, you can select to use the built in demo by clicking on the 'Load Demo!'.
-To view the entire demo data file, you can download this `demo set`_.  For an example case study, try our `advanced demo`_.
+To begin the DESeq process, you will need to select your Data file (TSV format) to be analyzed using DESeq2
+by selecting a file under the "Choose TSV File" selection.  If you do not have a dataset to use, you can select
+to use the built in demo by clicking on the 'Load Demo!'.  To view the entire demo data file, you can download
+this `demo set`_.  For an example case study, try our `advanced demo`_.
 
 .. _demo set: http://bioinfo.umassmed.edu/pub/debrowser/simple_demo.tsv
 
@@ -96,9 +97,38 @@ The finished product of the link will look like this:
 
 Inputting this URL into your browser will automatically load in that tsv to be analyzed by DEBrowser!
 
-For more information about the input file, please visit our DESeq/DEBrowser tab within Readthedocs.
-Once you've selected your file and the upload has completed, you will then be shown the samples listed within your
-file uploaded as well as a few options.
+In addition to the sample TSV file you will provide; you can also correct for batch effects or any other normalizing conditions you might want to address
+that might be within your results.  To handle for these conditions, simply create a meta data TSV file such as the one located below:
+
+========  ========  ========
+sample    batch     condition
+========  ========  ========
+s1_b1_cA  1         A
+s2_b1_cA  1         A
+s3_b2_cB  2         B
+s4_b2_cB  2         B
+s5_b1_cB  1         B
+========  ========  ========
+
+This meta data file is custom made TSV created by the user and is used in order to establish different batch effects for multiple conditions.
+You can have as many conditions as you may require, as long as all of the samples are present.  Once the TSV file has been loaded in, along with your
+data TSV file, DEBrowser uses ComBat (part of the SVA bioconductor package) to adjust for possible batch effect or conditional biases.  For more information
+about ComBat within the SVA package you can visit here: `ComBat`_.
+
+.. _ComBat: https://bioconductor.org/packages/release/bioc/vignettes/sva/inst/doc/sva.pdf
+
+To load in the specific file that contains the batch meta data, at the start of the DEBrowser there will be a 
+"Choose Meta Data File (Optional)" which you can then select the batch meta data file to use for this analysis.
+Upon meta-data loading, you will then be able to select from a drop down box that will specify which 
+column you want to use for analysis.
+
+After obtaining and loading in the gene quantifications file, and if specified the 
+meta data file containing your batch correction fields, you then have the option to view QC information of your
+quantifications or you can continue on to running DEBrowser.
+
+For more information about the input file or the potential Differential Expression Analysis programs, please
+visit our DESeq/DEBrowser tab within Readthedocs.  Once you've selected your file and the upload has completed,
+you will then be shown the samples listed within your file uploaded as well as a few options.
 
 .. image:: ../debrowser_pics/file_load.png
 	:align: center
@@ -115,19 +145,18 @@ to the textbox for that comparison.
 	:align: center
 
 The second option, 'Go to QC plots!', takes you to a page where you can view quality control metrics on your data input.
-The page opens with an all-to-all plot displaying the correlation between each sample.  Left of this plot is a panel which
-contains various parameters to alter the look of your plot such as width and height.  You can change the type of dataset
-being viewed within these QC plots by selecting the dataset you want at the top of the left panel.  Each dataset can have its
-own unique parameters to change and alter your QC plots.  
+The page opens with a Principal Component Analysis (PCA) plot.  You are able to adjust the size of the plots on the menu
+to the left under 'width' and 'height' as well as alter a variety of other variables to adjust the specific plot you're viewing.
+You can change the type of dataset being viewed within these QC plots by selecting the dataset you want at the top of the left panel.
+If you submitted a batch meta data file along with your input file, you can also filter the PCA plot based on the specific batch groupings
+that you submitted.
 
-In addition to the all-to-all plot,
-you can also view a heatmap representation of your data as well as a Principal Component Analysis (PCA) plot by selecting
-the specific plot option on the left panel under 'QC Plots'.  You can also select the type of clustering and distance method for
-the heatmap produced to further customize your quality control measures.  Additionally, you can also view a density plot for your
-sample data for your raw data and the data after normalization (Figure 6).
-IQR and Density plots are another great visualization too to help you spot
-outliers within your sample data incase you want to remove or look into
-any possible discrepancies.
+In addition to the PCA plot,  you can also select a variety of other plots to view your initial data.
+The All2All plot displays the correlation between each sample, Heatmap shows a heatmap representation of your data,
+IQR displays a barplot displaying the IQR between samples, and Density will display an overlapping density graph for each sample.
+You also have the ability to select the type of clustering and distance method for the heatmap produced to further customize your quality control measures.
+Users also have the option to select which type of normalization methods they would like to use for these specific plotting analysis within the
+left menu.
 
 .. image:: ../debrowser_pics/intro_sidebar.png
 	:align: center
