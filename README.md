@@ -150,11 +150,11 @@ object, allowing you to start browsing your data right away.
 
 ## Batch Effect Corrections
 
-In addition to the sample TSV file you will provide; you can also correct for batch effects or any other normalizing corrections you might want to address
+In addition to the sample TSV file you will provide; you can also correct for batch effects or any other normalizing conditions you might want to address
 that might be within your results.  To handle for these corrections, simply create a TSV file such as the one located below:
 
 
-| sample   | batch      | correction |
+| sample   | batch      | condition  |
 |----------|------------|------------|
 | s1_b1_cA | 1          | A          |
 | s2_b1_cA | 1          | A          |
@@ -162,14 +162,14 @@ that might be within your results.  To handle for these corrections, simply crea
 | s4_b2_cB | 2          | B          |
 | s5_b1_cB | 1          | B          |
 
-This meta data file is custom made TSV created by the user and is used in order to establish different batch effects for multiple corrections.
-You can have as many corrections as you may require, as long as all of the samples are present.  Once the TSV file has been loaded in along with your
+This meta data file is custom made TSV created by the user and is used in order to establish different batch effects for multiple conditions.
+You can have as many conditions as you may require, as long as all of the samples are present.  Once the TSV file has been loaded in along with your
 data TSV file, DEBrowser uses ComBat (part of the SVA bioconductor package) to adjust for possible batch effect or conditional biases.  For more information
 about ComBat within the SVA package you can visit here: https://bioconductor.org/packages/release/bioc/vignettes/sva/inst/doc/sva.pdf.
 
 To load in the specific file that contains the batch meta data, at the start of the DEBrowser there will be a 
 "Choose Meta Data File (Optional)" which you can then select the batch meta data file to use for this analysis.
-Upon meta-data loading, you will then be able to select from a drop down box that will specify which 
+Upon meta-data loading, you will then be able to select from a drop down box that will specify which condition
 column you want to use for analysis.
 
 After obtaining and loading in the gene quantifications file, and if specified the 
