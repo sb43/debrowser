@@ -3,9 +3,9 @@ Interactive Differential Expression Analysis Tool
 
 # Introduction
 
-Differential gene expression analysis has become an increasingly popular tool
+Differential expression (DE) analysis has become an increasingly popular tool
 in determining and viewing up and/or down experssed genes between two sets of
-samples.  The goal of Differential gene expression analysis is to find genes
+samples.  The goal of differential gene expression analysis is to find genes
 or transcripts whose difference in expression, when accounting for the
 variance within condition, is higher than expected by chance.
 [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html) is
@@ -20,8 +20,8 @@ Differential Expression Browser uses DESeq2 (Love et al., 2014),
 [Limma](https://bioconductor.org/packages/release/bioc/html/limma.html)
 (Ritchie et al., 2015) coupled with 
 shiny (Chang, W. et al., 2016)  to produce real-time changes within your 
-plot queries and allows for interactive browsing of your DESeq results. 
-In addition to DESeq analysis, DEBrowser also offers a variety of other plots 
+plot queries and allows for interactive browsing of your DE results. 
+In addition to DE analysis, DEBrowser also offers a variety of other plots 
 and analysis tools to help visualize your data even further.
 
 ## DEBrowser
@@ -91,7 +91,8 @@ sample file looks like:
 You can also view/use the demo data by clicking the 'Load Demo!' text as an
 example.  For the case study demo data, feel free to download our case study
 demo files at http://bioinfo.umassmed.edu/pub/debrowser/advanced_demo.tsv or 
-a simplified version http://bioinfo.umassmed.edu/pub/debrowser/simple_demo.tsv. 
+a simplified version http://bioinfo.umassmed.edu/pub/debrowser/simple_demo.tsv.
+Please also note that, DEBrowser skips second column and starts reading the quantification values from the 3rd column.
 
 ## Data via JSON objects
 

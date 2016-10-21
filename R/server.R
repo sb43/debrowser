@@ -294,10 +294,13 @@ deServer <- function(input, output, session) {
         qcdata <- reactive({
             prepDataForQC(Dataset()[,input$samples])
         })
+        edat <- reactiveValues(val = NULL)
         output$qcplotout <- renderPlot({
             if (!is.null(input$col_list) || !is.null(isolate(df_select())))
+                edat$val <- explainedData()
                 getQCReplot(isolate(cols()), isolate(conds()), 
-                   df_select(), isolate(input), inputQCPlot())
+                    df_select(), isolate(input), inputQCPlot(),
+                    drawPCAExplained(edat$val$plotdata) )
         })
         df_select <- reactive({
             if (!is.null(isolate(Dataset())))
@@ -318,12 +321,9 @@ deServer <- function(input, output, session) {
                 selected=isolate(input$samples))
             )
         })
-        output$pcaexplained <- renderPlot({
-            a <- NULL
-            if (!is.null(input$qcplot)) {
-                a <- getPCAexplained(datasetInput(), input )
-            }
-            a
+        
+        explainedData <- reactive({
+             getPCAexplained( datasetInput(), input )
         })
 
         inputQCPlot <- reactiveValues(clustering_method = "ward.D2",
@@ -341,7 +341,8 @@ deServer <- function(input, output, session) {
         goplots <- reactive({
             dat <- getDataForTables(input, init_data(),
                       filt_data(), selected,
-                      getMostVaried(),  isolate(mergedComp()))
+                      getMostVaried(),  isolate(mergedComp()),
+                      isolate(edat$val$pcaset))
             getGOPlots(dat[[1]][, isolate(cols())], input)
         })
 
@@ -357,7 +358,8 @@ deServer <- function(input, output, session) {
         output$tables <- DT::renderDataTable({
             dat <- getDataForTables(input, init_data(),
                   filt_data(), selected,
-                  getMostVaried(),  isolate(mergedComp()))
+                  getMostVaried(),  isolate(mergedComp()),
+                  isolate(edat$val$pcaset))
             dat2 <- removeCols(c("ID", "x", "y","Legend", "Size"), dat[[1]])
             m <- DT::datatable(dat2,
             options = list(lengthMenu = list(c(10, 25, 50, 100),
@@ -409,11 +411,12 @@ deServer <- function(input, output, session) {
                     mergedCompDat <- mergedComp()
                 m <- getSelectedDatasetInput(filt_data(), 
                     selected$data$getSelected(), getMostVaried(),
-                    mergedCompDat, input)
+                    mergedCompDat, isolate(edat$val$pcaset), input)
             }
             else
                 m <- getSelectedDatasetInput(init_data(), 
                     getMostVaried = getMostVaried(),
+                    explainedData = isolate(edat$val$pcaset),
                     input = input)
             if(addIdFlag)
                 m <- addID(m)
@@ -424,7 +427,8 @@ deServer <- function(input, output, session) {
         }, content = function(file) {
             dat <- getDataForTables(input, init_data(),
                                     filt_data(), selected,
-                                    getMostVaried(),  isolate(mergedComp()))
+                                    getMostVaried(),  isolate(mergedComp()),
+                                    isolate(edat$val$pcaset))
             dat2 <- removeCols(c("x", "y","Legend", "Size"), dat[[1]])
             if(!("ID" %in% names(dat2)))
                 dat2 <- addID(dat2)
