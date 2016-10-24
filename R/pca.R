@@ -150,17 +150,13 @@ getPCAexplained <- function(datasetInput = NULL,
         var <- pca_data$pca$sdev^2/sum(pca_data$pca$sdev^2)
         
         ## Select the genes for PCA, removing the least variable 
-        # dThres percentile by Mahalanobis distance from the origin
-        ## in the N components that explain varThresh of the variance:
-        ## Select the number of components that account for varFract 
-        ## of the total variance:
-        varFract <- 0.10           # cumulative variance threshold
+
         dThresh.pctile <- 0.80     # distance threshold
         gList.dThresh <- c()
 
-        d <- mahalanobis(pca_data$pca$rotation[,input$pcselx:input$pcsely],
-                         center=rep(0,2),
-                         cov=cov(pca_data$pca$rotation[,input$pcselx:input$pcsely]))
+        d <- mahalanobis(pca_data$pca$rotation[,c(input$pcselx,input$pcsely)],
+            center=rep(0,2),
+            cov=cov(pca_data$pca$rotation[,c(input$pcselx,input$pcsely)]))
         dThresh<-quantile(d, dThresh.pctile)
         gList.dThresh <- names(which(d>dThresh))
         pcaset <-  datasetInput[gList.dThresh, ]
