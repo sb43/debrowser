@@ -181,6 +181,7 @@ getQCLeftMenu <- function( input = NULL) {
         conditionalPanel( (condition <- "input.qcplot=='pca'"),
             getPCselection(1, "x"),
             getPCselection(2, "y"),
+            textInput("pctile", "Top %", value = "0.05" ),
             getTextOnOff(),
             getLegendSelect(),
             getColorShapeSelection(input)

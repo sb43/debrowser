@@ -177,7 +177,8 @@ deServer <- function(input, output, session) {
             }
             a
         })
-        choicecounter <- reactiveValues(nc = 0, qc = 0)
+        choicecounter <- reactiveValues(nc = 0, qc = 0, 
+                    lastselecteddataset = "")
         observeEvent(input$add_btn, {
             shinyjs::enable("startDE")
             buttonValues$startDE <- FALSE
@@ -297,6 +298,8 @@ deServer <- function(input, output, session) {
         edat <- reactiveValues(val = NULL)
         output$qcplotout <- renderPlot({
             if (!is.null(input$col_list) || !is.null(isolate(df_select())))
+                updateTextInput(session, "dataset", 
+                                value =  choicecounter$lastselecteddataset)
                 edat$val <- explainedData()
                 getQCReplot(isolate(cols()), isolate(conds()), 
                     df_select(), isolate(input), inputQCPlot(),
@@ -420,6 +423,9 @@ deServer <- function(input, output, session) {
                     input = input)
             if(addIdFlag)
                 m <- addID(m)
+            if (input$dataset != "pcaset"){
+                choicecounter$lastselecteddataset = input$dataset
+            }
             m
         }
         output$downloadData <- downloadHandler(filename = function() {
