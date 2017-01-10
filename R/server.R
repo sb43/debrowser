@@ -56,7 +56,6 @@
 #' @importFrom jsonlite fromJSON
 #' @importFrom methods new
 #' @importFrom stringi stri_rand_strings
-#' @importFrom ReactomePA enrichPathway
 #' @importFrom annotate geneSymbols
 #' @importFrom reshape2 melt
 #' @importFrom baySeq getLibsizes getLikelihoods getLikelihoods.NB
