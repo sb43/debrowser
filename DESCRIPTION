@@ -26,7 +26,6 @@ License: GPL-3 + file LICENSE
 LazyData: true
 Imports:
     DT,
-    ReactomePA,
     ggplot2,
     RColorBrewer,
     annotate,
