@@ -54,7 +54,7 @@ Imports:
     V8,
     methods,
     sva
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.0
 Suggests: testthat,
     rmarkdown,
     knitr,
