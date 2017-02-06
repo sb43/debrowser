@@ -53,7 +53,8 @@ a <- list( conditionalPanel( (condition <- "input.methodtabs=='panel1'"),
         wellPanel(radioButtons("mainplot", paste("Main Plots:", sep = ""),
             c(Scatter = "scatter", VolcanoPlot = "volcano",
             MAPlot = "maplot"))),
-                actionButton("startPlots", "Submit!")),
+                actionButton("startPlots", "Submit!"),
+            getMainPlotsLeftMenu()),
         conditionalPanel( (condition <- "input.methodtabs=='panel2'"),
             wellPanel(radioButtons("qcplot",
                 paste("QC Plots:", sep = ""),
@@ -65,7 +66,27 @@ a <- list( conditionalPanel( (condition <- "input.methodtabs=='panel1'"),
                 c(enrichGO = "enrichGO", enrichKEGG = "enrichKEGG",
                 Disease = "disease", compareClusters = "compare"))),
                 getGOLeftMenu()
-                ))
+                ),
+        conditionalPanel( (condition <- "input.methodtabs=='panel4'"),
+             uiOutput("getColumnsForTables")
+        ))
+}
+#' getMainPlotsLeftMenu
+#'
+#' Generates the Main PLots Left menu to be displayed within the DEBrowser.
+#'
+#' @note \code{getMainPlotsLeftMenu}
+#' @return returns the left menu according to the selected tab;
+#' @examples
+#'     x <- getMainPlotsLeftMenu()
+#' @export
+#'
+getMainPlotsLeftMenu <- function() {
+    a <- list(
+              sliderInput("backperc", "Background Data(%):",
+                          min=10, max=100, value=10, sep = "", 
+                          animate = FALSE)
+             )
 }
 
 #' getGOLeftMenu

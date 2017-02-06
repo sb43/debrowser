@@ -107,11 +107,19 @@ deServer <- function(input, output, session) {
             getCutOffSelection(nc)
         })
         output$downloadSection <- renderUI({
-            a <- getDownloadSection(TRUE, "QC")
+            choices <- c("most-varied", "alldetected", "pcaset")
             if (!is.null(input$goDE) && input$goDE &&
                 !is.null(comparison()$init_data))
-                a <- getDownloadSection(!is.null(comparison()$init_data), 
-                    "main")
+                choices <- c("up+down", "up", "down",
+                    "comparisons", "alldetected",
+                    "most-varied", "pcaset")
+             if (!is.null(selected$data))
+                 if (!is.null(selected$data$getSelected())
+                     && nrow(selected$data$getSelected())>1)
+                       choices <- c(choices, "selected")
+            # if (!is.null(input$interactive) && input$interactive == TRUE)
+            #     choices <- c(choices, "selected")
+            a <- getDownloadSection(TRUE, choices)
             a
         })
         output$preppanel <- renderUI({
@@ -277,6 +285,12 @@ deServer <- function(input, output, session) {
         selected <- reactiveValues(data = NULL)
         observe({
             setFilterParams(session, input)
+            if (!is.null(input$genenames) && input$interactive == TRUE){
+                if (!is.null(isolate(filt_data())))
+                    selected$data <- getSelHeat(isolate(filt_data()), input$genenames)
+                else
+                    selected$data <- getSelHeat(isolate(init_data()), input$genenames)
+            }
         })
         condmsg <- reactiveValues(text = NULL)
         observeEvent(input$startPlots, {
@@ -296,13 +310,14 @@ deServer <- function(input, output, session) {
         })
         edat <- reactiveValues(val = NULL)
         output$qcplotout <- renderPlot({
-            if (!is.null(input$col_list) || !is.null(isolate(df_select())))
+            if (!is.null(input$col_list) || !is.null(isolate(df_select()))){
                 updateTextInput(session, "dataset", 
-                                value =  choicecounter$lastselecteddataset)
+                    value =  choicecounter$lastselecteddataset)
                 edat$val <- explainedData()
                 getQCReplot(isolate(cols()), isolate(conds()), 
                     df_select(), isolate(input), inputQCPlot(),
                     drawPCAExplained(edat$val$plotdata) )
+            }
         })
         df_select <- reactive({
             if (!is.null(isolate(Dataset())))
@@ -323,7 +338,7 @@ deServer <- function(input, output, session) {
                 selected=isolate(input$samples))
             )
         })
-        
+
         explainedData <- reactive({
              getPCAexplained( datasetInput(), input )
         })
@@ -356,18 +371,62 @@ deServer <- function(input, output, session) {
                return(inputGOstart()$p)
             }
         })
-      
-        output$tables <- DT::renderDataTable({
+
+        output$getColumnsForTables <-  renderUI({
+            if (is.null(table_col_names())) return (NULL)
+            selected_list <- table_col_names()
+            if (!is.null(input$table_col_list))
+                selected_list <- input$table_col_list
+            a <- list(
+                wellPanel(id = "tPanel",
+                style = "overflow-y:scroll; max-height: 200px",
+                checkboxGroupInput("table_col_list", "Select col to include:",
+                table_col_names(), 
+                selected=selected_list)
+                )
+            )
+        })
+        table_col_names <- reactive({
+            if (is.null(tabledat())) return (NULL)
+            colnames(tabledat()[[1]])
+        })
+        tabledat <- reactive({
             dat <- getDataForTables(input, init_data(),
-                  filt_data(), selected,
-                  getMostVaried(),  isolate(mergedComp()),
-                  isolate(edat$val$pcaset))
+                filt_data(), selected,
+                getMostVaried(),  isolate(mergedComp()),
+                isolate(edat$val$pcaset))
+            if (is.null(dat)) return (NULL)
             dat2 <- removeCols(c("ID", "x", "y","Legend", "Size"), dat[[1]])
-            m <- DT::datatable(dat2,
+            
+            pcols <- c(names(dat2)[grep("^padj", names(dat2))], 
+                names(dat2)[grep("pvalue", names(dat2))])
+            if (!is.null(pcols) & length(pcols) > 1)
+                dat2[,  pcols] <- apply(dat2[,  pcols], 2,
+                function(x) format( as.numeric(x), scientific = TRUE, digits = 3 ))
+            else
+                dat2[,  pcols] <- format( as.numeric( dat2[,  pcols] ), 
+                                          scientific = TRUE, digits = 3 )
+            rcols <- names(dat2)[!(names(dat2) %in% pcols)]
+            dat2[,  rcols] <- apply(dat2[,  rcols], 2,
+                function(x) round( as.numeric(x), digits = 2))  
+            dat[[1]] <- dat2
+            dat
+        })
+        
+        output$tables <- DT::renderDataTable({
+            dat <- tabledat()
+            if (is.null(dat) || is.null(table_col_names())
+            || is.null(input$table_col_list) || length(input$table_col_list)<1) 
+                return (NULL)
+            if (!dat[[2]] %in% input$table_col_list)
+                dat[[2]]= ""
+            if (!dat[[3]] %in% input$table_col_list)
+                dat[[3]]= ""
+            
+            m <- DT::datatable(dat[[1]][, input$table_col_list],
             options = list(lengthMenu = list(c(10, 25, 50, 100),
             c("10", "25", "50", "100")),
             pageLength = 25, paging = TRUE, searching = TRUE)) %>%
-            DT::formatRound(columns = isolate(cols()), digits = 2) %>%
             getTableStyle(input, dat[[2]], dat[[3]], buttonValues$startDE)
             
             m
