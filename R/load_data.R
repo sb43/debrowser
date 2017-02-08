@@ -21,8 +21,15 @@ load_data <- function (input = NULL, session = NULL) {
         m$demodata <- demodata
         m
     })
+    
     query <- parseQueryString(session$clientData$url_search)
     jsonobj<-query$jsonobject
+    existing_json_path <- paste0("shiny_bookmarks/", 
+        parseQueryString(session$clientData$url_search)[["_state_id_"]],
+                                 "/file1.JSON")
+    if(file.exists(existing_json_path)){
+        jsonobj <- existing_json_path
+    }
     if (!is.null(jsonobj))
     {
         jsondata<-data.frame(fromJSON(jsonobj, simplifyDataFrame = TRUE),
