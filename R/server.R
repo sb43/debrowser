@@ -241,7 +241,7 @@ deServer <- function(input, output, session) {
                     message = list(bookmarked_url = paste0("?_state_id_=",
                     startup[['startup_bookmark']]), controller = input$controller))
             }
-            
+            bookmark_list()
         })
         
         ###############################################################
@@ -341,7 +341,7 @@ deServer <- function(input, output, session) {
         # Save extra values in state$values when we bookmark...
         onBookmark(function(state) {
             cat("on bookmark", "\n")
-            bookmark_list()
+            
             # state$values can store data onBookmark to be restored later
             state$values$input_save <- input
     
