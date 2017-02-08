@@ -23,19 +23,24 @@ startDEBrowser <- function(){
         environment(deServer) <- environment()
         #shinyAppDir(system.file(package="debrowser"))
         
-
+        dir.create(file.path("shiny_saves"), showWarnings = FALSE)
+        
         # Clean up the bookmark directory of unnamed bookmarks - begin
         l <- list.files("shiny_bookmarks")
         if(length(l) > 0){
             last_bookmark_id <- system(paste0("ls -t1 shiny_bookmarks",
                                               " |  head -n 1"), intern=TRUE)
             l_without_last <- setdiff(l, list(last_bookmark_id))
-            named_bookmarks <- scan("shiny_saves/past_saves.txt", what="",
-                                    sep="\n")
-            bookmarks_to_delete <- setdiff(l_without_last, named_bookmarks)
+            if(file.exists("shiny_saves/past_saves.txt")){
+                named_bookmarks <- scan("shiny_saves/past_saves.txt", what="",
+                                        sep="\n")
+                bookmarks_to_delete <- setdiff(l_without_last, named_bookmarks)
+            } else {
+                bookmarks_to_delete <- l_without_last
+            }
             lapply(bookmarks_to_delete, function(x) 
                 if(x != ""){
-                    unlink(paste0("shiny_bookmarks/", x), recursive = TRUE)
+                    #unlink(paste0("shiny_bookmarks/", x), recursive = TRUE)
                 }
             )
         }

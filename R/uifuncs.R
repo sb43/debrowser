@@ -53,28 +53,28 @@ getLeftMenu <- function(input = NULL) {
 if (is.null(input)) return(NULL)
 a <- list(
         conditionalPanel( (condition <- "input.methodtabs=='panel1'"),
-        shinydashboard::menuItem("Plot Type", icon = icon("star-o"),
-        wellPanel(radioButtons("mainplot", paste("Main Plots:", sep = ""),
+        shinydashboard::menuItem(" Plot Type", icon = icon("star-o"),
+        radioButtons("mainplot", paste("Main Plots:", sep = ""),
             c(Scatter = "scatter", VolcanoPlot = "volcano",
             MAPlot = "maplot")),
-                actionButton("startPlots", "Submit!"),
-            getMainPlotsLeftMenu()))),
+                actionButton("startPlots", "Submit!")),
+            getMainPlotsLeftMenu()),
         conditionalPanel( (condition <- "input.methodtabs=='panel2'"),
-        shinydashboard::menuItem("Plot Type", icon = icon("star-o"),
+        shinydashboard::menuItem(" Plot Type", icon = icon("star-o"),
         wellPanel(radioButtons("qcplot",
                 paste("QC Plots:", sep = ""),
                 c(PCA = "pca", All2All = "all2all", Heatmap = "heatmap", IQR = "IQR",
-                  Density = "Density"))),
-            getQCLeftMenu(input))),
+                  Density = "Density")))),
+            getQCLeftMenu(input)),
         conditionalPanel( (condition <- "input.methodtabs=='panel3'"),
-        shinydashboard::menuItem("Plot Type", icon = icon("star-o"),
+        shinydashboard::menuItem(" Plot Type", icon = icon("star-o"),
             wellPanel(radioButtons("goplot", paste("Go Plots:", sep = ""),
                 c(enrichGO = "enrichGO", enrichKEGG = "enrichKEGG",
-                Disease = "disease", compareClusters = "compare"))),
+                Disease = "disease", compareClusters = "compare")))),
                 getGOLeftMenu()
-                )),
+                ),
         conditionalPanel( (condition <- "input.methodtabs=='panel4'"),
-        shinydashboard::menuItem("Select Columns", icon = icon("star-o"),
+        shinydashboard::menuItem(" Select Columns", icon = icon("star-o"),
              uiOutput("getColumnsForTables")
         ))
     )
@@ -109,6 +109,8 @@ getMainPlotsLeftMenu <- function() {
 #'
 getGOLeftMenu <- function() {
     a <- list(actionButton("startGO", "Submit!"),
+    shinydashboard::menuItem(" Go Term Options", icon = icon("star-o"),
+                                       
     tags$head(tags$script(HTML(logSliderJScode("gopvalue")))),
     sliderInput("gopvalue", "p.adjust cut off",
         min=0, max=10, value=6, sep = "",
@@ -130,6 +132,8 @@ getGOLeftMenu <- function() {
                 choices =  c( "enrichGO", "enrichDO", "enrichKEGG"))
             ),
             downloadButton("downloadGOPlot", "Download Plots"))
+    )
+
 }
 
 #' getPCselection
@@ -187,6 +191,8 @@ getQCLeftMenu <- function( input = NULL) {
             input.qcplot=='heatmap' ||
             input.qcplot=='pca'"),
             actionButton("startQCPlot", "Submit!"),
+            
+            shinydashboard::menuItem(" QC Options", icon = icon("star-o"),
             sliderInput("width", "width",
             min = 100, max = 2000, step = 10, value = 700),
             sliderInput("height", "height",
@@ -215,6 +221,7 @@ getQCLeftMenu <- function( input = NULL) {
             getColorShapeSelection(input)
         ),
         downloadButton("downloadPlot", "Download Plot")))
+    )
 }
 
 #' logSliderJScode
@@ -265,7 +272,7 @@ getCutOffSelection <- function(nc = 1){
     conditionalPanel( (condition <- "input.dataset!='most-varied' &&
                        input.methodtabs!='panel0'"),
         tags$head(tags$script(HTML(logSliderJScode("padj")))),
-        shinydashboard::menuItem("Filter", icon = icon("star-o"),
+        shinydashboard::menuItem(" Filter", icon = icon("star-o"),
             #h4("Filter"),
             sliderInput("padj", "padj value cut off",
                 min=0, max=10, value=6, sep = "",
@@ -352,11 +359,12 @@ getProgramTitle <- function(session = NULL) {
 #'     x <- getLoadingMsg()
 #' @export
 #'
-getLoadingMsg <- function() {
+getLoadingMsg <- function(output) {
     addResourcePath(prefix = "www", directoryPath =
         system.file("extdata", "www",
         package = "debrowser"))
-    imgsrc <- "www/images/loading.gif"
+    imgsrc_full <- "www/images/loading_start.gif"
+    imgsrc_small <- "www/images/loading.gif"
     a <- list(
         tags$head(tags$style(type = "text/css", "
             #loadmessage {
@@ -372,12 +380,28 @@ getLoadingMsg <- function() {
             color: #000000;
             opacity: 0.8;
             z-index: 100;
-            }")),
+            }
+            #loadmessage_small {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 50px;
+            text-align: center;
+            opacity: 0.8;
+            z-index: 999999;
+            }
+                             ")),
         conditionalPanel(condition = paste0("$('html').hasClass('shiny-busy')",
-                "& input.startDE"),
+            "& input.startDE & input.methodtabs=='panel0'"),
             tags$div(id = "loadmessage",
-            tags$img(src = imgsrc
-            ))))
+            tags$img(src = imgsrc_full
+            ))),
+        conditionalPanel(condition = paste0("($('html').hasClass('shiny-busy')",
+            "& input.methodtabs!='panel0') || (output.isRestoring)"),
+            tags$div(id = "loadmessage_small",
+            tags$img(src = imgsrc_small
+            )))
+        )
 }
 
 #' getLogo

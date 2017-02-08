@@ -37,7 +37,7 @@ deUI <- function() {
     addResourcePath(prefix = "www", directoryPath = system.file("extdata",
         "www", package = "debrowser"))
 
-    
+
     if(!file.exists("shiny_saves/startup.rds")){
         startup_obj <- list()
         startup_obj$bookmark_counter <- 3
@@ -95,7 +95,7 @@ deUI <- function() {
             conditionalPanel(condition = paste0("((input.goDE) || ",
                 "(output.restore_DE > 0)) && (!input.startDE)"),
                 style = "padding: 27px;",
-            actionButton("save_state", "Save State!"),
+            actionButton("save_state", "Save Selection!"),
             conditionalPanel(condition = "input.save_state",
                 textInput("bookmark_special_name", "Name your save:",
                     value = "", placeholder = "At Least 5 Characters"),
@@ -104,8 +104,11 @@ deUI <- function() {
                     br(), br(), br()
             )),
             conditionalPanel(condition <- paste0("input.methodtabs=='panel0'"),
-                htmlOutput("new_bookmark"),
-                htmlOutput("past_named_bookmarks")
+                #htmlOutput("new_bookmark"),
+                uiOutput("past_named_bookmarks"),
+                lapply(20:1, function(i) {
+                    uiOutput(paste0('bookmark', i))
+                })
             )
     ),
     shinydashboard::dashboardBody(
