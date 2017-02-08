@@ -266,10 +266,13 @@ deServer <- function(input, output, session) {
                         shinyjs::hide("name_bookmark")
                         to_display <- paste0("Successfully saved. ",
                                              "URL updated with your choice to access later.")
-                        
+                        user_addition <- ""
+                        if(!is.null(loadingJSON$username)){
+                            user_addition <- paste0("&username=", loadingJSON$username)
+                        }
                         bm_link <- paste0('<a style="margin: 27px;" ',
                                           'target="_blank" href="?_state_id_=',
-                                          chosen_name, '">', chosen_name, '</a>')
+                                          chosen_name, user_addition, '">', chosen_name, '</a>')
                         output$new_bookmark <- renderText({bm_link})
                         shinyjs::show("save_state")
                         
@@ -305,8 +308,11 @@ deServer <- function(input, output, session) {
                         download.file(query_list$jsonobject, paste0(bookmark_dir,
                                                                     new_state_id, "/file1.JSON"))
                     }
-                    
-                    updateQueryString(paste0("?_state_id_=", new_state_id))
+                    user_addition <- ""
+                    if(!is.null(loadingJSON$username)){
+                        user_addition <- paste0("&username=", loadingJSON$username)
+                    }
+                    updateQueryString(paste0("?_state_id_=", new_state_id, user_addition))
                     print(loadingJSON$username)
                     
                     startup_path <- "shiny_saves/startup.rds"
