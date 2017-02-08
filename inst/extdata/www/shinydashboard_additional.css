@@ -85,6 +85,14 @@ li.active {
     color: black;
 }
 
+#downloadGOPlot {
+    color: black;
+}
+
+.main-header{
+    z-index: 999998;
+}
+
 /*
 .ggvis-dropdown-toggle {
     width: 28px !important;

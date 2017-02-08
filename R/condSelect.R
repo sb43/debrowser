@@ -78,23 +78,42 @@ getConditionSelector<- function(num=0, choices = NULL, selected = NULL) {
 }
 
 getConditionSelectorFromMeta <- function(input = NULL, index = 1, num=0, 
-                                         choices = NULL, selected = NULL) {
+                                         choices = NULL, selected = NULL, loadingJSON) {
     if(is.null(input$demethod1)) {
         return(NULL)
     }
-    else{    
-        startup <- readRDS("shiny_saves/startup.rds")
+    else{
+        if(is.null(loadingJSON$username)){
+            startup_path <- "shiny_saves/startup.rds"
+        } else {
+            startup_path <- paste0("shiny_saves/", loadingJSON$username ,"/startup.rds")
+        }
+        
+        if(file.exists(startup_path)){
+            startup <- readRDS(startup_path)
+        } else {
+            startup <- list()
+        }
+        if(is.null(startup[['bookmark_counter']])){
+            startup[['bookmark_counter']] <- 3
+        }
         
         # startup[['bookmark_counter']] = 2 when Restoring from Bookmark
         if(startup[['bookmark_counter']] == 2){
-            startup <- readRDS("shiny_saves/startup.rds")
+            if(is.null(loadingJSON$username)){
+                startup_path <- "shiny_saves/startup.rds"
+            } else {
+                startup_path <- paste0("shiny_saves/", loadingJSON$username ,"/startup.rds")
+            }
+            startup <- readRDS(startup_path)
             restored_input <- readRDS(paste0("shiny_bookmarks/", 
                     startup[['startup_bookmark']] , "/input_save.rds"))
             
             selected <- restored_input[[paste0("condition", num)]]
             if(is.null(restored_input[[paste0("condition", num + 1)]])){
                 startup[['bookmark_counter']] <- 3
-                saveRDS(startup, "shiny_saves/startup.rds")
+                print(loadingJSON$username)
+                saveRDS(startup, startup_path)
             }
         } 
         if (is.null(input$file2)){
@@ -108,7 +127,12 @@ getConditionSelectorFromMeta <- function(input = NULL, index = 1, num=0,
         selected_meta <- selectedInput("conditions_from_meta", index, NULL, 
                                        input)
         
-        startup <- readRDS("shiny_saves/startup.rds")
+        if(is.null(loadingJSON$username)){
+            startup_path <- "shiny_saves/startup.rds"
+        } else {
+            startup_path <- paste0("shiny_saves/", loadingJSON$username ,"/startup.rds")
+        }
+        startup <- readRDS(startup_path)
         
         meta_rds_path <- paste0('shiny_bookmarks/',
             startup[['startup_bookmark']] , '/meta_selections.rds')
@@ -132,7 +156,15 @@ getConditionSelectorFromMeta <- function(input = NULL, index = 1, num=0,
         
         if (is.null(selected_meta)) selected_meta <- "No Selection"
     
-        startup <- readRDS("shiny_saves/startup.rds")
+        if(is.null(loadingJSON$username)){
+            startup_path <- "shiny_saves/startup.rds"
+        } else {
+            startup_path <- paste0("shiny_saves/", loadingJSON$username ,"/startup.rds")
+        }
+        startup <- readRDS(startup_path)
+        if(is.null(startup[['bookmark_counter']])){
+            startup[['bookmark_counter']] <- 3
+        }
         if(startup[['bookmark_counter']] != 2) {
             if(!is.null(input[[paste0("condition", num)]])){
                 selected <- input[[paste0("condition", num)]]
@@ -230,7 +262,7 @@ getSelectInputBox <- function(id = NULL, name = NULL,
 #' @export
 #'
 selectConditions<-function(Dataset = NULL,
-                           choicecounter, input = NULL) {
+                           choicecounter, input = NULL, loadingJSON = NULL) {
     if (is.null(Dataset)) return(NULL)
     selectedSamples <- function(num){
         if (is.null(input[[paste0("condition", num)]]))
@@ -279,9 +311,9 @@ selectConditions<-function(Dataset = NULL,
             conditionalPanel((condition <- paste0("input.conditions_from_meta",
                                                     i," != 'No Selection'")),
                     getConditionSelectorFromMeta(input, i,
-                        (2 * i - 1), allsamples, selected1),
+                        (2 * i - 1), allsamples, selected1, loadingJSON),
                     getConditionSelectorFromMeta(input, i,
-                        (2 * i), allsamples, selected2)
+                        (2 * i), allsamples, selected2, loadingJSON)
              )
             ),
             
@@ -295,7 +327,12 @@ selectConditions<-function(Dataset = NULL,
             new_selection <- selectedInput("conditions_from_meta", i, NULL, 
                                            input)
 
-            startup <- readRDS("shiny_saves/startup.rds")
+            if(is.null(loadingJSON$username)){
+                startup_path <- "shiny_saves/startup.rds"
+            } else {
+                startup_path <- paste0("shiny_saves/", loadingJSON$username ,"/startup.rds")
+            }
+            startup <- readRDS(startup_path)
             
             meta_rds_path <- paste0('shiny_bookmarks/',
                 startup[['startup_bookmark']] , '/meta_selections.rds')
