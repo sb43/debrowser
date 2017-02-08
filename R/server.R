@@ -218,7 +218,7 @@ deServer <- function(input, output, session) {
         ###############################################################
         observe({
             startup_path <- "shiny_saves/startup.rds"
-            if(is.null(loadingJSON$username)){
+            if(!is.null(loadingJSON$username)){
                 if(loadingJSON$username != ""){
                     startup_path <- paste0("shiny_saves/", 
                         loadingJSON$username ,"/startup.rds")
@@ -310,7 +310,7 @@ deServer <- function(input, output, session) {
                     print(loadingJSON$username)
                     
                     startup_path <- "shiny_saves/startup.rds"
-                    if(is.null(loadingJSON$username)){
+                    if(!is.null(loadingJSON$username)){
                         if(loadingJSON$username != ""){
                             startup_path <- paste0("shiny_saves/", 
                                 loadingJSON$username ,"/startup.rds")
@@ -372,7 +372,7 @@ deServer <- function(input, output, session) {
             print(loadingJSON$username)
             
             startup_path <- "shiny_saves/startup.rds"
-            if(is.null(loadingJSON$username)){
+            if(!is.null(loadingJSON$username)){
                 if(loadingJSON$username != ""){
                     startup_path <- paste0("shiny_saves/", 
                         loadingJSON$username ,"/startup.rds")
@@ -405,7 +405,7 @@ deServer <- function(input, output, session) {
             print(loadingJSON$username)
             
             startup_path <- "shiny_saves/startup.rds"
-            if(is.null(loadingJSON$username)){
+            if(!is.null(loadingJSON$username)){
                 if(loadingJSON$username != ""){
                     startup_path <- paste0("shiny_saves/", 
                         loadingJSON$username ,"/startup.rds")
