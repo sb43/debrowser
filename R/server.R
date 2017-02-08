@@ -81,14 +81,18 @@ deServer <- function(input, output, session) {
     {
         remove_bookmark <- function(ID){
             print("remove bookmark")
+            
+            saves_path <- "shiny_saves/past_saves.txt"
             if(exists("loadingJSON")){
-                saves_path <- paste0("shiny_saves/", loadingJSON$username, "/past_saves.txt")
-            } else {
-                saves_path <- "shiny_saves/past_saves.txt"
+                if(!is.null(loadingJSON$username) && (loadingJSON$username != "")){
+                    saves_path <- paste0("shiny_saves/", loadingJSON$username, "/past_saves.txt")
+                }
             }
             
             current_file <- readLines(saves_path)
             my_new_file = current_file[-ID]
+            to_unlink <- paste0("shiny_bookmarks/", current_file[ID])
+            unlink(to_unlink, recursive = TRUE)
             #my_new_file = current_file[-grep(s,readLines(paste0("shiny_saves/", loadingJSON$username, "/past_saves.txt")))]
             fileConn<-file(saves_path)
             writeLines(my_new_file, fileConn)
@@ -138,6 +142,7 @@ deServer <- function(input, output, session) {
                         )
                     })
                 })
+                close(conn)
             }
         } else {
             output$past_named_bookmarks <- renderUI({list()})
@@ -248,6 +253,7 @@ deServer <- function(input, output, session) {
         #         To save user chosen name as bookmark id             #
         ###############################################################
         observeEvent(input$name_bookmark, {
+            session$doBookmark()
             chosen_name <- input$bookmark_special_name
             if(nchar(chosen_name) < 5){
                 to_display <- "You must type in at least 5 characters."
@@ -528,11 +534,23 @@ deServer <- function(input, output, session) {
                 startDE = FALSE, gotoanalysis = FALSE)
             
             loadingJSON <- reactiveValues(username = "")
+            output$isRestoring <- reactive({
+                startup_path <- "shiny_saves/startup.rds"
+                if(!is.null(loadingJSON$username)){
+                    if(loadingJSON$username != ""){
+                        startup_path <- paste0("shiny_saves/", 
+                                               loadingJSON$username ,"/startup.rds")
+                    }
+                }
+                startup <- readRDS(startup_path)
+                return(startup[['bookmark_counter']] == 2)
+            })
             
             output$dataready <- reactive({
                 hide(id = "loading-debrowser", anim = TRUE, animType = "fade")    
                 return(!is.null(Dataset()))
             })
+            
             outputOptions(output, "dataready", 
                           suspendWhenHidden = FALSE)
             output$definished <- reactive({
@@ -635,7 +653,6 @@ deServer <- function(input, output, session) {
                 shinyjs::hide("save_state")
                 shinyjs::show("bookmark_special_name")
                 shinyjs::show("name_bookmark")
-                session$doBookmark()
             })
             observeEvent(input$startDE, {
                 buttonValues$startDE <- TRUE
@@ -643,7 +660,6 @@ deServer <- function(input, output, session) {
                 init_data <- NULL 
                 togglePanels(1, c( 0, 1, 2, 3, 4), session)
                 choicecounter$qc <- 0
-                session$doBookmark()
             })
             observeEvent(input$goQCplots, {
                 choicecounter$qc <- 1

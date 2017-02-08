@@ -359,7 +359,7 @@ getProgramTitle <- function(session = NULL) {
 #'     x <- getLoadingMsg()
 #' @export
 #'
-getLoadingMsg <- function() {
+getLoadingMsg <- function(output) {
     addResourcePath(prefix = "www", directoryPath =
         system.file("extdata", "www",
         package = "debrowser"))
@@ -396,8 +396,8 @@ getLoadingMsg <- function() {
             tags$div(id = "loadmessage",
             tags$img(src = imgsrc_full
             ))),
-        conditionalPanel(condition = paste0("$('html').hasClass('shiny-busy')",
-            "& input.methodtabs!='panel0'"),
+        conditionalPanel(condition = paste0("($('html').hasClass('shiny-busy')",
+            "& input.methodtabs!='panel0') || (output.isRestoring)"),
             tags$div(id = "loadmessage_small",
             tags$img(src = imgsrc_small
             )))
