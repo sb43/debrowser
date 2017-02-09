@@ -79,6 +79,15 @@
 deServer <- function(input, output, session) {
     tryCatch(
     {
+        # username_to_add <- parseQueryString(session$clientData$url_search)[['username']]
+        # if(username_to_add != ""){
+        #     username_to_add <- paste0("?username=", username_to_add)
+        # }
+        # output$user_addition <- renderUI({
+        #     tags$a(style='color: white;',
+        #            href = paste0("/", username_to_add) , "DEBrowser")
+        # })
+        
         remove_bookmark <- function(ID){
             print("remove bookmark")
             if(!is.null(loadingJSON$username) && loadingJSON$username != ""){
@@ -109,13 +118,41 @@ deServer <- function(input, output, session) {
         bookmark_list <- reactive({
             print(parseQueryString(session$clientData$url_search)$username)
         if(!is.null(loadingJSON$username) && loadingJSON$username != ""){
-            path <- paste0("shiny_saves/", loadingJSON$username, "/past_saves.txt")
+            past_saves_path <- paste0("shiny_saves/", loadingJSON$username, "/past_saves.txt")
+
         } else {
-            path <- "shiny_saves/past_saves.txt"
+            past_saves_path <- "shiny_saves/past_saves.txt"
         }
-        if(file.exists(path)){
-            if(file.size(path) > 0){
-                conn <- file(path,open="r")
+            
+            # if(file.size(past_saves_path) > 0){
+            #     lines <- reactiveFileReader(2000, session, past_saves_path, readLines)
+            #     bookmark_count <- length(lines())
+            #     output$past_named_bookmarks <- renderText({"History:"})
+            #     
+            #     lapply(1:bookmark_count, function(i) {
+            #         a <- strsplit(lines()[i], "0u0")
+            #         if(length(a[[1]]) == 2){
+            #             to_show <- a[[1]][2]
+            #             user_addition <- paste0("&username=", a[[1]][1])
+            #         } else{
+            #             to_show <- lines()[i]
+            #             user_addition <- ""
+            #         }
+            #         output[[paste0('bookmark', i)]] <- renderUI({
+            #             list(
+            #                 a(paste0(to_show), target='_blank', class="bm_id",
+            #                   href= paste0("?_state_id_=", lines()[i], user_addition)),
+            #                 a(href="#", id=paste0("remove_bm", i), class="removebm",
+            #                   img(src="www/images/delete_button.png"),
+            #                   onclick=paste0('remove_bookmark("',  lines()[i], '")'))
+            #             )
+            #         })
+            #     })
+            # }    
+
+        if(file.exists(past_saves_path)){
+            if(file.size(past_saves_path) > 0){
+                conn <- file(past_saves_path,open="r")
                 lines <- readLines(conn)
                 bookmark_count <- length(lines)
                 output$past_named_bookmarks <- renderText({"History:"})
@@ -219,6 +256,8 @@ deServer <- function(input, output, session) {
         ###############################################################
         observeEvent(input$name_bookmark, {
             session$doBookmark()
+            output$bookmark_length_error <- renderText({"Please wait, saving."})
+            
             chosen_name <- input$bookmark_special_name
             if(nchar(chosen_name) < 5){
                 to_display <- "You must type in at least 5 characters."
@@ -235,18 +274,38 @@ deServer <- function(input, output, session) {
                     if (result == 42) {
                         shinyjs::hide("bookmark_special_name")
                         shinyjs::hide("name_bookmark")
-                        to_display <- paste0("Successfully saved. ",
-                                             "URL updated with your choice to access later.")
+                        
                         user_addition <- ""
-                        if(!is.null(loadingJSON$username) && loadingJSON$username != ""){
+                        if(!is.null(loadingJSON$username) && (loadingJSON$username != "")){
                             user_addition <- paste0("&username=", loadingJSON$username)
                         }
-                        bm_link <- paste0('<a style="margin: 27px;" ',
-                                          'href="?_state_id_=',
-                                          chosen_name, user_addition, '">', chosen_name, '</a>')
+                        query_list <- parseQueryString(session$clientData$url_search)
+                        chosen_link <- chosen_name
+                        if(!is.null(query_list[['username']])){
+                            chosen_link <- paste0(query_list[['username']], "0u0",
+                                                  chosen_name)
+                        }
+                        
+                        old_bookmark_id <- parseQueryString(session$clientData$url_search)[["_state_id_"]]
+                        old_json_path <- paste0("shiny_bookmarks/", old_bookmark_id, "/file1.JSON")
+                        if(file.exists(old_json_path)){
+                            file.copy(old_json_path, paste0("shiny_bookmarks/", chosen_link, "/file1.JSON"))
+                        }
+                        old_tsv_path <- paste0("shiny_bookmarks/", old_bookmark_id, "/file1.tsv")
+                        if(file.exists(old_tsv_path)){
+                            file.copy(old_tsv_path, paste0("shiny_bookmarks/", 
+                                                           chosen_link, "/file1.tsv"), overwrite = TRUE)
+                        }    
+
+                        
+                        bm_link <- paste0('<p style="margin-left: 27px;">New Save:</p><a style="margin: 27px;" ',
+                                          'target="_blank" href="?_state_id_=',
+                                          chosen_link, user_addition, '">', chosen_name, '</a>')
+
                         output$new_bookmark <- renderText({bm_link})
                         shinyjs::show("save_state")
-                        
+                        to_display <- paste0("Successfully saved. ",
+                                             "URL updated with your choice to access later.")
                     } else {
                         to_display <- "Something went wrong with the save."
                     }
@@ -280,12 +339,12 @@ deServer <- function(input, output, session) {
                                                                     new_state_id, "/file1.JSON"))
                     }
                     user_addition <- ""
-                    if(!is.null(loadingJSON$username) && loadingJSON$username != ""){
+                    if(!is.null(loadingJSON$username) && (loadingJSON$username != "")){
+
                         user_addition <- paste0("&username=", loadingJSON$username)
                     }
                     updateQueryString(paste0("?_state_id_=", new_state_id, user_addition))
-                    print(loadingJSON$username)
-                    
+
                     startup_path <- "shiny_saves/startup.rds"
                     if(!is.null(loadingJSON$username) && loadingJSON$username != ""){
                             startup_path <- paste0("shiny_saves/", 
@@ -342,10 +401,13 @@ deServer <- function(input, output, session) {
         })
         
         onBookmarked(function(url) {
-            updateQueryString(url)
+            user_addition <- ""
+            if(!is.null(loadingJSON$username) && (loadingJSON$username != "")){
+                user_addition <- paste0("&username=", loadingJSON$username)
+            }
+            updateQueryString(paste0(url, user_addition))
             cat(paste0("updating the url to: ", url, "\n"))
-            print(loadingJSON$username)
-            
+
             startup_path <- "shiny_saves/startup.rds"
             if(!is.null(loadingJSON$username) && loadingJSON$username != ""){
                     startup_path <- paste0("shiny_saves/", 

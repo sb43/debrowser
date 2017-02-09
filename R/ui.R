@@ -31,8 +31,9 @@ deUI <- function() {
         Shiny.onInputChange('genenames', out);
     };"
     dbHeader <- shinydashboard::dashboardHeader(titleWidth = 350)
-    dbHeader$children[[2]]$children <-  tags$a(style='color: white;',
-        href = "/" , "DEBrowser")
+    dbHeader$children[[2]]$children <- tags$a(style='color: white;',
+        href = paste0("/") , "DEBrowser")
+
     
     addResourcePath(prefix = "www", directoryPath = system.file("extdata",
         "www", package = "debrowser"))
@@ -102,6 +103,7 @@ deUI <- function() {
                     br(), br(), br()
             )),
             conditionalPanel(condition <- paste0("input.methodtabs=='panel0'"),
+                htmlOutput("new_bookmark"),
                 uiOutput("past_named_bookmarks"),
                 lapply(20:1, function(i) {
                     uiOutput(paste0('bookmark', i))

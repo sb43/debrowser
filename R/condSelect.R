@@ -104,8 +104,13 @@ getConditionSelectorFromMeta <- function(input = NULL, index = 1, num=0,
                 startup_path <- paste0("shiny_saves/", loadingJSON$username ,"/startup.rds")
             }
             startup <- readRDS(startup_path)
-            restored_input <- readRDS(paste0("shiny_bookmarks/", 
-                    startup[['startup_bookmark']] , "/input.rds"))
+            path_to_read <- paste0("shiny_bookmarks/", 
+                startup[['startup_bookmark']] , "/input_save.rds")
+            restored_input <- list()
+            if(file.exists(path_to_read)){
+                restored_input <- readRDS(path_to_read)
+            }
+
             
             selected <- restored_input[[paste0("condition", num)]]
             if(is.null(restored_input[[paste0("condition", num + 1)]])){
