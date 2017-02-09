@@ -94,12 +94,16 @@ deUI <- function() {
             conditionalPanel(condition = paste0("((input.goDE) || ",
                 "(output.restore_DE > 0)) && (!input.startDE)"),
                 style = "padding: 27px;",
+            
             actionButton("save_state", "Save Selection!"),
+            #textOutput("message_for_loading"),
             conditionalPanel(condition = "input.save_state",
                 textInput("bookmark_special_name", "Name your save:",
                     value = "", placeholder = "At Least 5 Characters"),
                     actionButton("name_bookmark", "Submit!"),
+                
                     textOutput("bookmark_length_error"),
+
                     br(), br(), br()
             )),
             conditionalPanel(condition <- paste0("input.methodtabs=='panel0'"),

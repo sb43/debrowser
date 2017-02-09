@@ -88,6 +88,10 @@ deServer <- function(input, output, session) {
         #            href = paste0("/", username_to_add) , "DEBrowser")
         # })
         
+        uiState <- reactiveValues()
+        uiState$readyFlag <- 0
+        uiState$readyCheck <- 0
+        
         remove_bookmark <- function(ID){
             print("remove bookmark")
             if(!is.null(loadingJSON$username) && loadingJSON$username != ""){
@@ -255,8 +259,8 @@ deServer <- function(input, output, session) {
         #         To save user chosen name as bookmark id             #
         ###############################################################
         observeEvent(input$name_bookmark, {
+            
             session$doBookmark()
-            output$bookmark_length_error <- renderText({"Please wait, saving."})
             
             chosen_name <- input$bookmark_special_name
             if(nchar(chosen_name) < 5){
@@ -274,7 +278,7 @@ deServer <- function(input, output, session) {
                     if (result == 42) {
                         shinyjs::hide("bookmark_special_name")
                         shinyjs::hide("name_bookmark")
-                        
+                        #shinyjs::hide("message_for_loading")
                         user_addition <- ""
                         if(!is.null(loadingJSON$username) && (loadingJSON$username != "")){
                             user_addition <- paste0("&username=", loadingJSON$username)
@@ -431,6 +435,7 @@ deServer <- function(input, output, session) {
         
         # Read values from state$values when we restore
         onRestore(function(state) {
+
             cat(paste0("RESTORE++++++++++++++++++++++++++++++++++++++++++++++",
                        " nc ", choicecounter$nc, "qc ", choicecounter$qc, "\n"))
             query_list <- parseQueryString(session$clientData$url_search)

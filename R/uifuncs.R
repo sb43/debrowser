@@ -396,8 +396,8 @@ getLoadingMsg <- function(output) {
             tags$div(id = "loadmessage",
             tags$img(src = imgsrc_full
             ))),
-        conditionalPanel(condition = paste0("($('html').hasClass('shiny-busy')",
-            "& input.methodtabs!='panel0') || (output.isRestoring)"),
+        conditionalPanel(condition =  paste0("$('html').hasClass('shiny-busy')",
+                "& !(input.startDE & input.methodtabs=='panel0')"),
             tags$div(id = "loadmessage_small",
             tags$img(src = imgsrc_small
             )))
