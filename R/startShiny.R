@@ -49,10 +49,6 @@ startDEBrowser <- function(){
         
         startup_obj <- list()
         # To restore, set counter to 0 and bookmark to the last bookmark dir
-        # startup_obj$bookmark_counter <- 0
-        # startup_obj$startup_bookmark <- system(paste0("ls -t1 ",
-        #                       "shiny_bookmarks |  head -n 1"), intern=TRUE)
-        
         # To start normally, set the counter to 1 and bookmark to empty string
         startup_obj$bookmark_counter <- 1
         startup_obj$startup_bookmark <- ""

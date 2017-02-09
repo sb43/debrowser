@@ -10,8 +10,6 @@
 #' @export
 #'
 #'
-
-
 getMethodDetails <- function(num = 0, input = NULL) {
     if (num > 0)
         a <- list(
@@ -112,6 +110,7 @@ getConditionSelectorFromMeta <- function(input = NULL, index = 1, num=0,
             if(file.exists(path_to_read)){
                 restored_input <- readRDS(path_to_read)
             }
+
             
             selected <- restored_input[[paste0("condition", num)]]
             if(is.null(restored_input[[paste0("condition", num + 1)]])){

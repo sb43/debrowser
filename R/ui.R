@@ -37,8 +37,6 @@ deUI <- function() {
     
     addResourcePath(prefix = "www", directoryPath = system.file("extdata",
         "www", package = "debrowser"))
-
-
     if(!file.exists("shiny_saves/startup.rds")){
         startup_obj <- list()
         startup_obj$bookmark_counter <- 3

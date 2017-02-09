@@ -65,7 +65,7 @@ getMainPanelPlots <- function(filt_data = NULL,
     else
        filt_data_rand  <- filt_data_NS
     filt_data <- rbind(filt_data_rand, filt_data_rest)
-    
+    type <- input$mainplot
     if (input$mainplot == "volcano") {
         volcano_dat <- reactive({
         filt_data[which(!is.na(filt_data$log2FoldChange)
@@ -117,11 +117,11 @@ getMainPanelPlots <- function(filt_data = NULL,
     }
     getSelected <- reactive({
         m <- NULL
-        if (input$mainplot == "volcano") {
+        if (input$mainplot == "volcano" && type == "volcano") {
             m <- volcano_selected()
-        } else if (input$mainplot == "scatter") {
+        } else if (input$mainplot == "scatter" && type == "scatter") {
             m <- gene_selected()
-        } else if (input$mainplot == "maplot") {
+        } else if (input$mainplot == "maplot"  && type == "maplot") {
             m <- ma_selected()
         }
         m
