@@ -10,8 +10,6 @@
 #' @export
 #'
 #'
-
-
 getMethodDetails <- function(num = 0, input = NULL) {
     if (num > 0)
         a <- list(
@@ -107,7 +105,7 @@ getConditionSelectorFromMeta <- function(input = NULL, index = 1, num=0,
             }
             startup <- readRDS(startup_path)
             restored_input <- readRDS(paste0("shiny_bookmarks/", 
-                    startup[['startup_bookmark']] , "/input_save.rds"))
+                    startup[['startup_bookmark']] , "/input.rds"))
             
             selected <- restored_input[[paste0("condition", num)]]
             if(is.null(restored_input[[paste0("condition", num + 1)]])){

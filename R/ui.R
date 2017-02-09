@@ -36,8 +36,6 @@ deUI <- function() {
     
     addResourcePath(prefix = "www", directoryPath = system.file("extdata",
         "www", package = "debrowser"))
-
-
     if(!file.exists("shiny_saves/startup.rds")){
         startup_obj <- list()
         startup_obj$bookmark_counter <- 3
@@ -104,7 +102,6 @@ deUI <- function() {
                     br(), br(), br()
             )),
             conditionalPanel(condition <- paste0("input.methodtabs=='panel0'"),
-                #htmlOutput("new_bookmark"),
                 uiOutput("past_named_bookmarks"),
                 lapply(20:1, function(i) {
                     uiOutput(paste0('bookmark', i))

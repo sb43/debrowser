@@ -81,7 +81,7 @@ deServer <- function(input, output, session) {
     {
         remove_bookmark <- function(ID){
             print("remove bookmark")
-            if(exists("loadingJSON")){
+            if(!is.null(loadingJSON$username) && loadingJSON$username != ""){
                 saves_path <- paste0("shiny_saves/", loadingJSON$username, "/past_saves.txt")
             } else {
                 saves_path <- "shiny_saves/past_saves.txt"
@@ -96,18 +96,17 @@ deServer <- function(input, output, session) {
         }
         lapply(1:20, function(i) {
             shinyjs::onclick(paste0("remove_bm", i),
-                             list(
-                             remove_bookmark(i),
-                             shinyjs::hide(paste0("remove_bm", i)),
-                             shinyjs::hide(paste0("bookmark", i))
-                             )
+                 list(
+                 remove_bookmark(i),
+                 shinyjs::hide(paste0("remove_bm", i)),
+                 shinyjs::hide(paste0("bookmark", i))
+                 )
             )
-            
         })
         
         bookmark_list <- reactive({
             print(parseQueryString(session$clientData$url_search)$username)
-        if(exists("loadingJSON")){
+        if(!is.null(loadingJSON$username) && loadingJSON$username != ""){
             path <- paste0("shiny_saves/", loadingJSON$username, "/past_saves.txt")
         } else {
             path <- "shiny_saves/past_saves.txt"
@@ -144,36 +143,6 @@ deServer <- function(input, output, session) {
         }
         })
         
-        
-        # output$past_named_bookmarks <- renderUI({
-        #     path <- "shiny_saves/past_saves.txt"
-        #     if(file.exists(path)){
-        #         conn <- file(path,open="r")
-        #         lines <- readLines(conn)
-        #         all_bookmarks <- list(tags$div(id='all_bookmarks',
-        #         if(length(lines) > 0){
-        #             all_bookmarks <- paste0(all_bookmarks, "p('History:'),")
-        #         }
-        #         for (i in length(lines):1){
-        #             bookmark_id <- lines[i]
-        #             if(bookmark_id != ""){
-        #                 current <- paste0('a(target="_blank" id="bookmark', i,
-        #                                   '"', ' href="?_state_id_=',
-        #                                   bookmark_id, '">', bookmark_id, '),',
-        #                                   'a(href="javascript:alert(\'a\');">    X),')
-        #                 all_bookmarks <- paste0(all_bookmarks, current, "<br/>")
-        #             }
-        #         }
-        #         all_bookmarks <- paste0(all_bookmarks, "))")
-        #         close(conn)
-        #         return(all_bookmarks)
-        #     }
-        #     else {
-        #         return("")
-        #     }
-        # })
-        # 
-        
         # To hide the panels from 1 to 4 and only show Data Prep
         togglePanels(0, c(0), session)
         
@@ -192,7 +161,7 @@ deServer <- function(input, output, session) {
         ###############################################################
         delete_previous_bookmark <- function(prev_url){
             query_string <- paste0("?", strsplit(prev_url, "?",
-                                                 fixed = TRUE)[[1]][2])
+               fixed = TRUE)[[1]][2])
             query_list <- parseQueryString(query_string)
             state_id <- query_list[["_state_id_"]]
             cat(paste0("previous url: ", state_id, "\n"))
@@ -218,11 +187,9 @@ deServer <- function(input, output, session) {
         ###############################################################
         observe({
             startup_path <- "shiny_saves/startup.rds"
-            if(!is.null(loadingJSON$username)){
-                if(loadingJSON$username != ""){
+            if(!is.null(loadingJSON$username) && loadingJSON$username != ""){
                     startup_path <- paste0("shiny_saves/", 
                         loadingJSON$username ,"/startup.rds")
-                }
             }
             if(file.exists(startup_path)){
                 startup <- readRDS(startup_path)
@@ -267,11 +234,11 @@ deServer <- function(input, output, session) {
                         to_display <- paste0("Successfully saved. ",
                                              "URL updated with your choice to access later.")
                         user_addition <- ""
-                        if(!is.null(loadingJSON$username)){
+                        if(!is.null(loadingJSON$username) && loadingJSON$username != ""){
                             user_addition <- paste0("&username=", loadingJSON$username)
                         }
                         bm_link <- paste0('<a style="margin: 27px;" ',
-                                          'target="_blank" href="?_state_id_=',
+                                          'href="?_state_id_=',
                                           chosen_name, user_addition, '">', chosen_name, '</a>')
                         output$new_bookmark <- renderText({bm_link})
                         shinyjs::show("save_state")
@@ -309,24 +276,22 @@ deServer <- function(input, output, session) {
                                                                     new_state_id, "/file1.JSON"))
                     }
                     user_addition <- ""
-                    if(!is.null(loadingJSON$username)){
+                    if(!is.null(loadingJSON$username) && loadingJSON$username != ""){
                         user_addition <- paste0("&username=", loadingJSON$username)
                     }
                     updateQueryString(paste0("?_state_id_=", new_state_id, user_addition))
                     print(loadingJSON$username)
                     
                     startup_path <- "shiny_saves/startup.rds"
-                    if(!is.null(loadingJSON$username)){
-                        if(loadingJSON$username != ""){
+                    if(!is.null(loadingJSON$username) && loadingJSON$username != ""){
                             startup_path <- paste0("shiny_saves/", 
                                 loadingJSON$username ,"/startup.rds")
-                        }
                     }
                     startup <- readRDS(startup_path)
                     startup[['startup_bookmark']] <- new_state_id
                     saveRDS(startup, startup_path)
                     
-                    if(exists("loadingJSON")){
+                    if(!is.null(loadingJSON$username) && loadingJSON$username != ""){
                         f_path <- paste0("shiny_saves/", loadingJSON$username, "/past_saves.txt")
                     } else {
                         f_path <- "shiny_saves/past_saves.txt"
@@ -378,11 +343,9 @@ deServer <- function(input, output, session) {
             print(loadingJSON$username)
             
             startup_path <- "shiny_saves/startup.rds"
-            if(!is.null(loadingJSON$username)){
-                if(loadingJSON$username != ""){
+            if(!is.null(loadingJSON$username) && loadingJSON$username != ""){
                     startup_path <- paste0("shiny_saves/", 
                         loadingJSON$username ,"/startup.rds")
-                }
             }
             
             if(file.exists(startup_path)){
@@ -411,11 +374,9 @@ deServer <- function(input, output, session) {
             print(loadingJSON$username)
             
             startup_path <- "shiny_saves/startup.rds"
-            if(!is.null(loadingJSON$username)){
-                if(loadingJSON$username != ""){
+            if(!is.null(loadingJSON$username) && loadingJSON$username != ""){
                     startup_path <- paste0("shiny_saves/", 
                         loadingJSON$username ,"/startup.rds")
-                }
             }
             startup <- list()
             startup[['bookmark_counter']] <- 2
@@ -485,7 +446,7 @@ deServer <- function(input, output, session) {
             })
             output$downloadSection <- renderUI({
                 choices <- c("most-varied", "alldetected", "pcaset")
-                if (!is.null(isolate(filt_data())))
+                if (buttonValues$startDE)
                     choices <- c("up+down", "up", "down",
                                  "comparisons", "alldetected",
                                  "most-varied", "pcaset")
@@ -493,7 +454,7 @@ deServer <- function(input, output, session) {
                     if (!is.null(selected$data$getSelected())
                         && nrow(selected$data$getSelected())>1)
                         choices <- c(choices, "selected")
-                    a <- getDownloadSection(TRUE, choices)
+                        a <- getDownloadSection(TRUE, choices)
                     a
             })
             output$preppanel <- renderUI({
@@ -623,7 +584,7 @@ deServer <- function(input, output, session) {
                 dc <- NULL
                 if (buttonValues$startDE == TRUE){
                     dc <- prepDataContainer(Dataset(), choicecounter$nc, 
-                                            isolate(input))
+                         isolate(input))
                 }
                 dc
             })
