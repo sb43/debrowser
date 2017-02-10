@@ -11,8 +11,10 @@
 #' @export
 #'
 
+
 deUI <- function() {
 
+enableBookmarking("server")
     heatmapJScode <-
         "shinyjs.getNames = function(){
         var count = document.getElementsByClassName('tick').length;

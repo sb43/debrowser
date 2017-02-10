@@ -77,6 +77,7 @@
 #' @import shinydashboard
 
 deServer <- function(input, output, session) {
+enableBookmarking("server")
     tryCatch(
     {
         # username_to_add <- parseQueryString(session$clientData$url_search)[['username']]
@@ -128,32 +129,6 @@ deServer <- function(input, output, session) {
             past_saves_path <- "shiny_saves/past_saves.txt"
         }
             
-            # if(file.size(past_saves_path) > 0){
-            #     lines <- reactiveFileReader(2000, session, past_saves_path, readLines)
-            #     bookmark_count <- length(lines())
-            #     output$past_named_bookmarks <- renderText({"History:"})
-            #     
-            #     lapply(1:bookmark_count, function(i) {
-            #         a <- strsplit(lines()[i], "0u0")
-            #         if(length(a[[1]]) == 2){
-            #             to_show <- a[[1]][2]
-            #             user_addition <- paste0("&username=", a[[1]][1])
-            #         } else{
-            #             to_show <- lines()[i]
-            #             user_addition <- ""
-            #         }
-            #         output[[paste0('bookmark', i)]] <- renderUI({
-            #             list(
-            #                 a(paste0(to_show), target='_blank', class="bm_id",
-            #                   href= paste0("?_state_id_=", lines()[i], user_addition)),
-            #                 a(href="#", id=paste0("remove_bm", i), class="removebm",
-            #                   img(src="www/images/delete_button.png"),
-            #                   onclick=paste0('remove_bookmark("',  lines()[i], '")'))
-            #             )
-            #         })
-            #     })
-            # }    
-
         if(file.exists(past_saves_path)){
             if(file.size(past_saves_path) > 0){
                 conn <- file(past_saves_path,open="r")
@@ -188,7 +163,7 @@ deServer <- function(input, output, session) {
         })
         
         # To hide the panels from 1 to 4 and only show Data Prep
-        togglePanels(0, c(0), session)
+        #togglePanels(0, c(0), session)
         
         ###############################################################
         #     Helper to copy the bookmark to a user named directory   #
@@ -480,7 +455,7 @@ deServer <- function(input, output, session) {
         })
                 if (!interactive()) {
                 options( shiny.maxRequestSize = 30 * 1024 ^ 2,
-                         shiny.fullstacktrace = FALSE, shiny.trace=FALSE, 
+                         shiny.fullstacktrace = FALSE, shiny.trace=TRUE, 
                          shiny.autoreload=TRUE)
                 #library(debrowser)
                 #library(d3heatmap)
@@ -587,7 +562,6 @@ deServer <- function(input, output, session) {
             
             observeEvent(input$gotoanalysis, {
                 buttonValues$gotoanalysis <- TRUE
-                session$doBookmark()
             })
             Dataset <- reactive({
                 a <- NULL
