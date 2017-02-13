@@ -341,6 +341,9 @@ selectConditions<-function(Dataset = NULL,
                 startup[['startup_bookmark']] , '/meta_selections.rds')
             
             if(!file.exists(meta_rds_path)){
+                if(!file.exists(paste0('shiny_bookmarks/', startup[['startup_bookmark']]))){
+                    dir.create(paste0('shiny_bookmarks/', startup[['startup_bookmark']]))
+                }
                 saveRDS(list(), meta_rds_path)
             }
             meta_selections <- readRDS(meta_rds_path)
