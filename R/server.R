@@ -76,13 +76,11 @@
 #' @import V8
 #' @import shinydashboard
 #' @import googleAuthR
-#' @import googleID
-
-
+#' @import devtools
 
 deServer <- function(input, output, session) {
     enableBookmarking("server")
-    
+    installpack("googleID", github = "UMMS-Biocore/googleID")
     options("googleAuthR.webapp.client_id" = "850223937079-t620nr1rdi48fl19tpur500qojao8l24.apps.googleusercontent.com")
     options("googleAuthR.webapp.client_secret" = "z7PteMYITcBHnvtRGcU9m9n9")
     options(googleAuthR.scopes.selected = c("https://www.googleapis.com/auth/userinfo.email",

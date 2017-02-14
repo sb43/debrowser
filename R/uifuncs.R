@@ -353,13 +353,14 @@ getProgramTitle <- function(session = NULL) {
 #' Creates and displays the loading message/gif to be displayed
 #' within the DEBrowser.
 #'
+#' @param output, output message
 #' @note \code{getLoadingMsg}
 #' @return loading msg
 #' @examples
 #'     x <- getLoadingMsg()
 #' @export
 #'
-getLoadingMsg <- function(output) {
+getLoadingMsg <- function(output = NULL) {
     addResourcePath(prefix = "www", directoryPath =
         system.file("extdata", "www",
         package = "debrowser"))

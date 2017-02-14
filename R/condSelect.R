@@ -280,6 +280,7 @@ getSelectInputBox <- function(id = NULL, name = NULL,
 #'
 #' @param Dataset, used dataset 
 #' @param choicecounter, total number of comparisons
+#' @param loadingJSON, loads from json
 #' @param input, input params
 #' @note \code{selectConditions}
 #' @return the panel for go plots;
