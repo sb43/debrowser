@@ -2,3 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+shiny_saves/*
+shiny_bookmarks/*
+R/shiny_saves/*
+R/shiny_bookmarks/*

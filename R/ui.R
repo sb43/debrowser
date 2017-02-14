@@ -11,7 +11,6 @@
 #' @export
 #'
 
-library(googleAuthR)
 deUI <- function() {
 
 enableBookmarking("server")

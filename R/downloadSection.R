@@ -4,7 +4,7 @@
 #' menu for user to download selected data.
 #'
 #' @param flag, to show the download selection
-#' @param type, main vs. QC section
+#' @param choices, main vs. QC section
 #'
 #' @note \code{getDownloadSection}
 #' @return the panel for download section in the menu;
