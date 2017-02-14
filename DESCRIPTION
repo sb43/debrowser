@@ -55,7 +55,9 @@ Imports:
     V8,
     methods,
     sva,
-    shinydashboard
+    shinydashboard,
+    googleAuthR,
+    googleID
 RoxygenNote: 6.0.0
 Suggests: testthat,
     rmarkdown,

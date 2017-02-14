@@ -75,9 +75,35 @@
 #' @import org.Mm.eg.db
 #' @import V8
 #' @import shinydashboard
+#' @import googleAuthR
+#' @import googleID
+
+
 
 deServer <- function(input, output, session) {
-enableBookmarking("server")
+    enableBookmarking("server")
+    
+    options("googleAuthR.webapp.client_id" = "850223937079-t620nr1rdi48fl19tpur500qojao8l24.apps.googleusercontent.com")
+    options("googleAuthR.webapp.client_secret" = "z7PteMYITcBHnvtRGcU9m9n9")
+    options(googleAuthR.scopes.selected = c("https://www.googleapis.com/auth/userinfo.email",
+                                            "https://www.googleapis.com/auth/userinfo.profile"))
+    
+    access_token <- callModule(googleAuth, "example1")
+    ## to use in a shiny app:
+    user_details <- reactive({
+        if(!is.null(access_token())){
+            with_shiny(get_user_info, shiny_access_token = access_token())
+        }
+    })
+    
+    output$user_name <- renderText({
+        if(!is.null(user_details())){
+            user_details()$displayName
+        }
+        
+    })
+    
+
     tryCatch(
     {
         # username_to_add <- parseQueryString(session$clientData$url_search)[['username']]
@@ -121,7 +147,6 @@ enableBookmarking("server")
         })
         
         bookmark_list <- reactive({
-            print(parseQueryString(session$clientData$url_search)$username)
         if(!is.null(loadingJSON$username) && loadingJSON$username != ""){
             past_saves_path <- paste0("shiny_saves/", loadingJSON$username, "/past_saves.txt")
 
@@ -224,7 +249,7 @@ enableBookmarking("server")
                 saveRDS(startup, startup_path)
                 
                 session$sendCustomMessage(type = 'testmessage',
-                    message = list(bookmarked_url = paste0("?_state_id_=",
+                    message = list(new_url = paste0("?_state_id_=",
                     startup[['startup_bookmark']]), controller = input$controller))
             }
             bookmark_list()
@@ -260,8 +285,8 @@ enableBookmarking("server")
                         }
                         query_list <- parseQueryString(session$clientData$url_search)
                         chosen_link <- chosen_name
-                        if(!is.null(query_list[['username']])){
-                            chosen_link <- paste0(query_list[['username']], "0u0",
+                        if(!is.null(loadingJSON$username) && (loadingJSON$username != "")){
+                            chosen_link <- paste0(loadingJSON$username, "0u0",
                                                   chosen_name)
                         }
                         
@@ -298,8 +323,8 @@ enableBookmarking("server")
         #####################################################################
         copy_to_new_directory <- function(new_state_id){
             query_list <- parseQueryString(session$clientData$url_search)
-            if(!is.null(query_list[['username']])){
-                new_state_id <- paste0(query_list[['username']], "0u0",
+            if(!is.null(loadingJSON$username) && (loadingJSON$username != "")){
+                new_state_id <- paste0(loadingJSON$username, "0u0",
                                        new_state_id)
             }
             
@@ -398,6 +423,9 @@ enableBookmarking("server")
             } else {
                 startup <- list()
             }
+            dir.create("shiny_saves")
+            dir.create(paste0("shiny_saves/", loadingJSON$username))
+
             
             startup[['startup_bookmark']] <- get_state_id(url)
             saveRDS(startup, startup_path)
@@ -410,15 +438,22 @@ enableBookmarking("server")
         
         # Read values from state$values when we restore
         onRestore(function(state) {
+            user_email <- user_details()$emails$value
+            username_from_email <- gsub("[[:punct:]]", "", user_email)
+            if(!is.null(user_email) && (username_from_email != "")){
+                loadingJSON$username <- username_from_email
+            }
 
             cat(paste0("RESTORE++++++++++++++++++++++++++++++++++++++++++++++",
                        " nc ", choicecounter$nc, "qc ", choicecounter$qc, "\n"))
             query_list <- parseQueryString(session$clientData$url_search)
             
-            loadingJSON$username <- parseQueryString(session$clientData$url_search)$username
+            username_from_url <- parseQueryString(session$clientData$url_search)$username
+            if(!is.null(username_from_url) && (username_from_url != "")){
+                loadingJSON$username <- username_from_url
+            }
             dir.create(paste0("shiny_saves/", loadingJSON$username))
-            print(loadingJSON$username)
-            
+
             startup_path <- "shiny_saves/startup.rds"
             if(!is.null(loadingJSON$username) && loadingJSON$username != ""){
                     startup_path <- paste0("shiny_saves/", 

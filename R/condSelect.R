@@ -87,11 +87,14 @@ getConditionSelectorFromMeta <- function(input = NULL, index = 1, num=0,
             startup_path <- paste0("shiny_saves/", loadingJSON$username ,"/startup.rds")
         }
         
+        startup <- list()
         if(file.exists(startup_path)){
             startup <- readRDS(startup_path)
-        } else {
-            startup <- list()
         }
+        if(!file.exists(paste0("shiny_saves/", loadingJSON$username))){
+            dir.create(paste0("shiny_saves/", loadingJSON$username))
+        }
+        
         if(is.null(startup[['bookmark_counter']])){
             startup[['bookmark_counter']] <- 3
         }
@@ -103,7 +106,15 @@ getConditionSelectorFromMeta <- function(input = NULL, index = 1, num=0,
             } else {
                 startup_path <- paste0("shiny_saves/", loadingJSON$username ,"/startup.rds")
             }
-            startup <- readRDS(startup_path)
+            
+            startup <- list()
+            if(file.exists(startup_path)){
+                startup <- readRDS(startup_path)
+            }
+            if(!file.exists(paste0("shiny_saves/", loadingJSON$username))){
+                dir.create(paste0("shiny_saves/", loadingJSON$username))
+            }
+            
             path_to_read <- paste0("shiny_bookmarks/", 
                 startup[['startup_bookmark']] , "/input_save.rds")
             restored_input <- list()
@@ -115,7 +126,6 @@ getConditionSelectorFromMeta <- function(input = NULL, index = 1, num=0,
             selected <- restored_input[[paste0("condition", num)]]
             if(is.null(restored_input[[paste0("condition", num + 1)]])){
                 startup[['bookmark_counter']] <- 3
-                print(loadingJSON$username)
                 saveRDS(startup, startup_path)
             }
         } 
@@ -135,7 +145,14 @@ getConditionSelectorFromMeta <- function(input = NULL, index = 1, num=0,
         } else {
             startup_path <- paste0("shiny_saves/", loadingJSON$username ,"/startup.rds")
         }
-        startup <- readRDS(startup_path)
+        
+        startup <- list()
+        if(file.exists(startup_path)){
+            startup <- readRDS(startup_path)
+        }
+        if(!file.exists(paste0("shiny_saves/", loadingJSON$username))){
+            dir.create(paste0("shiny_saves/", loadingJSON$username))
+        }
         
         meta_rds_path <- paste0('shiny_bookmarks/',
             startup[['startup_bookmark']] , '/meta_selections.rds')
@@ -164,7 +181,15 @@ getConditionSelectorFromMeta <- function(input = NULL, index = 1, num=0,
         } else {
             startup_path <- paste0("shiny_saves/", loadingJSON$username ,"/startup.rds")
         }
-        startup <- readRDS(startup_path)
+        
+        startup <- list()
+        if(file.exists(startup_path)){
+            startup <- readRDS(startup_path)
+        }
+        if(!file.exists(paste0("shiny_saves/", loadingJSON$username))){
+            dir.create(paste0("shiny_saves/", loadingJSON$username))
+        }
+        
         if(is.null(startup[['bookmark_counter']])){
             startup[['bookmark_counter']] <- 3
         }
@@ -335,12 +360,22 @@ selectConditions<-function(Dataset = NULL,
             } else {
                 startup_path <- paste0("shiny_saves/", loadingJSON$username ,"/startup.rds")
             }
-            startup <- readRDS(startup_path)
+            
+            startup <- list()
+            if(file.exists(startup_path)){
+                startup <- readRDS(startup_path)
+            }
+            if(!file.exists(paste0("shiny_saves/", loadingJSON$username))){
+                dir.create(paste0("shiny_saves/", loadingJSON$username))
+            }
             
             meta_rds_path <- paste0('shiny_bookmarks/',
                 startup[['startup_bookmark']] , '/meta_selections.rds')
             
             if(!file.exists(meta_rds_path)){
+                if(!file.exists(paste0('shiny_bookmarks/', startup[['startup_bookmark']]))){
+                    dir.create(paste0('shiny_bookmarks/', startup[['startup_bookmark']]))
+                }
                 saveRDS(list(), meta_rds_path)
             }
             meta_selections <- readRDS(meta_rds_path)
