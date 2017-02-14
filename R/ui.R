@@ -11,7 +11,7 @@
 #' @export
 #'
 
-
+library(googleAuthR)
 deUI <- function() {
 
 enableBookmarking("server")
@@ -48,12 +48,11 @@ enableBookmarking("server")
     }        
         
     startup <- readRDS("shiny_saves/startup.rds")
-    
     if (startup[['bookmark_counter']] == 0){
         a <- (fluidPage(
             tags$script('Shiny.addCustomMessageHandler("testmessage",
                 function(message) {
-                    window.location.href = message.bookmarked_url;
+                    window.location.href = new_url;
                 }
         );') ))
     }
@@ -85,6 +84,8 @@ enableBookmarking("server")
         dbHeader,
         shinydashboard::dashboardSidebar(
             width = 350,
+            googleAuthUI("example1"),
+            p("Logged in as: ", textOutput("user_name")),
             uiOutput("loading"),
             uiOutput("initialmenu"),
             conditionalPanel(condition = "(output.dataready)",
