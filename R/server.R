@@ -81,8 +81,8 @@
 deServer <- function(input, output, session) {
     enableBookmarking("server")
     installpack("googleID", github = "UMMS-Biocore/googleID")
-    options("googleAuthR.webapp.client_id" = "850223937079-t620nr1rdi48fl19tpur500qojao8l24.apps.googleusercontent.com")
-    options("googleAuthR.webapp.client_secret" = "z7PteMYITcBHnvtRGcU9m9n9")
+    options("googleAuthR.webapp.client_id" = "186441708690-n65idoo8t19ghi7ieopat6mlqkht9jts.apps.googleusercontent.com")
+    options("googleAuthR.webapp.client_secret" = "ulK-sj8bhvduC9kLU4VQl5ih")
     options(googleAuthR.scopes.selected = c("https://www.googleapis.com/auth/userinfo.email",
                                             "https://www.googleapis.com/auth/userinfo.profile"))
     
@@ -95,11 +95,12 @@ deServer <- function(input, output, session) {
     })
     
     output$user_name <- renderText({
-        if(!is.null(user_details())){
-            user_details()$displayName
+        if(exists(".startdebrowser.called")){
+            return("local")
         }
-        
+        loadingJSON$username
     })
+    
     
 
     tryCatch(
@@ -186,7 +187,7 @@ deServer <- function(input, output, session) {
         })
         
         # To hide the panels from 1 to 4 and only show Data Prep
-        #togglePanels(0, c(0), session)
+        togglePanels(0, c(0), session)
         
         ###############################################################
         #     Helper to copy the bookmark to a user named directory   #
@@ -446,9 +447,14 @@ deServer <- function(input, output, session) {
                        " nc ", choicecounter$nc, "qc ", choicecounter$qc, "\n"))
             query_list <- parseQueryString(session$clientData$url_search)
             
+            
             username_from_url <- parseQueryString(session$clientData$url_search)$username
+            bookmark_from_url <- parseQueryString(session$clientData$url_search)[['_state_id_']]
             if(!is.null(username_from_url) && (username_from_url != "")){
-                loadingJSON$username <- username_from_url
+                if(!is.null(bookmark_from_url) && (bookmark_from_url != "")
+                   && file.exists(paste0("shiny_bookmarks/", bookmark_from_url)) ){
+                    loadingJSON$username <- username_from_url
+                }
             }
             dir.create(paste0("shiny_saves/", loadingJSON$username))
 
