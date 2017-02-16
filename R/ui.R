@@ -12,7 +12,17 @@
 #'
 
 deUI <- function() {
-
+    
+    getUrlJSCode <- '
+        shinyjs.setButtonHref = function(params) {
+            var current_url = window.location.href.split(\"?\")[0];
+            refresh.href = current_url + "?start=true";
+            top_logo.href = current_url + "?start=true";
+            logout.href = current_url;
+            document.getElementsByClassName("fa fa-sign-out")[0].parentElement.setAttribute("href", current_url);
+            document.getElementsByClassName("fa fa-refresh")[0].parentElement.setAttribute("href", current_url + "?start=true"); 
+    }'
+    
 enableBookmarking("server")
     heatmapJScode <-
         "shinyjs.getNames = function(){
@@ -31,10 +41,18 @@ enableBookmarking("server")
         //document.getElementById('genenames').innerHTML = out;
         Shiny.onInputChange('genenames', out);
     };"
-    dbHeader <- shinydashboard::dashboardHeader(titleWidth = 350)
-    # dbHeader$children[[2]]$children <- tags$a(style='color: white;',
-    #     href = paste0("/") , "DEBrowser")
-    dbHeader$children[[2]]$children <- "DEBrowser"
+
+    dbHeader <- shinydashboard::dashboardHeader(titleWidth = 350,
+        shinydashboard::dropdownMenu(type = "notifications", 
+            badgeStatus = "primary", icon = shiny::icon("user-circle-o"),
+            shinydashboard::messageItem("Sign Out", "",
+                                        icon = shiny::icon("sign-out")),
+            shinydashboard::messageItem("Refresh", "", 
+                                        icon = shiny::icon("refresh"))
+            ))
+    dbHeader$children[[2]]$children <- tags$a(style='color: white;',
+                                              id="top_logo" , "DEBrowser")
+    # dbHeader$children[[2]]$children <- "DEBrowser"
 
     
     addResourcePath(prefix = "www", directoryPath = system.file("extdata",
@@ -88,8 +106,6 @@ enableBookmarking("server")
             conditionalPanel(condition = "!output.user_name",
                 googleAuthR::googleAuthUI("initial_google_button")),
             conditionalPanel(condition = "output.user_name",
-                a("Refresh", id="refresh", href="/",
-                    class="btn btn-primary", role="button"),
                 uiOutput("loading"),
                 uiOutput("initialmenu"),
                 conditionalPanel(condition = "(output.dataready)",
@@ -140,8 +156,11 @@ enableBookmarking("server")
                             uiOutput("gopanel")),
                     tabPanel(title = "Tables", value = "panel4", id="panel4",
                             DT::dataTableOutput("tables")))
-            )
-        ,
+        ),
+        
+        
+        shinyjs::extendShinyjs(text = getUrlJSCode),
+        
         p("Logged in as: ", textOutput("user_name"))
         
         )))
