@@ -662,7 +662,10 @@ deServer <- function(input, output, session) {
             })
             
             output$dataready <- reactive({
-                hide(id = "loading-debrowser", anim = TRUE, animType = "fade")    
+                query <- parseQueryString(session$clientData$url_search)
+                jsonobj<-query$jsonobject
+                if (is.null(jsonobj))
+                    hide(id = "loading-debrowser", anim = TRUE, animType = "fade")  
                 return(!is.null(Dataset()))
             })
             
@@ -689,6 +692,8 @@ deServer <- function(input, output, session) {
                         a<-correctBatchEffect(a, input)
                     }
                 }
+                if (!is.null(jsonobj))
+                    hide(id = "loading-debrowser", anim = TRUE, animType = "fade")  
                 a
             })
             choicecounter <- reactiveValues(nc = 0, qc = 0, 
