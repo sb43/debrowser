@@ -92,12 +92,15 @@ deServer <- function(input, output, session) {
             library(debrowser)
             
         }
+    shinyjs::hide("dropdown-toggle")
     shinyjs::js$setButtonHref()
+    shinyjs::js$hideDropdown()
     if(exists(".startdebrowser.called")){
         shinyjs::hide("logout")
     }
         
     library("googleID")
+    library("shinyStore")
     # devtools::install_github("trestletech/shinyStore")
     options("googleAuthR.webapp.client_id" = "186441708690-n65idoo8t19ghi7ieopat6mlqkht9jts.apps.googleusercontent.com")
     options("googleAuthR.webapp.client_secret" = "ulK-sj8bhvduC9kLU4VQl5ih")
@@ -474,10 +477,19 @@ deServer <- function(input, output, session) {
         
         # Read values from state$values when we restore
         onRestore(function(state) {
+            log_out <- parseQueryString(session$clientData$url_search)[['logout']]
+            if(!is.null(log_out) && (log_out != "")){
+                shinyStore::updateStore(session, "text",
+                                        isolate(""))
+            } else {
+            
+            shinyjs::js$showDropdown()
             json_obj <- parseQueryString(session$clientData$url_search)[['jsonobject']]
             # coming from json
             if(!is.null(json_obj) && (json_obj != "")){
                 loadingJSON$username <- parseQueryString(session$clientData$url_search)[['username']]
+                shinyStore::updateStore(session, "text",
+                                        isolate(loadingJSON$username))
             } else{
                 user_email <- user_details()$emails$value
                 username_from_email <- gsub("[[:punct:]]", "", user_email)
@@ -555,7 +567,7 @@ deServer <- function(input, output, session) {
                     shinyjs::enable("startDE")
                 }
                 cat("url_search", session$clientData$url_search, "\n")
-            }
+            }}
 
             cat("Restoring ", "\n")
         })
