@@ -131,7 +131,7 @@ enableBookmarking("server")
                         value = "", placeholder = "At Least 5 Characters"),
                         actionButton("name_bookmark", "Submit!"),
                         textOutput("bookmark_length_error"),
-                        br(), br(), br()
+                        br()
                 )),
                 conditionalPanel(condition <- paste0("input.methodtabs=='panel0'"),
                     htmlOutput("new_bookmark"),
@@ -139,7 +139,7 @@ enableBookmarking("server")
                     lapply(20:1, function(i) {
                         uiOutput(paste0('bookmark', i))
                     })
-                ), br(), br()
+                )
             )
         ),
     shinydashboard::dashboardBody(
