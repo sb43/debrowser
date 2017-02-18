@@ -53,13 +53,19 @@ getLeftMenu <- function(input = NULL) {
 if (is.null(input)) return(NULL)
 a <- list(
         conditionalPanel( (condition <- "input.methodtabs=='panel1'"),
+                          actionButton("startPlots", "Submit!"),
         shinydashboard::menuItem(" Plot Type", icon = icon("star-o"),
         radioButtons("mainplot", paste("Main Plots:", sep = ""),
             c(Scatter = "scatter", VolcanoPlot = "volcano",
-            MAPlot = "maplot")),
-                actionButton("startPlots", "Submit!")),
+            MAPlot = "maplot"))
+                ),
             getMainPlotsLeftMenu()),
         conditionalPanel( (condition <- "input.methodtabs=='panel2'"),
+                          
+            conditionalPanel( (condition <- "(input.qcplot=='all2all' ||
+                input.qcplot=='heatmap') && !(input.interactive)"),
+                actionButton("startQCPlot", "Submit!")),
+                          
         shinydashboard::menuItem(" Plot Type", icon = icon("star-o"),
         wellPanel(radioButtons("qcplot",
                 paste("QC Plots:", sep = ""),
@@ -67,6 +73,7 @@ a <- list(
                   Density = "Density")))),
             getQCLeftMenu(input)),
         conditionalPanel( (condition <- "input.methodtabs=='panel3'"),
+            actionButton("startGO", "Submit!"),
         shinydashboard::menuItem(" Plot Type", icon = icon("star-o"),
             wellPanel(radioButtons("goplot", paste("Go Plots:", sep = ""),
                 c(enrichGO = "enrichGO", enrichKEGG = "enrichKEGG",
@@ -108,7 +115,7 @@ getMainPlotsLeftMenu <- function() {
 #' @export
 #'
 getGOLeftMenu <- function() {
-    a <- list(actionButton("startGO", "Submit!"),
+    a <- list(
     shinydashboard::menuItem(" Go Term Options", icon = icon("star-o"),
                                        
     tags$head(tags$script(HTML(logSliderJScode("gopvalue")))),
@@ -187,10 +194,11 @@ getQCLeftMenu <- function( input = NULL) {
     if (is.null(input)) return(NULL)
     a <- list(
             uiOutput("columnSelForHeatmap"),
-            conditionalPanel( (condition <- "input.qcplot=='all2all' ||
-            input.qcplot=='heatmap' ||
-            input.qcplot=='pca'"),
-            actionButton("startQCPlot", "Submit!"),
+            conditionalPanel( (condition <- "input.qcplot=='heatmap'"),
+                 checkboxInput("interactive", "Interactive", value = FALSE)),
+            conditionalPanel( (condition <- "(input.qcplot=='all2all' ||
+            input.qcplot=='heatmap') && !(input.interactive)"),
+
             
             shinydashboard::menuItem(" QC Options", icon = icon("star-o"),
             sliderInput("width", "width",
@@ -202,7 +210,6 @@ getQCLeftMenu <- function( input = NULL) {
                 min = 0.1, max = 10,
                 step = 0.1, value = 2)),
             conditionalPanel( (condition <- "input.qcplot=='heatmap'"),
-                checkboxInput("interactive", "Interactive", value = FALSE),
                 selectInput("clustering_method", "Clustering Method:",
                 choices <- c("complete", "ward.D2", "single", "average",
                 "mcquitty", "median", "centroid")),
@@ -308,7 +315,7 @@ getInitialMenu <- function(input = NULL, output = NULL, session = NULL) {
             conditionalPanel(condition = "!input.demo &&
                 !output.dataready",
                 actionLink("demo", "Load Demo!"),
-                getHelpButton("method", "http://debrowser.readthedocs.io/en/develop/quickstart/quickstart.html"),
+                #getHelpButton("method", "http://debrowser.readthedocs.io/en/develop/quickstart/quickstart.html"),
                 fileInput("file1", "Choose TSV File",
                     accept = c("text/tsv",
                         "text/comma-separated-values,text/plain",

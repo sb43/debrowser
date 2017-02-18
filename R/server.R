@@ -578,11 +578,11 @@ deServer <- function(input, output, session) {
             observeEvent(input$stopApp, {
                 stopApp(returnValue = invisible())
             })
-            observeEvent(input$bookmark_before_startDE, {
-                output$bookmark_saved_output <- renderText({ 
-                    "Save Successful! URL updated."
-                })
-            })
+            # observeEvent(input$bookmark_before_startDE, {
+            #     output$bookmark_saved_output <- renderText({ 
+            #         "Save Successful! URL updated."
+            #     })
+            # })
             output$programtitle <- renderUI({
                 togglePanels(0, c(0), session)
                 getProgramTitle(session)
@@ -715,9 +715,9 @@ deServer <- function(input, output, session) {
                 hideObj(c("goQCplots", "goDE"))
                 showObj(c("add_btn","rm_btn","startDE", "fittype"))
                 query <- parseQueryString(session$clientData$url_search)
-                if(!is.null(query$jsonobject)){
-                    session$doBookmark()
-                }
+                # if(!is.null(query$jsonobject)){
+                #     session$doBookmark()
+                # }
             })
             observeEvent(input$resetsamples, {
                 buttonValues$startDE <- FALSE
@@ -764,9 +764,9 @@ deServer <- function(input, output, session) {
                 }
                 dc
             })
-            observeEvent(input$bookmark_before_startDE, {
-                session$doBookmark()
-            })
+            # observeEvent(input$bookmark_before_startDE, {
+            #     session$doBookmark()
+            # })
             
             observeEvent(input$save_state, {
                 shinyjs::hide("save_state")
