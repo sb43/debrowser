@@ -128,7 +128,7 @@ enableBookmarking("server")
                     uiOutput("downloadSection")),
                 conditionalPanel(condition = "(output.dataready)",
                     uiOutput('cutoffSelection')),
-                    debrowser::bookmarkUI("bm")
+                    bookmarkUI("bm")
             )
         ),
     shinydashboard::dashboardBody(
