@@ -1,42 +1,3 @@
-#' getDataPrepPanel
-#'
-#' Create and show the Condition selection screen to the user
-#' within the DEBrowser.
-#'
-#' @param flag, flag to show the element in the ui
-#' @note \code{getDataPrepPanel}
-#' @return returns the left menu according to the selected tab;
-#' @examples
-#'     x <- getDataPrepPanel()
-#' @export
-#'
-getDataPrepPanel <- function(flag = FALSE){
-    dataPrepPanel <- NULL
-    if(flag)
-        dataPrepPanel <- list(
-        conditionalPanel(condition = "input.demo || output.dataready",
-        wellPanel(
-        uiOutput("sampleSelector"),
-        actionButton("goDE", "Go to DE Analysis!"),
-        actionButton("goQCplots", "Go to QC plots!"),
-        actionButton("resetsamples", "Reset!"),
-        conditionalPanel(condition = "(input.goDE) || (output.restore_DE > 0)",
-            helpText( "Please add new comparisons for DE analysis!" ),
-            uiOutput("conditionSelector"),
-            column(12,actionButton("add_btn", "Add New Comparison"),
-            actionButton("rm_btn", "Remove"),
-            getHelpButton("method", "http://debrowser.readthedocs.io/en/develop/deseq/deseq.html")),
-            br(),
-            actionButton("startDE", "Submit!"),
-            br(),
-           tags$style(type='text/css', "#startDE { margin-top: 10px;}")  ))),
-        conditionalPanel(condition = "!input.demo &&
-            !output.fileUploaded",
-            uiOutput("startup"))
-    )
-    return(dataPrepPanel)
-}
-
 #' getLeftMenu
 #'
 #' Generates the left menu for for plots within the DEBrowser.
@@ -52,34 +13,24 @@ getLeftMenu <- function(input = NULL) {
 if (is.null(input)) return(NULL)
    leftMenu <- list(
         conditionalPanel( (condition <- "input.methodtabs=='panel1'"),
-                          actionButton("startPlots", "Submit!"),
-        shinydashboard::menuItem(" Plot Type", icon = icon("star-o"), startExpanded=TRUE,
-        radioButtons("mainplot", paste("Main Plots:", sep = ""),
-            c(Scatter = "scatter", VolcanoPlot = "volcano",
-            MAPlot = "maplot"))
-                ),
             getMainPlotsLeftMenu()),
         conditionalPanel( (condition <- "input.methodtabs=='panel2'"),
-                          
-            conditionalPanel( condition <- "input.qcplot=='heatmap'",
-                actionButton("startQCPlot", "Submit!")),
-                          
-        shinydashboard::menuItem(" Plot Type", icon = icon("star-o"), startExpanded = TRUE,
+        shinydashboard::menuItem(" Plot Type", startExpanded = TRUE,
         wellPanel(radioButtons("qcplot",
                 paste("QC Plots:", sep = ""),
                 c(PCA = "pca", All2All = "all2all", Heatmap = "heatmap", IQR = "IQR",
                   Density = "Density")))),
             getQCLeftMenu(input)),
         conditionalPanel( (condition <- "input.methodtabs=='panel3'"),
-            actionButton("startGO", "Submit!"),
-        shinydashboard::menuItem(" Plot Type", icon = icon("star-o"), startExpanded = TRUE,
+            actionButton("startGO", "Submit"),
+        shinydashboard::menuItem(" Plot Type", startExpanded = TRUE,
             wellPanel(radioButtons("goplot", paste("Go Plots:", sep = ""),
                 c(enrichGO = "enrichGO", enrichKEGG = "enrichKEGG",
                 Disease = "disease", compareClusters = "compare")))),
                 getGOLeftMenu()
                 ),
         conditionalPanel( (condition <- "input.methodtabs=='panel4'"),
-        shinydashboard::menuItem(" Select Columns", icon = icon("star-o"), startExpanded=TRUE,
+        shinydashboard::menuItem(" Select Columns", startExpanded=TRUE,
              uiOutput("getColumnsForTables")
         ))
     )
@@ -97,10 +48,12 @@ if (is.null(input)) return(NULL)
 #'
 getMainPlotsLeftMenu <- function() {
     mainPlotsLeftMenu <- list(
-        shinydashboard::menuItem(" Background Selection", icon = icon("star-o"),
-        sliderInput("backperc", "Background Data(%):",
-            min=10, max=100, value=10, sep = "",
-            animate = FALSE))
+        plotSizeMarginsUI("main",  w=600, h=400),
+        shinydashboard::menuItem("Heatmap Options", startExpanded=FALSE,
+        heatmapControlsUI("heatmap"),
+        plotSizeMarginsUI("heatmap", w=600, h=360)),
+        plotSizeMarginsUI("barmain", w=600,h=400, t=30),
+        plotSizeMarginsUI("boxmain", w=600, h=400, t=30)
         )
     return(mainPlotsLeftMenu)
 }
@@ -117,7 +70,7 @@ getMainPlotsLeftMenu <- function() {
 #'
 getGOLeftMenu <- function() {
     list(
-    shinydashboard::menuItem(" Go Term Options", icon = icon("star-o"), startExpanded=TRUE, 
+    shinydashboard::menuItem(" Go Term Options", startExpanded=TRUE, 
                                        
     tags$head(tags$script(HTML(logSliderJScode("gopvalue")))),
     sliderInput("gopvalue", "p.adjust cut off",
@@ -125,8 +78,10 @@ getGOLeftMenu <- function() {
         animate = FALSE),
     textInput("pvaluetxt", "or p.adjust", value = "0.01" ),
         getOrganismBox(),
-        #actionButton("KeggPathway", "KeggPathway", style="text-align:center;color: #0000ff; font-size:120%"),
-        conditionalPanel( ( condition <- "(input.goplot=='enrichGO' ||
+            actionButton("GeneTableButton", "DE Genes"),
+            conditionalPanel( (condition <- "input.goplot=='enrichKEGG'"),
+                      actionButton("KeggPathway", "KeggPathway")),
+            conditionalPanel( ( condition <- "(input.goplot=='enrichGO' ||
             (input.goplot=='compare' && input.gofunc!='enrichDO' &&
             input.gofunc!='enrichKEGG'))" ),
             selectInput("ontology", "Choose an ontology:",
@@ -145,41 +100,6 @@ getGOLeftMenu <- function() {
 
 }
 
-#' getPCselection
-#'
-#' Generates the PC selection number to be used within DEBrowser.
-#'
-#' @param num, PC selection number
-#' @param xy, x or y coordinate
-#' @note \code{getPCselection}
-#' @return PC selection for PCA analysis
-#' @examples
-#'     x <- getPCselection()
-#' @export
-#'
-getPCselection <- function(num = 1, xy = "x" ) {
-    numericInput(paste0("pcsel", xy),
-        paste0("PC selection[", xy, "]"), num, 1, 6)
-}
-
-#' getColorShapeSelection
-#'
-#' Generates the fill and shape selection boxes for PCA plots.
-#' metadata file has to be loaded in this case
-#'
-#' @param input, input values
-#' @return Color and shape selection boxes
-#' @examples
-#'     x <- getColorShapeSelection()
-#' @export
-#'
-getColorShapeSelection <- function(input = NULL) {
-    if (is.null(input)) return (NULL)
-        list(selectBatchEffect(input, "color_pca", "Color field"),
-           selectBatchEffect(input, "shape_pca", "Shape field"))
-}
-
-
 #' getQCLeftMenu
 #'
 #' Generates the left menu to be used for QC plots within the
@@ -195,72 +115,24 @@ getColorShapeSelection <- function(input = NULL) {
 getQCLeftMenu <- function( input = NULL) {
     if (is.null(input)) return(NULL)
         list(
-        shinydashboard::menuItem(" Select Columns", icon = icon("star-o"), startExpanded=TRUE, 
+        shinydashboard::menuItem(" Select Columns", startExpanded=TRUE, 
             uiOutput("columnSelForQC")),
-            shinydashboard::menuItem(" QC Options", icon = icon("star-o"), startExpanded=FALSE,
+            shinydashboard::menuItem(" QC Options", startExpanded=FALSE,
             conditionalPanel( (condition <- "input.qcplot=='heatmap'"),
-                 checkboxInput("interactive", "Interactive", value = FALSE)),
-            conditionalPanel( (condition <- "(input.qcplot=='all2all' ||
-            input.qcplot=='heatmap') && !(input.interactive)"),
-            sliderInput("width", "width",
-            min = 100, max = 2000, step = 10, value = 700),
-            sliderInput("height", "height",
-            min = 100, max = 2000, step = 10, value = 500)),
-            conditionalPanel( (condition <- "input.qcplot=='all2all'"),
-                sliderInput("cex", "corr font size",
-                min = 0.1, max = 10,
-                step = 0.1, value = 2)),
-            conditionalPanel( (condition <- "input.qcplot=='heatmap'"),
-                selectInput("clustering_method", "Clustering Method:",
-                choices <- c("complete", "ward.D2", "single", "average",
-                "mcquitty", "median", "centroid")),
-                selectInput("distance_method", "Distance Method:",
-                choices <- c("cor", "euclidean", "maximum", "manhattan",
-                "canberra", "binary", "minkowski")),
-                getHelpButton("method",
-                              "http://debrowser.readthedocs.io/en/develop/quickstart/quickstart.html#heat-maps")
+                plotSizeMarginsUI("heatmapQC"),
+                heatmapControlsUI("heatmapQC")),
+            conditionalPanel( condition <- "(input.qcplot=='all2all')",
+                plotSizeMarginsUI("all2all"),
+                all2allControlsUI("all2all")
             ),
+        getHelpButton("method",
+                              "http://debrowser.readthedocs.io/en/develop/quickstart/quickstart.html#heat-maps"),
         conditionalPanel( (condition <- "input.qcplot=='pca'"),
-            getPCselection(1, "x"),
-            getPCselection(2, "y"),
-            textInput("pctile", "Top %", value = "0.05" ),
-            getTextOnOff(),
-            getLegendSelect(),
-            getColorShapeSelection(input)
-        ),
-        downloadButton("downloadPlot", "Download Plot"))
+            shinydashboard::menuItem("PCA Options",
+            pcaPlotControlsUI("qcpca")),
+            plotSizeMarginsUI("qcpca", w=600, h=400, t=50, b=50, l=60, r=0)
+        ))
     )
-}
-
-#' logSliderJScode
-#'
-#' Generates the log based slider to be used by the user within
-#' DEBrowser.
-#'
-#' @param slidername, id of the slider
-#' @note \code{logSliderJScode}
-#' @return returns the slider values in log10 scale
-#' @examples
-#'     x <- logSliderJScode()
-#' @export
-#'
-logSliderJScode <- function(slidername = NULL){
-    if (is.null(slidername)) return (NULL)
-    paste0("$(function() {
-    setTimeout(function(){
-    var vals = [0];
-    var powStart = 4;
-    var powStop = 0;
-    for (i = powStart; i >= powStop; i--) {
-    var val = Math.pow(10, -i)/2;
-    val = parseFloat(val.toFixed(8));
-    vals.push(val);
-    var val = Math.pow(10, -i);
-    val = parseFloat(val.toFixed(8));
-    vals.push(val);
-    }
-    $('#", slidername,"').data('ionRangeSlider').update({'values':vals})
-    }, 4)})")
 }
 
 #' getCutOffSelection
@@ -275,61 +147,49 @@ logSliderJScode <- function(slidername = NULL){
 #' @export
 #'
 getCutOffSelection <- function(nc = 1){
-    compselect <- getCompSelection(nc)
+    compselect <- getCompSelection("compselect", nc)
     list( conditionalPanel( (condition <- "input.dataset!='most-varied' &&
         input.methodtabs!='panel0'"),
         tags$head(tags$script(HTML(logSliderJScode("padj")))),
-        shinydashboard::menuItem(" Filter", icon = icon("star-o"),
-            #h4("Filter"),
-            sliderInput("padj", "padj value cut off",
-                min=0, max=10, value=6, sep = "",
-                animate = FALSE),
-            textInput("padjtxt", "or padj", value = "0.01" ),
-            sliderInput("foldChange", "Fold Change cut off",
-                1, 10, 2, step = 0.1),
-            textInput("foldChangetxt", "or foldChange", value = "2" ),
-            compselect
+        shinydashboard::menuItem(" Filter",
+        #h4("Filter"),
+        sliderInput("padj", "padj value cut off",
+        min=0, max=10, value=6, sep = "",
+        animate = FALSE),
+        textInput("padjtxt", "or padj", value = "0.01" ),
+        sliderInput("foldChange", "Fold Change cut off",
+            1, 10, 2, step = 0.1),
+        textInput("foldChangetxt", "or foldChange", value = "2" ),
+        compselect
         )
     ) )
 }
 
-#' getInitialMenu
+#' getMainPanel
 #'
-#' Displays the initial menu within DEBrowser.
+#' main panel for volcano, scatter and maplot.  
+#' Barplot and box plots are in this page as well.
 #'
-#' @param input, input from user
-#' @param output, output to user
-#' @param session, session info
-#' @note \code{getInitialMenu}
-#' @return returns the initial menu
+#' @note \code{getMainPanel}
+#' @return the panel for main plots;
+#'
 #' @examples
-#'     x <- getInitialMenu()
+#'     x <- getMainPanel()
+#'
 #' @export
 #'
-getInitialMenu <- function(input = NULL, output = NULL, session = NULL) {
-    if (is.null(input)) return (NULL)
-    initialMenu <- NULL
-    if (is.null(parseQueryString(session$clientData$url_search)$jsonobject))
-    {
-        initialMenu <- list(
-            conditionalPanel(condition = "!input.demo &&
-                !output.dataready",
-                actionLink("demo", "Load Demo!"),
-                #getHelpButton("method", "http://debrowser.readthedocs.io/en/develop/quickstart/quickstart.html"),
-                fileInput("file1", "Choose TSV File",
-                    accept = c("text/tsv",
-                        "text/comma-separated-values,text/plain",
-                        ".tsv")),
-                fileInput("file2", "Choose Meta Data File (Optional)",
-                          accept = c("text/tsv",
-                                     "text/comma-separated-values,text/plain",
-                        ".tsv"))
-                ,
-                uiOutput("batchEffect"),
-                actionButton("gotoanalysis", "Go to Analysis!"))
-            )
-    }
-    return(initialMenu)
+getMainPanel <- function() {
+    list(
+        fluidRow(column(6,
+            getMainPlotUI("main")
+        ),
+        column(6,
+            getHeatmapUI("heatmap")
+        )),
+        fluidRow(column(6,
+            getBarMainPlotUI("barmain")),
+        column(6,
+            getBoxMainPlotUI("boxmain"))))
 }
 
 #' getProgramTitle
@@ -442,7 +302,7 @@ getLogo <- function(){
 #'
 getStartupMsg <- function() {
 a <- list( column( 12, 
-helpText("Please select a file or load the demo data!"),
+helpText("Please select a file or load the demo data."),
 helpText( "For more information;" ),
 helpText(   a("Quick Start Guide",
 href = "http://debrowser.readthedocs.org",
@@ -464,7 +324,7 @@ getHelpButton("method", "http://debrowser.readthedocs.org")) ))
 getAfterLoadMsg <- function() {
 a <- list( column( 12, wellPanel(
 helpText( "Please choose the appropriate conditions for DESeq analysis
-            and press 'Run DESeq!' button in the left menu" ),
+            and press 'Run DESeq' button in the left menu" ),
 helpText( "To be able to select conditions please click
             'Condition1' or 'Condition2' boxes.
             You can also use delete button to remove the
@@ -485,8 +345,8 @@ helpText( "To be able to select conditions please click
 getStartPlotsMsg <- function() {
 a <- list( conditionalPanel(condition <- "!input.startPlots",
     column( 12, 
-    helpText( "Please choose the appropriate parameters and
-            press submit button to draw the plots!" ),
+    helpText( "Please choose the appropriate parameters to discover
+               more in DE Results" ),
     getHelpButton("method", "http://debrowser.readthedocs.io/en/develop/quickstart/quickstart.html#the-main-plots"))))
 }
 
@@ -550,100 +410,6 @@ togglePanels <- function(num = NULL, nums = NULL, session = NULL){
     if(num)
         updateTabsetPanel(session, "methodtabs",
             selected = paste0("panel", num))
-}
-
-#' getCompSelection
-#'
-#' Gathers the user selected comparison set to be used within the
-#' DEBrowser.
-#'
-#' @param count, comparison count
-#' @note \code{getCompSelection}
-#' @examples
-#'     x <- getCompSelection(count = 2)
-#' @export
-#'
-getCompSelection <- function(count = NULL) {
-  a <- NULL
-  if (count>1){
-        a <- list(selectInput("compselect",
-        label = "Choose a comparison:",
-        choices = c(1:count) ))
-  }
-  a
-}
-
-#' selectBatchEffect
-#'
-#' Batch effect column selection
-#'
-#' @param input, input values
-#' @param selectname, name of the select box
-#' @param label, label of the select box
-#' @note \code{selectBatchEffect}
-#' @examples
-#'     x <- selectBatchEffect()
-#' @export
-#'
-selectBatchEffect <- function(input = NULL,
-    selectname = "batchselect",
-    label = "Batch effect correction column") {
-    if (is.null(input$file2)) return (NULL)
-
-     metadata <- readMetaData(input)
-     lst.choices <- as.list(c("None", colnames(metadata)))
-     selectInput(selectname, label = label,
-            choices = lst.choices,
-            selected = 1)
-}
-
-#' readMetaData
-#'
-#' read metadata file
-#'
-#' @param input, input values
-#' @note \code{readMetaData}
-#' @examples
-#'     x <- readMetaData()
-#' @export
-#'
-readMetaData <- function(input = NULL) {
-if (is.null(input$file2)) return (NULL)
-
-metadata <- read.table(input$file2$datapath, sep = "\t",
-                       header = TRUE, row.names = 1)
-}
-
-#' getTextOnOff
-#'
-#' text on PCA plot on and off
-#'
-#' @note \code{getTextOnOff}
-#' @examples
-#'     x <- getTextOnOff()
-#' @export
-#'
-getTextOnOff <- function() {
-    lst.choices <- as.list(c("On", "Off"))
-    selectInput("textonoff", label = "Text On/Off",
-                choices = lst.choices,
-                selected = "Off")
-}
-
-#' getLegendSelect
-#'
-#' select legend
-#'
-#' @note \code{getLegendSelect}
-#' @examples
-#'     x <- getLegendSelect()
-#' @export
-#'
-getLegendSelect <- function() {
-    lst.choices <- as.list(c("color", "shape"))
-    selectInput("legendSelect", label = "Select legend",
-                choices = lst.choices,
-                selected = "color")
 }
 
 
@@ -742,74 +508,6 @@ hideObj <- function(btns = NULL) {
         shinyjs::hide(btns[btn])
 }
 
-#' Buttons including Action Buttons and Event Buttons
-#'
-#' Creates an action button whose value is initially zero, and increments by one
-#' each time it is pressed.
-#'
-#' @param inputId Specifies the input slot that will be used to access the
-#'   value.
-#' @param label The contents of the button--usually a text label, but you could
-#'   also use any other HTML, like an image.
-#' @param styleclass The Bootstrap styling class of the button--options are
-#'   primary, info, success, warning, danger, inverse, link or blank
-#' @param size The size of the button--options are large, small, mini
-#' @param block Whehter the button should fill the block
-#' @param icon Display an icon for the button
-#' @param css.class Any additional CSS class one wishes to add to the action
-#'   button
-#' @param ... Other argument to feed into shiny::actionButton
-#'
-#' @export
-#'
-#' @examples
-#'     actionButton("goDE", "Go to DE Analysis!")
-#'
-actionButton <- function(inputId, label, styleclass = "", size = "",
-                         block = FALSE, icon = NULL, css.class = "", ...) {
-    if (styleclass %in% c("primary", "info", "success", "warning",
-                          "danger", "inverse", "link")) {
-        btn.css.class <- paste("btn", styleclass, sep = "-")
-    } else btn.css.class = ""
-
-    if (size %in% c("large", "small", "mini")) {
-        btn.size.class <- paste("btn", size, sep = "-")
-    } else btn.size.class = ""
-
-    if (block) {
-        btn.block = "btn-block"
-    } else btn.block = ""
-
-    if (!is.null(icon)) {
-        icon.code <- HTML(paste0("<i class='fa fa-", icon, "'></i>"))
-    } else icon.code = ""
-    tags$button(id = inputId, type = "button", class = paste("btn action-button",
-        btn.css.class, btn.size.class, btn.block, css.class, collapse = " "),
-        icon.code, label, ...)
-}
-
-#' getHelpButton
-#' prepares a helpbutton for to go to a specific site in the documentation
-#'
-#' @param name, name that are going to come after info
-#' @param link, link of the help
-#' @return the info button
-#'
-#' @examples
-#'     x<- getHelpButton()
-#'
-#' @export
-getHelpButton<-function(name = NULL, link = NULL){
-if (is.null(name)) return(NULL)
-btn <- actionButton(paste0("info_",name),"",icon="info",
-                  styleclass="info", size="small")
-
-a <- HTML(paste0("<a id=\"info_",name,"\" href=\"",link,"\" target=\"_blank\">",
-                 btn,"</a>"))
-
-}
-
-
 #' getKEGGModal
 #' prepares a helpbutton for to go to a specific site in the documentation
 #'
@@ -820,6 +518,42 @@ a <- HTML(paste0("<a id=\"info_",name,"\" href=\"",link,"\" target=\"_blank\">",
 #'
 #' @export
 getKEGGModal<-function(){
-    a <- bsModal("modalExample", "KEGG Pathway", "KeggPathway", size = "large",
+    bsModal("modalExample", "KEGG Pathway", "KeggPathway", size = "large",
     div(style = "display:block;overflow-y:auto; overflow-x:auto;",imageOutput("KEGGPlot")))
+}
+
+#' getDownloadSection
+#'
+#' download section button and dataset selection box in the
+#' menu for user to download selected data.
+#'
+#' @param choices, main vs. QC section
+#'
+#' @note \code{getDownloadSection}
+#' @return the panel for download section in the menu;
+#'
+#' @examples
+#'     x<- getDownloadSection()
+#'
+#' @export
+#'
+getDownloadSection <- function(choices=NULL) {
+    list(conditionalPanel( (condition = "input.methodtabs!='panel0'"),
+        shinydashboard::menuItem(" Select Plot Options",                
+        selectInput("dataset", "Choose a dataset:",
+        choices = choices),
+        conditionalPanel( (condition = "input.dataset=='selected'"),
+        selectInput("selectedplot", "The plot used in selection:",
+        choices = c("Main Plot", "Main Heatmap", "QC Heatmap"))),
+        selectInput("norm_method", "Normalization Method:",
+        c("none", "MRN", "TMM", "RLE", "upperquartile")),
+        downloadButton("downloadData", "Download Data"),
+        conditionalPanel(condition = "input.dataset=='most-varied'",
+        textInput("topn", "top-n", value = "500" ), 
+        textInput("mincount", "total min count", value = "10" )),
+        textareaInput("genesetarea","Search", 
+        "", rows = 5, cols = 35),
+        helpText("Regular expressions can be used\n
+        Ex: ^Al => Al.., Al$ => ...al")
+    )))
 }

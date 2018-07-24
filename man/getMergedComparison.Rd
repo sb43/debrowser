@@ -4,11 +4,9 @@
 \alias{getMergedComparison}
 \title{getMergedComparison}
 \usage{
-getMergedComparison(Dataset = NULL, dc = NULL, nc = NULL, input = NULL)
+getMergedComparison(dc = NULL, nc = NULL, input = NULL)
 }
 \arguments{
-\item{Dataset, }{whole data}
-
 \item{dc, }{data container}
 
 \item{nc, }{the number of comparisons}

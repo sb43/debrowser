@@ -22,106 +22,6 @@ getSamples <- function (cnames = NULL, index = 1) {
     m
 }
 
-#' prepDataContainer
-#'
-#' Prepares the data container that stores values used within DESeq.
-#'
-#' @param data, loaded dataset
-#' @param counter, the number of comparisons
-#' @param input, input parameters
-#' @return data
-#' @export
-#'
-#' @examples
-#'     x <- prepDataContainer()
-#'
-prepDataContainer <- function(data = NULL, counter=NULL, 
-    input = NULL) {
-    if (is.null(data)) return(NULL)
-
-    inputconds <- reactiveValues(demethod_params = list(), conds = list())
-    inputconds <- eventReactive(input$startDE, {
-    m <- c()
-
-    m$conds <- list()
-    for (cnt in seq(1:(2*counter))){
-        m$conds[cnt] <- list(isolate(input[[paste0("condition",cnt)]]))
-    }
-    #Get parameters for each method
-    m$demethod_params <- NULL
-    for (cnt in seq(1:counter)){
-        if (isolate(input[[paste0("demethod",cnt)]]) == "DESeq2"){
-            m$demethod_params[cnt] <- paste(
-                isolate(input[[paste0("demethod",cnt)]]),
-                isolate(input[[paste0("fitType",cnt)]]),
-                isolate(input[[paste0("betaPrior",cnt)]]),
-                isolate(input[[paste0("testType",cnt)]]),
-                isolate(input[[paste0("rowsumfilter",cnt)]]), sep=",")
-        }
-        else if (isolate(input[[paste0("demethod",cnt)]]) == "EdgeR"){
-            m$demethod_params[cnt]<- paste(
-                isolate(input[[paste0("demethod",cnt)]]),
-                isolate(input[[paste0("edgeR_normfact",cnt)]]),
-                isolate(input[[paste0("dispersion",cnt)]]),
-                isolate(input[[paste0("edgeR_testType",cnt)]]),
-                isolate(input[[paste0("rowsumfilter",cnt)]]), sep=",")
-        }
-        else if (isolate(input[[paste0("demethod",cnt)]]) == "Limma"){
-            m$demethod_params[cnt] <- paste(
-                isolate(input[[paste0("demethod",cnt)]]),
-                isolate(input[[paste0("limma_normfact",cnt)]]),
-                isolate(input[[paste0("limma_fitType",cnt)]]),
-                isolate(input[[paste0("normBetween",cnt)]]),
-                isolate(input[[paste0("rowsumfilter",cnt)]]), sep=",")
-        }
-    }
-    m
-    })
-    if (is.null(isolate(input$condition1))) return(NULL)
-    dclist<-list()
-    for (i in seq(1:counter))
-    {
-        conds <- c(rep(paste0("Cond", 2*i-1), 
-        length(inputconds()$conds[[2*i-1]])), 
-        rep(paste0("Cond", 2*i), length(inputconds()$conds[[2*i]])))
-        cols <- c(paste(inputconds()$conds[[2*i-1]]), 
-        paste(inputconds()$conds[[2*i]]))
-        de_res <- prepDEOutput(data, cols, conds, inputconds(), i)
-        initd <- addDataCols(data, de_res, cols, inputconds(), i, input)
-        m <- list(conds = conds, cols = cols, init_data=initd, 
-            demethod_params = inputconds()$demethod_params[i])
-        dclist[[i]] <- m
-    }
-    return(dclist)
-}
-
-#' getMean
-#'
-#' Gathers the mean for selected condition.
-#'
-#' @param norm_data, loaded dataset
-#' @param de_res, de results
-#' @param inputconds, input parameters
-#' @param colnum, colnum
-#' @return data
-#' @export
-#'
-#' @examples
-#'     x <- getMean()
-#'
-getMean<-function(norm_data = NULL, de_res = NULL, 
-    inputconds = NULL, colnum = NULL) {
-    if (is.null(norm_data)) return (NULL)
-    mean_cond<-NULL
-    if (length(inputconds$conds[[colnum]]) > 1)
-        mean_cond <-list(rowMeans( norm_data[ rownames( de_res ),
-            paste( inputconds$conds[[colnum]] )] ))
-    else
-        mean_cond <-list(norm_data[ rownames( de_res ),
-            paste( inputconds$conds[[colnum]] )])
-    mean_cond
-}
-
 #' setFilterParams
 #'
 #' It sets the filter parameters 
@@ -187,47 +87,6 @@ prepDEOutput <- function(data = NULL, cols = NULL,
     de_res <- data.frame(de_res)
 }
 
-#' addDataCols
-#'
-#' add aditional data columns to de results
-#'
-#' @param data, loaded dataset
-#' @param de_res, de results
-#' @param cols, columns
-#' @param inputconds, inputconds
-#' @param i, selected comparison number
-#' @param input, input
-#' @return data
-#' @export
-#'
-#' @examples
-#'     x <- addDataCols()
-#'
-addDataCols <- function(data = NULL, de_res = NULL, cols = NULL, 
-    inputconds=NULL, i=NULL, input = NULL) {
-    if (is.null(data) || is.null(de_res)) return (NULL)
-    norm_data <- getNormalizedMatrix(data[, cols], input$norm_method)
-    mean_cond <- c()
-    mean_cond_first <- getMean(norm_data, de_res,
-        inputconds, 2*i-1)
-    mean_cond_second <- getMean(norm_data, de_res, 
-        inputconds, 2*i)
-    m <- cbind(rownames(de_res), norm_data[rownames(de_res), cols],
-       log10(unlist(mean_cond_first) + 0.1),
-       log10(unlist(mean_cond_second) + 0.1),
-       de_res[rownames(de_res),
-           c("padj", "log2FoldChange", "pvalue")], 
-       2 ^ de_res[rownames(de_res),
-          "log2FoldChange"],
-       -1 * log10(de_res[rownames(de_res), "padj"]))
-    colnames(m) <- c("ID", cols, "x", "y",
-                     "padj", "log2FoldChange", "pvalue",
-                     "foldChange", "log10padj")
-    m <- as.data.frame(m)
-    m$padj[is.na(m[paste0("padj")])] <- 1
-    m$pvalue[is.na(m[paste0("pvalue")])] <- 1
-    m
-}
 
 #' applyFilters
 #'
@@ -278,27 +137,24 @@ applyFilters <- function(filt_data = NULL, cols = NULL, conds=NULL,
     m$Size <- character(nrow(m))
     m[, "Size"] <- "40"
     m$Legend <- "NS"
-    if (input$dataset == "up" || input$dataset == "up+down") 
+    if (input$dataset == "up" || input$dataset == "up+down" || input$dataset == "selected") 
         m$Legend[m$foldChange >= foldChange_cutoff &
                m$padj <= padj_cutoff] <- "Up"
-    if (input$dataset == "down" || input$dataset == "up+down")
+    if (input$dataset == "down" || input$dataset == "up+down" || input$dataset == "selected")
         m$Legend[m$foldChange <= (1 / foldChange_cutoff) &
                m$padj <= padj_cutoff] <- "Down"
     if (input$dataset == "most-varied" && !is.null(cols)) {
         most_varied <- getMostVariedList(m, cols, input)
         m[rownames(most_varied), c("Legend")] <- "MV"
     }
-    if (input$dataset == "selected" &&
-        !is.null(input$genenames)) {
-        selectedGenes <- unlist(strsplit(input$genenames, ","))
-        m[selectedGenes, c("Legend")] <- "GS"
-    }
     if (!is.null(input$genesetarea) && input$genesetarea != ""
         && input$methodtabs == "panel1") {
         genelist <- getGeneSetData(m, c(input$genesetarea))
         m[rownames(genelist), "Legend"] <- "GS"
         m[rownames(genelist), "Size"] <- "100"
-        m <- m[rev(order(m$Legend)),]
+        tmp <- m["Legend"=="GS", ]
+        tmp1 <- m["Legend"!="GS", ]
+        m <- rbind(tmp1, tmp)
     }
     m
 }
@@ -310,7 +166,6 @@ applyFilters <- function(filt_data = NULL, cols = NULL, conds=NULL,
 #' @param getSelected, selected data
 #' @param getMostVaried, most varied data
 #' @param mergedComparison, merged comparison data
-#' @param explainedData, pca set
 #' @param input, input parameters
 #' @return data
 #' @export
@@ -319,7 +174,7 @@ applyFilters <- function(filt_data = NULL, cols = NULL, conds=NULL,
 #'     x <- getSelectedDatasetInput()
 #'
 getSelectedDatasetInput<-function(rdata = NULL, getSelected = NULL, 
-    getMostVaried = NULL, mergedComparison = NULL, explainedData = NULL, 
+    getMostVaried = NULL, mergedComparison = NULL,
     input = NULL) {
     if (is.null(rdata)) return (NULL)
     m <- rdata
@@ -331,7 +186,7 @@ getSelectedDatasetInput<-function(rdata = NULL, getSelected = NULL,
         m <- getUpDown(rdata)
     } else if (input$dataset == "alldetected") {
         m <- rdata
-    } else if (input$dataset == "selected") {
+    } else if (input$dataset == "selected" && !is.null(input$selectedplot)) {
         m <- getSelected
     } else if (input$dataset == "most-varied") {
         m <- getMostVaried
@@ -339,37 +194,10 @@ getSelectedDatasetInput<-function(rdata = NULL, getSelected = NULL,
         m <- mergedComparison
     } else if (input$dataset == "searched") {
         m <- searched
-    } else if (input$dataset == "pcaset") {
-       m <- explainedData
     }
     m
 }
 
-#' prepDataForQC
-#'
-#' Prepares selected data for QC plots.
-#'
-#' @param dataset, loaded dataset
-#' @param input, input
-#' @return data
-#' @export
-#'
-#' @examples
-#'     x <- prepDataForQC()
-#'
-prepDataForQC<-function(dataset = NULL, input = NULL){
-    if (is.null(dataset)) return (NULL)
-    columns <-colnames(dataset)
-    dataset <- data.frame(dataset[,columns])
-    dataset[, columns] <- apply(dataset[, columns], 2,
-        function(x) as.integer(x))
-    dataset1 <- rowSums(dataset[,1:ncol(dataset)])
-    filtd <- data.frame(subset(dataset, 
-        rowSums(dataset[,1:ncol(dataset)]) > 10))
-    norm_data <- getNormalizedMatrix(filtd, 
-        input$norm_method)
-    return(norm_data)
-}
 
 #' getMostVariedList
 #'
@@ -441,7 +269,7 @@ getGeneSetData <- function(data = NULL, geneset = NULL) {
     
     geneset1 <- unique(unlist(strsplit(geneset, split="[:;, \t\n\t]")))
     geneset2 <- geneset1[geneset1 != ""]
-    if(length(geneset2) > 20)
+    if(length(geneset2) > 3)
         geneset2 <- paste0("^", geneset2, "$")
     
     dat1 <- as.data.frame(data)
@@ -553,7 +381,7 @@ getDataForTables <- function(input = NULL, init_data = NULL,
             dat <- getSearchData(getDown(filt_data), input)
     }
     else if (input$dataset == "selected"){
-        dat <- getSearchData(selected$data$getSelected(), input)
+        dat <- getSearchData(selected, input)
     }
     else if (input$dataset == "pcaset"){
         dat <- getSearchData( explainedData, input )
@@ -570,30 +398,11 @@ getDataForTables <- function(input = NULL, init_data = NULL,
     list(dat, pastr, fcstr)
 }
 
-#' addID
-#'
-#' Adds an id to the data frame being used.
-#'
-#' @param data, loaded dataset
-#' @return data
-#' @export
-#'
-#' @examples
-#'     x <- addID()
-#'
-addID <- function(data = NULL) {
-    if (is.null(data)) return (NULL)
-    dat1 <- data.frame(data)
-    dat1 <- cbind(rownames(data), data)
-    colnames(dat1) <- c("ID", colnames(data))
-    dat1
-}
 
 #' getMergedComparison
 #'
 #' Gathers the merged comparison data to be used within the
 #' DEBrowser.
-#' @param Dataset, whole data
 #' @param dc, data container
 #' @param nc, the number of comparisons
 #' @param input, input params
@@ -603,27 +412,34 @@ addID <- function(data = NULL) {
 #' @examples
 #'     x <- getMergedComparison()
 #'
-getMergedComparison <- function(Dataset = NULL, dc = NULL, nc = NULL, input = NULL){
-    merged <- c()
+getMergedComparison <- function(dc = NULL, nc = NULL, input = NULL){
     if (is.null(dc)) return (NULL)
-    merged <- Dataset[,input$samples]
-
+    mergeresults <- c()
+    mergedata <- c()
     for ( ni in seq(1:nc)) {
         tmp <- dc[[ni]]$init_data[,c("foldChange", "padj")]
-        
+
+        samples <- dc[[ni]]$cols
         tt <- paste0("C", (2*ni-1),".vs.C",(2*ni))
         fctt <- paste0("foldChange.", tt)
         patt <-  paste0("padj.", tt)
         colnames(tmp) <- c(fctt,  patt)
-
-        merged[,fctt] <- character(nrow(merged))
-        merged[,patt] <- character(nrow(merged))
-        merged[rownames(tmp),c(fctt, patt)] <- tmp[rownames(tmp),c(fctt, patt)]
-        merged[rownames(tmp),patt] <- tmp[rownames(tmp),patt]
-        merged[merged[,fctt]=="",fctt] <- 1 
-        merged[merged[,patt]=="",patt] <- 1 
+        if(ni == 1){
+            mergeresults <- tmp
+            mergedata <- dc[[ni]]$init_data[,samples]
+        }
+        else{
+            mergeresults[,fctt] <- character(nrow(tmp))
+            mergeresults[,patt] <- character(nrow(tmp))
+            mergeresults[rownames(tmp),c(fctt, patt)] <- tmp[,c(fctt, patt)]
+            mergeresults[rownames(tmp),patt] <- tmp[,patt]
+            mergeresults[is.na(mergeresults[,fctt]),fctt] <- 1 
+            mergeresults[is.na(mergeresults[,patt]),patt] <- 1 
+            remaining_samples <- dc[[ni]]$cols[!(samples %in% colnames(mergedata))]
+            mergedata <- cbind(mergedata,  dc[[ni]]$init_data[,remaining_samples])
+        }
     }
-    merged
+    cbind(mergedata, mergeresults)
 }
 
 #' applyFiltersToMergedComparison
