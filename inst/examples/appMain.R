@@ -1,6 +1,5 @@
 library(plotly)
 library(debrowser)
-source("../../R/mainScatter.R")
 
 header <- dashboardHeader(
     title = "DEBrowser Main Plots"

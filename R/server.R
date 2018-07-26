@@ -28,6 +28,7 @@
 #'             onRestored NS reactiveVal withProgress tableOutput
 #'             selectizeInput fluidRow div renderPrint renderImage
 #'             verbatimTextOutput imageOutput renderTable incProgress
+#'             a h3 strong h2 withMathJax
 #' @importFrom shinyjs show hide enable disable useShinyjs extendShinyjs
 #'             js inlineCSS onclick
 #' @importFrom d3heatmap d3heatmap renderD3heatmap d3heatmapOutput
@@ -63,8 +64,7 @@
 #' @importMethodsFrom GenomicRanges as.factor setdiff
 #' @importMethodsFrom IRanges as.matrix "colnames<-" mean
 #'             nchar paste rownames toupper unique which
-#'             as.matrix lapply rev "rownames<-"
-#'             gsub
+#'             as.matrix lapply "rownames<-" gsub
 #' @importMethodsFrom S4Vectors eval grep grepl levels sapply t 
 #' @importMethodsFrom SummarizedExperiment cbind order rbind
 #' @importFrom jsonlite fromJSON
@@ -83,7 +83,7 @@
 #'             exactTest estimateCommonDisp glmFit
 #' @importFrom shinydashboard dashboardHeader dropdownMenu messageItem
 #'             dashboardPage dashboardSidebar sidebarMenu dashboardBody
-#'             updateTabItems menuItem tabItems tabItem
+#'             updateTabItems menuItem tabItems tabItem menuSubItem
 #' @importFrom limma lmFit voom eBayes topTable
 #' @importFrom sva ComBat
 #' @importFrom RCurl getURL

@@ -1,6 +1,6 @@
 library(debrowser)
 library(plotly)
-source("../../R/barmain.R")
+
 options(warn =-1)
 
 header <- dashboardHeader(

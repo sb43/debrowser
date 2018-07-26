@@ -17,10 +17,10 @@ body <- dashboardBody(
     tabItem(tabName="Density", 
         fluidRow(
             column(12,
-                   getDensityPlotUI("density"))),
+                getDensityPlotUI("density"))),
         fluidRow(
             column(12,
-                   getDensityPlotUI("afterFiltering"))
+                getDensityPlotUI("afterFiltering"))
         )
     )
   ))

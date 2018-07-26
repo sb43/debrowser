@@ -14,10 +14,9 @@ body <- dashboardBody(
     tabItem(tabName="DEAnalysis", 
     fluidRow(
         # If these getDEResultsUI line put into the UI. The results shown in a table.
-         column(12, getDEResultsUI("DEResults")),
-        
+        column(12, getDEResultsUI("DEResults")),
         column(12,
-               verbatimTextOutput("DERes")
+            verbatimTextOutput("DERes")
         )
     ))
 ))
@@ -34,7 +33,7 @@ server <- function(input, output, session) {
  
   params <-
       #Run DESeq2 with the following parameters
-      c("DESeq2", "parametric", F, "Wald")
+      c("DESeq2", "parametric", FALSE, "Wald")
  
   cols <- 
       #For demo purpose use the coumns below;

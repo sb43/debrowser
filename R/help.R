@@ -27,7 +27,7 @@ tableOutput("countFile"),
 p("Where columns are samples, rows are the mapped genomic features 
   (e.g. genes, isoforms, miRNAs, ATAC or Chip regions etc.)."),
 p("If you do not have a dataset to upload, you can use the built in demo data file by 
-  clicking on the ‘Load Demo’ buttons from two different publications. To view the entire demo data file, you can 
+  clicking on the 'Load Demo' buttons from two different publications. To view the entire demo data file, you can 
   download the ", a("demo set 1 (Vernia et. al).", href="https://bioinfo.umassmed.edu/pub/debrowser/simple_demo.tsv"),
   "For another example, try our ", a("full dataset for demo set 1 (Vernia et. al)", href="https://bioinfo.umassmed.edu/pub/debrowser/advanced_demo.tsv")),
 h4("1.2 Metadata File"),
@@ -72,7 +72,7 @@ p(strong("CPM:"), "First, counts per million (CPM) is calculated as the raw coun
 withMathJax(),
 p("The expression cutoff value is determined according to the library size 
     and normalization factors with formula $$\\text{CPM} = \\frac{\\text{raw counts}}{\\text{library size} * \\text{normalization factors} * 10^{-6}}$$ 
-    For example, if the cutoff CPM value is 10, 
+    For example, if the cutoff CPM value is 10,
     the library size and normalization factors are estimated approximately equal to \\(\\ 3 \\text{ x} 10 ^ 6\\) and 1 for at least 4 samples, 
     then 10 CPM expression cutoff corresponds to about 30 read counts. 
     Therefore, in this example features in more than 4 samples have less than 
@@ -92,7 +92,7 @@ p("If user wants to skip batch effect assesment and correction step, they can ei
    actionButton("goDEFromFilterBut", "Go to DE Analysis", styleclass = "primary"),  
    " button to perform DE Analysis or ",
    actionButton("goQCplotsFromFilterBut", "Go to QC plots", styleclass = "primary"), 
-  " button for QC plots to draw PCA, all2all scatter, heatmaps, IQR and density plots.")
+   " button for QC plots to draw PCA, all2all scatter, heatmaps, IQR and density plots.")
 )
 }
 
@@ -115,7 +115,7 @@ list(
     explained as following:"),
     p(strong("Normalization Method:"), "DEBrowser allows performing normalization 
     prior the batch effect correction. You may choose your normalization method 
-    (among MRE, TMM, RLE, upperquartile), or if you don’t want to normalize your 
+    (among MRE, TMM, RLE, upperquartile), or if you don't want to normalize your 
     data you can select none for this item."),
     p(strong("Correction Method:"), "DEBrowser uses ComBat (part of the SVA 
     bioconductor package) or Harman to adjust for possible batch effect or conditional 
@@ -204,7 +204,7 @@ p(strong("Normalization:")),
 p("Calculate normalization factors to scale the raw library sizes. 
 Values can be 'TMM','RLE','upperquartile','none'."),
 p(strong("Fit Type:")),
-p("fitting method; “ls” for least squares or “robust” for robust regression"),
+p("fitting method; 'ls' for least squares or 'robust' for robust regression"),
 p(strong("Norm. Bet. Arrays:")),
 p("Normalization Between Arrays; Normalizes expression intensities so that the 
 intensities or log-ratios have similar distributions across a set of arrays.")
@@ -213,7 +213,7 @@ intensities or log-ratios have similar distributions across a set of arrays.")
 #' getQAText
 #' Some questions and answers
 #'
-#' @return help text for QA 
+#' @return help text for QA
 #'
 #' @examples
 #'     x<- getQAText()
@@ -233,3 +233,4 @@ getQAText<-function(){
           or limma for normalized counts.")
     )
 }
+

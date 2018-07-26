@@ -2,9 +2,6 @@ library(debrowser)
 library(plotly)
 library(heatmaply)
 library(gplots)
-source("../../R/mainScatter.R")
-source("../../R/funcs.R")
-source("../../R/heatmap.R")
 
 header <- dashboardHeader(
     title = "DEBrowser Main Plots"

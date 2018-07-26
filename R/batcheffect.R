@@ -93,7 +93,7 @@ batchEffectUI <- function (id) {
   list(
     fluidRow(
         shinydashboard::box(title = "Batch Effect Correction and Normalization",
-        solidHeader = T, status = "info",  width = 12, 
+        solidHeader = TRUE, status = "info",  width = 12, 
         fluidRow(
             column(5,div(style = 'overflow: scroll',
                 tableOutput(ns("uploadSummary")),
@@ -102,7 +102,7 @@ batchEffectUI <- function (id) {
             ),
             column(2,
             shinydashboard::box(title = "Options",
-                solidHeader = T, status = "info",
+                solidHeader = TRUE, status = "info",
                 width = 12, 
                 normalizationMethods(id),
                 batchMethod(id),

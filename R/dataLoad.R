@@ -83,13 +83,13 @@ debrowserdataload <- function(input = NULL, output = NULL, session = NULL) {
             try(
                 read.delim(input$countdata$datapath, 
                 header=T, sep=input$countdataSep, 
-            row.names=1, strip.white=TRUE ), T))
+            row.names=1, strip.white=TRUE ), TRUE))
         metadatatable <- c()
         if (!is.null(input$metadata$datapath)){
         metadatatable <- as.data.frame(
             try(
                 read.delim(input$metadata$datapath, 
-                header=T, sep=input$metadataSep, strip.white=TRUE), T))
+                header=TRUE, sep=input$metadataSep, strip.white=TRUE), TRUE))
         }
         else{
             metadatatable <- cbind(colnames(counttable), 1)
@@ -174,17 +174,17 @@ dataLoadUI<- function (id) {
 #' @export
 #'
 fileUploadBox <- function(id = NULL, inputId = NULL, label = NULL) {
-  ns <- NS(id)
+ns <- NS(id)
   
-  shinydashboard::box(title = paste0(label, " File"),
-                      solidHeader = TRUE, status = "info",
-                      width = 6,
-                      helpText(paste0("Upload your '", label," File'")),
-                      fileInput(inputId=ns(inputId), 
-                                label=NULL, 
-                                accept=fileTypes()
-                      ),
-                      sepRadio(id, paste0(inputId, "Sep")))
+shinydashboard::box(title = paste0(label, " File"),
+    solidHeader = TRUE, status = "info",
+    width = 6,
+    helpText(paste0("Upload your '", label," File'")),
+    fileInput(inputId=ns(inputId), 
+        label=NULL, 
+        accept=fileTypes()
+    ),
+    sepRadio(id, paste0(inputId, "Sep")))
 }
 
 #' sepRadio

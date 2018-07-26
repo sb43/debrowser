@@ -47,14 +47,14 @@ debrowsercondselect <- function(input = NULL, output = NULL, session = NULL, dat
 condSelectUI<- function () {
 list(
     shinydashboard::box(title = "Comparison Selection",
-        solidHeader = T, status = "info",  width = NULL, height = NULL, collapsible = TRUE,
+        solidHeader = TRUE, status = "info",  width = NULL, height = NULL, collapsible = TRUE,
     fluidRow(
         uiOutput("conditionSelector"),
         column(12,actionButton("add_btn", "Add New Comparison",styleclass = "primary"),
-               actionButton("rm_btn", "Remove", styleclass = "primary"),
-               getHelpButton("method", "http://debrowser.readthedocs.io/en/develop/deseq/deseq.html"),
-               conditionalPanel(condition <- ("output.condReady>0"),
-               actionButton("startDE", "Start DE", styleclass = "primary")))
+            actionButton("rm_btn", "Remove", styleclass = "primary"),
+            getHelpButton("method", "http://debrowser.readthedocs.io/en/develop/deseq/deseq.html"),
+            conditionalPanel(condition <- ("output.condReady>0"),
+            actionButton("startDE", "Start DE", styleclass = "primary")))
     ))
 )
 }
@@ -76,40 +76,40 @@ getMethodDetails <- function(num = 0, input = NULL) {
             conditionalPanel(
                 (condition <- paste0("input.demethod",num," == 'DESeq2'")),
                 getSelectInputBox("fitType", "Fit Type", num, 
-                                c("parametric", "local", "mean"), 
-                                selectedInput("testType", num, "parametric",
-                                                input), 3),
+                    c("parametric", "local", "mean"), 
+                    selectedInput("testType", num, "parametric",
+                    input), 3),
                 getSelectInputBox("betaPrior", "betaPrior", num, 
-                                            c(F, T), 
-                                            selectedInput("betaPrior", num,
-                                                          F, input),2),
+                    c(FALSE, TRUE), 
+                    selectedInput("betaPrior", num,
+                    FALSE, input),2),
                 getSelectInputBox("testType", "Test Type", num, 
-                            c("Wald", "LRT"),  
-                            selectedInput("testType", num, "Wald", input))),
+                    c("Wald", "LRT"),  
+                    selectedInput("testType", num, "Wald", input))),
             conditionalPanel(
                 (condition <- paste0("input.demethod",num," == 'EdgeR'")),
                 getSelectInputBox("edgeR_normfact", "Normalization", num, 
-                        c("TMM","RLE","upperquartile","none"), 
-                        selectedInput("edgeR_normfact", num, "TMM", input), 3),
+                    c("TMM","RLE","upperquartile","none"), 
+                    selectedInput("edgeR_normfact", num, "TMM", input), 3),
                 column(2,textInput(paste0("dispersion", num), "Dispersion", 
-                                value = isolate(selectedInput("dispersion", 
-                                num, "0", input) ))),
+                    value = isolate(selectedInput("dispersion", 
+                    num, "0", input) ))),
                 getSelectInputBox("edgeR_testType", "Test Type", num, 
-                                  c("exactTest", "glmLRT"), 
-                                  selectedInput("edgeR_testType", num,
-                                                "exactTest", input))),
+                    c("exactTest", "glmLRT"), 
+                    selectedInput("edgeR_testType", num,
+                    "exactTest", input))),
             conditionalPanel(
                 (condition <- paste0("input.demethod",num," ==  'Limma'")),
                 getSelectInputBox("limma_normfact", "Normalization", num, 
-                        c("TMM","RLE","upperquartile","none"), 
-                        selectedInput("limma_normfact", num, "TMM", input), 3),
+                    c("TMM","RLE","upperquartile","none"), 
+                    selectedInput("limma_normfact", num, "TMM", input), 3),
                 getSelectInputBox("limma_fitType", "Fit Type", num,
-                        c("ls", "robust"), 
-                        selectedInput("limma_fitType", num, "ls", input)),
+                    c("ls", "robust"), 
+                    selectedInput("limma_fitType", num, "ls", input)),
                 getSelectInputBox("normBetween", "Norm. Bet. Arrays", num,
-                        c("none", "scale", "quantile", "cyclicloess",
-                        "Aquantile", "Gquantile", "Rquantile","Tquantile"),
-                        selectedInput("normBetween", num, "none", input))),
+                    c("none", "scale", "quantile", "cyclicloess",
+                    "Aquantile", "Gquantile", "Rquantile","Tquantile"),
+                    selectedInput("normBetween", num, "none", input))),
             br())
 }
 

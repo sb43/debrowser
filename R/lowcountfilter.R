@@ -86,7 +86,7 @@ dataLCFUI<- function (id) {
   list(
     fluidRow(
       shinydashboard::box(title = "Low Count Filtering",
-          solidHeader = T, status = "info",  width = 12, 
+          solidHeader = TRUE, status = "info",  width = 12, 
           fluidRow(
             column(5,div(style = 'overflow: scroll',
                 tableOutput(ns("uploadSummary")),
@@ -94,21 +94,21 @@ dataLCFUI<- function (id) {
                 uiOutput(ns("loadedtable"))
             ),
             column(2,
-                   shinydashboard::box(title = "Filtering Methods",
-                       solidHeader = T, status = "info",
-                       width = 12, 
-                       lcfMetRadio(id),
-                       uiOutput(ns("cutoffLCFMet")),
-                       actionButton(ns("submitLCF"), label = "Filter", styleclass = "primary")
-                   )
+                shinydashboard::box(title = "Filtering Methods",
+                    solidHeader = TRUE, status = "info",
+                    width = 12, 
+                    lcfMetRadio(id),
+                    uiOutput(ns("cutoffLCFMet")),
+                    actionButton(ns("submitLCF"), label = "Filter", styleclass = "primary")
+                )
             ),
             column(5,div(style = 'overflow: scroll',
-                 tableOutput(ns("filteredSummary")),
-                 DT::dataTableOutput(ns("filteredDetails"))),
-                 uiOutput(ns("filteredtable"))
+                tableOutput(ns("filteredSummary")),
+                DT::dataTableOutput(ns("filteredDetails"))),
+                uiOutput(ns("filteredtable"))
             )
           ),
-          conditionalPanel(condition <- paste0("input['", ns("submitLCF"),"']"),
+          conditionalPanel(condition = paste0("input['", ns("submitLCF"),"']"),
           actionButton("Batch", label = "Batch Effect Correction", styleclass = "primary"),
           conditionalPanel(condition = "!(input.Batch)",
           actionButton("goDEFromFilter", "Go to DE Analysis", styleclass = "primary"),
@@ -140,14 +140,14 @@ dataLCFUI<- function (id) {
 #' @export
 #'
 lcfMetRadio <- function(id) {
-  ns <- NS(id)
-  radioButtons(inputId=ns("lcfmethod"), 
-               label="Low count filtering method:",
-               choices=c(Max='Max',
-                         Mean='Mean',
-                         CPM='CPM'
-               ),
-               selected='Max'
-  )
+    ns <- NS(id)
+    radioButtons(inputId=ns("lcfmethod"), 
+    label="Low count filtering method:",
+    choices=c(Max='Max',
+        Mean='Mean',
+        CPM='CPM'
+    ),
+    selected='Max'
+    )
 }
 

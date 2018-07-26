@@ -1,5 +1,4 @@
 library(debrowser)
-source("../../R/condSelect.R")
 
 header <- dashboardHeader(
   title = "DEBrowser Condition Selector"

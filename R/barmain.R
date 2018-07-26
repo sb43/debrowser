@@ -85,6 +85,7 @@ barMainPlotControlsUI <- function(id) {
 #'     getBarMainPlot()
 #'
 getBarMainPlot <- function(data=NULL, conds=NULL, cols = NULL, key=NULL, title = "", input = NULL){
+    if (is.null(data)) return(NULL)
     vardata <- getVariationData(data, conds, cols, key)
     title <- paste(vardata$genename, " variation")
     
