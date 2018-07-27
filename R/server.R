@@ -55,7 +55,7 @@
 #'             density
 #' @importFrom utils read.csv read.table write.table update.packages
 #'             download.file read.delim data
-#' @importFrom DOSE enrichDO enrichMap
+#' @importFrom DOSE enrichDO
 #' @importFrom enrichplot gseaplot dotplot
 #' @importMethodsFrom DOSE summary
 #' @importMethodsFrom AnnotationDbi as.data.frame as.list colnames

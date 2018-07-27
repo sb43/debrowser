@@ -1,4 +1,11 @@
 ************************************
+Version 1.9.3 Release
+**********************************
+- DEBrowser turned to a modular structure. The modules can be used in other shiny applications.
+- More interactivity added to Heatmaps and main plots. 
+- Lasso selection is added to main plots
+
+************************************
 Version 1.6.6 Release
 **********************************
 - HTML Header fixed
