@@ -87,7 +87,7 @@ deUI <- function() {
                                  tabItem(tabName="assesment", getDataAssesmentText()),
                                  tabItem(tabName="preparation", getDataPreparationText()),
                                  tabItem(tabName="deanalysis", getDEAnalysisText()),
-                                 tabItem(tabName="QA", getQAText()),
+                                 tabItem(tabName="FAQ", getQAText()),
                                  tabItem(tabName="Upload", dataLoadUI("load")),
                                  tabItem(tabName="Filter",
                                          conditionalPanel(
