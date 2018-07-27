@@ -221,7 +221,7 @@ intensities or log-ratios have similar distributions across a set of arrays.")
 #' @export
 getQAText<-function(){
     list(
-        h3("5. Questions and Answers"),
+        h3("5. Frequently asked questions (FAQ)"),
         h4("5.1 Why un-normalized counts?"),
         p("DESeq2 requires count data as input obtained from 
           RNA-Seq or another high-thorughput sequencing experiment 
@@ -230,7 +230,25 @@ getQAText<-function(){
           should be un-normalized, since DESeq2 model internally corrects for 
           library size. So, transformed or normalized values such as counts 
           scaled by library size should not be used as input. Please use edgeR 
-          or limma for normalized counts.")
+          or limma for normalized counts."),
+        h4("5.2 Why am I getting error while uploading files?"),
+        p("* DEBrowser supports tab, comma or semi-colon separated files. However spaces or characters in numeric regions not supoorted and causes an error while uploading files. It is crutial to remove for these kind of instances from the files before uploading files."),
+        p("* Another reason of getting an error is using same gene name multiple times. This may occurs after opening files in programs such as Excel, which tends to automatically convert some gene names to dates (eg. SEP9 to SEP.09.2018). This leads numerous problems therefore you need to disable these kind of automatic conversion before opening files in these kind of programs."),
+        h4("5.3 Why some columns not showed up after upload?"),
+        p("If a character in numeric area or space is exist in one of your column, either column will be eliminated or you will get an error. Therefore it is crutial to remove for these kind of instances from your files before uploading."),
+        h4("5.4 Why I cannot upload Excel files?"),
+        p("* Excel like programs creates DOS/Windows line-ending characters (^M) which leads to an error. Therefore it is crutial to remove for these kind of instances from your files before uploading."),
+        p("* Another reason of getting an error is using same gene name multiple times. This may occurs after opening files in programs such as Excel, which tends to automatically convert some gene names to dates (eg. SEP9 to SEP.09.2018). Therefore you need to disable these kind of automatic conversion before opening files in these kind of programs."),
+        h4("5.5 Why can't I see all the background data in Main Plots?"),
+        p("In order to increase the performance, by default 10% of non-significant(NS) genes are used to generate plots. We strongly suggest you to use all of the NS genes in your plots while publishing your results. You can easily change this parameter by clicking **Main Options** button and change Background Data(%) to 100% on the left sidebar."),
+        h4("5.6 Why am I getting error when I click on DE Genes in Go Term Analysis?"),
+        p("To start ", strong("Go Term"), " analysis, it is important to select correct organism from ", strong("Choose an organism"), " field. After selecting other desired parameters, you can click ", strong("Submit")," button to run Go Term analysis. After this stage, you will able to see", strong(" categories")," regarding to your selected gene list in the ", strong("Table")," Tab. Once you select this category, you can click DE Genes button to see gene list regarding to selected category."),
+        h4("5.7 How to download selected data from Main plots/QC Plots/Heatmaps?"),
+        p("First, you need to choose ", strong("Choose dataset"), " field as ",strong("selected")," under ",strong("Data Options")," in the left sidebar. When you select this option, new field: ",strong("The plot used in selection")," will appear under ", strong("Choose dataset")," field. You need to specify the plot you are interested from following options: Main plot, Main Heatmap, QC Heatmap. Finally you can click ", strong("Download Data"), " button to download data, or if you wish to see the selected data, you can click ",strong("Tables")," tab.")
     )
 }
 
+
+
+
+ 
