@@ -53,7 +53,7 @@ deUI <- function() {
                              menuSubItem("Data Assesment", tabName = "assesment"),
                              menuSubItem("Data Preparation", tabName = "preparation"),
                              menuSubItem("DE Anaylsis", tabName = "deanalysis"),
-                             menuSubItem("Q & A", tabName ="QA")
+                             menuSubItem("FAQ", tabName ="FAQ")
                     ),
                     menuItem("Upload", icon = icon("upload"), tabName = "Upload"),
                     menuItem("Filter", icon = icon("filter"), tabName = "Filter"),

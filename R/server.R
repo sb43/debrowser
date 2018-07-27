@@ -45,7 +45,7 @@
 #'             band scale_numeric hide_axis layer_densities scale_ordinal
 #'             layer_text
 #' @importFrom plotly renderPlotly plotlyOutput plot_ly add_bars event_data
-#' @importFrom gplots heatmap.2 redblue
+#' @importFrom gplots heatmap.2 redblue bluered
 #' @importFrom igraph layout.kamada.kawai  
 #' @importFrom grDevices dev.off pdf colorRampPalette 
 #' @importFrom graphics barplot hist pairs par rect text plot
