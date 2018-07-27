@@ -528,7 +528,7 @@ getKEGGModal<-function(){
 #'
 getDownloadSection <- function(choices=NULL) {
     list(conditionalPanel( (condition = "input.methodtabs!='panel0'"),
-        shinydashboard::menuItem(" Select Plot Options",                
+        shinydashboard::menuItem(" Data Options",                
         selectInput("dataset", "Choose a dataset:",
         choices = choices),
         conditionalPanel( (condition = "input.dataset=='selected'"),
