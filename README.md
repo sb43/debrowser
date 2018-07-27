@@ -93,7 +93,7 @@ The structure of the count data files are shown below:
 
 Please also note that, DEBrowser reads the gene names from the first column and skips other non numerical columns and starts reading the quantification values from the 3rd column in this case.
 
-In addition to the count data file; you need to upload metadata file to correct for batch effects or any other normalizing conditions you might want to address that might be within your results. To handle for these conditions, simply create a metadata file by using the example table at below or download sample file from `this link <https://bioinfo.umassmed.edu/pub/debrowser/simple_demo_meta.txt>`_.
+In addition to the count data file; you need to upload metadata file to correct for batch effects or any other normalizing conditions you might want to address that might be within your results. To handle for these conditions, simply create a metadata file by using the example table at below or download sample file from following link: <https://bioinfo.umassmed.edu/pub/debrowser/simple_demo_meta.txt>
 
 
 | sample       | batch | condition|
@@ -108,11 +108,9 @@ In addition to the count data file; you need to upload metadata file to correct 
 Metadata file can be formatted with comma, semicolon or tab separators similar to count data files. These files used to establish different batch effects for multiple conditions.
 You can have as many conditions as you may require, as long as all of the samples are present. 
 
-.. note::
+* The example above would result in the first set of conditions as ``exper_rep1``, ``exper_rep2``, ``exper_rep3`` from ``A`` and second set of conditions as ``control_rep1``, ``control_rep2``, ``control_rep3`` from ``B`` as they correspond to those conditions in the ``condition`` column.
 
-    The example above would result in the first set of conditions as ``exper_rep1``, ``exper_rep2``, ``exper_rep3`` from ``A`` and second set of conditions as ``control_rep1``, ``control_rep2``, ``control_rep3`` from ``B`` as they correspond to those conditions in the ``condition`` column.
-
-    In the same way, 'batch' would have the first set as ``exper_rep1``, ``exper_rep3``, ``control_rep2`` from ``1`` and second set as ``exper_rep2``, ``control_rep1``, ``control_rep3`` from ``2`` as they correspond to those conditions in the ``batch`` column.
+* In the same way, 'batch' would have the first set as ``exper_rep1``, ``exper_rep3``, ``control_rep2`` from ``1`` and second set as ``exper_rep2``, ``control_rep1``, ``control_rep3`` from ``2`` as they correspond to those conditions in the ``batch`` column.
 
 Once the count data and metadata files have been loaded in Debrowser, you can click upload button to visualize your data as shown at below:
     
@@ -124,9 +122,9 @@ After loading the gene quantification file, and if specified the metadata file c
 
 In this section, you can simultaneously visualise the changes of your dataset while filtering out the low count genes. Choose your filtration criteria from **Filtering Methods** box which is located just center of the screen. Three methods are available to be used:
 
-	* **Max:** Filters out genes where maximum count for each gene across all samples are less than defined threshold. 
-	* **Mean:** Filters out genes where mean count for each gene are less than defined threshold. 
-	* **CPM:**	First, counts per million (CPM) is calculated as the raw counts divided by the library sizes and multiplied by one million. Then it filters out genes where at least defined number of samples is less than defined CPM threshold.
+* **Max:** Filters out genes where maximum count for each gene across all samples are less than defined threshold. 
+* **Mean:** Filters out genes where mean count for each gene are less than defined threshold. 
+* **CPM:**	First, counts per million (CPM) is calculated as the raw counts divided by the library sizes and multiplied by one million. Then it filters out genes where at least defined number of samples is less than defined CPM threshold.
 
 After selection of filtering methods and entering threshold value, you can proceed by clicking **Filter** button which is located just bottom part of the **Filtering Methods** box. On the right part of the screen, your filtered dataset will be visualized for comparison as shown at figure below. 
 
@@ -134,14 +132,13 @@ After selection of filtering methods and entering threshold value, you can proce
 
 You can easily compare following features, before and after filtering: 
 
-	* Number of genes/regions.
-	* Read counts for each sample.
-	* Overall histogram of the dataset.
-	* gene/region vs samples data 
+* Number of genes/regions.
+* Read counts for each sample.
+* Overall histogram of the dataset.
+* gene/region vs samples data 
 
-.. important::
 
-	To investigate the gene/region vs samples data in detail as shown at below, you may click the **Show Data** button, located bottom part of the data tables. Alternatively, you may download all filtered data by clicking **Download** button which located next to **Show Data** button.  
+* To investigate the gene/region vs samples data in detail as shown at below, you may click the **Show Data** button, located bottom part of the data tables. Alternatively, you may download all filtered data by clicking **Download** button which located next to **Show Data** button.  
 
 ![*Figure 4. Show Data*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/show_data.png "Figure 4. Show Data")
 
@@ -151,10 +148,10 @@ Afterwards, you may continue your analysis with **Batch Effect Correction** or d
 # Batch Effect Corrections
 If specified metadata file containing your batch correction fields, then you have the option to conduct batch effect correction prior to your analysis. By adjusting parameters of **Options** box, you can investigate your character of your dataset. These parameters of the options box are explained as following:
 
-	* **Normalization Method:** DEBrowser allows performing normalization prior the batch effect correction. You may choose your normalization method (among MRN (Median Ratio Normalization), TMM (Trimmed Mean of M-values), RLE (Relative Log Expression) and upperquartile), or skip this step by choosing **none** for this item. For our sample data, we gonna choose MRN normalization.
-	* **Correction Method:** DEBrowser uses `ComBat <https://bioconductor.org/packages/release/bioc/vignettes/sva/inst/doc/sva.pdf>`_ (part of the SVA bioconductor package) or `Harman <https://www.bioconductor.org/packages/3.7/bioc/vignettes/Harman/inst/doc/IntroductionToHarman.html>`_ to adjust for possible batch effect or conditional biases. For more information, you can visit following links for documentation: `ComBat <https://bioconductor.org/packages/release/bioc/vignettes/sva/inst/doc/sva.pdf>`_, `Harman <https://www.bioconductor.org/packages/3.7/bioc/vignettes/Harman/inst/doc/IntroductionToHarman.html>`_ For our sample data, Combat correction was selected.
-	* **Treatment:** Please select the column that is specified in metadata file for comparision, such as cancer vs control. It is named *treatment* for our sample metadata.
-	* **Batch:** Please select the column name in metadata file which differentiate the batches. For example in our metadata, it is called *batch*.
+* **Normalization Method:** DEBrowser allows performing normalization prior the batch effect correction. You may choose your normalization method (among MRN (Median Ratio Normalization), TMM (Trimmed Mean of M-values), RLE (Relative Log Expression) and upperquartile), or skip this step by choosing **none** for this item. For our sample data, we gonna choose MRN normalization.
+* **Correction Method:** DEBrowser uses ComBat <https://bioconductor.org/packages/release/bioc/vignettes/sva/inst/doc/sva.pdf> (part of the SVA bioconductor package) or Harman <https://www.bioconductor.org/packages/3.7/bioc/vignettes/Harman/inst/doc/IntroductionToHarman.html> to adjust for possible batch effect or conditional biases. For more information, you can visit following links for documentation: ComBat <https://bioconductor.org/packages/release/bioc/vignettes/sva/inst/doc/sva.pdf>, Harman <https://www.bioconductor.org/packages/3.7/bioc/vignettes/Harman/inst/doc/IntroductionToHarman.html> For our sample data, Combat correction was selected.
+* **Treatment:** Please select the column that is specified in metadata file for comparision, such as cancer vs control. It is named *treatment* for our sample metadata.
+* **Batch:** Please select the column name in metadata file which differentiate the batches. For example in our metadata, it is called *batch*.
 
 Upon clicking submit button, comparison tables and plots will be created on the right part of the screen as shown below.
 
@@ -166,13 +163,12 @@ Upon clicking submit button, comparison tables and plots will be created on the 
 
 You can investigate the changes on the data by comparing following features:
 
-	* Read counts for each sample.
-	* PCA, IQR and Density plot of the dataset.
-	* Gene/region vs samples data
+* Read counts for each sample.
+* PCA, IQR and Density plot of the dataset.
+* Gene/region vs samples data
 
-.. tip::
 
-	You can investigate the gene/region vs samples data in detail by clicking the **Show Data** button, or download all corrected data by clicking **Download** button.
+* You can investigate the gene/region vs samples data in detail by clicking the **Show Data** button, or download all corrected data by clicking **Download** button.
 
 Since we have completed **batch effect correction and normalization** step, we can continue with one of the following options: 'Go to DE Analysis' and ,'Go to QC plots!'. First option takes you to page where differential expression analyses are conducted with DESeq2, EdgeR or Limma. The second option, 'Go to QC plots!', takes you to a page where you can view quality control metrics of your data by PCA, All2All, Heatmap, Density, and IQR plots.
 
@@ -180,18 +176,17 @@ Since we have completed **batch effect correction and normalization** step, we c
 
 The first option, 'Go to DE Analysis', takes you to the next step where differential expression analyses are conducted.
 
-    * **Sample Selection:** In order to run DE analysis, you first need to select the samples which will be compared. To do so, click on "Add New Comparison" button, and choose **Select Meta** box as **treatment** to simplify fill ``Condition 1`` and ``Condition 2`` based on the **treatment** column of the metadata as shown below.
+* **Sample Selection:** In order to run DE analysis, you first need to select the samples which will be compared. To do so, click on "Add New Comparison" button, and choose **Select Meta** box as **treatment** to simplify fill ``Condition 1`` and ``Condition 2`` based on the **treatment** column of the metadata as shown below.
 
-    ![*Figure 8. DE Selection*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/de_selection.png "Figure 8. DE Selection")
+![*Figure 8. DE Selection*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/de_selection.png "Figure 8. DE Selection")
 
 
-    If you need to remove samples from a condition, simply select the sample you wish to remove and hit the delete/backspace key. In case, you need to add a sample to a condition you can click on one of the condition text boxes to bring up a list of samples and then click on the sample you wish to add from the list and it will be added to the textbox for that comparison.
+If you need to remove samples from a condition, simply select the sample you wish to remove and hit the delete/backspace key. In case, you need to add a sample to a condition you can click on one of the condition text boxes to bring up a list of samples and then click on the sample you wish to add from the list and it will be added to the textbox for that comparison.
 
-    .. tip::
 
-        You can add multiple conditions to compare by clicking on "Add New Comparison" button, and view the results seperately after DE analysis.
+* You can add multiple conditions to compare by clicking on "Add New Comparison" button, and view the results seperately after DE analysis.
 
-    * **Method Selection:** Three DE methods are available for DEBrowser: DESeq2, EdgeR, and Limma. DESeq2 and EdgeR are designed to normalize count data from high-throughput sequencing assays such as RNA-Seq. On the other hand, Limma is a package to analyse of normalized or transformed data from microarray or RNA-Seq assays. We have selected DESeq2 for our test sample and showed the related results at below.
+* **Method Selection:** Three DE methods are available for DEBrowser: DESeq2, EdgeR, and Limma. DESeq2 and EdgeR are designed to normalize count data from high-throughput sequencing assays such as RNA-Seq. On the other hand, Limma is a package to analyse of normalized or transformed data from microarray or RNA-Seq assays. We have selected DESeq2 for our test sample and showed the related results at below.
 
 After clicking on the 'Submit!' button, DESeq2 will analyze your comparisons and store the results into seperate data tables. It is important to note that the resulting data produced from DESeq is normalized. Upon finishing the DESeq analysis, a result table will appear which allows you to download the data by clicking "Download" button. To visualize the data with interactive plots please click on "Go to Main Plots!" button.
 
@@ -205,16 +200,15 @@ the interactive plots.
 
 The page will loads with **Scatter Plot**. You can switch to **Volcano Plot** and **MA Plot** by using **Plot Type** section at the left side of the menu. Since these plots are interactive, you can click to **zoom** button on the top of the graph and select the area you would like to zoom in by drawing a rectangle. Please see the plots at below:
 
-    ![*Figure 10. Main Plots*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_main_plots.png "Figure 10. Main Plots")
+![*Figure 10. Main Plots*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_main_plots.png "Figure 10. Main Plots")
     
 
 **A.** Scatter plot, **B.** Volcano plot, **C.** MA plot
 
-.. tip::
 
-    Please keep in mind that to increace the performance of the generating graph, by default 10% of non-significant(NS) genes are used to generate plots. You might show all NS genes by please click **Main Options** button and change Background Data(%) to 100% on the left sidebar.
+* Please keep in mind that to increace the performance of the generating graph, by default 10% of non-significant(NS) genes are used to generate plots. You might show all NS genes by please click **Main Options** button and change Background Data(%) to 100% on the left sidebar.
 
-    ![*Figure 11. Background data*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_background_data.png "Figure 11. Background Data")
+![*Figure 11. Background data*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_background_data.png "Figure 11. Background Data")
 
 
 You can hover over the scatterplot points to display more information about the point selected. A few bargraphs will be generated for the user to view as soon as a scatterplot point is hovered over.
@@ -226,13 +220,10 @@ You can hover over the scatterplot points to display more information about the 
 
 You also have a wide array of options when it comes to fold change cut-off levels, padj cut-off values, which comparison set to use, and dataset of genes to analyze.
 
-.. image:: ../debrowser_pics2/main_plot_filters.png
 ![*Figure 13. main plot filters*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/main_plot_filters.png "Figure 13. main plot filters")
 
 
-.. tip::
-
-    It is important to note that when conducting multiple comparisons, the comparisons are labeled based on the order that they are input. If you don't remember which samples are in your current comparison you can always view the samples in each condition at the top of the main plots.
+* It is important to note that when conducting multiple comparisons, the comparisons are labeled based on the order that they are input. If you don't remember which samples are in your current comparison you can always view the samples in each condition at the top of the main plots.
 
 ![*Figure 14. Selected conditions*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/selected_conditions.png "Figure 14. Selected conditions")
 
@@ -350,9 +341,7 @@ Once you've selected a specific region on Main Plots (Scatter, Volcano or MA plo
 
 **A.** Box Selection, **B.** Lasso Selection, **C.** Created heatmap based on selection
 
-.. tip::
-
-    We strongly recommend normalization before plotting heatmaps. To normalize, please change the parameters that are located under: **Data options -> Normalization Methods** and select the method from the dropdown box.
+* We strongly recommend normalization before plotting heatmaps. To normalize, please change the parameters that are located under: **Data options -> Normalization Methods** and select the method from the dropdown box.
 
 ## Used clustering and linkage methods in heatmap
 
@@ -436,9 +425,7 @@ GO Term plots for specific queries on your selection.
 
 A. Before Selection B. Selection of area with zoom tool C. Zoomed heatmap region which allows better viewing resolution.
 
-.. tip::
-    
-    **Interactive Feature:** In order to increase the performance of the generating heatmaps, **interactive** option is disabled by default. After deciding plotting/clustering parameters of the heatmap, you might activate this feature to investigate each block in detail.
+**Interactive Feature:** In order to increase the performance of the generating heatmaps, **interactive** option is disabled by default. After deciding plotting/clustering parameters of the heatmap, you might activate this feature to investigate each block in detail.
 
 # GO Term Plots
 
@@ -519,9 +506,8 @@ by column by clicking on the column header you wish to sort by.  The 'Search' bo
 a comma-seperated list.  You can additionally use regex terms such as "^al" or "\*lm" for even more advanced searching.
 This search will be applied to wherever you are within DEBrowser, including both the plots and the tables.
 
-.. tip::
 
-    If you enter more than three lines of genes, search tool will automatically match the beginning and end of the search phrases. Otherwise it will find matched substrings in the gene list.
+* If you enter more than three lines of genes, search tool will automatically match the beginning and end of the search phrases. Otherwise it will find matched substrings in the gene list.
 
 
 ----
@@ -530,9 +516,8 @@ You can also view specific tables of your input data for each type of dataset av
 by inputting a comma-seperated list of genes or regex terms to search for in the search box within the left panel.
 To view these tables, you must select the tab labeled 'Tables' as well as the dataset from the dropdown menu on the left panel.
 
-.. tip::
 
-    If you ever want to change your parameters, or even add a new set of comparisons, you can always return to the *Data Prep* tab to change and resubmit your data.
+* If you ever want to change your parameters, or even add a new set of comparisons, you can always return to the *Data Prep* tab to change and resubmit your data.
     
 # Quality Control Plots
 
@@ -586,9 +571,8 @@ Density Plot Before Normalization
 
 Density Plot After Normalization
 
-.. note::
 
-    Each QC plot also has options to adjust the plot height and width, as well as a download button for a png output located above each plot.
+* Each QC plot also has options to adjust the plot height and width, as well as a download button for a png output located above each plot.
 
 
 With that, you've now successfully navigated the DEBrowser and are ready to start inserting your own data files and browsing your own experiments.  Enjoy the DEBrowser!
@@ -600,157 +584,156 @@ This guide is walkthrough for the preparation of figures which is used in DEBrow
 
 ## QC plots without Batch Effect Correction
 
-    1) **Upload Data:** To begin the analysis, you need to load Demo Data by clicking **Load Demo (Donnard et al)!** button. Then click on **Filter** button to start **Low Count Filtering**. 
-    2) **Low Count Filtering:** Filtering method is selected as **Max** with cutoff 10 (which filter genes where maximum count for each gene across all samples are less than 10) and activated by clicking **Filter** button which is located at the center of the page. After filtration you can see the distribution of the data as shown at below. Now, you can proceed by clicking **Batch Effect Correction** button.
+1) **Upload Data:** To begin the analysis, you need to load Demo Data by clicking **Load Demo (Donnard et al)!** button. Then click on **Filter** button to start **Low Count Filtering**. 
+2) **Low Count Filtering:** Filtering method is selected as **Max** with cutoff 10 (which filter genes where maximum count for each gene across all samples are less than 10) and activated by clicking **Filter** button which is located at the center of the page. After filtration you can see the distribution of the data as shown at below. Now, you can proceed by clicking **Batch Effect Correction** button.
     
-    ![*Figure 31. example filtering*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_filtering.png "Figure 31. example filtering")
+![*Figure 31. example filtering*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_filtering.png "Figure 31. example filtering")
 
     
-    3) **Batch Effect Correction and Normalization:**  Following options were selected to normalize the data: 
+3) **Batch Effect Correction and Normalization:**  Following options were selected to normalize the data: 
         
-        * **Normalization method:** MRN
-        * **Correction Method:** None
+    * **Normalization method:** MRN
+    * **Correction Method:** None
         
-    In order to adjust the appearance, use PCA controls which is located between two PCA plots.
+In order to adjust the appearance, use PCA controls which is located between two PCA plots.
     
-        * **Text On/Off:** On
-        * **Select legend:** color
-        * **Color field:** batch
-        * **Shape field:** batch
+* **Text On/Off:** On
+* **Select legend:** color
+* **Color field:** batch
+* **Shape field:** batch
         
-    ![*Figure 32. example pca before batch*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_pca_before_batch.png "Figure 32. example pca before batch")
+![*Figure 32. example pca before batch*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_pca_before_batch.png "Figure 32. example pca before batch")
 
 	
-    4) **All2All:**  After batch effect correction, you can click 'Go to QC plots!' to view quality control metrics on your data. The page opens with a Principal Component Analysis (PCA) plot. You can select **All2All** option from **Plot type** on the left sidebar menu. In order to get the figure as shown at below, you need to adjust other parameters of **plot options**    on the left sidebar menu.
+4) **All2All:**  After batch effect correction, you can click 'Go to QC plots!' to view quality control metrics on your data. The page opens with a Principal Component Analysis (PCA) plot. You can select **All2All** option from **Plot type** on the left sidebar menu. In order to get the figure as shown at below, you need to adjust other parameters of **plot options**    on the left sidebar menu.
     
-    ![*Figure 33. example all2all before*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_all2all_before.png "Figure 33. example all2all before")
+![*Figure 33. example all2all before*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_all2all_before.png "Figure 33. example all2all before")
   
-    * **All2All - Plot Options:** Following options are selected and their screenshots are shown at below.
+* **All2All - Plot Options:** Following options are selected and their screenshots are shown at below.
 
-        * **Plot Type:** All2All
-        * **Data Options:** Choose a dataset: all-detected
-        * **QC options - all2all - Size & Margins:** Check the box of the **Plot Size** and adjust width and height as 800 and 800, respectively.
-        * **QC options - all2all - Options:**  corr font size: 1.8 (adjust the font size of the text inside the box)
+    * **Plot Type:** All2All
+    * **Data Options:** Choose a dataset: all-detected
+    * **QC options - all2all - Size & Margins:** Check the box of the **Plot Size** and adjust width and height as 800 and 800, respectively.
+    * **QC options - all2all - Options:**  corr font size: 1.8 (adjust the font size of the text inside the box)
 
         
-    ![*Figure 34. example all2all menu*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_all2all_menu.png "Figure 34. example all2all menu")
+![*Figure 34. example all2all menu*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_all2all_menu.png "Figure 34. example all2all menu")
     
-    5) **Heatmap:**  To visualize heatmap as shown at below, please select **Heatmap** option from **Plot type** on the left sidebar menu and adjust plot options. 
+5) **Heatmap:**  To visualize heatmap as shown at below, please select **Heatmap** option from **Plot type** on the left sidebar menu and adjust plot options. 
 
-    ![*Figure 35. example heatmap before*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_heatmap_before.png "Figure 35. example heatmap before")
+![*Figure 35. example heatmap before*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_heatmap_before.png "Figure 35. example heatmap before")
 
-    * **Heatmap - Plot Options:** Similar to All2All plot, we need to adjust plotting options on the left sidebar menu.
+* **Heatmap - Plot Options:** Similar to All2All plot, we need to adjust plotting options on the left sidebar menu.
 
-        * **Plot Type:** Heatmap
-        * **Heatmap Colors:** Check the box of custom colors.
-        * **Data Options:** Choose a dataset: most varied, top-n:1000, total min count:100 (to show the top 1000 most varied genes (based on coefficient of variance) whose total counts are higher than 100)
-        * **QC options - kmeans:** Check the box of kmeans clustering. Select 7 as # of clusters. You might need to change the order of the clusters and click **change order** button to get gradual changes on heatmap as in the figure.
-        * **QC options - heatmap - Size & Margins:** Check the box of the **Plot Size** and adjust width and height to 690 and 1200, respectively.
+    * **Plot Type:** Heatmap
+    * **Heatmap Colors:** Check the box of custom colors.
+    * **Data Options:** Choose a dataset: most varied, top-n:1000, total min count:100 (to show the top 1000 most varied genes (based on coefficient of variance) whose total counts are higher than 100)
+    * **QC options - kmeans:** Check the box of kmeans clustering. Select 7 as # of clusters. You might need to change the order of the clusters and click **change order** button to get gradual changes on heatmap as in the figure.
+    * **QC options - heatmap - Size & Margins:** Check the box of the **Plot Size** and adjust width and height to 690 and 1200, respectively.
         
-    ![*Figure 36. example heatmap menu*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_heatmap_menu.png "Figure 36. example heatmap menu")
+![*Figure 36. example heatmap menu*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_heatmap_menu.png "Figure 36. example heatmap menu")
 
 
 ## QC plots after Batch Effect Correction
 
 Since we finalized out plots without applying batch effect correction, we can return back to batch effect correction step and change the **Correction Method** as **Combat** and continue to create new graphs with the same parameters as we used before. To make it more user friendly, we gonna start explain these steps from the beginning. If you choose to continue from batch effect correction, please skip first two steps and continue reading from 3rd step: **Batch Effect Correction and Normalization**. 
 
-    1) **Upload Data:** To begin the analysis, load Demo Data by clicking **Load Demo (Donnard et al)!** button. Then click on **Filter** button to start **Low Count Filtering**. 
-    2) **Low Count Filtering:** Select **Max** method with cutoff 10 (which filter genes where maximum count for each gene across all samples are less than 10), then click **Filter** button which is located at the center of the page. After filtration, proceed to next step by clicking **Batch Effect Correction** button.
+1) **Upload Data:** To begin the analysis, load Demo Data by clicking **Load Demo (Donnard et al)!** button. Then click on **Filter** button to start **Low Count Filtering**. 
+2) **Low Count Filtering:** Select **Max** method with cutoff 10 (which filter genes where maximum count for each gene across all samples are less than 10), then click **Filter** button which is located at the center of the page. After filtration, proceed to next step by clicking **Batch Effect Correction** button.
     
-    3) **Batch Effect Correction and Normalization:**  Following options were selected to apply both normalization and batch effect correction: 
+3) **Batch Effect Correction and Normalization:**  Following options were selected to apply both normalization and batch effect correction: 
         
-        * **Normalization method:** MRN
-        * **Correction Method:** Combat
-        * **Treatment:** treatment
-        * **Batch:** batch
+    * **Normalization method:** MRN
+    * **Correction Method:** Combat
+    * **Treatment:** treatment
+    * **Batch:** batch
         
-    Please adjust PCA controls (which is located between two PCA plots) as listed below.
+* Please adjust PCA controls (which is located between two PCA plots) as listed below:
     
-        * **Text On/Off:** On
-        * **Select legend:** color
-        * **Color field:** batch
-        * **Shape field:** batch
+    * **Text On/Off:** On
+    * **Select legend:** color
+    * **Color field:** batch
+    * **Shape field:** batch
         
-    ![*Figure 37. example pca after batch effect correction*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_pca_after_batch.png "Figure 37. example pca after batch effect correction")
+![*Figure 37. example pca after batch effect correction*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_pca_after_batch.png "Figure 37. example pca after batch effect correction")
 
 	
-    4) **All2All:**  After batch effect correction, click 'Go to QC plots!' and select **All2All** option from **Plot type** on the left sidebar menu. Please adjust All2All - Plot Options as listed below.
+4) **All2All:**  After batch effect correction, click 'Go to QC plots!' and select **All2All** option from **Plot type** on the left sidebar menu. Please adjust All2All - Plot Options as listed below.
     
-    ![*Figure 38. example all2all after batch effect correction*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_all2all_after.png "Figure 38. example all2all after batch effect correction")
+![*Figure 38. example all2all after batch effect correction*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_all2all_after.png "Figure 38. example all2all after batch effect correction")
 
     
-    * **All2All - Plot Options:**
+* **All2All - Plot Options:**
 
-        * **Plot Type:** All2All
-        * **Data Options:** Choose a dataset: all-detected
-        * **QC options - all2all - Size & Margins:** Check the box of the **Plot Size** and adjust width and height to 800 and 800, respectively.
-        * **QC options - all2all - Options:**  corr font size: 1.8 
+    * **Plot Type:** All2All
+    * **Data Options:** Choose a dataset: all-detected
+    * **QC options - all2all - Size & Margins:** Check the box of the **Plot Size** and adjust width and height to 800 and 800, respectively.
+    * **QC options - all2all - Options:**  corr font size: 1.8 
         
-    ![*Figure 39. example all2all menu*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_all2all_menu.png "Figure 39. example all2all menu")
+![*Figure 39. example all2all menu*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_all2all_menu.png "Figure 39. example all2all menu")
     
-    5) **Heatmap:**  Please select **Heatmap** option from **Plot type** on the left sidebar menu and adjust plot options according to the list below.
+5) **Heatmap:**  Please select **Heatmap** option from **Plot type** on the left sidebar menu and adjust plot options according to the list below.
 
-    ![*Figure 40. example heatmap after batch effect correction*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_heatmap_after.png "Figure 40. example all2all after batch effect correction")
+![*Figure 40. example heatmap after batch effect correction*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_heatmap_after.png "Figure 40. example all2all after batch effect correction")
 
 
-    * **Heatmap - Plot Options:** 
+* **Heatmap - Plot Options:** 
 
-        * **Plot Type:** Heatmap
-        * **Heatmap Colors:** Check the box of custom colors.
-        * **Data Options:** Choose a dataset: most varied, top-n:1000, total min count:100 (to show the top 1000 most varied genes (based on coefficient of variance) whose total counts are higher than 100)
-        * **QC options - kmeans:** Check the box of kmeans clustering. Select 7 as # of clusters. You might need to change the order of the clusters and click **change order** button to get gradual changes on heatmap as in the figure.
-        * **QC options - heatmap - Size & Margins:** Check the box of the **Plot Size** and adjust width and height to 690 and 1200, respectively.
+    * **Plot Type:** Heatmap
+    * **Heatmap Colors:** Check the box of custom colors.
+    * **Data Options:** Choose a dataset: most varied, top-n:1000, total min count:100 (to show the top 1000 most varied genes (based on coefficient of variance) whose total counts are higher than 100)
+    * **QC options - kmeans:** Check the box of kmeans clustering. Select 7 as # of clusters. You might need to change the order of the clusters and click **change order** button to get gradual changes on heatmap as in the figure.
+    * **QC options - heatmap - Size & Margins:** Check the box of the **Plot Size** and adjust width and height to 690 and 1200, respectively.
         
-    ![*Figure 41. example heatmap menu*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_heatmap_menu.png "Figure 41. example heatmap menu")
+![*Figure 41. example heatmap menu*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_heatmap_menu.png "Figure 41. example heatmap menu")
 
 
 
 ## The Differential Expression Plots
 
-    1) **Upload Data:** To begin the analysis, load Count Data by clicking **Load Demo (Vernia et. al)!** button. Then click on **Filter** button to start **Low Count Filtering**. 
-    2) **Low Count Filtering:** Select **Max** method with cutoff 10 (which filter genes where maximum count for each gene across all samples are less than 10), then click **Filter** button which is located at the center of the page. Proceed to next step by clicking **Batch Effect Correction** button.
-    3) **Batch Effect Correction and Normalization:**  We gonna skip both normalization and batch effect correction by selecting following options: 
+1) **Upload Data:** To begin the analysis, load Count Data by clicking **Load Demo (Vernia et. al)!** button. Then click on **Filter** button to start **Low Count Filtering**. 
+2) **Low Count Filtering:** Select **Max** method with cutoff 10 (which filter genes where maximum count for each gene across all samples are less than 10), then click **Filter** button which is located at the center of the page. Proceed to next step by clicking **Batch Effect Correction** button.
+3) **Batch Effect Correction and Normalization:**  We gonna skip both normalization and batch effect correction by selecting following options: 
         
-        * **Normalization method:** None
-        * **Correction Method:** None
+    * **Normalization method:** None
+    * **Correction Method:** None
         
-    4) **DE Analysis:**  After batch effect correction, click 'Go to DE Analysis'. In this page, we will add groups for comparison. Click on **Add New Comparison** button and select **Select Meta** as **treatment**. It will automatically separate experiment and control data into two groups. You can leave other parameters as default as listed below and click "Submit" button.
+4) **DE Analysis:**  After batch effect correction, click 'Go to DE Analysis'. In this page, we will add groups for comparison. Click on **Add New Comparison** button and select **Select Meta** as **treatment**. It will automatically separate experiment and control data into two groups. You can leave other parameters as default as listed below and click "Submit" button.
     
-        * **DE method:** DESeq2
-        * **Fit Type:** parametric
-        * **betaPrior:** FALSE
-        * **Test Type:** Wald
+    * **DE method:** DESeq2
+    * **Fit Type:** parametric
+    * **betaPrior:** FALSE
+    * **Test Type:** Wald
     
-    ![*Figure 42. example DE form*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_DE_form.png "Figure 42. example DE form")
+![*Figure 42. example DE form*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_DE_form.png "Figure 42. example DE form")
 
-    5) **Main Plots Analysis:** Upon finishing the DESeq analysis, you will see DE Results in table format. Please click on **Go to Main Plots!** button which will open **Scatter Plot**. You can switch to **Volcano Plot** and **MA Plot** by using **Plot Type** section at the left side of the menu. Since these plots are interactive, you can click to **zoom** button on the top of the graph and select the area you would like to zoom in by drawing a rectangle. Please see the plots at below:
+5) **Main Plots Analysis:** Upon finishing the DESeq analysis, you will see DE Results in table format. Please click on **Go to Main Plots!** button which will open **Scatter Plot**. You can switch to **Volcano Plot** and **MA Plot** by using **Plot Type** section at the left side of the menu. Since these plots are interactive, you can click to **zoom** button on the top of the graph and select the area you would like to zoom in by drawing a rectangle. Please see the plots at below:
 
-    ![*Figure 43. example main plots*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_main_plots.png "Figure 43. example main plots")
+![*Figure 43. example main plots*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_main_plots.png "Figure 43. example main plots")
     
-    Please keep in mind that to increace the performance of the generating graph, by default 10% of non-significant(NS) genes are used to generate plots. We used all of the NS genes in our plots that showed above, therefore please click **Main Options** button and change Background Data(%) to 100% on the left sidebar.
+Please keep in mind that to increace the performance of the generating graph, by default 10% of non-significant(NS) genes are used to generate plots. We used all of the NS genes in our plots that showed above, therefore please click **Main Options** button and change Background Data(%) to 100% on the left sidebar.
     
-    ![*Figure 44. example background data*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_background_data.png "Figure 44. example background data")
+![*Figure 44. example background data*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_background_data.png "Figure 44. example background data")
 
-    6) **Read count plots:** Lets return back to **Scatter Plot** by using **Plot Type** section. You can hover on each point on the graph to see their read counts as a bar graph as shown at below. In this example FABP3 is selected to show the high variance of this gene across samples.
+6) **Read count plots:** Lets return back to **Scatter Plot** by using **Plot Type** section. You can hover on each point on the graph to see their read counts as a bar graph as shown at below. In this example FABP3 is selected to show the high variance of this gene across samples.
 
-    ![*Figure 45. example scatter hover*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_scatter_hover.png "Figure 45. example scatter hover")
+![*Figure 45. example scatter hover*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_scatter_hover.png "Figure 45. example scatter hover")
        
-    If you want to mark FABP3 gene on the plot, click on Data Options and enter **FABP3** in to the **search field** as showed below. You will see green mark on the plot that shows FABP3.
+If you want to mark FABP3 gene on the plot, click on Data Options and enter **FABP3** in to the **search field** as showed below. You will see green mark on the plot that shows FABP3.
     
-    ![*Figure 46. example scatter search*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_scatter_search.png "Figure 46. example scatter search")
+![*Figure 46. example scatter search*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_scatter_search.png "Figure 46. example scatter search")
 
 
-    7) **Lasso selection:** DEBrowser can draw heatmaps of any selected region of any main plot. Selection can be made in a rectangular form or as a free-form using plotly’s lasso select. To do so, first click **NS** label at the upper right side of the figure, and hide non-significant genes. Then click on lasso select button at the top of the plot and select the genes you're interested as shown at below. Heatmap will appear just next to scatter plot. Additionally, you can activate interactive mapping option for heatmap by clicking **Interactive** button under **Heatmap Options** on the left sidebar menu. Now, you can hover on the each block of heatmap to see gene name and its value.
+7) **Lasso selection:** DEBrowser can draw heatmaps of any selected region of any main plot. Selection can be made in a rectangular form or as a free-form using plotly’s lasso select. To do so, first click **NS** label at the upper right side of the figure, and hide non-significant genes. Then click on lasso select button at the top of the plot and select the genes you're interested as shown at below. Heatmap will appear just next to scatter plot. Additionally, you can activate interactive mapping option for heatmap by clicking **Interactive** button under **Heatmap Options** on the left sidebar menu. Now, you can hover on the each block of heatmap to see gene name and its value.
     
-    .. tip::
     
-        **Interactive Feature:** In order to increase the performance of the generating heatmaps, **interactive** option is disabled by default. After deciding plotting/clustering parameters of the heatmap, you might activate this feature to investigate each block in detail.
+**Interactive Feature:** In order to increase the performance of the generating heatmaps, **interactive** option is disabled by default. After deciding plotting/clustering parameters of the heatmap, you might activate this feature to investigate each block in detail.
     
-    ![*Figure 47. example scatter lasso*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_scatter_lasso.png "Figure 47. example scatter lasso")
+![*Figure 47. example scatter lasso*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_scatter_lasso.png "Figure 47. example scatter lasso")
        
-    ![*Figure 48. example scatter lasso heatmap*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_scatter_lasso_heatmap.png "Figure 48. example scatter lasso heatmap")
+![*Figure 48. example scatter lasso heatmap*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_scatter_lasso_heatmap.png "Figure 48. example scatter lasso heatmap")
     
-    8) **Scatter plot of the genes enriched in insulin signalling pathway:** In this example, we will highlight genes enriched in insulin signalling pathway. If you already hid NS genes, you can show them by clicking on the **NS** label at the upper right side of the figure. Click on the **Data Options** and enter following genes in to the **search field**:: 
+8) **Scatter plot of the genes enriched in insulin signalling pathway:** In this example, we will highlight genes enriched in insulin signalling pathway. If you already hid NS genes, you can show them by clicking on the **NS** label at the upper right side of the figure. Click on the **Data Options** and enter following genes in to the **search field**: 
     
         Cbl
         Sos1
@@ -774,34 +757,32 @@ Since we finalized out plots without applying batch effect correction, we can re
         Socs2
         Eif4ebp1
         
-    .. tip::
     
-        If you enter more than three lines of genes, search tool will automatically match the beginning and end of the search phrases. Otherwise it will find matched substrings in the gene list.
+* If you enter more than three lines of genes, search tool will automatically match the beginning and end of the search phrases. Otherwise it will find matched substrings in the gene list.
         
         
-    Now, you will see green marks on the **searched genes** as shown below:
+Now, you will see green marks on the **searched genes** as shown below:
     
-    ![*Figure 49. example scatter insulin A*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_scatter_insulin_A.png "Figure 49. example scatter insulin A")
+![*Figure 49. example scatter insulin A*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_scatter_insulin_A.png "Figure 49. example scatter insulin A")
 
     
-    Lets, hide all the genes other then **searched genes** by clicking **NS**, **Up** and **Down** labels at the upper right side of the figure. Since only the selected genes are left on the graph, we can select these genes by clicking on **Select Box** icon and drawing a rectangle which covers all of these genes.  
+Lets, hide all the genes other then **searched genes** by clicking **NS**, **Up** and **Down** labels at the upper right side of the figure. Since only the selected genes are left on the graph, we can select these genes by clicking on **Select Box** icon and drawing a rectangle which covers all of these genes.  
 
-    ![*Figure 50. example scatter insulin selection*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_scatter_insulin_select.png "Figure 50. example scatter insulin selection")
-
-    
-    Here as shown below, heatmap will be simultaneously created just next to scatter plot. You might need to change plot margins as following: 
-    
-    * **Heatmap options -> heatmap - Size & Margins:** Please check the box of the **Plot Size** and adjust width and height to 580 and 500, respectively. 
-    
-    ![*Figure 51. example scatter insulin before normalization*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_scatter_insulin_before_norm.png "Figure 51. example scatter insulin before normalization")
+![*Figure 50. example scatter insulin selection*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_scatter_insulin_select.png "Figure 50. example scatter insulin selection")
 
     
-    Since the data is not normalized, data of exper_rep3 looks like it belongs to control group. We strongly recommend normalization before plotting subset of genes. To normalize, please change the parameters as described below and see the updated figure at below:
+Here as shown below, heatmap will be simultaneously created just next to scatter plot. You might need to change plot margins as following: 
     
-    * **Data options -> Normalization Methods:** Please select **MRN** from the dropdown box.
+* **Heatmap options -> heatmap - Size & Margins:** Please check the box of the **Plot Size** and adjust width and height to 580 and 500, respectively. 
     
-    .. image:: ../debrowser_pics2/example_scatter_insulin_B.png
-    ![*Figure 52. example scatter insulin B*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_scatter_insulin_B.png "Figure 52. example scatter insulin B")
+![*Figure 51. example scatter insulin before normalization*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_scatter_insulin_before_norm.png "Figure 51. example scatter insulin before normalization")
+
+    
+Since the data is not normalized, data of exper_rep3 looks like it belongs to control group. We strongly recommend normalization before plotting subset of genes. To normalize, please change the parameters as described below and see the updated figure at below:
+    
+* **Data options -> Normalization Methods:** Please select **MRN** from the dropdown box.
+    
+![*Figure 52. example scatter insulin B*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_scatter_insulin_B.png "Figure 52. example scatter insulin B")
     
 
 Activating **Interactive** feature changes the heatmap into an interactive version with two colors, allowing you to select specific genes to be compared
@@ -925,20 +906,6 @@ The finished product of the link will look like this::
 
 Inputting this URL into your browser will automatically load in that tsv to be analyzed by DEBrowser!
 
-#       Batch Effect Correction Example
-
-Batch effects can have negative effects on your overall data as a whole.  If samples were not handled at the same time, or just do not
-have the sample level of technical variance as the rest of your samples, this can lead to specific batch effects that might skew test results.  In
-Figures 41-44, we show both before batch and after batch correction IQR plots and how it can having skewing effects on the results of QC analysis.
-
-#       Future Plan:
-
-Future plans will include the following:
-
-	* Venn Diagrams to compare overlapping differentially expressed genes in different
-	  condition comparison results.
-	* Increase in the number of used clustering methods.
-	* GO term analysis gene lists will be added for found GO categories.
 
 #       References
 
