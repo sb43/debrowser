@@ -648,7 +648,7 @@ Since we finalized out plots without applying batch effect correction, we can re
     * **Treatment:** treatment
     * **Batch:** batch
         
-* Please adjust PCA controls (which is located between two PCA plots) as listed below:
+Please adjust PCA controls (which is located between two PCA plots) as listed below.
     
     * **Text On/Off:** On
     * **Select legend:** color
@@ -726,13 +726,13 @@ If you want to mark FABP3 gene on the plot, click on Data Options and enter **FA
 
 7) **Lasso selection:** DEBrowser can draw heatmaps of any selected region of any main plot. Selection can be made in a rectangular form or as a free-form using plotly’s lasso select. To do so, first click **NS** label at the upper right side of the figure, and hide non-significant genes. Then click on lasso select button at the top of the plot and select the genes you're interested as shown at below. Heatmap will appear just next to scatter plot. Additionally, you can activate interactive mapping option for heatmap by clicking **Interactive** button under **Heatmap Options** on the left sidebar menu. Now, you can hover on the each block of heatmap to see gene name and its value.
     
-    
 **Interactive Feature:** In order to increase the performance of the generating heatmaps, **interactive** option is disabled by default. After deciding plotting/clustering parameters of the heatmap, you might activate this feature to investigate each block in detail.
-    
+
 ![*Figure 47. example scatter lasso*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_scatter_lasso.png "Figure 47. example scatter lasso")
        
 ![*Figure 48. example scatter lasso heatmap*](http://bioinfo.umassmed.edu/pub/debrowser/debrowser_pics2/example_scatter_lasso_heatmap.png "Figure 48. example scatter lasso heatmap")
     
+
 8) **Scatter plot of the genes enriched in insulin signalling pathway:** In this example, we will highlight genes enriched in insulin signalling pathway. If you already hid NS genes, you can show them by clicking on the **NS** label at the upper right side of the figure. Click on the **Data Options** and enter following genes in to the **search field**: 
     
         Cbl
@@ -755,11 +755,9 @@ If you want to mark FABP3 gene on the plot, click on Data Options and enter **FA
         Pik3r3
         Socs4
         Socs2
-        Eif4ebp1
-        
+        Eif4ebp1  
     
-* If you enter more than three lines of genes, search tool will automatically match the beginning and end of the search phrases. Otherwise it will find matched substrings in the gene list.
-        
+* If you enter more than three lines of genes, search tool will automatically match the beginning and end of the search phrases. Otherwise it will find matched substrings in the gene list.        
         
 Now, you will see green marks on the **searched genes** as shown below:
     
