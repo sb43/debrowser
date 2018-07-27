@@ -22,45 +22,6 @@ getSamples <- function (cnames = NULL, index = 1) {
     m
 }
 
-#' setFilterParams
-#'
-#' It sets the filter parameters 
-#'
-#' @param session, session variable
-#' @param input, input parameters
-#' @export
-#'
-#' @examples
-#'     x <- setFilterParams()
-#'
-setFilterParams <- function(session = NULL, input = NULL) {
-    if (!is.null(input$padj)){
-        if (input$padj %% 2)
-            valpadj = (10 ^ (-1*as.integer(
-                (10-input$padj)/2 )) ) /2
-        else
-            valpadj = (10 ^ (-1*(10-input$padj)/2))
-        if(input$padj == 0) valpadj = 0
-        updateTextInput(session, "padjtxt",
-            value = valpadj ) 
-    }
-    if (!is.null(input$gopvalue)){
-        if (input$gopvalue%%2)
-            gopval = (10 ^ (-1*as.integer(
-            (10-input$gopvalue)/2 )) ) /2
-      else
-            gopval = (10 ^ (-1*(10-input$gopvalue)/2))
-      if(input$gopvalue==0) gopval = 0
-      updateTextInput(session, "pvaluetxt",
-          value = gopval ) 
-    }
-    if (!is.null(input$foldChange)){
-        valpadjfoldChange = input$foldChange
-        updateTextInput(session, "foldChangetxt",
-            value = valpadjfoldChange)
-    }
-}
-
 #' prepDEOutput
 #'
 #' Prepares the output data from DE analysis to be used within
@@ -105,7 +66,7 @@ prepDEOutput <- function(data = NULL, cols = NULL,
 #'
 applyFilters <- function(filt_data = NULL, cols = NULL, conds=NULL,
     input = NULL){
-    if (is.null(input$padjtxt) || is.null(input$foldChangetxt) 
+    if (is.null(input$padj) || is.null(input$foldChange) 
         || is.null(filt_data)) return(NULL)
     compselect <- 1
     if (!is.null(input$compselect) ) 
@@ -129,8 +90,8 @@ applyFilters <- function(filt_data = NULL, cols = NULL, conds=NULL,
              as.vector(g[g$conds == y, "cols"])] + 0.1)
     filt_data[,cols] <- norm_data
     
-    padj_cutoff <- as.numeric(input$padjtxt)
-    foldChange_cutoff <- as.numeric(input$foldChangetxt)
+    padj_cutoff <- as.numeric(input$padj)
+    foldChange_cutoff <- as.numeric(input$foldChange)
     m <- filt_data
     # Add column which says whether a gene significant or not
     m$Legend <- character(nrow(m))
@@ -460,8 +421,8 @@ applyFiltersToMergedComparison <- function (merged = NULL,
     nc = NULL, input = NULL)
 {
     if (is.null(merged)) return (NULL)
-    padj_cutoff <- as.numeric(input$padjtxt)
-    foldChange_cutoff <- as.numeric(input$foldChangetxt)
+    padj_cutoff <- as.numeric(input$padj)
+    foldChange_cutoff <- as.numeric(input$foldChange)
     if (is.null(merged$Legend)){
         merged$Legend <- character(nrow(merged))
         merged$Legend <- "NS"

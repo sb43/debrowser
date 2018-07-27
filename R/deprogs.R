@@ -25,7 +25,6 @@ debrowserdeanalysis <- function(input = NULL, output = NULL, session = NULL,
         applyFiltersNew(addDataCols(data, deres(), columns, conds), input)
     })
     observe({
-        setFilterParamsNew(session, isolate(input))
         dat <-  prepDat()[prepDat()$Legend == input$legendradio,]
         dat2 <- removeCols(c("ID", "x", "y","Legend", "Size"), dat)
         getTableDetails(output, session, "DEResults", dat2, modal=FALSE)
@@ -73,55 +72,10 @@ getDEResultsUI<- function (id) {
 cutOffSelectionUI <- function(id){
     ns <- NS(id)
     list(
-        tags$head(tags$script(HTML(logSliderJScode(ns("padj"))))),
-            getLegendRadio(id),
-            sliderInput(ns("padj"), "padj value cut off",
-                min=0, max=10, value=6, sep = "",
-                animate = FALSE),
-        textInput(ns("padjtxt"), "or padj", value = "0.01" ),
-        sliderInput(ns("foldChange"), "Fold Change cut off",
-            1, 20, 2, step = 0.1),
-        textInput(ns("foldChangetxt"), "or foldChange", value = "2" )
+        getLegendRadio(id),
+        textInput(ns("padj"), "padj value cut off", value = "0.01" ),
+        textInput(ns("foldChange"), "or foldChange", value = "2" )
     )
-}
-
-#' setFilterParamsNew
-#'
-#' It sets the filter parameters 
-#'
-#' @param session, session variable
-#' @param input, input parameters
-#' @export
-#'
-#' @examples
-#'     x <- setFilterParamsNew()
-#'
-setFilterParamsNew <- function(session = NULL, input = NULL) {
-    if (!is.null(input$padj)){
-        if (input$padj %% 2)
-            valpadj = (10 ^ (-1*as.integer(
-                (10-input$padj)/2 )) ) /2
-        else
-            valpadj = (10 ^ (-1*(10-input$padj)/2))
-        if(input$padj == 0) valpadj = 0
-        updateTextInput(session, "padjtxt",
-            value = valpadj ) 
-    }
-    if (!is.null(input$gopvalue)){
-        if (input$gopvalue%%2)
-            gopval = (10 ^ (-1*as.integer(
-                (10-input$gopvalue)/2 )) ) /2
-        else
-            gopval = (10 ^ (-1*(10-input$gopvalue)/2))
-        if(input$gopvalue==0) gopval = 0
-        updateTextInput(session, "pvaluetxt",
-            value = gopval ) 
-    }
-    if (!is.null(input$foldChange)){
-        valpadjfoldChange = input$foldChange
-        updateTextInput(session, "foldChangetxt",
-            value = valpadjfoldChange)
-    }
 }
 
 #' applyFiltersNew
@@ -140,8 +94,8 @@ setFilterParamsNew <- function(session = NULL, input = NULL) {
 #'
 applyFiltersNew <- function(data = NULL, input = NULL) {
     if (is.null(data)) return(NULL)
-    padj_cutoff <- as.numeric(input$padjtxt)
-    foldChange_cutoff <- as.numeric(input$foldChangetxt)
+    padj_cutoff <- as.numeric(input$padj)
+    foldChange_cutoff <- as.numeric(input$foldChange)
     m <- data
     if (!("Legend" %in% names(m))) {
         m$Legend <- character(nrow(m))
