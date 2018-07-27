@@ -71,12 +71,7 @@ getMainPlotsLeftMenu <- function() {
 getGOLeftMenu <- function() {
     list(
     shinydashboard::menuItem(" Go Term Options", startExpanded=TRUE, 
-                                       
-    tags$head(tags$script(HTML(logSliderJScode("gopvalue")))),
-    sliderInput("gopvalue", "p.adjust cut off",
-        min=0, max=10, value=6, sep = "",
-        animate = FALSE),
-    textInput("pvaluetxt", "or p.adjust", value = "0.01" ),
+    textInput("gopvalue", "p.adjust", value = "0.01" ),
         getOrganismBox(),
             actionButton("GeneTableButton", "DE Genes"),
             conditionalPanel( (condition <- "input.goplot=='enrichKEGG'"),
@@ -148,18 +143,12 @@ getQCLeftMenu <- function( input = NULL) {
 #'
 getCutOffSelection <- function(nc = 1){
     compselect <- getCompSelection("compselect", nc)
-    list( conditionalPanel( (condition <- "input.dataset!='most-varied' &&
+    list( conditionalPanel( (condition = "input.dataset!='most-varied' &&
         input.methodtabs!='panel0'"),
-        tags$head(tags$script(HTML(logSliderJScode("padj")))),
         shinydashboard::menuItem(" Filter",
         #h4("Filter"),
-        sliderInput("padj", "padj value cut off",
-        min=0, max=10, value=6, sep = "",
-        animate = FALSE),
-        textInput("padjtxt", "or padj", value = "0.01" ),
-        sliderInput("foldChange", "Fold Change cut off",
-            1, 10, 2, step = 0.1),
-        textInput("foldChangetxt", "or foldChange", value = "2" ),
+        textInput("padj", "padj", value = "0.01" ),
+        textInput("foldChange", "foldChange", value = "2" ),
         compselect
         )
     ) )
@@ -435,20 +424,20 @@ getTableStyle <- function(dat = NULL, input = NULL,
     if(!is.null(padj) && padj != "" && DEsection)
         a <- a %>% formatStyle(
             padj,
-            color = styleInterval(c(0, input$padjtxt),
+            color = styleInterval(c(0, input$padj),
             c('black', "white", "black")),
             backgroundColor = styleInterval(
-            input$padjtxt, c('green', 'white'))
+            input$padj, c('green', 'white'))
         )
     if(!is.null(foldChange) && foldChange != "" && DEsection)
         a <- a %>%
             formatStyle(
             foldChange,
-            color = styleInterval(c(1/as.numeric(input$foldChangetxt),
-            as.numeric(input$foldChangetxt)), c('white', 'black', 'white')),
+            color = styleInterval(c(1/as.numeric(input$foldChange),
+            as.numeric(input$foldChange)), c('white', 'black', 'white')),
             backgroundColor = styleInterval(
-            c(1/as.numeric(input$foldChangetxt),
-            as.numeric(input$foldChangetxt)),
+            c(1/as.numeric(input$foldChange),
+            as.numeric(input$foldChange)),
             c('red', 'white', 'green'))
     )
     a
@@ -546,7 +535,7 @@ getDownloadSection <- function(choices=NULL) {
         selectInput("selectedplot", "The plot used in selection:",
         choices = c("Main Plot", "Main Heatmap", "QC Heatmap"))),
         selectInput("norm_method", "Normalization Method:",
-        c("none", "MRN", "TMM", "RLE", "upperquartile")),
+        c("none", "MRN", "TMM", "RLE", "upperquartile"), selected = "MRN"),
         downloadButton("downloadData", "Download Data"),
         conditionalPanel(condition = "input.dataset=='most-varied'",
         textInput("topn", "top-n", value = "500" ), 

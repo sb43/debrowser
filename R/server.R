@@ -287,13 +287,12 @@ deServer <- function(input, output, session) {
                 batch()$BatchEffect()$count
         })
         filt_data <- reactive({
-            if (!is.null(init_data()) && !is.null(comparison()) && !is.null(input$padjtxt))
+            if (!is.null(init_data()) && !is.null(comparison()) && !is.null(input$padj))
                 applyFilters(init_data(), cols(), conds(), input)
         })
 
         selectedQCHeat <- reactiveVal()
         observe({
-            setFilterParams(session, input)
             if ((!is.null(input$genenames) && input$interactive == TRUE) || 
                 (!is.null(input$genesetarea) && input$genesetarea != "")){
                 tmpDat <- init_data()
