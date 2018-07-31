@@ -30,7 +30,7 @@ debrowserheatmap <- function( input, output, session, data = NULL){
         })
     })
     heatdata <- reactive({
-        cld <- prepHeatData(data)
+        cld <- prepHeatData(data, input)
         if (input$kmeansControl)
         {
             res <- niceKmeans(cld, input)
@@ -376,31 +376,37 @@ heatmapControlsUI <- function(id) {
     list(
         checkboxInput(ns('interactive'), 'Interactive', value = FALSE),
         kmeansControlsUI(id),
+        shinydashboard::menuItem("Heatmap Options",
+            checkboxInput(ns('scale'), 'Scale', value = TRUE),
+            checkboxInput(ns('center'), 'Center', value = TRUE),
+            checkboxInput(ns('log'), 'Log', value = TRUE),
+            textInput(ns('pseudo'),'Pseudo Count','0.1')
+        ),
         dendControlsUI(id, "Row"),
         dendControlsUI(id, "Col"),
         shinydashboard::menuItem("Heatmap Colors",
-                                 conditionalPanel(paste0("!input['", ns("customColors"), "']"),
-                                    palUI(id),
-                                    sliderInput(ns("ncol"), "# of Colors", 
-                                    min = 1, max = 256, value = 256)),
-                                 customColorsUI(id)
+            conditionalPanel(paste0("!input['", ns("customColors"), "']"),
+            palUI(id),
+            sliderInput(ns("ncol"), "# of Colors", 
+            min = 1, max = 256, value = 256)),
+            customColorsUI(id)
         ),
         shinydashboard::menuItem("Heatmap Dendrogram",
-                                 selectInput(ns('dendrogram'),'Type',
-                                             choices = c("both", "row", "column", "none"),selected = 'both'),
-                                 selectizeInput(ns("seriation"), "Seriation", 
-                                                c(OLO="OLO", GW="GW", Mean="mean", None="none"),selected = 'OLO'),
-                                 sliderInput(ns('branches_lwd'),'Branch Width',
-                                             value = 0.6,min=0,max=5,step = 0.1)
+            selectInput(ns('dendrogram'),'Type',
+            choices = c("both", "row", "column", "none"),selected = 'both'),
+            selectizeInput(ns("seriation"), "Seriation", 
+            c(OLO="OLO", GW="GW", Mean="mean", None="none"),selected = 'OLO'),
+            sliderInput(ns('branches_lwd'),'Branch Width',
+            value = 0.6,min=0,max=5,step = 0.1)
         ),
         shinydashboard::menuItem("Heatmap Layout",
-                                 textInput(ns('main'),'Title',''),
-                                 textInput(ns('xlab'),'Sample label',''),
-                                 sliderInput(ns('row_text_angle'),'Sample Text Angle',
-                                             value = 0,min=0,max=180),
-                                 textInput(ns('ylab'), 'Gene/Region label',''),
-                                 sliderInput(ns('column_text_angle'),'Gene/Region Text Angle',
-                                             value = 45,min=0,max=180)
+            textInput(ns('main'),'Title',''),
+            textInput(ns('xlab'),'Sample label',''),
+            sliderInput(ns('row_text_angle'),'Sample Text Angle',
+            value = 0,min=0,max=180),
+            textInput(ns('ylab'), 'Gene/Region label',''),
+            sliderInput(ns('column_text_angle'),'Gene/Region Text Angle',
+            value = 45,min=0,max=180)
         ))
 }
 #' kmeansControlsUI
@@ -547,16 +553,19 @@ customColorsUI <- function(id) {
 #' @return heatdata
 #'
 #' @examples
-#'     x <- prepHeatData(mtcars)
+#'     x <- prepHeatData()
 #'
 #' @export
 #'
-prepHeatData <- function(data = NULL) 
+prepHeatData <- function(data = NULL, input = NULL) 
 {
     if(is.null(data)) return(NULL)
     ld <- data
-    #ld <- log2(data + 0.1)
-    cldt <- scale(t(ld), center = TRUE, scale = TRUE)
+    if (!is.null(input$pseudo))
+        ld <- ld + as.numeric(input$pseudo)
+    if (!is.null(input$log) && input$log)
+        ld <- log2(ld)
+    cldt <- scale(t(ld), center = input$center, scale = input$scale)
     cld <- t(cldt)
     return(cld)
 }
