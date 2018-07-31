@@ -120,12 +120,18 @@ getQCLeftMenu <- function( input = NULL) {
                 plotSizeMarginsUI("all2all"),
                 all2allControlsUI("all2all")
             ),
+            conditionalPanel( condition <- "(input.qcplot=='Density')",
+                              plotSizeMarginsUI("Density")
+            ),
+            conditionalPanel( condition <- "(input.qcplot=='IQR')",
+                              plotSizeMarginsUI("IQR")
+            ),
         getHelpButton("method",
         "http://debrowser.readthedocs.io/en/develop/quickstart/quickstart.html#heat-maps"),
         conditionalPanel( (condition <- "input.qcplot=='pca'"),
             shinydashboard::menuItem("PCA Options",
             pcaPlotControlsUI("qcpca")),
-            plotSizeMarginsUI("qcpca", w=600, h=400, t=50, b=50, l=60, r=0)
+            plotSizeMarginsUI("qcpca", w=600, h=400, t=0, b=0, l=0, r=0)
         ))
     )
 }

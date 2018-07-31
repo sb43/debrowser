@@ -8,7 +8,7 @@ sidebar <- shinydashboard::dashboardSidebar(
         shinydashboard::menuItem("PCA", tabName = "PCA"),
         shinydashboard::menuItem("PCA Options",
     pcaPlotControlsUI("pca")),
-    plotSizeMarginsUI("pca", w=600, h=400, t=50, b=50, l=60, r=0)
+    plotSizeMarginsUI("pca", w=600, h=400, t=0, b=0, l=0, r=0)
     ))
 
 body <- shinydashboard::dashboardBody(

@@ -40,7 +40,7 @@ debrowserpcaplot <- function(input = NULL, output = NULL, session = NULL, pcadat
         plot_pca(pcadata, input$pcselx, input$pcsely,
             metadata = metadata, color = sc$color,
             size = 5, shape = sc$shape,
-            textonoff = sc$textonoff, 
+            textonoff = sc$textonoff,
             legendSelect = sc$legendSelect, input = input )
     })
     output$pcaplot <- renderUI({
@@ -50,13 +50,13 @@ debrowserpcaplot <- function(input = NULL, output = NULL, session = NULL, pcadat
         collapsible = TRUE, title = "PCA Plot", status = "primary", 
         solidHeader = TRUE, width = NULL,
         draggable = TRUE, plotlyOutput(session$ns("pca1"), 
-        height= input$plotheight, width=input$plotwidth) 
+        height= input$height, width=input$width, inline=TRUE) 
         ),
         shinydashboard::box(
         collapsible = TRUE, title = "Loadings", status = "primary", 
         solidHeader = TRUE, width = NULL,
         draggable = TRUE,  plotlyOutput(session$ns("pca2"), 
-        height= input$plotheight, width=input$plotwidth) )) ) 
+        height= input$height, width=input$width, inline=TRUE) )) ) 
         )
     })
     output$pca1 <- renderPlotly({
@@ -89,8 +89,10 @@ pcaPlotControlsUI <- function(id  = "pca") {
     ns <- NS(id)
     list(fluidRow(column(12, getPCselection(id, 1, "x")), 
          column(12, getPCselection(id, 2, "y"))),
-         fluidRow(column(12, getTextOnOff(id)),
-         column(12, getLegendSelect(id))),
+            fluidRow(
+            column(12, getHideLegendOnOff(id)),
+            column(12, getTextOnOff(id)),
+            column(12, getLegendSelect(id))),
     uiOutput(ns("colorShapeSelect")))
 }
 
@@ -178,7 +180,12 @@ plot_pca <- function(dat = NULL, pcx = 1, pcy = 2,
         plot1 <- plot1 + geom_text(aes(label=samples), vjust = 0, nudge_y = 1)
     plot1 <- plot1 + theme(legend.title = element_blank())
     plot1 <- plot1 +  labs(x = xaxis, y = yaxis)
-    #   theme( plot.margin = unit(unitInputs(), "pt"))
+    if (!is.null(input$top))
+        plot1 <- plot1 + theme( plot.margin = margin(t = input$top, r =input$right, b =input$bottom, l = input$left, "pt"))
+    plot1 <- ggplotly(plot1, width = input$width, height = input$height)
+    if (!is.null(input$legendonoff) && input$legendonoff=="Off") 
+        plot1 <- plotly::hide_legend(plot1)
+
     plot1$elementId <- NULL
     
     pcaExp <- getPCAexplained(dat, pca_data, input)
@@ -396,4 +403,20 @@ getTextOnOff <- function(id = "pca") {
     selectInput(ns("textonoff"), label = "Text On/Off",
                 choices = lst.choices,
                 selected = "Off")
+}
+
+#' getHideLegendOnOff
+#'
+#' hide legend
+#' @param id, namespace id
+#' @examples
+#'     x <- getHideLegendOnOff("pca")
+#' @export
+#'
+getHideLegendOnOff <- function(id = "pca") {
+    ns <- NS(id)
+    lst.choices <- as.list(c("On", "Off"))
+    selectInput(ns("legendonoff"), label = "Legend On/Off",
+                choices = lst.choices,
+                selected = "On")
 }

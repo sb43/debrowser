@@ -91,7 +91,9 @@ getDensityPlot <- function(data=NULL, input = NULL, title = ""){
     geom_density(aes(fill = samples), alpha = 0.5) +
     labs(x = "logcount", y = "Density") +
     theme_minimal()
-  
+  if (!is.null(input$top))
+      p <- p + theme( plot.margin = margin(t = input$top, r =input$right, b =input$bottom, l = input$left, "pt"))
+  p <- ggplotly(p, width = input$width, height = input$height)
   p$elementId <- NULL
   p
 }

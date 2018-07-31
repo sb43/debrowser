@@ -37,14 +37,9 @@
 #' @importFrom ggplot2 aes aes_string geom_bar geom_point ggplot
 #'             labs scale_x_discrete scale_y_discrete ylab
 #'             autoplot theme_minimal theme geom_density
-#'             geom_text element_blank
-#' @importFrom ggvis add_axis add_legend add_tooltip axis_props
-#'             bind_shiny create_broker ggvis ggvisOutput handle_brush
-#'             hide_legend layer_bars layer_boxplots layer_points
-#'             scale_nominal set_options %>% group_by layer_rects
-#'             band scale_numeric hide_axis layer_densities scale_ordinal
-#'             layer_text
+#'             geom_text element_blank margin
 #' @importFrom plotly renderPlotly plotlyOutput plot_ly add_bars event_data
+#'             hide_legend %>% group_by ggplotly
 #' @importFrom gplots heatmap.2 redblue bluered
 #' @importFrom igraph layout.kamada.kawai  
 #' @importFrom grDevices dev.off pdf colorRampPalette 

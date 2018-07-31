@@ -1,4 +1,5 @@
 library(debrowser)
+library(reshape2)
 
 options(warn =-1)
 
@@ -8,8 +9,8 @@ header <- dashboardHeader(
 sidebar <- dashboardSidebar(  sidebarMenu(id="DataAssessment",
       menuItem("Density", tabName = "Density"),
       textInput("maxCutoff", "Max Cutoff", value = "10" ),
-      plotSizeMarginsUI("density", h=400),
-      plotSizeMarginsUI("afterFiltering", h=400)
+      plotSizeMarginsUI("density", h=400, t=0, b=0,r=0,l=0),
+      plotSizeMarginsUI("afterFiltering", h=400, t=0, b=0,r=0,l=0)
 ))
 
 body <- dashboardBody(

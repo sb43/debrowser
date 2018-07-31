@@ -23,11 +23,6 @@ getQCPanel <- function(input = NULL) {
         submit button in the left menu for the plots" ),
         getHelpButton("method", 
         "http://debrowser.readthedocs.io/en/develop/quickstart/quickstart.html#quality-control-plots")),
-        conditionalPanel(condition = "input.qcplot == 'IQR' 
-            || input.qcplot == 'Density'",
-            column(12, ggvisOutput("ggvisQC1")),
-            column(12, ggvisOutput("ggvisQC2"))
-        ),
         conditionalPanel(condition = "input.qcplot == 'pca'",
             getPCAPlotUI("qcpca")),    
         conditionalPanel(condition = "(input.qcplot == 'heatmap')",

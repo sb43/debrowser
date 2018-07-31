@@ -562,7 +562,7 @@ getPCAcontolUpdatesJS<-function(){
                                               });
                         });
                         
-                        var nameDropdowns = ['textonoff', 'legendSelect', 'color_pca','shape_pca'];
+                        var nameDropdowns = ['textonoff', 'legendonoff', 'legendSelect', 'color_pca','shape_pca'];
                         $.each(nameDropdowns, function (el) {
                             $(function () {
                                 $(document).on('change', '#batcheffect-beforeCorrectionPCA-'+nameDropdowns[el], function () {
