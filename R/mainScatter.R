@@ -24,12 +24,12 @@ debrowsermainplot <- function(input = NULL, output = NULL, session = NULL, data 
     output$mainplot <- renderUI({
         list(fluidRow(
             column(12,
-                   shinydashboard::box(
-                       collapsible = TRUE, title = "Main Plots", status = "primary", 
-                       solidHeader = TRUE,width = NULL,
-                       draggable = TRUE, plotlyOutput(session$ns("main"), 
-                           height=input$plotheight, width=input$plotwidth)
-                   ))))
+            shinydashboard::box(
+                collapsible = TRUE, title = "Main Plots", status = "primary", 
+                solidHeader = TRUE,width = NULL,
+                draggable = TRUE, plotlyOutput(session$ns("main"), 
+                height=input$plotheight, width=input$plotwidth)
+            ))))
     })
     selectedPoint <- reactive({
         eventdata <- event_data("plotly_click", source = session$ns("source"))
@@ -199,11 +199,11 @@ mainPlotControlsUI <- function(id) {
     shinydashboard::menuItem("Main Options",
         sliderInput(ns("backperc"), "Background Data(%):",
         min=10, max=100, value=10, sep = "",
-        animate = FALSE), 
+        animate = FALSE),
         conditionalPanel(condition <- paste0("input['", ns("mainplot"),"'] == 'volcano'"),
-             sliderInput(ns("log10padjCutoff"), "Log10 padj value cutoff:",
-                min=2, max=100, value=60, sep = "",
-                animate = FALSE)
+            sliderInput(ns("log10padjCutoff"), "Log10 padj value cutoff:",
+            min=2, max=100, value=60, sep = "",
+            animate = FALSE)
         )
         ))
 }

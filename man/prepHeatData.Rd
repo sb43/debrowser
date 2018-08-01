@@ -4,7 +4,7 @@
 \alias{prepHeatData}
 \title{prepHeatData}
 \usage{
-prepHeatData(data = NULL)
+prepHeatData(data = NULL, input = NULL)
 }
 \arguments{
 \item{data, }{a matrixthat includes expression values}
@@ -16,6 +16,6 @@ heatdata
 scales the data
 }
 \examples{
-    x <- prepHeatData(mtcars)
+    x <- prepHeatData()
 
 }

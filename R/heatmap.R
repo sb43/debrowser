@@ -608,7 +608,6 @@ heatmapJScode <- function() {
     controlname : "hoveredgenename"
     };
     params = shinyjs.getParams(params, defaultParams);
-    console.log(params.controlname)
     var out = ""
     
     if (typeof  document.getElementsByClassName("nums")[0] != "undefined"){

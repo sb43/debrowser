@@ -334,15 +334,35 @@ deServer <- function(input, output, session) {
                 })
             }
         })
+        changedPlot <- reactiveVal()
+        selgenename <- reactive({
+            genename <- NULL
+            
+            #if (is.null(input$selectedgeneplottype) ||  input$selectedgeneplottype == "Main"){
+            if (!is.null(selectedMain()) && !is.null(selectedMain()$shgClicked()) 
+                && selectedMain()$shgClicked()!=""){
+                genename <- selectedMain()$shgClicked()
+            }
+            #}
+            #else{
+            #if (!is.null(input$selectedgeneplottype)
+            #     && input$selectedgeneplottype == "Heatmap") {
+                else if (!is.null(selectedHeat()) && !is.null(selectedHeat()$shgClicked()) && 
+                    selectedHeat()$shgClicked() != "")
+                    genename <- selectedHeat()$shgClicked()
+                else if (!is.null(selectedHeat()) && !is.null(selectedHeat()$shg()) && 
+                    selectedHeat()$shg() != "")
+                    genename <- selectedHeat()$shg()
+            #}
+            #}
+        })
         observe({
-            if (!is.null(selectedMain()) && !is.null(selectedMain()$shgClicked()) && selectedMain()$shgClicked()!=""){
+            if (!is.null(selgenename()) && !is.null(selgenename()!="")){
                 withProgress(message = 'Creating Bar/Box plots', style = "notification", value = 0.1, {
                     callModule(debrowserbarmainplot, "barmain", filt_data(), 
-                               cols(), conds(),  
-                               selectedMain()$shgClicked())
+                               cols(), conds(), selgenename())
                     callModule(debrowserboxmainplot, "boxmain", filt_data(), 
-                               cols(), conds(),
-                               selectedMain()$shgClicked())
+                               cols(), conds(), selgenename())
                 })
             }
         })
