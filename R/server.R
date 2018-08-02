@@ -203,8 +203,8 @@ deServer <- function(input, output, session) {
             if (buttonValues$startDE)
                 choices <- c("up+down", "up", "down",
                              "comparisons", "alldetected",
-                             "most-varied")
-            choices <- c(choices, "selected")
+                             "most-varied", "selected")
+            choices <- c(choices, "searched")
             getDownloadSection(choices)
         })
        

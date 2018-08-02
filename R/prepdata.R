@@ -154,7 +154,7 @@ getSelectedDatasetInput<-function(rdata = NULL, getSelected = NULL,
     } else if (input$dataset == "comparisons") {
         m <- mergedComparison
     } else if (input$dataset == "searched") {
-        m <- searched
+        m <- getSearchData(rdata, input)
     }
     m
 }
@@ -325,9 +325,7 @@ getDataForTables <- function(input = NULL, init_data = NULL,
     fcstr <- "foldChange"
     dat <- NULL
     if (input$dataset == "alldetected"){
-        if (!is.null(init_data)){
             dat <- getSearchData(init_data, input)
-        }
     }
     else if (input$dataset == "up+down"){
         if (!is.null(filt_data))
@@ -355,6 +353,9 @@ getDataForTables <- function(input = NULL, init_data = NULL,
         fcstr<-colnames(mergedComp)[grepl("foldChange", colnames(mergedComp))]
         pastr<-colnames(mergedComp)[grepl("padj", colnames(mergedComp))]
         dat <- getSearchData(mergedComp, input)
+    }
+    else if (input$dataset == "searched"){
+        dat <- getSearchData(init_data, input)
     }
     list(dat, pastr, fcstr)
 }
