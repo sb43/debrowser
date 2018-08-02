@@ -19,7 +19,7 @@ debrowserheatmap <- function( input, output, session, data = NULL){
     output$heatmap <- renderPlotly({
         shinyjs::onevent("mousemove", "heatmap", js$getHoverName(session$ns("hoveredgenename")))
         shinyjs::onevent("click", "heatmap", js$getHoverName(session$ns("hoveredgenenameclick")))
-        #shinyjs::onclick( "heatmap", js$getHoverName(session$ns("hoveredgenename1")))
+
         withProgress(message = 'Drawing Heatmap', detail = "interactive", value = 0, {
             runHeatmap(input, session, orderData())
         })
@@ -76,7 +76,7 @@ debrowserheatmap <- function( input, output, session, data = NULL){
             js$getSelectedGenes()
     })
     shgClicked <- reactive({
-        if (is.null(input$hoveredgenenameclick)) return("")
+        if (is.null(input$hoveredgenenameclick) || input$hoveredgenenameclick == "") return(input$hoveredgenename)
         input$hoveredgenenameclick
     })
     
@@ -151,8 +151,7 @@ runHeatmap <- function(input = NULL, session = NULL, data = NULL){
     else{
         if (!is.null(input$color1))
             heatmapColors <- colorRampPalette(c(input$color1, 
-                                                input$color2, input$color3))(n = 1000)
-        #heatmapColors <- colorRampPalette(c("red", "white", "blue"))(n = 1000)
+               input$color2, input$color3))(n = 1000)
     }
     
     if (!input$kmeansControl){
@@ -376,7 +375,7 @@ heatmapControlsUI <- function(id) {
     list(
         checkboxInput(ns('interactive'), 'Interactive', value = FALSE),
         kmeansControlsUI(id),
-        shinydashboard::menuItem("Heatmap Options",
+        shinydashboard::menuItem("Scale Options",
             checkboxInput(ns('scale'), 'Scale', value = TRUE),
             checkboxInput(ns('center'), 'Center', value = TRUE),
             checkboxInput(ns('log'), 'Log', value = TRUE),
@@ -618,7 +617,15 @@ heatmapJScode <- function() {
     }
     Shiny.onInputChange(params.controlname, $("#heatmap-heatmap").attr("gname"));
     }
-    
+    shinyjs.resetInputParam = function(params){
+        var defaultParams = {
+                controlname : "hoveredgenename"
+        };
+        params = shinyjs.getParams(params, defaultParams);
+        console.log(params.controlname)
+        Shiny.onInputChange(params.controlname, "");
+    }
+
     shinyjs.getSelectedGenes = function(params){
     var defaultParams = {
     plotId : "heatmap",
@@ -652,5 +659,5 @@ heatmapJScode <- function() {
 getJSLine <-function()
 {        
     list(shinyjs::useShinyjs(),
-         shinyjs::extendShinyjs(text = heatmapJScode(), functions = c("getHoverName", "getSelectedGenes")))
+         shinyjs::extendShinyjs(text = heatmapJScode(), functions = c("getHoverName", "getSelectedGenes", "resetInputParam")))
 }
