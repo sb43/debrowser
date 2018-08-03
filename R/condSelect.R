@@ -52,7 +52,7 @@ list(
         uiOutput("conditionSelector"),
         column(12,actionButton("add_btn", "Add New Comparison",styleclass = "primary"),
             actionButton("rm_btn", "Remove", styleclass = "primary"),
-            getHelpButton("method", "http://debrowser.readthedocs.io/en/develop/deseq/deseq.html"),
+            getHelpButton("method", "http://debrowser.readthedocs.io/en/master/deseq/deseq.html"),
             conditionalPanel(condition <- ("output.condReady>0"),
             actionButton("startDE", "Start DE", styleclass = "primary")))
     ))

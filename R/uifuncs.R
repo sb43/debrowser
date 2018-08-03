@@ -121,13 +121,15 @@ getQCLeftMenu <- function( input = NULL) {
                 all2allControlsUI("all2all")
             ),
             conditionalPanel( condition <- "(input.qcplot=='Density')",
-                              plotSizeMarginsUI("Density")
+                              plotSizeMarginsUI("density"),
+                              plotSizeMarginsUI("normdensity")
             ),
             conditionalPanel( condition <- "(input.qcplot=='IQR')",
-                              plotSizeMarginsUI("IQR")
+                              plotSizeMarginsUI("IQR"),
+                              plotSizeMarginsUI("normIQR")
             ),
         getHelpButton("method",
-        "http://debrowser.readthedocs.io/en/develop/quickstart/quickstart.html#heat-maps"),
+        "http://debrowser.readthedocs.io/en/master/heatmap/heatmap.html"),
         conditionalPanel( (condition <- "input.qcplot=='pca'"),
             shinydashboard::menuItem("PCA Options",
             pcaPlotControlsUI("qcpca")),
@@ -342,7 +344,7 @@ a <- list( conditionalPanel(condition <- "!input.startPlots",
     column( 12, 
     helpText( "Please choose the appropriate parameters to discover
                more in DE Results" ),
-    getHelpButton("method", "http://debrowser.readthedocs.io/en/develop/quickstart/quickstart.html#the-main-plots"))))
+    getHelpButton("method", "http://debrowser.readthedocs.io/en/master/quickstart/quickstart.html"))))
 }
 
 #' getCondMsg
@@ -376,7 +378,7 @@ getCondMsg <- function(dc = NULL, num = NULL, cols = NULL, conds = NULL) {
             paste(cnd[cnd$conds == unique(conds)[2], "cols"],
             collapse =",")),
         getHelpButton("method",
-"http://debrowser.readthedocs.io/en/develop/quickstart/quickstart.html#the-main-plots")))))
+"http://debrowser.readthedocs.io/en/master/quickstart/quickstart.html#the-main-plots-of-de-analysis")))))
 }
 
 #' togglePanels
@@ -577,7 +579,7 @@ getQCPanel <- function(input = NULL) {
         wellPanel(helpText( "Please select the parameters and press the 
                             submit button in the left menu for the plots" ),
                   getHelpButton("method", 
-                                "http://debrowser.readthedocs.io/en/develop/quickstart/quickstart.html#quality-control-plots")),
+                                "http://debrowser.readthedocs.io/en/master/quickstart/quickstart.html#quality-control-plots")),
         conditionalPanel(condition = "input.qcplot == 'pca'",
                          getPCAPlotUI("qcpca")),    
         conditionalPanel(condition = "(input.qcplot == 'heatmap')",

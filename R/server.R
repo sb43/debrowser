@@ -545,8 +545,12 @@ deServer <- function(input, output, session) {
             return(datDT)
         })
         getMostVaried <- reactive({
-             getMostVariedList(init_data(), 
-                    colnames(init_data()), input)
+            cs <- colnames(init_data())
+            if (!is.null(cols())) {
+                cs <- cols()
+            }
+            getMostVariedList(init_data(), 
+                cs, input)
         })
         output$gotable <- DT::renderDataTable({
             if (!is.null(inputGOstart()$table)){
@@ -580,12 +584,12 @@ deServer <- function(input, output, session) {
                 if (input$dataset == "comparisons"){
                     mergedCompDat <- mergedComp()
                 }
-                tmpDat <- getSelectedDatasetInput(filt_data(), 
-                     sdata, getMostVaried(),
-                     mergedCompDat, input)
+                tmpDat <- getSelectedDatasetInput(rdata = filt_data(), 
+                     getSelected = sdata, getMostVaried = getMostVaried(),
+                     mergedCompDat, input = input)
             }
             else{
-                tmpDat <- getSelectedDatasetInput(init_data(), 
+                tmpDat <- getSelectedDatasetInput(rdata = init_data(), 
                      getSelected = sdata,
                      getMostVaried = getMostVaried(),
                      input = input)
