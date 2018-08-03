@@ -150,7 +150,7 @@ getSelectedDatasetInput<-function(rdata = NULL, getSelected = NULL,
     } else if (input$dataset == "selected" && !is.null(input$selectedplot)) {
         m <- getSelected
     } else if (input$dataset == "most-varied") {
-        m <- getMostVaried
+        m <- rdata[rownames(getMostVaried), ]
     } else if (input$dataset == "comparisons") {
         m <- mergedComparison
     } else if (input$dataset == "searched") {
@@ -177,8 +177,7 @@ getSelectedDatasetInput<-function(rdata = NULL, getSelected = NULL,
 getMostVariedList <- function(datavar = NULL, cols = NULL, input = NULL){
     if (is.null(datavar)) return (NULL)
     topn <- as.integer(as.numeric(input$topn))
-    norm <- getNormalizedMatrix(datavar[,cols], input$norm_method)
-    filtvar <- norm[rowSums(norm) >
+    filtvar <- datavar[rowSums(datavar[,cols]) >
         as.integer(as.numeric(input$mincount)),]
     cv<-cbind(apply(filtvar, 1, function(x) 
         (sd(x,na.rm=TRUE)/mean(x,na.rm=TRUE))), 1)
@@ -187,7 +186,7 @@ getMostVariedList <- function(datavar = NULL, cols = NULL, input = NULL){
     topindex<-nrow(cvsort)
     if (topindex > topn) topindex <- topn
     cvsort_top <- head(cvsort, topindex)
-    selected_var <- data.frame(filtvar[rownames(cvsort_top),])
+    selected_var <- data.frame(datavar[rownames(cvsort_top),])
 }
 
 
@@ -342,11 +341,13 @@ getDataForTables <- function(input = NULL, init_data = NULL,
     else if (input$dataset == "selected"){
         dat <- getSearchData(selected, input)
     }
-    else if (input$dataset == "pcaset"){
-        dat <- getSearchData( explainedData, input )
-    }
     else if (input$dataset == "most-varied"){
-        dat <- getSearchData(getMostVaried, input)
+        if (!is.null(filt_data)){
+            d <- filt_data[rownames(getMostVaried),]
+        }else{
+            d <- init_data[rownames(getMostVaried),]
+        }
+        dat <- getSearchData(d, input)
     }
     else if (input$dataset == "comparisons"){
         if (is.null(mergedComp)) return(NULL)

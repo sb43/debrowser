@@ -365,11 +365,13 @@ deServer <- function(input, output, session) {
         })
         
         normdat <-  reactive({
-            dat <- init_data()
-            if(!is.null(cols()))
-                dat <- init_data()[,cols()]
-            norm <- getNormalizedMatrix(dat, input$norm_method)
-            getSelectedCols(norm, datasetInput(), input)
+            if (!is.null(init_data())){
+                dat <- init_data()
+                if(!is.null(cols()))
+                    dat <- init_data()[,cols()]
+                norm <- getNormalizedMatrix(dat, input$norm_method)
+                getSelectedCols(norm, datasetInput(), input)
+            }
         })
 
         df_select <- reactive({
@@ -545,12 +547,10 @@ deServer <- function(input, output, session) {
             return(datDT)
         })
         getMostVaried <- reactive({
-            cs <- colnames(init_data())
-            if (!is.null(cols())) {
-                cs <- cols()
-            }
-            getMostVariedList(init_data(), 
-                cs, input)
+            dat <- init_data()
+            if (!is.null(cols()))
+                dat <- init_data()[,cols()]
+            getMostVariedList(dat, colnames(dat), input)
         })
         output$gotable <- DT::renderDataTable({
             if (!is.null(inputGOstart()$table)){
