@@ -549,6 +549,7 @@ customColorsUI <- function(id) {
 #' scales the data
 #'
 #' @param data, a matrixthat includes expression values
+#' @param input, input variables
 #' @return heatdata
 #'
 #' @examples

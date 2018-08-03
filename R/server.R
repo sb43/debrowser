@@ -301,11 +301,11 @@ deServer <- function(input, output, session) {
                    genenames <- paste(rownames(tmpDat), collapse = ",")
                 }
             }
-            if(!is.null(input$qcplot) && !is.null(df_select())){
+            if(!is.null(input$qcplot) && !is.null(normdat())){
                 if (input$qcplot == "all2all") {
-                    callModule(debrowserall2all, "all2all", df_select(), input$cex)
+                    callModule(debrowserall2all, "all2all", normdat(), input$cex)
                 } else if (input$qcplot == "pca") {
-                    callModule(debrowserpcaplot, "qcpca", df_select(), batch()$BatchEffect()$meta)
+                    callModule(debrowserpcaplot, "qcpca", normdat(), batch()$BatchEffect()$meta)
                 } else if (input$qcplot == "heatmap") {
                     selectedQCHeat(callModule(debrowserheatmap, "heatmapQC", normdat()))
                 } else if (input$qcplot == "IQR") {
@@ -405,7 +405,7 @@ deServer <- function(input, output, session) {
         })
         
         datForTables <- reactive({
-            dat <- getDataForTables(input, init_data(),
+            dat <- getDataForTables(input, normdat(),
                 filt_data(), selectedData(),
                 getMostVaried(), mergedComp())
             return(dat)
@@ -535,14 +535,8 @@ deServer <- function(input, output, session) {
             return(datDT)
         })
         getMostVaried <- reactive({
-            mostVaried <- NULL
-            if (buttonValues$startDE)
-                mostVaried <- filt_data()[filt_data()$Legend=="MV" | 
-                    filt_data()$Legend=="GS", ]
-            else
-                mostVaried <- getMostVariedList(init_data(), 
+             getMostVariedList(init_data(), 
                     colnames(init_data()), input)
-            mostVaried
         })
         output$gotable <- DT::renderDataTable({
             if (!is.null(inputGOstart()$table)){

@@ -177,17 +177,17 @@ getSelectedDatasetInput<-function(rdata = NULL, getSelected = NULL,
 getMostVariedList <- function(datavar = NULL, cols = NULL, input = NULL){
     if (is.null(datavar)) return (NULL)
     topn <- as.integer(as.numeric(input$topn))
-    datavar <- datavar[rowSums(datavar[,cols]) >
-        as.integer(as.numeric(input$mincount)), cols]
-    cv<-cbind(apply(datavar, 1, function(x) 
-
+    norm <- getNormalizedMatrix(datavar[,cols], input$norm_method)
+    filtvar <- norm[rowSums(norm) >
+        as.integer(as.numeric(input$mincount)),]
+    cv<-cbind(apply(filtvar, 1, function(x) 
         (sd(x,na.rm=TRUE)/mean(x,na.rm=TRUE))), 1)
     colnames(cv)<-c("coeff", "a")
     cvsort<-cv[order(cv[,1],decreasing=TRUE),]
     topindex<-nrow(cvsort)
     if (topindex > topn) topindex <- topn
     cvsort_top <- head(cvsort, topindex)
-    selected_var <- data.frame(datavar[rownames(cvsort_top),])
+    selected_var <- data.frame(filtvar[rownames(cvsort_top),])
 }
 
 
