@@ -612,14 +612,12 @@ getSelectedCols <- function(data = NULL, datasetInput = NULL, input=NULL){
     if(is.null(data) || is.null(datasetInput)) return(NULL)
     selCols <- NULL
     if (!is.null(input$dataset)){
-        all <- input$samples
-        selection <- input$col_list
-        if("All" %in% input$col_list || length(input$col_list) == 0){
-            selection <- all
-        }else{
+        selection <- colnames(data)
+        if (!is.null(input$col_list))
             selection <- input$col_list
-        }
+
         selection <- selection[selection %in% colnames(data)]
+        
         if (!is.null(selection))
             selCols <- data[rownames(datasetInput), selection]
     }

@@ -382,7 +382,7 @@ deServer <- function(input, output, session) {
             if (!is.null(cols()))
                 existing_cols <- cols()
             wellPanel(id = "tPanel",
-                style = "overflow-y:scroll; max-height: 200px",
+                style = "overflow-y:scroll; max-height: 300px",
                 checkboxGroupInput("col_list", "Select col to include:",
                 existing_cols, 
                 selected=existing_cols)
@@ -405,10 +405,9 @@ deServer <- function(input, output, session) {
         })
         
         datForTables <- reactive({
-            dat <- getDataForTables(input, normdat(),
+            getDataForTables(input, normdat(),
                 filt_data(), selectedData(),
                 getMostVaried(), mergedComp())
-            return(dat)
         })
 
         inputGOstart <- reactive({
