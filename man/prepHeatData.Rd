@@ -8,6 +8,8 @@ prepHeatData(data = NULL, input = NULL)
 }
 \arguments{
 \item{data, }{a matrixthat includes expression values}
+
+\item{input, }{input variables}
 }
 \value{
 heatdata

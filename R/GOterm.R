@@ -90,15 +90,13 @@ getEntrezIds <- function(genes = NULL, org = "org.Hs.eg.db") {
         column="ENTREZID", keytype="SYMBOL",
         multiVals = "first")
     mapped_genes <- mapped_genes[!is.na(mapped_genes)]
-    genelist <- cbind(mapped_genes, genes[names(mapped_genes), "log2FoldChange"])
+    genelist <- cbind(mapped_genes, names(mapped_genes), genes[names(mapped_genes), "log2FoldChange"])
     
-    colnames(genelist) <- c("ENTREZID", "log2FoldChange")
+    colnames(genelist) <- c("ENTREZID", "SYMBOL", "log2FoldChange")
     genelist <- data.frame(genelist)
     genelist$log2FoldChange <- as.numeric(as.character(genelist$log2FoldChange))
     rownames(genelist) <- genelist$ENTREZID
-    fchange <- genelist$log2FoldChange
-    names(fchange) <- genelist$ENTREZID
-    fchange
+    genelist
 }
 #' getEnrichGO
 #'

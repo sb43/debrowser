@@ -55,7 +55,7 @@
 #' @importMethodsFrom DOSE summary
 #' @importMethodsFrom AnnotationDbi as.data.frame as.list colnames
 #'             exists sample subset head mappedkeys ncol nrow subset 
-#'             keys mapIds
+#'             keys mapIds select
 #' @importMethodsFrom GenomicRanges as.factor setdiff
 #' @importMethodsFrom IRanges as.matrix "colnames<-" mean
 #'             nchar paste rownames toupper unique which
@@ -412,8 +412,10 @@ deServer <- function(input, output, session) {
 
         inputGOstart <- reactive({
             if (input$startGO){
-                dat <- datForTables()
-                getGOPlots(dat[[1]][, isolate(cols())], input)
+                withProgress(message = 'GO Started', detail = "interactive", value = 0, {
+                    dat <- datForTables()
+                    getGOPlots(dat[[1]][, isolate(cols())], input)
+                })
             }
         })
         observeEvent(input$startGO, {
@@ -425,6 +427,7 @@ deServer <- function(input, output, session) {
             }
         })
         output$KEGGPlot <- renderImage({
+            withProgress(message = 'KEGG Started', detail = "interactive", value = 0, {
             validate(need(!is.null(input$gotable_rows_selected),
                           "Please select a category in the GO/KEGG table to be able
                           to see the pathway diagram"))
@@ -432,19 +435,27 @@ deServer <- function(input, output, session) {
             org <- input$organism
             dat <- datForTables()
             genedata <- getEntrezIds(dat[[1]], org)
+            foldChangeData <- data.frame(genedata$log2FoldChange)
+            rownames(foldChangeData) <- rownames(genedata)
             i <- input$gotable_rows_selected
             pid <- inputGOstart()$table$ID[i]
-            pathview(gene.data = genedata,
-                 pathway.id = pid,
-                 species = substr(inputGOstart()$table$ID[i],0,3),
-                 out.suffix = "b.2layer", kegg.native = TRUE)
+
+            tryCatch({
+                pathview(gene.data = foldChangeData,
+                    pathway.id = pid,
+                    species = substr(pid,0,3),
+                    gene.idtype="entrez",
+                    out.suffix = "b.2layer", kegg.native = TRUE)
+            })
             unlink(paste0(pid,".png"))
             unlink(paste0(pid,".xml"))
             list(src = paste0(pid,".b.2layer.png"),
                  contentType = 'image/png')
+            })
         }, deleteFile = TRUE)
 
         getGOCatGenes <- reactive({
+            print(input$gotable_rows_selected)
             if(is.null(input$gotable_rows_selected)) return (NULL)
             org <- input$organism
             dat <- tabledat()
