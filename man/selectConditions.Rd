@@ -4,8 +4,8 @@
 \alias{selectConditions}
 \title{selectConditions}
 \usage{
-selectConditions(Dataset = NULL, metadata = NULL,
-  choicecounter = NULL, input = NULL)
+selectConditions(Dataset = NULL, metadata = NULL, choicecounter = NULL,
+  input = NULL)
 }
 \arguments{
 \item{Dataset, }{used dataset}

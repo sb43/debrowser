@@ -128,7 +128,7 @@ deServer <- function(input, output, session) {
         })
 
         observe({
-            updata(callModule(debrowserdataload, "load"))
+            updata(callModule(debrowserdataload, "load", "Filter"))
             
             observeEvent (input$Filter, {
                 if(!is.null(updata()$load())){ 

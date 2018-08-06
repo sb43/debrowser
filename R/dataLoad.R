@@ -13,7 +13,7 @@
 #' @examples
 #'     x <- debrowserdataload()
 #'
-debrowserdataload <- function(input = NULL, output = NULL, session = NULL) {
+debrowserdataload <- function(input = NULL, output = NULL, session = NULL, nextpagebutton = NULL) {
     if (is.null(input)) return(NULL)
     ldata <- reactiveValues(count=NULL, meta=NULL)
     output$dataloaded <- reactive({
@@ -108,7 +108,9 @@ debrowserdataload <- function(input = NULL, output = NULL, session = NULL) {
         }
         return(ret)
     })
-    
+    output$nextButton <- renderUI({
+        actionButton(nextpagebutton, label = nextpagebutton, styleclass = "primary")
+    })
     observe({
         getSampleDetails(output, "uploadSummary", "sampleDetails", loadeddata())
     })
@@ -139,7 +141,8 @@ dataLoadUI<- function (id) {
         actionButton(ns("demo2"),  label = "Load Demo (Donnard et. al)", styleclass = "primary"))),
         fluidRow(column(12,
         conditionalPanel(condition = paste0("output['", ns("dataloaded"),"']"),
-        actionButton("Filter", label = "Filter", styleclass = "primary")))
+        uiOutput(ns("nextButton"))
+        ))
         ), br(),
   fluidRow(
     shinydashboard::box(title = "Upload Summary",

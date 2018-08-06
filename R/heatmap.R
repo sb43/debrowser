@@ -662,3 +662,86 @@ getJSLine <-function()
     list(shinyjs::useShinyjs(),
          shinyjs::extendShinyjs(text = heatmapJScode(), functions = c("getHoverName", "getSelectedGenes", "resetInputParam")))
 }
+
+
+#' heatmapServer
+#'
+#' Sets up shinyServer to be able to run heatmapServer interactively.
+#'
+#' @note \code{heatmapServer}
+#' @param input, input params from UI
+#' @param output, output params to UI
+#' @param session, session variable
+#' @return the panel for main plots;
+#'
+#' @examples
+#'     heatmapServer
+#'
+#' @export
+
+
+heatmapServer <- function(input, output, session) {
+    updata <- reactiveVal()
+    observe({
+    updata(callModule(debrowserdataload, "load", "Heatmap"))
+    })
+    selected <- reactiveVal()
+    observeEvent (input$Heatmap, {
+        updateTabItems(session, "Heatmap", "Heatmap")
+        dat <- head(updata()$load()$count)
+        print(dat)
+        withProgress(message = 'Creating plot', style = "notification", value = 0.1, {
+            selected(callModule(debrowserheatmap, "heatmap", dat))
+        })
+    })
+
+    output$heatmap_hover <- renderPrint({
+        if (!is.null(selected()) && !is.null(selected()$shgClicked()) && 
+            selected()$shgClicked() != "")
+            return(paste0("Clicked: ",selected()$shgClicked()))
+        else
+            return(paste0("Hovered:", selected()$shg()))
+    })
+    output$heatmap_selected <- renderPrint({
+        if (!is.null(selected()))
+            selected()$selGenes()
+    })
+}
+
+#' heatmapUI
+#'
+#' Creates a shinyUI to be able to run DEBrowser interactively.
+#'
+#' @note \code{heatmapUI}
+#' @return the panel for heatmapUI;
+#'
+#' @examples
+#'     x<-heatmapUI()
+#'
+#' @export
+#'
+
+heatmapUI <- function(input, output, session) {
+    header <- dashboardHeader(
+        title = "DEBrowser Heatmap"
+    )
+    sidebar <- dashboardSidebar(  getJSLine(),  
+       sidebarMenu(id="Heatmap",
+       menuItem("Upload", tabName = "Upload")),
+       sidebarMenu(id="Heatmap",
+       menuItem("Heatmap", tabName = "Heatmap"),
+       plotSizeMarginsUI("heatmap"),
+       heatmapControlsUI("heatmap")))
+    
+    body <- dashboardBody(
+        tabItems(
+            tabItem(tabName="Upload", dataLoadUI("load")),
+            tabItem(tabName="Heatmap",  getHeatmapUI("heatmap"),
+                    column(4,
+                           verbatimTextOutput("heatmap_hover"),
+                           verbatimTextOutput("heatmap_selected")
+                    ))
+        ))
+    
+    dashboardPage(header, sidebar, body, skin = "blue")
+}
