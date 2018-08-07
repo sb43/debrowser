@@ -4,7 +4,8 @@
 \alias{applyFiltersToMergedComparison}
 \title{applyFiltersToMergedComparison}
 \usage{
-applyFiltersToMergedComparison(merged = NULL, nc = NULL, input = NULL)
+applyFiltersToMergedComparison(merged = NULL, nc = NULL,
+  input = NULL)
 }
 \arguments{
 \item{merged, }{merged data}

@@ -682,19 +682,32 @@ getJSLine <-function()
 
 heatmapServer <- function(input, output, session) {
     updata <- reactiveVal()
-    observe({
-    updata(callModule(debrowserdataload, "load", "Heatmap"))
-    })
     selected <- reactiveVal()
-    observeEvent (input$Heatmap, {
-        updateTabItems(session, "Heatmap", "Heatmap")
-        dat <- head(updata()$load()$count)
-        print(dat)
-        withProgress(message = 'Creating plot', style = "notification", value = 0.1, {
-            selected(callModule(debrowserheatmap, "heatmap", dat))
-        })
+    data <- reactiveVal()
+    observe({
+        updata(callModule(debrowserdataload, "load", "Submit"))
     })
-
+    observe({
+        if(!is.null(updata()$load()$count))
+        if (nrow(updata()$load()$count) > 1000){
+            updateCheckboxInput(session, "mostvaried", value = TRUE)
+            data(getMostVariedList(updata()$load()$count, 
+            colnames(updata()$load()$count), input))
+        }
+        else
+            data(updata()$load()$count)
+    })
+    
+    observeEvent (input$Submit, {
+        updateTabItems(session, "DEBrowserHeatmap", "Heatmap")
+    })
+    observe({
+        if (!is.null(data())){
+            withProgress(message = 'Creating plot', style = "notification", value = 0.1, {
+                selected(callModule(debrowserheatmap, "heatmap", data()))
+            })
+        }
+    })
     output$heatmap_hover <- renderPrint({
         if (!is.null(selected()) && !is.null(selected()$shgClicked()) && 
             selected()$shgClicked() != "")
@@ -705,6 +718,14 @@ heatmapServer <- function(input, output, session) {
     output$heatmap_selected <- renderPrint({
         if (!is.null(selected()))
             selected()$selGenes()
+    })
+    output$topn <- renderPrint({
+        if (!is.null(input$topn))
+            input$topn
+    })
+    output$mincount <- renderPrint({
+        if (!is.null(input$mincount))
+            input$mincount
     })
 }
 
@@ -726,20 +747,26 @@ heatmapUI <- function(input, output, session) {
         title = "DEBrowser Heatmap"
     )
     sidebar <- dashboardSidebar(  getJSLine(),  
-       sidebarMenu(id="Heatmap",
-       menuItem("Upload", tabName = "Upload")),
-       sidebarMenu(id="Heatmap",
-       menuItem("Heatmap", tabName = "Heatmap"),
-       plotSizeMarginsUI("heatmap"),
-       heatmapControlsUI("heatmap")))
+        sidebarMenu(id="DEBrowserHeatmap",
+        menuItem("Upload", tabName = "Upload"),
+        menuItem("Heatmap", tabName = "Heatmap"),
+        menuItem("Options", tabName = "Heatmap",
+        checkboxInput('mostvaried', 'Most Varied Set', value = FALSE),
+        conditionalPanel( (condition <- "input.mostvaried"),
+        textInput("topn", "top-n", value = "500" ), 
+        textInput("mincount", "total min count", value = "10" )),
+        plotSizeMarginsUI("heatmap"),
+        heatmapControlsUI("heatmap"))))
     
     body <- dashboardBody(
         tabItems(
             tabItem(tabName="Upload", dataLoadUI("load")),
             tabItem(tabName="Heatmap",  getHeatmapUI("heatmap"),
                     column(4,
-                           verbatimTextOutput("heatmap_hover"),
-                           verbatimTextOutput("heatmap_selected")
+                        verbatimTextOutput("heatmap_hover"),
+                        verbatimTextOutput("heatmap_selected"),
+                        verbatimTextOutput("topn"),
+                        verbatimTextOutput("mincount")
                     ))
         ))
     

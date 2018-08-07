@@ -53,7 +53,7 @@ startHeatmap <- function(){
         addResourcePath(prefix = "www", directoryPath =
                             system.file("extdata", "www", 
                                         package = "debrowser"))
-        environment(deServer) <- environment()
+        environment(heatmapServer) <- environment()
 
         app <- shinyApp( ui = shinyUI(heatmapUI),
                          server = shinyServer(heatmapServer))
