@@ -4,7 +4,8 @@
 \alias{debrowserdataload}
 \title{debrowserdataload}
 \usage{
-debrowserdataload(input = NULL, output = NULL, session = NULL)
+debrowserdataload(input = NULL, output = NULL, session = NULL,
+  nextpagebutton = NULL)
 }
 \arguments{
 \item{input, }{input variables}

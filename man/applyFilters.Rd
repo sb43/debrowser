@@ -4,7 +4,8 @@
 \alias{applyFilters}
 \title{applyFilters}
 \usage{
-applyFilters(filt_data = NULL, cols = NULL, conds = NULL, input = NULL)
+applyFilters(filt_data = NULL, cols = NULL, conds = NULL,
+  input = NULL)
 }
 \arguments{
 \item{filt_data, }{loaded dataset}
