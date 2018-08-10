@@ -733,6 +733,10 @@ heatmapServer <- function(input, output, session) {
 #'
 #' Creates a shinyUI to be able to run DEBrowser interactively.
 #'
+#' @param input, input variables
+#' @param output, output objects
+#' @param session, session 
+#' 
 #' @note \code{heatmapUI}
 #' @return the panel for heatmapUI;
 #'

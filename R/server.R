@@ -28,7 +28,7 @@
 #'             onRestored NS reactiveVal withProgress tableOutput
 #'             selectizeInput fluidRow div renderPrint renderImage
 #'             verbatimTextOutput imageOutput renderTable incProgress
-#'             a h3 strong h2 withMathJax
+#'             a h3 strong h2 withMathJax updateCheckboxInput
 #' @importFrom shinyjs show hide enable disable useShinyjs extendShinyjs
 #'             js inlineCSS onclick
 #' @importFrom d3heatmap d3heatmap renderD3heatmap d3heatmapOutput

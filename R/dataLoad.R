@@ -5,6 +5,7 @@
 #' @param input, input variables
 #' @param output, output objects
 #' @param session, session 
+#' @param nextpagebutton, the name of the next page button after loading the data
 #' @return main plot
 #'
 #' @return panel
