@@ -13,6 +13,8 @@ debrowserdataload(input = NULL, output = NULL, session = NULL,
 \item{output, }{output objects}
 
 \item{session, }{session}
+
+\item{nextpagebutton, }{the name of the next page button after loading the data}
 }
 \value{
 main plot

@@ -6,6 +6,13 @@
 \usage{
 heatmapUI(input, output, session)
 }
+\arguments{
+\item{input, }{input variables}
+
+\item{output, }{output objects}
+
+\item{session, }{session}
+}
 \value{
 the panel for heatmapUI;
 }
