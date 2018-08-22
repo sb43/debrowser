@@ -200,6 +200,7 @@ runHeatmap <- function(input = NULL, session = NULL, expdata = NULL){
     }
     p <- p %>% 
         plotly::layout(
+            height=input$height, width=input$width,
             margin = list(l = input$left,
                           b = input$bottom,
                           t = input$top,
