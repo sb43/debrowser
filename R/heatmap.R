@@ -5,7 +5,7 @@
 #' @param input, input variables
 #' @param output, output objects
 #' @param session, session 
-#' @param data, a matrix that includes expression values
+#' @param expdata, a matrix that includes expression values
 #' @return heatmapply plot
 #'
 #' @examples
@@ -14,8 +14,8 @@
 #' @export
 #'
 #'
-debrowserheatmap <- function( input, output, session, data = NULL){
-    if(is.null(data)) return(NULL)
+debrowserheatmap <- function( input, output, session, expdata = NULL){
+    if(is.null(expdata)) return(NULL)
     output$heatmap <- renderPlotly({
         shinyjs::onevent("mousemove", "heatmap", js$getHoverName(session$ns("hoveredgenename")))
         shinyjs::onevent("click", "heatmap", js$getHoverName(session$ns("hoveredgenenameclick")))
@@ -30,7 +30,7 @@ debrowserheatmap <- function( input, output, session, data = NULL){
         })
     })
     heatdata <- reactive({
-        cld <- prepHeatData(data, input)
+        cld <- prepHeatData(expdata, input)
         if (input$kmeansControl)
         {
             res <- niceKmeans(cld, input)
@@ -115,7 +115,7 @@ getPlotArea <- function(input = NULL, session = NULL){
 #' Creates a heatmap based on the user selected parameters within shiny
 #' @param input, input variables
 #' @param session, session 
-#' @param data, a matrix that includes expression values
+#' @param expdata, a matrix that includes expression values
 #' @return heatmapply plot
 #'
 #' @examples
@@ -124,9 +124,9 @@ getPlotArea <- function(input = NULL, session = NULL){
 #' @export
 #'
 #'
-runHeatmap <- function(input = NULL, session = NULL, data = NULL){
-    if (is.null(data)) return(NULL)
-    cld <-data
+runHeatmap <- function(input = NULL, session = NULL, expdata = NULL){
+    if (is.null(expdata)) return(NULL)
+    cld <-expdata
     hclustfun_row <- function(x, ...) hclust(x, method = input$hclustFun_Row)
     hclustfun_col <- function(x, ...) hclust(x, method = input$hclustFun_Col)
     distfun_row <- function(x, ...) {
@@ -214,7 +214,7 @@ runHeatmap <- function(input = NULL, session = NULL, data = NULL){
 #' Creates a heatmap based on the user selected parameters within shiny
 #' @param input, input variables
 #' @param session, session 
-#' @param data, a matrix that includes expression values
+#' @param expdata, a matrix that includes expression values
 #' @return heatmap.2
 #'
 #' @examples
@@ -223,10 +223,10 @@ runHeatmap <- function(input = NULL, session = NULL, data = NULL){
 #' @export
 #'
 #'
-runHeatmap2 <- function(input = NULL, session = NULL, data = NULL){
-    if(is.null(data)) return(NULL)
-    if (nrow(data)>5000)
-        data <- data[1:5000, ]
+runHeatmap2 <- function(input = NULL, session = NULL, expdata = NULL){
+    if(is.null(expdata)) return(NULL)
+    if (nrow(expdata)>5000)
+        expdata <- expdata[1:5000, ]
     
     if (!input$customColors ) {
         heatmapColors <- eval(parse(text=paste0(input$pal,
@@ -247,17 +247,17 @@ runHeatmap2 <- function(input = NULL, session = NULL, data = NULL){
             return(as.dist(1 - cor(t(x))))
         }
     }
-    if (!input$showClasses && "class" %in% names(data) ){
-        data <- data.frame(data)
-        data <- as.matrix(data [, -match("class",names(data))])
+    if (!input$showClasses && "class" %in% names(expdata) ){
+        expdata <- data.frame(expdata)
+        expdata <- as.matrix(expdata [, -match("class",names(expdata))])
     }
     if (input$kmeansControl){
-        m <- heatmap.2(as.matrix(data), Rowv = FALSE, main = input$main, dendrogram = input$dendrogram,
+        m <- heatmap.2(as.matrix(expdata), Rowv = FALSE, main = input$main, dendrogram = input$dendrogram,
                        Colv = FALSE, col = heatmapColors, labRow = input$labRow,
                        distfun = distfun_row, hclustfun = hclustfun_row, density.info = "none",
                        trace = "none", margins = c(10,10))
     }else{
-        m <- heatmap.2(as.matrix(data), main = input$main, dendrogram = input$dendrogram,
+        m <- heatmap.2(as.matrix(expdata), main = input$main, dendrogram = input$dendrogram,
                        col = heatmapColors, labRow = input$labRow,
                        distfun = distfun_row, hclustfun = hclustfun_row, density.info = "none",
                        trace = "none", margins = c(10,10))
@@ -548,7 +548,7 @@ customColorsUI <- function(id) {
 #'
 #' scales the data
 #'
-#' @param data, a matrixthat includes expression values
+#' @param expdata, a matrixthat includes expression values
 #' @param input, input variables
 #' @return heatdata
 #'
@@ -557,10 +557,10 @@ customColorsUI <- function(id) {
 #'
 #' @export
 #'
-prepHeatData <- function(data = NULL, input = NULL) 
+prepHeatData <- function(expdata = NULL, input = NULL) 
 {
-    if(is.null(data)) return(NULL)
-    ld <- data
+    if(is.null(expdata)) return(NULL)
+    ld <- expdata
     if (!is.null(input$pseudo))
         ld <- ld + as.numeric(input$pseudo)
     if (!is.null(input$log) && input$log)
@@ -574,7 +574,7 @@ prepHeatData <- function(data = NULL, input = NULL)
 #'
 #' heatmap selection functionality
 #'
-#' @param data, selected genes
+#' @param expdata, selected genes
 #' @param input, input params
 #' @return plot
 #' @export
@@ -582,10 +582,10 @@ prepHeatData <- function(data = NULL, input = NULL)
 #' @examples
 #'     x <- getSelHeat()
 #'
-getSelHeat <- function(data = NULL, input = NULL) {
+getSelHeat <- function(expdata = NULL, input = NULL) {
     if (is.null(input)) return(NULL)
     getSelected <- reactive({
-        data[unlist(strsplit(input, ",")), ]
+        expdata[unlist(strsplit(input, ",")), ]
     })
     list( getSelected = isolate(getSelected) )
 }
@@ -683,7 +683,7 @@ getJSLine <-function()
 heatmapServer <- function(input, output, session) {
     updata <- reactiveVal()
     selected <- reactiveVal()
-    data <- reactiveVal()
+    expdata <- reactiveVal()
     observe({
         updata(callModule(debrowserdataload, "load", "Submit"))
     })
@@ -691,20 +691,20 @@ heatmapServer <- function(input, output, session) {
         if(!is.null(updata()$load()$count))
         if (nrow(updata()$load()$count) > 1000){
             updateCheckboxInput(session, "mostvaried", value = TRUE)
-            data(getMostVariedList(updata()$load()$count, 
+            expdata(getMostVariedList(updata()$load()$count, 
             colnames(updata()$load()$count), input))
         }
         else
-            data(updata()$load()$count)
+            expdata(updata()$load()$count)
     })
     
     observeEvent (input$Submit, {
         updateTabItems(session, "DEBrowserHeatmap", "Heatmap")
     })
     observe({
-        if (!is.null(data())){
+        if (!is.null(expdata())){
             withProgress(message = 'Creating plot', style = "notification", value = 0.1, {
-                selected(callModule(debrowserheatmap, "heatmap", data()))
+                selected(callModule(debrowserheatmap, "heatmap", expdata()))
             })
         }
     })
@@ -735,8 +735,8 @@ heatmapServer <- function(input, output, session) {
 #'
 #' @param input, input variables
 #' @param output, output objects
-#' @param session, session 
-#' 
+#' @param session, session
+#'
 #' @note \code{heatmapUI}
 #' @return the panel for heatmapUI;
 #'

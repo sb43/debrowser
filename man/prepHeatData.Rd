@@ -4,10 +4,10 @@
 \alias{prepHeatData}
 \title{prepHeatData}
 \usage{
-prepHeatData(data = NULL, input = NULL)
+prepHeatData(expdata = NULL, input = NULL)
 }
 \arguments{
-\item{data, }{a matrixthat includes expression values}
+\item{expdata, }{a matrixthat includes expression values}
 
 \item{input, }{input variables}
 }

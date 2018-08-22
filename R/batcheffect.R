@@ -59,13 +59,13 @@ debrowserbatcheffect <- function(input, output, session, ldata = NULL) {
   observe({
     getSampleDetails(output, "uploadSummary", "sampleDetails", ldata)
     getSampleDetails(output, "filteredSummary", "filteredDetails", batcheffectdata())
-    getTableDetails(output, session, "beforebatchtable", ldata$count, modal=TRUE)
+    getTableDetails(output, session, "beforebatchtable", ldata$count, modal = TRUE)
     callModule(debrowserpcaplot, "beforeCorrectionPCA", ldata$count, ldata$meta)
     callModule(debrowserIQRplot, "beforeCorrectionIQR",  ldata$count)
     callModule(debrowserdensityplot, "beforeCorrectionDensity", ldata$count)
     if ( !is.null(batcheffectdata()$count ) && nrow(batcheffectdata()$count)>2 ){
       withProgress(message = 'Drawing the plot', detail = "Preparing!", value = NULL, {
-       getTableDetails(output, session, "afterbatchtable", batcheffectdata()$count, modal=TRUE)
+       getTableDetails(output, session, "afterbatchtable", batcheffectdata()$count, modal = TRUE)
        callModule(debrowserpcaplot, "afterCorrectionPCA",  batcheffectdata()$count, batcheffectdata()$meta)
        callModule(debrowserIQRplot, "afterCorrectionIQR",  batcheffectdata()$count)
        callModule(debrowserdensityplot, "afterCorrectionDensity", batcheffectdata()$count)
@@ -120,7 +120,7 @@ batchEffectUI <- function (id) {
         actionButton("goDE", "Go to DE Analysis", styleclass = "primary"),
         actionButton("goQCplots", "Go to QC plots", styleclass = "primary"))),
       shinydashboard::box(title = "Plots",
-        solidHeader = T, status = "info",  width = 12, 
+        solidHeader = TRUE, status = "info",  width = 12, 
         fluidRow(column(1, div()),
             tabsetPanel( id = ns("batchTabs"),
                 tabPanel(id = ns("PCA"), "PCA",
