@@ -40,20 +40,14 @@ comparison table below (Figure 40).
 
 # Quick start
 
-Before you start;
-
-First, you will have to install R and/or RStudio.
-(On Fedora/Red Hat/CentOS, these packages have to be installed;
-openssl-devel, libxml2-devel, libcurl-devel, libpng-devel)
-Running these simple commands will launch the DEBrowser within your local
-machine:
+Before you start; you will have to install R and/or RStudio. 
 
 ```
 # Installation instructions:
 # 1. Install DEBrowser and its dependencies by running the lines below
 # in R or RStudio.
 
-source(“https://www.bioconductor.org/biocLite.R”)
+source("https://www.bioconductor.org/biocLite.R")
 biocLite("debrowser")
 
 # 2. Load the library
@@ -64,6 +58,8 @@ library(debrowser)
 
 startDEBrowser()
 ```
+
+Please check *Operating System Dependencies* section, in case your operating system requires packages to be installed.
 
 # Browsing your Data
 
@@ -1026,6 +1022,16 @@ For more information about CummeRBund (Trapnell et al., 2012), please visit this
 
 ![*Figure 40. Comparison table of DEBrowser, MeV, Chipster, Galaxy, and CummeRBund*](http://bioinfo.umassmed.edu/pub/debrowser/imgs/figure_40.png "Figure 40. Comparison table of DEBrowser, MeV, Chipster, Galaxy, and CummeRBund*")
 
+## Operating System Dependencies 
+
+On Fedora/Red Hat/CentOS, these packages have to be installed:
+    
+    openssl-devel, libxml2-devel, libcurl-devel, libpng-devel
+
+On Ubuntu 18.04 LTS, you can install required packages by following command:
+
+    sudo apt-get install libcurl4-openssl-dev libssl-dev libv8-3.14-dev udunits-bin libudunits2-* libxml2-dev
+    
 ## Autoload Data via Hyperlink
 
 DEBrowser also accepts TSV's via hyperlink by following conversion steps. First, using the API provided by Dolphin, we will convert TSV into an html represented TSV using this website::
