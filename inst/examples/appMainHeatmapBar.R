@@ -59,7 +59,7 @@ server <- function(input, output, session) {
     #                        "shKRAS", "shKRAS", "shKRAS") )
     # dat$data <- data.frame(data[, dat$columns])
     #
-    #xdata <- generateTestData(dat)
+    xdata <- generateTestData(dat)
 
     selected <- reactiveVal()
     observe({
