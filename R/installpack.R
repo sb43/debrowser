@@ -18,8 +18,9 @@ installpack <- function(package_name = NULL) {
     {
        eval (parse(text = sprintf("install.packages(\"%s\", 
            dependencies = TRUE)",  package_name)))
-       source("http://bioconductor.org/biocLite.R")
-       biocLite(character(), ask=FALSE) #update installed packages.
+       if (!requireNamespace("BiocManager", quietly=TRUE))
+           install.packages("BiocManager")
+       BiocManager::install(character(), ask=FALSE) #update installed packages.
        eval(parse(text = sprintf("biocLite(\"%s\")", package_name)))
        eval(parse(text = sprintf("require(\"%s\")", package_name)))
     }
