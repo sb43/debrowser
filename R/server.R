@@ -49,7 +49,7 @@
 #'             p.adjust runif cov mahalanobis quantile as.dendrogram
 #'             density
 #' @importFrom utils read.csv read.table write.table update.packages
-#'             download.file read.delim data
+#'             download.file read.delim data install.packages
 #' @importFrom DOSE enrichDO
 #' @importFrom enrichplot gseaplot dotplot
 #' @importMethodsFrom DOSE summary
