@@ -1,9 +1,11 @@
-
+***********************************
+Version 1.9.3 Release
+*********************************
+- Biarxiv citation added
 
 ************************************
 Version 1.8.1 Release
 **********************************
-- Citation Added
 - Interactive heatmap height and width fix
 - DEBrowser turned to a modular structure. The modules can be used in other shiny applications.
 - More interactivity added to Heatmaps and main plots. 
