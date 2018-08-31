@@ -1,6 +1,8 @@
 ***********************************
-Version 1.9.3 Release
+Version 1.8.2 Release
 *********************************
+- Package installation changed to warning
+- Dependancies removed from DESCRIPTION to suppress loading messages
 - Biarxiv citation added
 
 ************************************

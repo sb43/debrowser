@@ -1,8 +1,8 @@
 Package: debrowser
 Type: Package
 Title: Interactive Differential Expresion Analysis Browser
-Version: 1.9.14
-Date: 2018-08-20
+Version: 1.8.2
+Date: 2018-08-31
 Author: Alper Kucukural <alper.kucukural@umassmed.edu>,
         Onur Yukselen <onur.yukselen@umassmed.edu>,
         Manuel Garber <manuel.garber@umassmed.edu>
@@ -18,16 +18,16 @@ Description: Bioinformatics platform containing interactive plots and tables
     bar, box, volcano, ma plots and Heatmaps.
 Depends:
     R (>= 3.5.0),
+License: GPL-3 + file LICENSE
+LazyData: true
+Imports:
     shiny,
     jsonlite,
     shinyjs,
     shinydashboard,
     shinyBS,
     pathview,
-    gplots
-License: GPL-3 + file LICENSE
-LazyData: true
-Imports:
+    gplots,
     DT,
     ggplot2,
     RColorBrewer,

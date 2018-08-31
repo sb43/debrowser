@@ -50,6 +50,7 @@
 #'             density
 #' @importFrom utils read.csv read.table write.table update.packages
 #'             download.file read.delim data install.packages
+#'             packageDescription
 #' @importFrom DOSE enrichDO
 #' @importFrom enrichplot gseaplot dotplot
 #' @importMethodsFrom DOSE summary
@@ -82,11 +83,11 @@
 #' @importFrom limma lmFit voom eBayes topTable
 #' @importFrom sva ComBat
 #' @importFrom RCurl getURL
+#' @importFrom pathview pathview
 #' @import org.Hs.eg.db
 #' @import org.Mm.eg.db
 #' @import V8
 #' @import shinyBS
-#' @import pathview
 #' @import colourpicker
 #' @import RColorBrewer
 #' @import heatmaply
@@ -157,13 +158,15 @@ deServer <- function(input, output, session) {
                 choicecounter$nc <- sel()$cc()
             })
             observeEvent (input$startDE, {
-                togglePanels(0, c(0), session)
-                dc(prepDataContainer(batch()$BatchEffect()$count, sel()$cc(), input))
-                updateTabItems(session, "DataPrep", "DEAnalysis")
-               
-                buttonValues$startDE <- TRUE
-                buttonValues$goQCplots <- FALSE
-                hideObj(c("load-uploadFile","load-demo", "load-demo2", "goQCplots", "goQCplotsFromFilter"))
+                if(!is.null(batch()$BatchEffect()$count)){
+                    togglePanels(0, c(0), session)
+                    dc(prepDataContainer(batch()$BatchEffect()$count, sel()$cc(), input))
+                    updateTabItems(session, "DataPrep", "DEAnalysis")
+                    buttonValues$startDE <- TRUE
+                    buttonValues$goQCplots <- FALSE
+                    hideObj(c("load-uploadFile","load-demo", 
+                        "load-demo2", "goQCplots", "goQCplotsFromFilter"))
+                }
             })
 
             observeEvent (input$goMain, {
@@ -430,7 +433,7 @@ deServer <- function(input, output, session) {
         })
         output$KEGGPlot <- renderImage({
             withProgress(message = 'KEGG Started', detail = "interactive", value = 0, {
-            validate(need(!is.null(input$gotable_rows_selected),
+            shiny::validate(need(!is.null(input$gotable_rows_selected),
                           "Please select a category in the GO/KEGG table to be able
                           to see the pathway diagram"))
             
@@ -443,7 +446,7 @@ deServer <- function(input, output, session) {
             pid <- inputGOstart()$table$ID[i]
 
             tryCatch({
-                pathview(gene.data = foldChangeData,
+                pathview::pathview(gene.data = foldChangeData,
                     pathway.id = pid,
                     species = substr(pid,0,3),
                     gene.idtype="entrez",
@@ -470,7 +473,7 @@ deServer <- function(input, output, session) {
             dat
         })
         output$GOGeneTable <- DT::renderDataTable({
-            validate(need(!is.null(input$gotable_rows_selected),
+            shiny::validate(need(!is.null(input$gotable_rows_selected),
                           "Please select a category in the GO/KEGG table to be able
                           to see the gene list"))
             dat <- getGOCatGenes()

@@ -579,3 +579,39 @@ getPCAcontolUpdatesJS<-function(){
                      }, 1000); })
                      "))
 }
+
+ipak <- function(pkg){
+    new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
+    sapply(pkg, require, character.only = TRUE)
+}
+
+
+
+.initial <- function() {
+    req <- function(...){
+    reqFun <- function(pack) {
+        if(!suppressWarnings(suppressMessages(require(pack, character.only = TRUE)))) {
+            message(paste0("unable to load package ", pack))
+            require(pack, character.only = TRUE)
+        }
+    }
+    lapply(..., reqFun)
+    }
+    packs <- c("shiny", "jsonlite", "shinyjs", "shinydashboard", "shinyBS", "pathview")
+    req(packs)
+}
+
+.onAttach <- function(libname, pkgname) {
+    pkgVersion <- packageDescription("DEBrowser", fields="Version")
+    msg <- paste0("DEBrowser v", pkgVersion, "  ",
+                  "For help: https://debrowser.readthedocs.org/", "\n\n")
+    
+    citation <- paste0("If you use DEBrowser in published research, please cite:\n",
+                       "Alper Kucukural, Onur Yuksel, Deniz M. Ozata, Melissa J. Moore, Manuel Garber,",
+                       " DEBrowser: Interactive Differential Expression Analysis and Visualization Tool for Count Data,",
+                       " Bioarxiv 2018, doi: 10.1101/399931", "\n")
+    
+    packageStartupMessage(paste0(msg, citation))
+    .initial()
+
+}

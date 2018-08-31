@@ -16,15 +16,12 @@ installpack <- function(package_name = NULL) {
    
     if (!loadpack(package_name))
     {
-       eval (parse(text = sprintf("install.packages(\"%s\", 
-           dependencies = TRUE)",  package_name)))
-       if (!requireNamespace("BiocManager", quietly=TRUE))
-           install.packages("BiocManager")
-       BiocManager::install(character(), ask=FALSE) #update installed packages.
-       eval(parse(text = sprintf("biocLite(\"%s\")", package_name)))
-       eval(parse(text = sprintf("require(\"%s\")", package_name)))
+       print(paste0("Please install ",package_name, " to use this function."))
+       return(FALSE)
+    }else{
+        loadpack(package_name)
     }
-    loadpack(package_name)
+    return(TRUE)
 }
 #' loadpack
 #'
