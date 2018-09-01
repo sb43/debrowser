@@ -258,7 +258,7 @@ runEdgeR<- function(data = NULL, columns = NULL, conds = NULL, params = NULL){
     dispersion <- as.numeric(dispersion)
     conds <- factor(conds)
     filtd <- data
-    if (!is.null(rowsum.filter))
+    if (is.numeric(rowsum.filter) && !is.na(rowsum.filter))
         filtd <- subset(data, rowSums(data) > rowsum.filter)
     
     d<- edgeR::DGEList(counts = filtd, group=conds)
@@ -338,8 +338,8 @@ runLimma<- function(data = NULL, columns = NULL, conds = NULL, params = NULL){
     cnum = summary(conds)[levels(conds)[1]]
     tnum = summary(conds)[levels(conds)[2]]
     filtd <- data
-    if (!is.null(rowsum.filter))
-         filtd <- as.matrix(subset(data, rowSums(data) > rowsum.filter))
+    if (is.numeric(rowsum.filter) && !is.na(rowsum.filter))
+        filtd <- as.matrix(subset(data, rowSums(data) > rowsum.filter))
     
     des <- factor(c(rep(levels(conds)[1], cnum),rep(levels(conds)[2], tnum)))
     names(filtd) <- des
