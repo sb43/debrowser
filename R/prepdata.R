@@ -324,7 +324,7 @@ getDataForTables <- function(input = NULL, init_data = NULL,
     fcstr <- "foldChange"
     dat <- NULL
     if (input$dataset == "alldetected"){
-            dat <- getSearchData(init_data, input)
+            dat <- getSearchData(filt_data, input)
     }
     else if (input$dataset == "up+down"){
         if (!is.null(filt_data))
@@ -379,6 +379,7 @@ getMergedComparison <- function(dc = NULL, nc = NULL, input = NULL){
     if (is.null(dc)) return (NULL)
     mergeresults <- c()
     mergedata <- c()
+    allsamples <- c()
     for ( ni in seq(1:nc)) {
         tmp <- dc[[ni]]$init_data[,c("foldChange", "padj")]
 
@@ -388,6 +389,7 @@ getMergedComparison <- function(dc = NULL, nc = NULL, input = NULL){
         patt <-  paste0("padj.", tt)
         colnames(tmp) <- c(fctt,  patt)
         if(ni == 1){
+            allsamples <- samples
             mergeresults <- tmp
             mergedata <- dc[[ni]]$init_data[,samples]
         }
@@ -399,9 +401,12 @@ getMergedComparison <- function(dc = NULL, nc = NULL, input = NULL){
             mergeresults[is.na(mergeresults[,fctt]),fctt] <- 1 
             mergeresults[is.na(mergeresults[,patt]),patt] <- 1 
             remaining_samples <- dc[[ni]]$cols[!(samples %in% colnames(mergedata))]
+            allsamples <- unique(c(allsamples, remaining_samples))
             mergedata <- cbind(mergedata,  dc[[ni]]$init_data[,remaining_samples])
+            colnames(mergedata) <- allsamples
         }
     }
+    mergedata[,allsamples] <- getNormalizedMatrix(mergedata[,allsamples], input$norm_method)
     cbind(mergedata, mergeresults)
 }
 

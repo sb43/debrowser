@@ -50,7 +50,7 @@
 #'             density
 #' @importFrom utils read.csv read.table write.table update.packages
 #'             download.file read.delim data install.packages
-#'             packageDescription
+#'             packageDescription installed.packages
 #' @importFrom DOSE enrichDO
 #' @importFrom enrichplot gseaplot dotplot
 #' @importMethodsFrom DOSE summary
@@ -565,15 +565,11 @@ deServer <- function(input, output, session) {
         })
         mergedComp <- reactive({
             dat <- applyFiltersToMergedComparison(
-                isolate(mergedCompInit()), choicecounter$nc, input)
-            ret <- dat[dat$Legend == "Sig", ]
-            #ret[ret$Legend == "Sig", ] <- NULL
-            ret
+                getMergedComparison(isolate(dc()), choicecounter$nc, input), 
+                choicecounter$nc, input)
+            dat[dat$Legend == "Sig", ]
         })
         
-        mergedCompInit <- reactive({
-            getMergedComparison(isolate(dc()), choicecounter$nc, input)
-        })
         datasetInput <- function(addIdFlag = FALSE){
             tmpDat <- NULL
             sdata <- NULL
