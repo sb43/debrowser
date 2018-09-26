@@ -106,7 +106,8 @@ getOrganismBox <- function(){
             "Zebrafish" = "org.Dr.eg.db",
             "Fly" = "org.Dm.eg.db",
             "Worm" = "org.Ce.eg.db",
-            "Yeast" = "org.Sc.sgd.db"
+            "Yeast" = "org.Sc.sgd.db",
+            "Arabidopsis" = "org.At.tair.db"
         ))))
     return(organismBox)
 }
@@ -123,15 +124,16 @@ getOrganismBox <- function(){
 #'     x <- getOrganism()
 #'
 getOrganism <- function(org){
-    organisms =  list("hsa", "mmu", "rno", 
-                      "dre", "dme", "cel", "sce")
+    organisms <-  list("hsa", "mmu", "rno", 
+                      "dre", "dme", "cel", "sce", "At")
     names(organisms) <- c("org.Hs.eg.db", 
                           "org.Mm.eg.db", 
                           "org.Rn.eg.db", 
                           "org.Dr.eg.db",
                           "org.Dm.eg.db",
                           "org.Ce.eg.db",
-                          "org.Sc.sgd.db")
+                          "org.Sc.sgd.db",
+                          "org.At.tair.db")
     organisms[org][[1]]
 }
 
@@ -147,14 +149,15 @@ getOrganism <- function(org){
 #'     x <- getOrganismPathway()
 #'
 getOrganismPathway <- function(org){
-    organisms =  list("human", "mouse", "rat", 
-                      "zebrafish", "fly", "celegans", "yeast")
+    organisms <- list("human", "mouse", "rat", 
+                      "zebrafish", "fly", "celegans", "yeast", "arabidopsis")
     names(organisms) <- c("org.Hs.eg.db", 
                           "org.Mm.eg.db", 
                           "org.Rn.eg.db", 
                           "org.Dr.eg.db",
                           "org.Dm.eg.db",
                           "org.Ce.eg.db",
-                          "org.Sc.sgd.db")
+                          "org.Sc.sgd.db",
+                          "org.At.tair.db")
     organisms[org][[1]]
 }
