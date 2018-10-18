@@ -67,13 +67,7 @@ comparison table below (Figure 40).
 
 # Quick start
 
-Before you start;
-
-First, you will have to install R and/or RStudio.
-(On Fedora/Red Hat/CentOS, these packages have to be installed;
-openssl-devel, libxml2-devel, libcurl-devel, libpng-devel)
-Running these simple commands will launch the DEBrowser within your local
-machine:
+Before you start; you will have to install R and/or RStudio. 
 
 ```
 # Installation instructions:
@@ -92,6 +86,8 @@ library(debrowser)
 
 startDEBrowser()
 ```
+
+Please check *Operating System Dependencies* section, in case your operating system requires packages to be installed.
 
 # Browsing your Data
 
@@ -1052,6 +1048,16 @@ For more information about Galaxy (Giardine et al., 2005), please visit this lin
 For more information about CummeRBund (Trapnell et al., 2012), please visit this link: [CummeRbund](http://compbio.mit.edu/cummeRbund/manual_2_0.html)
 
 ![*Figure 40. Comparison table of DEBrowser, MeV, Chipster, Galaxy, and CummeRBund*](http://bioinfo.umassmed.edu/pub/debrowser/imgs/figure_40.png "Figure 40. Comparison table of DEBrowser, MeV, Chipster, Galaxy, and CummeRBund*")
+
+## Operating System Dependencies 
+
+On Fedora/Red Hat/CentOS, these packages have to be installed:
+    
+    openssl-devel, libxml2-devel, libcurl-devel, libpng-devel
+
+On Ubuntu 18.04 LTS, you can install required packages by following command:
+
+    sudo apt-get install libcurl4-openssl-dev libssl-dev libv8-3.14-dev udunits-bin libudunits2-* libxml2-dev 
 
 ## Autoload Data via Hyperlink
 

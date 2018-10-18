@@ -22,6 +22,14 @@ getGeneList <- function(genes = NULL, org = "org.Hs.eg.db") {
         keytype="SYMBOL")
     existinggenes <- unique(as.vector(unlist(lapply(toupper(genes), 
         function(x){ allkeys[x == toupper(allkeys)] }))))
+    if (length(existinggenes) < 1){
+        txt <- paste0("Please check the gene names! DEBrowser only accepts gene symbols. Ex:", 
+                      paste(head(allkeys), sep=","))
+        print(txt)
+        showNotification(txt)
+        return(NULL)
+    }
+        
     mapped_genes <- mapIds(eval(parse(text = org)), keys = existinggenes, 
         column="ENTREZID", keytype="SYMBOL",
         multiVals = "first")
@@ -118,7 +126,7 @@ getEnrichGO <- function(genelist = NULL, pvalueCutoff = 0.01,
     org = "org.Hs.eg.db", ont="CC") {
     if (is.null(genelist)) return(NULL)
     if (!installpack(org)) return(NULL)
-
+    res <- c()
     res$enrich_p <- clusterProfiler::enrichGO(gene = genelist, OrgDb = org,
     # res$enrich_p <- enrichGO(gene = genelist, organism = "human",
         ont = ont, pvalueCutoff = pvalueCutoff)
