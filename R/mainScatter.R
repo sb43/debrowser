@@ -31,6 +31,22 @@ debrowsermainplot <- function(input = NULL, output = NULL, session = NULL, data 
                 height=input$plotheight, width=input$plotwidth)
             ))))
     })
+    output$mainPlotControlsUI <- renderUI({
+        if (input$mainplot == "scatter"){
+            x <- paste0('log10 Norm. Mean(cond2)')
+            y <- paste0('log10 Norm. Mean(cond1)')
+        }else if  (input$mainplot == "volcano"){
+            x <- "log2FC"
+            y <- "log10padj"
+        }else {
+            x <- "A"
+            y <- "M"
+        }
+        list(
+            textInput(session$ns('xlab'),'x label', x),
+            textInput(session$ns('ylab'),'y label', y)
+        )
+    })
     selectedPoint <- reactive({
         eventdata <- event_data("plotly_click", source = session$ns("source"))
         if (is.null(eventdata)){
@@ -53,9 +69,7 @@ debrowsermainplot <- function(input = NULL, output = NULL, session = NULL, data 
     
     output$main <- renderPlotly({
         data <- plotdata()$data
-        x <- plotdata()$x
-        y <- plotdata()$y
-        mainScatterNew(input, data, session$ns("source"), x, y)
+        mainScatterNew(input, data, session$ns("source"))
     })
     
     list( shg = (selectedPoint), shgClicked=(selectedPoint), selGenes=(getSelected))
@@ -85,8 +99,6 @@ getMainPlotUI <- function(id) {
 #' @param input, input params
 #' @param data, dataframe that has log2FoldChange and log10padj values
 #' @param source, for event triggering to select genes
-#' @param x, the name of the x coordinate
-#' @param y, the name of the y coordinate
 #' @return scatter, volcano or MA plot
 #'
 #' @examples
@@ -95,8 +107,7 @@ getMainPlotUI <- function(id) {
 #'
 #' @export
 #'
-mainScatterNew <- function(input = NULL, data = NULL, source = NULL,
-                        x = NULL, y = NULL) {
+mainScatterNew <- function(input = NULL, data = NULL, source = NULL) {
     if ( is.null(data) ) return(NULL)
     
     p <- plot_ly(source = source, data=data, x=~x, y=~y, key=~key, alpha = 0.8,
@@ -109,8 +120,8 @@ mainScatterNew <- function(input = NULL, data = NULL, source = NULL,
                              "<br>", "log2FC=", round(log2FoldChange, digits = 2), " ",
                              "foldChange=", round(foldChange, digits = 2),
                              "<br>", sep = " ")) %>%
-        plotly::layout(xaxis = list(title = x),
-               yaxis = list(title = y)) %>% 
+        plotly::layout(xaxis = list(title = input$xlab),
+               yaxis = list(title = input$ylab)) %>% 
         plotly::layout(
             margin = list(l = input$left,
                           b = input$bottom,
@@ -147,14 +158,14 @@ plotData <- function(pdata = NULL, input = NULL){
     datapoints <- as.integer(nrow(data_NS) * backperc/ 100)
     if (nrow(data_NS) > datapoints){
         data_rand <- data_NS[sample(1:nrow(data_NS), datapoints,
-                                    replace=FALSE),]
+            replace=FALSE),]
     }else{
         data_rand  <- data_NS
     }
     plot_init_data <- rbind(data_rand, data_rest)
     plot_init_data$Legend  <- factor(plot_init_data$Legend, 
          levels = unique(plot_init_data$Legend))
-
+    
     plot_data <- plot_init_data
     if (mainplot == "volcano") {
         plot_data <- plot_init_data[which(!is.na(plot_init_data$log2FoldChange)
@@ -163,18 +174,11 @@ plotData <- function(pdata = NULL, input = NULL){
         plot_data$x <- plot_data$log2FoldChange
         plot_data$log10padj[plot_data$log10padj>input$log10padjCutoff] <- input$log10padjCutoff
         plot_data$y <- plot_data$log10padj
-        x <- "log2FC"
-        y <- "log10padj"
-    } else if (mainplot == "scatter") {
-        x <-  "x"
-        y <-  "y"
     } else if (mainplot == "maplot") {
         plot_data$x <- (plot_init_data$x + plot_init_data$y) / 2
         plot_data$y <- plot_init_data$y - plot_init_data$x
-        x <- "A"
-        y <- "M"
     }
-    list( data = (plot_data), x=(x), y=(y))
+    list( data = (plot_data))
 }
 
 #' mainPlotControlsUI
@@ -197,15 +201,18 @@ mainPlotControlsUI <- function(id) {
         MAPlot = "maplot"))
     ),
     shinydashboard::menuItem("Main Options",
+        startExpanded=TRUE,
         sliderInput(ns("backperc"), "Background Data(%):",
         min=10, max=100, value=10, sep = "",
         animate = FALSE),
         conditionalPanel(condition <- paste0("input['", ns("mainplot"),"'] == 'volcano'"),
-            sliderInput(ns("log10padjCutoff"), "Log10 padj value cutoff:",
-            min=2, max=100, value=60, sep = "",
-            animate = FALSE)
-        )
-        ))
+        sliderInput(ns("log10padjCutoff"), "Log10 padj value cutoff:",
+        min=2, max=100, value=60, sep = "",
+        animate = FALSE)
+        ),
+        uiOutput(ns("mainPlotControlsUI"))
+    ))
+    
 }
 
 #' getLegendColors

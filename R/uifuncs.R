@@ -340,7 +340,7 @@ helpText( "To be able to select conditions please click
 #' @export
 #'
 getStartPlotsMsg <- function() {
-a <- list( conditionalPanel(condition <- "!input.startPlots",
+a <- list( conditionalPanel(condition <- "!input.goMain",
     column( 12, 
     helpText( "Please choose the appropriate parameters to discover
                more in DE Results" ),
@@ -353,7 +353,7 @@ a <- list( conditionalPanel(condition <- "!input.startPlots",
 #' within the DEBrowser.
 #'
 #' @param dc, columns
-#' @param num, selected comparison
+#' @param input, selected comparison
 #' @param cols, columns
 #' @param conds, selected conditions
 #' @note \code{getCondMsg}
@@ -362,15 +362,25 @@ a <- list( conditionalPanel(condition <- "!input.startPlots",
 #'     x <- getCondMsg()
 #' @export
 #'
-getCondMsg <- function(dc = NULL, num = NULL, cols = NULL, conds = NULL) {
+getCondMsg <- function(dc = NULL, input = NULL, cols = NULL, conds = NULL) {
     if (is.null(cols) || is.null(conds)) return (NULL)
+    num <- input$compselect
     if (is.null(num)) num <- 1
     cnd <- data.frame(cbind(conds, cols))
     params_str <- paste(dc[[as.numeric(num)]]$demethod_params, collapse = ',')
-    a <-list( conditionalPanel(condition <- "input.startPlots",
-        column( 12, wellPanel(
+    heatmap_str <-  paste0( "<b>Heatmap Params: Scaled:</b> ", input[['heatmap-scale']],
+        " <b>Centered:</b> ", input[['heatmap-center']],
+        " <b>Log:</b> ", input[['heatmap-log']],
+        " <b>Pseudo-count:</b> ", input[['heatmap-pseudo']])
+    a <-list( conditionalPanel(condition <- "input.goMain",
+            shinydashboard::box(
+            collapsible = TRUE, title = "Plot Information", status = "primary", 
+            solidHeader = TRUE, width = NULL,
+            draggable = TRUE,
             style = "overflow-x:scroll",
-            HTML( paste0( "<b>Selected Parameters:</b> ", params_str,
+            HTML( paste0( "<b>DE Params:</b> ", params_str,
+            " - <b>Dataset:</b> ", input$dataset," <b>Normalization:</b> ",input$norm_method,
+            " - ", heatmap_str,
             "</br><b>",unique(conds)[1], ":</b> "),
             paste(cnd[cnd$conds == unique(conds)[1], "cols"],
             collapse =","),
@@ -378,7 +388,8 @@ getCondMsg <- function(dc = NULL, num = NULL, cols = NULL, conds = NULL) {
             paste(cnd[cnd$conds == unique(conds)[2], "cols"],
             collapse =",")),
         getHelpButton("method",
-"http://debrowser.readthedocs.io/en/master/quickstart/quickstart.html#the-main-plots-of-de-analysis")))))
+"http://debrowser.readthedocs.io/en/master/quickstart/quickstart.html#the-main-plots-of-de-analysis")
+)))
 }
 
 #' togglePanels

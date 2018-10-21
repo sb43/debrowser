@@ -324,7 +324,7 @@ deServer <- function(input, output, session) {
         selectedMain <- reactiveVal()
         observe({
             if (!is.null(filt_data())) {
-            condmsg(getCondMsg(dc(), input$compselect,
+            condmsg(getCondMsg(dc(), input,
                 cols(), conds()))
             selectedMain(callModule(debrowsermainplot, "main", filt_data()))
             }
@@ -368,7 +368,7 @@ deServer <- function(input, output, session) {
         })
         
         normdat <-  reactive({
-            if (!is.null(init_data())){
+            if (!is.null(init_data()) && !is.null(datasetInput())){
                 dat <- init_data()
                 if(!is.null(cols()))
                     dat <- init_data()[,cols()]
