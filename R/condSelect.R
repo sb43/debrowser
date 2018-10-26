@@ -48,11 +48,11 @@ list(
         solidHeader = TRUE, status = "info",  width = NULL, height = NULL, collapsible = TRUE,
     fluidRow(
         uiOutput("conditionSelector"),
-        column(12,actionButton("add_btn", "Add New Comparison",styleclass = "primary"),
-            actionButton("rm_btn", "Remove", styleclass = "primary"),
+        column(12,actionButtonDE("add_btn", "Add New Comparison",styleclass = "primary"),
+            actionButtonDE("rm_btn", "Remove", styleclass = "primary"),
             getHelpButton("method", "http://debrowser.readthedocs.io/en/master/deseq/deseq.html"),
-            conditionalPanel(condition <- ("output.condReady>0"),
-            actionButton("startDE", "Start DE", styleclass = "primary")))
+            conditionalPanel(condition = ("output.condReady>0"),
+            actionButtonDE("startDE", "Start DE", styleclass = "primary")))
     ))
 )
 }

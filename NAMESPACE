@@ -2,7 +2,7 @@
 
 export(BoxMainPlotControlsUI)
 export(IQRPlotControlsUI)
-export(actionButton)
+export(actionButtonDE)
 export(addDataCols)
 export(addID)
 export(all2all)

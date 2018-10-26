@@ -432,7 +432,7 @@ kmeansControlsUI <- function(id) {
                 "MacQueen"), selected = 'Lloyd'),
             textInput(ns('clusterorder'), 
                 'The order of the clusters', ""),
-            actionButton(ns("changeOrder"), label = "Change Order", styleclass = "primary"),
+            actionButtonDE(ns("changeOrder"), label = "Change Order", styleclass = "primary"),
             checkboxInput(ns('showClasses'), 'Show Classes', value = FALSE)))
 }
 #' dendControlsUI

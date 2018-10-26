@@ -88,7 +88,7 @@ getBoxMainPlot <- function(data=NULL, conds=NULL, cols = NULL, key=NULL, title =
   vardata <- getVariationData(data, conds, cols, key)
   title <- paste(vardata$genename, " variation")
   p <- plot_ly(vardata, x = ~conds, y = ~count, 
-               color=~conds, colors=c("Red", "Blue"),
+               color=~conds, colors=c("Blue", "Red"),
                boxpoints = "all", type = "box") %>%
        plotly::layout(title = title,
                    xaxis = list(title = "Conditions"),

@@ -176,7 +176,7 @@ deServer <- function(input, output, session) {
             })
             
             output$compselectUI <- renderUI({
-                if (!is.null(sel()))
+                if (!is.null(sel()) && !is.null(sel()$cc()))
                     getCompSelection("compselect_dataprep",sel()$cc())
             })
 

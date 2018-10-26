@@ -1,4 +1,5 @@
 library(debrowser)
+library(DESeq2)
 
 header <- dashboardHeader(
   title = "DEBrowser DE Analysis"

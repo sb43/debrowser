@@ -111,7 +111,7 @@ debrowserdataload <- function(input = NULL, output = NULL, session = NULL, nextp
         return(ret)
     })
     output$nextButton <- renderUI({
-        actionButton(nextpagebutton, label = nextpagebutton, styleclass = "primary")
+        actionButtonDE(nextpagebutton, label = nextpagebutton, styleclass = "primary")
     })
     observe({
         getSampleDetails(output, "uploadSummary", "sampleDetails", loadeddata())
@@ -138,9 +138,9 @@ dataLoadUI<- function (id) {
              fileUploadBox(id, "metadata", "Metadata")
         ),
         fluidRow(column(12,
-        actionButton(ns("uploadFile"), label = "Upload", styleclass = "primary"), 
-        actionButton(ns("demo"),  label = "Load Demo (Vernia et. al)", styleclass = "primary"),
-        actionButton(ns("demo2"),  label = "Load Demo (Donnard et. al)", styleclass = "primary"))),
+        actionButtonDE(ns("uploadFile"), label = "Upload", styleclass = "primary"), 
+        actionButtonDE(ns("demo"),  label = "Load Demo (Vernia et. al)", styleclass = "primary"),
+        actionButtonDE(ns("demo2"),  label = "Load Demo (Donnard et. al)", styleclass = "primary"))),
         fluidRow(column(12,
         conditionalPanel(condition = paste0("output['", ns("dataloaded"),"']"),
         uiOutput(ns("nextButton"))

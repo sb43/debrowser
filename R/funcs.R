@@ -177,7 +177,7 @@ getTableDetails <- function(output  = NULL, session  = NULL, tablename  = NULL, 
         ret <- getBSTableUI( session$ns(tablenameUI), "Show Data", paste0("show",tablename), modal = modal) 
         if (!is.null(modal) && modal)
            ret <- list( downloadButton(session$ns(paste(tablename, "Download")), "Download"),
-               actionButton(paste0("show",tablename), "Show Data", styleclass = "primary", icon="show"),
+               actionButtonDE(paste0("show",tablename), "Show Data", styleclass = "primary", icon="show"),
                ret)
         ret    
     })
@@ -254,9 +254,9 @@ round_vals <- function(l) {
 #' @export
 #'
 #' @examples
-#'     actionButton("goDE", "Go to DE Analysis")
+#'     actionButtonDE("goDE", "Go to DE Analysis")
 #'
-actionButton <- function(inputId, label, styleclass = "", size = "",
+actionButtonDE <- function(inputId, label, styleclass = "", size = "",
         block = FALSE, icon = NULL, css.class = "", ...) {
     if (styleclass %in% c("primary", "info", "success", "warning",
         "danger", "inverse", "link")) {
@@ -350,7 +350,7 @@ getCompSelection <- function(name = NULL, count = NULL) {
 #' @export
 getHelpButton<-function(name = NULL, link = NULL){
     if (is.null(name)) return(NULL)
-    btn <- actionButton(paste0("info_",name),"",icon="info",
+    btn <- actionButtonDE(paste0("info_",name),"",icon="info",
         styleclass="info", size="small")
     
     HTML(paste0("<a id=\"info_",name,"\" href=\"",link,"\" target=\"_blank\">",

@@ -90,7 +90,7 @@ getBarMainPlot <- function(data=NULL, conds=NULL, cols = NULL, key=NULL, title =
     title <- paste(vardata$genename, " variation")
     
     p <- plot_ly(vardata, x = ~libs, y = ~count, 
-                 color=~conds, colors=c("Red", "Blue"),
+                 color=~conds, colors=c("Blue", "Red"),
                  type = "bar")
     p <- p %>% 
         plotly::layout(title = title,

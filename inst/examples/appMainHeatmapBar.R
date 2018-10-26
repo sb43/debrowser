@@ -2,6 +2,7 @@ library(debrowser)
 library(plotly)
 library(heatmaply)
 library(gplots)
+library(DESeq2)
 
 header <- dashboardHeader(
     title = "DEBrowser Main Plots"

@@ -107,7 +107,7 @@ batchEffectUI <- function (id) {
                 normalizationMethods(id),
                 batchMethod(id),
                 uiOutput(ns("batchfields")),
-                actionButton(ns("submitBatchEffect"), label = "Submit", styleclass = "primary")
+                actionButtonDE(ns("submitBatchEffect"), label = "Submit", styleclass = "primary")
            )
           ),
           column(5,div(style = 'overflow: scroll', 
@@ -117,9 +117,9 @@ batchEffectUI <- function (id) {
           )
         ),
         conditionalPanel(condition = paste0("input['", ns("submitBatchEffect"),"']"),
-        actionButton("goDE", "Go to DE Analysis", styleclass = "primary"),
-        actionButton("goQCplots", "Go to QC plots", styleclass = "primary"))),
-      shinydashboard::box(title = "Plots",
+        actionButtonDE("goDE", "Go to DE Analysis", styleclass = "primary"),
+        actionButtonDE("goQCplots", "Go to QC plots", styleclass = "primary"))),
+    shinydashboard::box(title = "Plots",
         solidHeader = TRUE, status = "info",  width = 12, 
         fluidRow(column(1, div()),
             tabsetPanel( id = ns("batchTabs"),
