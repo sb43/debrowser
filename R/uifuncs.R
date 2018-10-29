@@ -457,7 +457,7 @@ getTableStyle <- function(dat = NULL, input = NULL,
             backgroundColor = styleInterval(
             c(1/as.numeric(input$foldChange),
             as.numeric(input$foldChange)),
-            c('red', 'white', 'blue'))
+            c('blue', 'white', 'red'))
     )
     a
 }

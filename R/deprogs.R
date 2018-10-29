@@ -256,7 +256,7 @@ runEdgeR<- function(data = NULL, columns = NULL, conds = NULL, params = NULL){
     data[, columns] <- apply(data[, columns], 2,
         function(x) as.integer(x))
     dispersion <- as.numeric(dispersion)
-    conds <- factor(conds, levels(conds)[1], levels(conds)[2])
+    conds <- factor(conds)
     filtd <- data
     if (is.numeric(rowsum.filter) && !is.na(rowsum.filter))
         filtd <- subset(data, rowSums(data) > rowsum.filter)
