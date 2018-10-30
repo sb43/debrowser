@@ -82,8 +82,8 @@ getMethodDetails <- function(num = 0, input = NULL) {
                     selectedInput("betaPrior", num,
                     FALSE, input),2),
                 getSelectInputBox("testType", "Test Type", num, 
-                    c("Wald", "LRT"),  
-                    selectedInput("testType", num, "Wald", input))),
+                    c("LRT", "Wald"),  
+                    selectedInput("testType", num, "LRT", input))),
             conditionalPanel(
                 (condition <- paste0("input.demethod",num," == 'EdgeR'")),
                 getSelectInputBox("edgeR_normfact", "Normalization", num, 

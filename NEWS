@@ -1,4 +1,10 @@
 ***********************************
+Version 1.10.1 Release
+*********************************
+- LRT made default in DESeq2.
+- Labels in main plots changed.
+
+***********************************
 Version 1.9.21 Release
 *********************************
 - Last publication fixes

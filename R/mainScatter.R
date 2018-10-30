@@ -33,8 +33,8 @@ debrowsermainplot <- function(input = NULL, output = NULL, session = NULL, data 
     })
     output$mainPlotControlsUI <- renderUI({
         if (input$mainplot == "scatter"){
-            x <- paste0('log10 Norm. Mean(cond1)')
-            y <- paste0('log10 Norm. Mean(cond2)')
+            x <- paste0('log10 Norm. Mean(Read Count) in cond1)')
+            y <- paste0('log10 Norm. Mean(Read Count) in cond2')
         }else if  (input$mainplot == "volcano"){
             x <- "log2FC"
             y <- "log10padj"
