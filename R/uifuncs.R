@@ -636,3 +636,33 @@ getSelectedCols <- function(data = NULL, datasetInput = NULL, input=NULL){
     }
     return(selCols)
 }
+
+
+#' removeExtraCols
+#'
+#' remove extra columns for QC plots
+#'
+#' @param dat, selected data
+#'
+#' @export
+#'
+#' @examples
+#'     removeExtraCols()
+#'
+#'
+removeExtraCols <- function(dat = NULL){
+    rcols <- c(names(dat)[grep("^padj", names(dat))], 
+               names(dat)[grep("^foldChange", names(dat))],
+               names(dat)[grep("^log2FoldChange$", names(dat))],
+               names(dat)[grep("^pvalue$", names(dat))],
+               names(dat)[grep("^Legend$", names(dat))],
+               names(dat)[grep("^Size$", names(dat))],
+               names(dat)[grep("^log10padj$", names(dat))],
+               names(dat)[grep("^x$", names(dat))],
+               names(dat)[grep("^y$", names(dat))],
+               names(dat)[grep("^M$", names(dat))],
+               names(dat)[grep("^A$", names(dat))],
+               names(dat)[grep("^ID$", names(dat))]
+    )
+    dat <- dat[, !(names(dat) %in% rcols)]
+}
