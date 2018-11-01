@@ -261,34 +261,34 @@ runEdgeR<- function(data = NULL, columns = NULL, conds = NULL, params = NULL){
     if (is.numeric(rowsum.filter) && !is.na(rowsum.filter))
         filtd <- subset(data, rowSums(data) > rowsum.filter)
     
-    d<- edgeR::DGEList(counts = filtd, group=conds)
+    d<- edgeR::DGEList(counts = filtd, group = conds)
     d <- edgeR::calcNormFactors(d, method = normfact)
     # If dispersion is 0, it will estimate the dispersions.
     de.com <- c() 
+    cnum = summary(conds)[levels(conds)[1]]
+    tnum = summary(conds)[levels(conds)[2]]
+    des <- c(rep(1, cnum),rep(2, tnum))
+    design <- model.matrix(~des)
     if (testType == "exactTest"){
         if (dispersion == 0){
-            d <- edgeR::estimateCommonDisp(d)
+            d <- edgeR::estimateDisp(d, design)
             de.com <- edgeR::exactTest(d)
         }else{
             de.com <- edgeR::exactTest(d, dispersion=dispersion)
         }
     }else if (testType == "glmLRT"){
-        cnum = summary(conds)[levels(conds)[1]]
-        tnum = summary(conds)[levels(conds)[2]]
-        des <- c(rep(1, cnum),rep(2, tnum))
-        design <- model.matrix(~des)
         if (dispersion == 0){
-            d <- edgeR::estimateCommonDisp(d)
+            d <- edgeR::estimateDisp(d, design)
             fit <- edgeR::glmFit(d, design)
         }else{
             fit <- edgeR::glmFit(d, design, dispersion=dispersion)
         }   
-        de.com <- edgeR::glmLRT(fit)
+        de.com <- edgeR::glmLRT(fit,coef=2)
     }
 
     options(digits=4)
 
-    padj<- p.adjust(de.com$table$PValue, method="BH")
+    padj<- p.adjust(de.com$table$PValue, method="bonferroni")
     res <-data.frame(cbind(de.com$table$logFC/log(2),de.com$table$PValue, padj))
     colnames(res) <- c("log2FoldChange", "pvalue", "padj")
     rownames(res) <- rownames(filtd)
