@@ -370,9 +370,12 @@ deServer <- function(input, output, session) {
         normdat <-  reactive({
             if (!is.null(init_data()) && !is.null(datasetInput())){
                 dat <- init_data()
-                if(!is.null(cols()))
-                    dat <- init_data()[,cols()]
-                norm <- getNormalizedMatrix(dat, input$norm_method)
+                norm <- c()
+                if(!is.null(cols())){
+                    norm <- removeExtraCols(datasetInput())
+                }else{
+                    norm <- getNormalizedMatrix(dat, input$norm_method)
+                }
                 getSelectedCols(norm, datasetInput(), input)
             }
         })
@@ -383,9 +386,7 @@ deServer <- function(input, output, session) {
         })
         
         output$columnSelForQC <- renderUI({
-            existing_cols <- colnames(datasetInput())
-            if (!is.null(cols()))
-                existing_cols <- cols()
+            existing_cols <- colnames(removeExtraCols(datasetInput()))
             wellPanel(id = "tPanel",
                 style = "overflow-y:scroll; max-height: 300px",
                 checkboxGroupInput("col_list", "Select col to include:",
@@ -464,24 +465,22 @@ deServer <- function(input, output, session) {
             if(is.null(input$gotable_rows_selected)) return (NULL)
             org <- input$organism
             dat <- tabledat()
-            
             i <- input$gotable_rows_selected
             genedata <- getEntrezTable(inputGOstart()$enrich_p$geneID[i],
-                                       dat[[1]], org)
-            
+                dat[[1]], org)
             dat[[1]] <- genedata
             dat
         })
         output$GOGeneTable <- DT::renderDataTable({
             shiny::validate(need(!is.null(input$gotable_rows_selected),
-                          "Please select a category in the GO/KEGG table to be able
-                          to see the gene list"))
+                "Please select a category in the GO/KEGG table to be able
+                to see the gene list"))
             dat <- getGOCatGenes()
             if (!is.null(dat)){
                 DT::datatable(dat[[1]],
-                              list(lengthMenu = list(c(10, 25, 50, 100),
-                                                     c("10", "25", "50", "100")),
-                                   pageLength = 25, paging = TRUE, searching = TRUE)) %>%
+                    list(lengthMenu = list(c(10, 25, 50, 100),
+                        c("10", "25", "50", "100")),
+                        pageLength = 25, paging = TRUE, searching = TRUE)) %>%
                     getTableStyle(input, dat[[2]], dat[[3]], buttonValues$startDE)
             }
         })

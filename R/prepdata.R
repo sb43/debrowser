@@ -443,6 +443,7 @@ applyFiltersToMergedComparison <- function (merged = NULL,
             1/foldChange_cutoff & as.numeric(merged[,c(paste0("padj.", tt))]) <= 
             padj_cutoff), "Legend"] <- "Sig"
     }
+    print(head(merged))
     merged 
 }
 
