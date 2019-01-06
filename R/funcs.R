@@ -609,7 +609,7 @@ ipak <- function(pkg){
     citation <- paste0("If you use DEBrowser in published research, please cite:\n",
                        "Alper Kucukural, Onur Yuksel, Deniz M. Ozata, Melissa J. Moore, Manuel Garber,",
                        " DEBrowser: Interactive Differential Expression Analysis and Visualization Tool for Count Data,",
-                       " Bioarxiv 2018, doi: 10.1101/399931", "\n")
+                       " BMC Genomics 2019, 20:6 doi: 10.1186/s12864-018-5362-x", "\n")
     
     packageStartupMessage(paste0(msg, citation))
     .initial()
