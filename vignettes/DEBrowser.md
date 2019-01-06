@@ -13,6 +13,12 @@ vignette: >
 # DEBrowser:
 Interactive Differential Expression Analysis Tool
 
+# Citation
+If you are using DEBrowser in your research, please cite:
+
+Alper Kucukural, Onur Yuksel, Deniz M. Ozata, Melissa J. Moore, Manuel Garber, DEBrowser: Interactive Differential Expression Analysis and Visualization Tool for Count Data, BMC Genomics 2019, 20:6 doi: 10.1186/s12864-018-5362-x
+
+
 # Introduction
 
 Differential expression (DE) analysis has become an increasingly popular tool
