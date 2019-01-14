@@ -22,8 +22,7 @@ startDEBrowser <- function(){
                         system.file("extdata", "www", 
                         package = "debrowser"))
         environment(deServer) <- environment()
-        #shinyAppDir(system.file(package="debrowser"))
-            
+
         app <- shinyApp( ui = shinyUI(deUI),
                     server = shinyServer(deServer))
         runApp(app)
