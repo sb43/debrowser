@@ -602,14 +602,14 @@ ipak <- function(pkg){
 }
 
 .onAttach <- function(libname, pkgname) {
-    pkgVersion <- packageDescription("debrowser", fields="Version")
+    pkgVersion <- packageDescription("DEBrowser", fields="Version")
     msg <- paste0("DEBrowser v", pkgVersion, "  ",
                   "For help: https://debrowser.readthedocs.org/", "\n\n")
     
     citation <- paste0("If you use DEBrowser in published research, please cite:\n",
                        "Alper Kucukural, Onur Yuksel, Deniz M. Ozata, Melissa J. Moore, Manuel Garber,",
                        " DEBrowser: Interactive Differential Expression Analysis and Visualization Tool for Count Data,",
-                       " BMC Genomics 2019, 20:6 doi: 10.1186/s12864-018-5362-x", "\n")
+                       " Bioarxiv 2018, doi: 10.1101/399931", "\n")
     
     packageStartupMessage(paste0(msg, citation))
     .initial()

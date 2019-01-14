@@ -1,7 +1,7 @@
 Package: debrowser
 Type: Package
 Title: Interactive Differential Expresion Analysis Browser
-Version: 1.11.5
+Version: 1.10.5
 Date: 2018-11-20
 Author: Alper Kucukural <alper.kucukural@umassmed.edu>,
         Onur Yukselen <onur.yukselen@umassmed.edu>,
@@ -46,24 +46,21 @@ Imports:
     SummarizedExperiment,
     stringi,
     reshape2,
-    baySeq,
     d3heatmap,
     org.Hs.eg.db,
     org.Mm.eg.db,
     limma,
     edgeR,
     clusterProfiler,
-    V8,
     methods,
     sva,
     RCurl,
-    googleAuthR,
     enrichplot,
     colourpicker,
     plotly,
     heatmaply,
     Harman
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Encoding: UTF-8
 Suggests: testthat,
     rmarkdown,
