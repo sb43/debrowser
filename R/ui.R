@@ -114,7 +114,7 @@ deUI <- function() {
                     tabPanel(title = "GO Term", value = "panel3", id="panel3",
                             uiOutput("gopanel")),
                     tabPanel(title = "Tables", value = "panel4", id="panel4",
-                            dataTableOutput("tables")))
+                            DT::dataTableOutput("tables")))
         ),
         getTabUpdateJS()
         ))

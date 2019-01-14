@@ -68,10 +68,7 @@
 #' @importFrom stringi stri_rand_strings
 #' @importFrom annotate geneSymbols
 #' @importFrom reshape2 melt
-#' @importFrom baySeq getLibsizes getLikelihoods getLikelihoods.NB
-#'             getPriors getPriors.NB nbinomDensity
 #' @importFrom Harman harman reconstructData
-#' @importMethodsFrom baySeq "densityFunction<-" "libsizes<-"
 #' @importFrom clusterProfiler compareCluster enrichKEGG enrichGO
 #' @importFrom DESeq2 DESeq DESeqDataSetFromMatrix results estimateSizeFactors
 #'             counts
@@ -86,14 +83,12 @@
 #' @importFrom pathview pathview
 #' @import org.Hs.eg.db
 #' @import org.Mm.eg.db
-#' @import V8
 #' @import shinyBS
 #' @import colourpicker
 #' @import RColorBrewer
 #' @import heatmaply
 
 deServer <- function(input, output, session) {
-    #library(debrowser)
     options(warn = -1)
     tryCatch(
     {
@@ -101,13 +96,10 @@ deServer <- function(input, output, session) {
             options( shiny.maxRequestSize = 30 * 1024 ^ 2,
                     shiny.fullstacktrace = FALSE, shiny.trace=FALSE, 
                     shiny.autoreload=TRUE, warn =-1)
-            debrowser::loadpack(debrowser)
+            library("plotly")
         }
         # To hide the panels from 1 to 4 and only show Data Prep
         togglePanels(0, c(0), session)
-        loadingJSON <- reactive({
-            getJsonObj(isolate(session), isolate(input), access_token())
-        })
 
         choicecounter <- reactiveValues(nc = 0)
         
