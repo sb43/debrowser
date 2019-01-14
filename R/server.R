@@ -96,7 +96,8 @@ deServer <- function(input, output, session) {
             options( shiny.maxRequestSize = 30 * 1024 ^ 2,
                     shiny.fullstacktrace = FALSE, shiny.trace=FALSE, 
                     shiny.autoreload=TRUE, warn =-1)
-            library("plotly")
+            loadpack("debrowser")
+            loadpack("plotly")
         }
         # To hide the panels from 1 to 4 and only show Data Prep
         togglePanels(0, c(0), session)

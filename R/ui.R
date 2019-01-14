@@ -11,6 +11,10 @@
 #' @export
 #'
 
+if (!interactive()) {
+    debrowser::loadpack("debrowser")
+}
+
 deUI <- function() {
     dbHeader <- dashboardHeader(titleWidth = 250)
     dbHeader$children[[2]]$children <- tags$a(style='color: white;',
