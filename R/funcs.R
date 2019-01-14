@@ -602,7 +602,7 @@ ipak <- function(pkg){
 }
 
 .onAttach <- function(libname, pkgname) {
-    pkgVersion <- packageDescription("DEBrowser", fields="Version")
+    pkgVersion <- packageDescription("debrowser", fields="Version")
     msg <- paste0("DEBrowser v", pkgVersion, "  ",
                   "For help: https://debrowser.readthedocs.org/", "\n\n")
     
