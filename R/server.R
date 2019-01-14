@@ -121,7 +121,7 @@ deServer <- function(input, output, session) {
 
         observe({
             updata(callModule(debrowserdataload, "load", "Filter"))
-            
+            updateTabItems(session, "DataPrep", "Upload")
             observeEvent (input$Filter, {
                 if(!is.null(updata()$load())){ 
                     updateTabItems(session, "DataPrep", "Filter")
@@ -226,10 +226,7 @@ deServer <- function(input, output, session) {
         buttonValues <- reactiveValues(goQCplots = FALSE, goDE = FALSE,
             startDE = FALSE)
         output$dataready <- reactive({
-            query <- parseQueryString(session$clientData$url_search)
-            jsonobj<-query$jsonobject
-            if (is.null(jsonobj))
-                hide(id = "loading-debrowser", anim = TRUE, animType = "fade")  
+            hide(id = "loading-debrowser", anim = TRUE, animType = "fade")  
             return(!is.null(init_data()))
         })
         outputOptions(output, "dataready", 

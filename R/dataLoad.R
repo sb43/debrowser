@@ -22,48 +22,53 @@ debrowserdataload <- function(input = NULL, output = NULL, session = NULL, nextp
     })
     outputOptions(output, "dataloaded", 
         suspendWhenHidden = FALSE)
-    observe({
-        query <- parseQueryString(session$clientData$url_search)
-        jsonobj<-query$jsonobject
-        # To test json load;
-        # It accepts three parameters:
-        # 1. jsonobject=https%3A%2F%2Fdolphin.umassmed.edu%2Fpublic%2Fapi%2F%3Fsource%3Dhttps%3A%2F%2Fbioinfo.umassmed.edu%2Fpub%2Fdebrowser%2F%0D%0Aadvanced_demo.tsv%26format%3DJSON
-        # 2. meta=meta=https%3A%2F%2Fdolphin.umassmed.edu%2Fpublic%2Fapi%2F%3Fsource%3Dhttps%3A%2F%2Fbioinfo.umassmed.edu%2Fpub%2Fdebrowser%2Fsimple_meta.tsv%26format%3DJSON
-        # 3. title=no
-        # The finished product of the link will look like this without metadata:
-        # 
-        # https://127.0.0.1:3427/debrowser/R/?jsonobject=https%3A%2F%2Fdolphin.umassmed.edu%2Fpublic%2Fapi%2F%3Fsource%3Dhttps%3A%2F%2Fbioinfo.umassmed.edu%2Fpub%2Fdebrowser%2F%0D%0Aadvanced_demo.tsv%26format%3DJSON&title=no
-        #        
-        #  With metadata
-        #
-        #http://127.0.0.1:3427/?jsonobject=https%3A%2F%2Fdolphin.umassmed.edu%2Fpublic%2Fapi%2F%3Fsource%3Dhttps%3A%2F%2Fbioinfo.umassmed.edu%2Fpub%2Fdebrowser%2Fsimple_demo.tsv%26format%3DJSON&meta=https%3A%2F%2Fdolphin.umassmed.edu%2Fpublic%2Fapi%2F%3Fsource%3Dhttps%3A%2F%2Fbioinfo.umassmed.edu%2Fpub%2Fdebrowser%2Fsimple_meta.tsv%26format%3DJSON
-        #
-        #
+    query <- parseQueryString(session$clientData$url_search)
+    jsonobj<-query$jsonobject
         
-        if (!is.null(jsonobj))
-        {
-            raw <- RCurl::getURL(jsonobj, .opts = list(ssl.verifypeer = FALSE),
-                 crlf = TRUE)
-            jsondata<-data.frame(fromJSON(raw, simplifyDataFrame = TRUE),
-                                 stringsAsFactors = TRUE)
-            rownames(jsondata)<-jsondata[, 1]
-            jsondata<-jsondata[,c(3:ncol(jsondata))]
-            jsondata[,c(1:ncol(jsondata))] <- sapply(
-                jsondata[,c(1:ncol(jsondata))], as.numeric)
-            metadatatable <- NULL
-            jsonmet <-query$meta
-            if(!is.null(jsonmet)){
-                raw <- RCurl::getURL(jsonmet, .opts = list(ssl.verifypeer = FALSE),
-                    crlf = TRUE)
-                metadatatable<-data.frame(fromJSON(raw, simplifyDataFrame = TRUE),
-                    stringsAsFactors = TRUE)
-                
-            }
-            ldata$meta <- metadatatable
-            jsondata <- jsondata[,sapply(jsondata, is.numeric)]
-            ldata$count <- jsondata
+    # To test json load;
+    # It accepts three parameters:
+    # 1. jsonobject=https%3A%2F%2Fdolphin.umassmed.edu%2Fpublic%2Fapi%2F%3Fsource%3Dhttps%3A%2F%2Fbioinfo.umassmed.edu%2Fpub%2Fdebrowser%2Fadvanced_demo.tsv%26format%3DJSON
+    # 2. meta=meta=https%3A%2F%2Fdolphin.umassmed.edu%2Fpublic%2Fapi%2F%3Fsource%3Dhttps%3A%2F%2Fbioinfo.umassmed.edu%2Fpub%2Fdebrowser%2Fsimple_meta.tsv%26format%3DJSON
+    # 3. title=no
+    # The finished product of the link will look like this without metadata:
+    # 
+    # https://127.0.0.1:3427/debrowser/R/?jsonobject=https%3A%2F%2Fdolphin.umassmed.edu%2Fpublic%2Fapi%2F%3Fsource%3Dhttps%3A%2F%2Fbioinfo.umassmed.edu%2Fpub%2Fdebrowser%2Fadvanced_demo.tsv%26format%3DJSON&title=no
+    #        
+    #  With metadata
+    #
+    #http://127.0.0.1:3427/?jsonobject=https%3A%2F%2Fdolphin.umassmed.edu%2Fpublic%2Fapi%2F%3Fsource%3Dhttps%3A%2F%2Fbioinfo.umassmed.edu%2Fpub%2Fdebrowser%2Fsimple_demo.tsv%26format%3DJSON&meta=https%3A%2F%2Fdolphin.umassmed.edu%2Fpublic%2Fapi%2F%3Fsource%3Dhttps%3A%2F%2Fbioinfo.umassmed.edu%2Fpub%2Fdebrowser%2Fsimple_meta.tsv%26format%3DJSON
+    #
+    #
+    
+    if (!is.null(jsonobj))
+    {
+        raw <- RCurl::getURL(jsonobj, .opts = list(ssl.verifypeer = FALSE),
+             crlf = TRUE)
+        jsondata<-data.frame(fromJSON(raw, simplifyDataFrame = TRUE),
+                             stringsAsFactors = TRUE)
+        rownames(jsondata)<-jsondata[, 1]
+        jsondata<-jsondata[,c(3:ncol(jsondata))]
+        jsondata[,c(1:ncol(jsondata))] <- sapply(
+            jsondata[,c(1:ncol(jsondata))], as.numeric)
+        jsondata <- jsondata[,sapply(jsondata, is.numeric)]
+        ldata$count <- jsondata
+        
+        metadatatable <- NULL
+        jsonmet <-query$meta
+        if(!is.null(jsonmet)){
+            raw <- RCurl::getURL(jsonmet, .opts = list(ssl.verifypeer = FALSE),
+                crlf = TRUE)
+            metadatatable<-data.frame(fromJSON(raw, simplifyDataFrame = TRUE),
+                stringsAsFactors = TRUE)
+            
+        }else{
+            metadatatable <- cbind(colnames(ldata$count), 1)
+            colnames(metadatatable) <- c("Sample", "Batch")
         }
-    })
+        ldata$meta <- metadatatable
+        input$Filter
+    }
+
     observeEvent(input$demo, {
         load(system.file("extdata", "demo", "demodata.Rda",
                          package = "debrowser"))
@@ -132,15 +137,14 @@ debrowserdataload <- function(input = NULL, output = NULL, session = NULL, nextp
 #'
 dataLoadUI<- function (id) {
   ns <- NS(id)
-  list(
-        fluidRow(
+  list(conditionalPanel(condition =  paste0("!output['", ns("dataloaded"),"']"), fluidRow(
              fileUploadBox(id, "countdata", "Count Data"),
              fileUploadBox(id, "metadata", "Metadata")
         ),
         fluidRow(column(12,
         actionButtonDE(ns("uploadFile"), label = "Upload", styleclass = "primary"), 
         actionButtonDE(ns("demo"),  label = "Load Demo (Vernia et. al)", styleclass = "primary"),
-        actionButtonDE(ns("demo2"),  label = "Load Demo (Donnard et. al)", styleclass = "primary"))),
+        actionButtonDE(ns("demo2"),  label = "Load Demo (Donnard et. al)", styleclass = "primary")))),
         fluidRow(column(12,
         conditionalPanel(condition = paste0("output['", ns("dataloaded"),"']"),
         uiOutput(ns("nextButton"))
@@ -180,7 +184,6 @@ dataLoadUI<- function (id) {
 #'
 fileUploadBox <- function(id = NULL, inputId = NULL, label = NULL) {
 ns <- NS(id)
-  
 shinydashboard::box(title = paste0(label, " File"),
     solidHeader = TRUE, status = "info",
     width = 6,
