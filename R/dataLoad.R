@@ -17,11 +17,20 @@
 debrowserdataload <- function(input = NULL, output = NULL, session = NULL, nextpagebutton = NULL) {
     if (is.null(input)) return(NULL)
     ldata <- reactiveValues(count=NULL, meta=NULL)
+    loadeddata <- reactive({
+        ret <- NULL
+        if(!is.null(ldata$count)){
+            ldata$count <- ldata$count[,sapply(ldata$count, is.numeric)]
+            ret <- list(count = ldata$count, meta = ldata$meta)
+        }
+        return(ret)
+    })
     output$dataloaded <- reactive({
         return(!is.null(loadeddata()))
     })
     outputOptions(output, "dataloaded", 
         suspendWhenHidden = FALSE)
+    observe({
     query <- parseQueryString(session$clientData$url_search)
     jsonobj<-query$jsonobject
         
@@ -68,7 +77,7 @@ debrowserdataload <- function(input = NULL, output = NULL, session = NULL, nextp
         ldata$meta <- metadatatable
         input$Filter
     }
-
+    })
     observeEvent(input$demo, {
         load(system.file("extdata", "demo", "demodata.Rda",
                          package = "debrowser"))
@@ -85,6 +94,12 @@ debrowserdataload <- function(input = NULL, output = NULL, session = NULL, nextp
     
     observeEvent(input$uploadFile, {
         if (is.null(input$countdata)) return (NULL)
+        checkRes <- checkCountData(input)
+        
+        if (checkRes != "success"){
+            showNotification(checkRes, type = "error")
+            return(NULL)
+        }
         counttable <-as.data.frame(
             try(
                 read.delim(input$countdata$datapath, 
@@ -93,10 +108,16 @@ debrowserdataload <- function(input = NULL, output = NULL, session = NULL, nextp
         counttable <- counttable[,sapply(counttable, is.numeric)]
         metadatatable <- c()
         if (!is.null(input$metadata$datapath)){
-        metadatatable <- as.data.frame(
+            metadatatable <- as.data.frame(
             try(
                 read.delim(input$metadata$datapath, 
                 header=TRUE, sep=input$metadataSep, strip.white=TRUE), TRUE))
+
+            checkRes <- checkMetaData(input, counttable)
+            if (checkRes != "success"){
+                  showNotification(checkRes, type = "error")
+                  return(NULL)
+            }
         }
         else{
             metadatatable <- cbind(colnames(counttable), 1)
@@ -106,14 +127,6 @@ debrowserdataload <- function(input = NULL, output = NULL, session = NULL, nextp
             {stop("Please upload the count file")}
         ldata$count <- counttable
         ldata$meta <- metadatatable
-    })
-    loadeddata <- reactive({
-        ret <- NULL
-        if(!is.null(ldata$count)){
-            ldata$count <- ldata$count[,sapply(ldata$count, is.numeric)]
-            ret <- list(count = ldata$count, meta = ldata$meta)
-        }
-        return(ret)
     })
     output$nextButton <- renderUI({
         actionButtonDE(nextpagebutton, label = nextpagebutton, styleclass = "primary")
@@ -242,4 +255,68 @@ fileTypes <- function() {
     '.txt',
     '.csv',
     '.tsv')
+}
+
+#' checkCountData
+#'
+#' Returns if there is a problem in the count data.
+#'
+#' @note \code{checkCountData}
+#' @param input, inputs
+#' @return error if there is a problem about the loaded data
+#
+#' @examples
+#'     x <- checkCountData()
+#'
+#' @export
+#'
+checkCountData <- function(input = NULL){
+    if (is.null(input$countdata$datapath)) return(NULL)
+    tryCatch({
+        data <- read.table(input$countdata$datapath, sep=input$countdataSep)
+        dups <- data[duplicated(data[,1], fromLast = TRUE),1]
+        if (length(dups)>1) return (paste0("Error: There are duplicate entried in  the rownames. (", 
+            paste0(dups, collapse=","),")"))
+        return("success")
+    }, error = function(err) {
+        return (paste0("Error(Count file):",toString(err)))
+    }, warning = function(war) {
+        return(paste0("Warning(Count file):",toString(err)))
+    })
+}
+
+
+#' checkMetaData
+#'
+#' Returns if there is a problem in the count data.
+#'
+#' @note \code{checkMetaData}
+#' @param input, input
+#' @param counttable, counttable
+#' @return error if there is a problem about the loaded data
+#
+#' @examples
+#'     x <- checkMetaData()
+#'
+#' @export
+#'
+checkMetaData <- function(input = NULL, counttable = NULL){
+    if (is.null(counttable) || is.null(input$metadata$datapath)) return(NULL)
+     tryCatch({
+        metadatatable <- read.table(input$metadata$datapath, sep=input$countdataSep)
+        met <- as.vector(metadatatable[order(as.vector(metadatatable[,1])), 1])
+        count <- as.vector(colnames(counttable)[order(as.vector(colnames(counttable)))])
+        print(met)
+        print(count)
+        difference <- base::setdiff(met, count)
+        print(paste0(difference, sep=","))
+        if (length(difference)>0){
+            return(paste0("Colnames doesn't match with the metada table(", paste0(difference,sep=","), ")"))
+        }
+        return("success")
+    }, error = function(err) {
+        return (paste0("Error(Matadata file):",toString(err)))
+    }, warning = function(war) {
+        return (paste0("Warning(Matadata file):",toString(war)))
+    })
 }

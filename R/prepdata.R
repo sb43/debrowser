@@ -320,6 +320,7 @@ getDataForTables <- function(input = NULL, init_data = NULL,
     getMostVaried = NULL,  mergedComp = NULL,
     explainedData = NULL){
     if (is.null(init_data )) return(NULL)
+    if (is.null(filt_data)) filt_data <- init_data
     pastr <- "padj"
     fcstr <- "foldChange"
     dat <- NULL

@@ -1,4 +1,10 @@
 ***********************************
+Version 1.10.7 Release
+*********************************
+- Better error reporting in data upload
+- alldetected genes matrix downlad fixed in QC section
+
+***********************************
 Version 1.10.1 Release
 *********************************
 - LRT made default in DESeq2.
