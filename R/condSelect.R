@@ -293,13 +293,18 @@ selectConditions<-function(Dataset = NULL,
                         c("DESeq2", "EdgeR", "Limma"),
                         selectedInput("demethod", i, "DESeq2", input)),
                    getMethodDetails(i, input)))
-            if ( !is.null(selectedInput("conditions_from_meta", 
-                  i, NULL, input)) && selectedInput("conditions_from_meta", 
-                  i, NULL, input) != "No Selection"
-                  && length(levels(factor(metadata[,selectedInput("conditions_from_meta", 
-                  i, NULL, input)])))!=2){
-                showNotification("There must be exactly 2 groups in the selected condition.", type = "error")
-                updateSelectInput(session, paste0("conditions_from_meta", i), selected="No Selection" )
+            if (!is.null(selectedInput("conditions_from_meta", 
+                i, NULL, input)) && selectedInput("conditions_from_meta", 
+                i, NULL, input) != "No Selection"){
+                facts <- levels(factor(metadata[,selectedInput("conditions_from_meta", 
+                     i, NULL, input)]))
+                facts <- facts[facts != "" & facts != "NA"]
+                if (length(facts) != 2) {
+                    showNotification("There must be exactly 2 groups in the selected condition. 
+                         Please use NA or space to remove extra sample groups from metadata selection.", 
+                         type = "error")
+                     updateSelectInput(session, paste0("conditions_from_meta", i), selected="No Selection" )
+                }
             }
             return(to_return)
         })
