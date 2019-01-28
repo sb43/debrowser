@@ -5,7 +5,7 @@
 \title{selectConditions}
 \usage{
 selectConditions(Dataset = NULL, metadata = NULL,
-  choicecounter = NULL, input = NULL)
+  choicecounter = NULL, session = NULL, input = NULL)
 }
 \arguments{
 \item{Dataset, }{used dataset}
@@ -13,6 +13,8 @@ selectConditions(Dataset = NULL, metadata = NULL,
 \item{metadata, }{metadatatable to select from metadata}
 
 \item{choicecounter, }{choicecounter to add multiple comparisons}
+
+\item{session, }{session}
 
 \item{input, }{input params}
 }

@@ -21,8 +21,9 @@ debrowsercondselect <- function(input = NULL, output = NULL, session = NULL, dat
     if (is.null(data)) return(NULL)
     choicecounter <- reactiveVal(0)
     output$conditionSelector <- renderUI({
-        selectConditions(data, metadata, choicecounter(), input)
+        selectConditions(data, metadata, choicecounter(), session, input)
     })
+    
     observeEvent(input$add_btn, {
         choicecounter(choicecounter() + 1)
     })
@@ -248,6 +249,7 @@ getSelectInputBox <- function(id = NULL, name = NULL,
 #' @param Dataset, used dataset 
 #' @param metadata, metadatatable to select from metadata
 #' @param choicecounter, choicecounter to add multiple comparisons
+#' @param session, session
 #' @param input, input params
 #' @note \code{selectConditions}
 #' @return the panel for go plots;
@@ -260,6 +262,7 @@ getSelectInputBox <- function(id = NULL, name = NULL,
 selectConditions<-function(Dataset = NULL,
                            metadata = NULL,
                            choicecounter = NULL,
+                           session = NULL,
                            input = NULL) {
     if (is.null(Dataset)) return(NULL)
     
@@ -275,16 +278,14 @@ selectConditions<-function(Dataset = NULL,
         allsamples <- getSampleNames( colnames(Dataset), "all" )
         
         lapply(seq_len(nc), function(i) {
+
             selected1 <- selectedSamples(2 * i - 1)
             selected2 <- selectedSamples( 2 * i )
-
             to_return <- list(column(12, getMetaSelector(metadata = metadata, input=input, n = i),
-            
                     getConditionSelectorFromMeta(metadata, input, i,
                         (2 * i - 1), allsamples, selected1),
                     getConditionSelectorFromMeta(metadata, input, i,
                         (2 * i), allsamples, selected2)
-    
             ),
             column(12, 
                    column(1, helpText(" ")),
@@ -292,7 +293,14 @@ selectConditions<-function(Dataset = NULL,
                         c("DESeq2", "EdgeR", "Limma"),
                         selectedInput("demethod", i, "DESeq2", input)),
                    getMethodDetails(i, input)))
-           
+            if ( !is.null(selectedInput("conditions_from_meta", 
+                  i, NULL, input)) && selectedInput("conditions_from_meta", 
+                  i, NULL, input) != "No Selection"
+                  && length(levels(factor(metadata[,selectedInput("conditions_from_meta", 
+                  i, NULL, input)])))!=2){
+                showNotification("There must be exactly 2 groups in the selected condition.", type = "error")
+                updateSelectInput(session, paste0("conditions_from_meta", i), selected="No Selection" )
+            }
             return(to_return)
         })
     }
@@ -348,7 +356,7 @@ get_conditions_given_selection <- function(metadata = NULL, selection = NULL){
     facts <- levels(factor(df[,selection]))
     facts <- facts[facts != "" & facts != "NA"]
     if(length(facts) != 2){		
-        return("There must be exactly 2 groups.")		
+        return(NULL)	
     } else {
         # Assuming the first column has samples		
         sample_col_name <- colnames(df)[1]		
