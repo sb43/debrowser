@@ -274,9 +274,11 @@ checkCountData <- function(input = NULL){
     if (is.null(input$countdata$datapath)) return(NULL)
     tryCatch({
         data <- read.table(input$countdata$datapath, sep=input$countdataSep)
+        if (ncol(data) < 3) return ("Error: Please check if you chose the right separator!")
         dups <- data[duplicated(data[,1], fromLast = TRUE),1]
         if (length(dups)>1) return (paste0("Error: There are duplicate entried in  the rownames. (", 
             paste0(dups, collapse=","),")"))
+
         return("success")
     }, error = function(err) {
         return (paste0("Error(Count file):",toString(err)))
@@ -303,13 +305,11 @@ checkCountData <- function(input = NULL){
 checkMetaData <- function(input = NULL, counttable = NULL){
     if (is.null(counttable) || is.null(input$metadata$datapath)) return(NULL)
      tryCatch({
-        metadatatable <- read.table(input$metadata$datapath, sep=input$countdataSep)
+        metadatatable <- read.table(input$metadata$datapath, sep=input$metadataSep, header=T)
+        if (ncol(metadatatable) < 2) return ("Error: Please check if you chose the right separator!")
         met <- as.vector(metadatatable[order(as.vector(metadatatable[,1])), 1])
         count <- as.vector(colnames(counttable)[order(as.vector(colnames(counttable)))])
-        print(met)
-        print(count)
         difference <- base::setdiff(met, count)
-        print(paste0(difference, sep=","))
         if (length(difference)>0){
             return(paste0("Colnames doesn't match with the metada table(", paste0(difference,sep=","), ")"))
         }

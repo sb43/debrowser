@@ -2,6 +2,7 @@
 Version 1.10.7 Release
 *********************************
 - Better error reporting in data upload
+- Better error reporting condition selection using metadata 
 - alldetected genes matrix downlad fixed in QC section
 
 ***********************************
