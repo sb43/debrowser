@@ -14,7 +14,7 @@
 deUI <- function() {
     dbHeader <- shinydashboard:::dashboardHeader(titleWidth = 250)
     dbHeader$children[[2]]$children <- tags$a(style='color: white;',
-         id="top_logo" , "DEBrowser")
+         id="top_logo" , paste0("DEBrowser v",getNamespaceVersion("debrowser")))
     addResourcePath(prefix = "www", directoryPath = system.file("extdata",
         "www", package = "debrowser"))
     library("debrowser")
@@ -33,9 +33,9 @@ deUI <- function() {
         color: #EFEFEF;
     }"),
     # Loading message
-    tags$div(h4("Loading DEBrowser"), id = "loading-debrowser",
+    tags$div(h4(paste0("Loading DEBrowser v",getNamespaceVersion("debrowser"))), id = "loading-debrowser",
         tags$img(src = "www/images/initial_loading.gif")),
-    tags$head(tags$title("DEBrowser"),
+    tags$head(tags$title(paste0("DEBrowser v",getNamespaceVersion("debrowser"))),
         tags$link(rel = "stylesheet", type = "text/css",
         href = "www/shinydashboard_additional.css")
     ),

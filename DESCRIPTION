@@ -26,7 +26,6 @@ Imports:
     shinyjs,
     shinydashboard,
     shinyBS,
-    pathview,
     gplots,
     DT,
     ggplot2,
