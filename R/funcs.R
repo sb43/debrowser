@@ -590,7 +590,7 @@ getPCAcontolUpdatesJS<-function(){
     }
     lapply(..., reqFun)
     }
-    packs <- c("debrowser", "plotly", "shiny", "jsonlite", "shinyjs", "shinydashboard", "shinyBS", "pathview")
+    packs <- c("debrowser", "plotly", "shiny", "jsonlite", "shinyjs", "shinydashboard", "shinyBS")
     req(packs)
 }
 
@@ -599,10 +599,10 @@ getPCAcontolUpdatesJS<-function(){
     msg <- paste0("DEBrowser v", pkgVersion, "  ",
                   "For help: https://debrowser.readthedocs.org/", "\n\n")
     
-    citation <- paste0("If you use DEBrowser in published research, please cite:\n",
+    citation <- paste0("If you use DEBrowser in published research, please cite:\n\n",
                        "Alper Kucukural, Onur Yukselen, Deniz M. Ozata, Melissa J. Moore, Manuel Garber\n", 
                        "DEBrowser: Interactive Differential Expression Analysis and Visualization Tool for Count Data\n",
-                       "BMC Genomics 2019 20:6\ndoi:0.1186/s12864-018-5362-x\n")
+                       "BMC Genomics 2019 20:6\n\ndoi:0.1186/s12864-018-5362-x\n")
     
     packageStartupMessage(paste0(msg, citation))
     .initial()

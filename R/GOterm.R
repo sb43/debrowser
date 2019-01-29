@@ -301,3 +301,37 @@ getEnrichDO <- function(genelist = NULL, pvalueCutoff = 0.01) {
             "GeneRatio", "pvalue", "p.adjust", "qvalue")]
     res
 }
+
+#' drawKEGG
+#'
+#' draw KEGG patwhay with expression values
+#'
+#' @note \code{drawKEGG}
+#' @param input, input
+#' @param dat, expression matrix
+#' @param pid, pathway id
+#' @return enriched DO
+#' @examples
+#'     x <- drawKEGG()
+#' @export
+#'
+drawKEGG <- function(input = NULL, dat = NULL, pid = NULL) {
+    if (is.null(dat)) return(NULL)
+    tryCatch({
+        if (installpack("pathview")){
+            org <- input$organism
+            genedata <- getEntrezIds(dat[[1]], org)
+            foldChangeData <- data.frame(genedata$log2FoldChange)
+            rownames(foldChangeData) <- rownames(genedata)
+            pathview::pathview(gene.data = foldChangeData,
+               pathway.id = pid,
+               species = substr(pid,0,3),
+               gene.idtype="entrez",
+               out.suffix = "b.2layer", kegg.native = TRUE)
+    
+            unlink(paste0(pid,".png"))
+            unlink(paste0(pid,".xml"))
+        }
+    })
+}
+

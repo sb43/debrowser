@@ -18,7 +18,7 @@ installpack <- function(package_name = NULL) {
     {
        txt <- paste0("Please install ",package_name, " to use this function.")
        print(txt)
-       showNotification(txt)
+       showNotification(txt, type="error")
        return(FALSE)
     }else{
         loadpack(package_name)

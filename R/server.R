@@ -80,7 +80,6 @@
 #' @importFrom limma lmFit voom eBayes topTable
 #' @importFrom sva ComBat
 #' @importFrom RCurl getURL
-#' @importFrom pathview pathview
 #' @import org.Hs.eg.db
 #' @import org.Mm.eg.db
 #' @import shinyBS
@@ -423,26 +422,11 @@ deServer <- function(input, output, session) {
         output$KEGGPlot <- renderImage({
             withProgress(message = 'KEGG Started', detail = "interactive", value = 0, {
             shiny::validate(need(!is.null(input$gotable_rows_selected),
-                          "Please select a category in the GO/KEGG table to be able
-                          to see the pathway diagram"))
-            
-            org <- input$organism
-            dat <- datForTables()
-            genedata <- getEntrezIds(dat[[1]], org)
-            foldChangeData <- data.frame(genedata$log2FoldChange)
-            rownames(foldChangeData) <- rownames(genedata)
+                          showNotification("Please select a category in the GO/KEGG table to be able
+                          to see the pathway diagram",type="error")))
             i <- input$gotable_rows_selected
             pid <- inputGOstart()$table$ID[i]
-
-            tryCatch({
-                pathview::pathview(gene.data = foldChangeData,
-                    pathway.id = pid,
-                    species = substr(pid,0,3),
-                    gene.idtype="entrez",
-                    out.suffix = "b.2layer", kegg.native = TRUE)
-            })
-            unlink(paste0(pid,".png"))
-            unlink(paste0(pid,".xml"))
+            drawKEGG(input, datForTables(), pid)
             list(src = paste0(pid,".b.2layer.png"),
                  contentType = 'image/png')
             })
