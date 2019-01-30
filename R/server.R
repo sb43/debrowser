@@ -420,16 +420,22 @@ deServer <- function(input, output, session) {
             }
         })
         output$KEGGPlot <- renderImage({
+            validate(need(!is.null(input$gotable_rows_selected ),
+                "Please select a category in the GO/KEGG table tab to be able
+                to see the pathway diagram")
+            )
+            
             withProgress(message = 'KEGG Started', detail = "interactive", value = 0, {
-            shiny::validate(need(!is.null(input$gotable_rows_selected),
-                          showNotification("Please select a category in the GO/KEGG table to be able
-                          to see the pathway diagram",type="error")))
+
             i <- input$gotable_rows_selected
+           
             pid <- inputGOstart()$table$ID[i]
+
             drawKEGG(input, datForTables(), pid)
             list(src = paste0(pid,".b.2layer.png"),
                  contentType = 'image/png')
             })
+
         }, deleteFile = TRUE)
 
         getGOCatGenes <- reactive({
