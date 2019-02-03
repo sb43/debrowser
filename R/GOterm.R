@@ -313,6 +313,7 @@ getEnrichDO <- function(genelist = NULL, pvalueCutoff = 0.01) {
 #' @return enriched DO
 #' @examples
 #'     x <- drawKEGG()
+#' @importFrom pathview pathview 
 #' @export
 #'
 drawKEGG <- function(input = NULL, dat = NULL, pid = NULL) {
@@ -323,7 +324,7 @@ drawKEGG <- function(input = NULL, dat = NULL, pid = NULL) {
             genedata <- getEntrezIds(dat[[1]], org)
             foldChangeData <- data.frame(genedata$log2FoldChange)
             rownames(foldChangeData) <- rownames(genedata)
-            pathview(gene.data = foldChangeData,
+            pathview::pathview(gene.data = foldChangeData,
                pathway.id = pid,
                species = substr(pid,0,3),
                gene.idtype="entrez",
