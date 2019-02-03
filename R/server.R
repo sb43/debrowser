@@ -29,6 +29,7 @@
 #'             selectizeInput fluidRow div renderPrint renderImage
 #'             verbatimTextOutput imageOutput renderTable incProgress
 #'             a h3 strong h2 withMathJax updateCheckboxInput
+#'             showNotification updateSelectInput
 #' @importFrom shinyjs show hide enable disable useShinyjs extendShinyjs
 #'             js inlineCSS onclick
 #' @importFrom d3heatmap d3heatmap renderD3heatmap d3heatmapOutput

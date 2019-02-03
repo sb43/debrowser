@@ -323,7 +323,7 @@ drawKEGG <- function(input = NULL, dat = NULL, pid = NULL) {
             genedata <- getEntrezIds(dat[[1]], org)
             foldChangeData <- data.frame(genedata$log2FoldChange)
             rownames(foldChangeData) <- rownames(genedata)
-            pathview::pathview(gene.data = foldChangeData,
+            pathview(gene.data = foldChangeData,
                pathway.id = pid,
                species = substr(pid,0,3),
                gene.idtype="entrez",
