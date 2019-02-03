@@ -58,7 +58,8 @@ Imports:
     colourpicker,
     plotly,
     heatmaply,
-    Harman
+    Harman,
+    pathview
 RoxygenNote: 6.1.1
 Encoding: UTF-8
 Suggests: testthat,
