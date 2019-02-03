@@ -316,7 +316,7 @@ getEnrichDO <- function(genelist = NULL, pvalueCutoff = 0.01) {
 #' @export
 #'
 drawKEGG <- function(input = NULL, dat = NULL, pid = NULL) {
-    if (is.null(dat)) return(NULL)
+    if (is.null(dat) && is.null(pid)) return(NULL)
     tryCatch({
         if (installpack("pathview")){
             org <- input$organism

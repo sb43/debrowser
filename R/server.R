@@ -421,7 +421,7 @@ deServer <- function(input, output, session) {
             }
         })
         output$KEGGPlot <- renderImage({
-            validate(need(!is.null(input$gotable_rows_selected ),
+            shiny::validate(need(!is.null(input$gotable_rows_selected),
                 "Please select a category in the GO/KEGG table tab to be able
                 to see the pathway diagram")
             )
