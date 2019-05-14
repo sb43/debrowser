@@ -251,5 +251,6 @@ correctHarman <- function (input = NULL, idata = NULL, metadata = NULL) {
   
   harman.res <- harman(idata, expt= batch.info$treatment, batch= batch.info$batch, limit=0.95)
   harman.corrected <- reconstructData(harman.res)
+  harman.corrected[harman.corrected<0] <- 0
   harman.corrected
 }
