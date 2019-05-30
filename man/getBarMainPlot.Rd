@@ -4,15 +4,15 @@
 \alias{getBarMainPlot}
 \title{getBarMainPlot}
 \usage{
-getBarMainPlot(data = NULL, conds = NULL, cols = NULL, key = NULL,
+getBarMainPlot(data = NULL, cols = NULL, conds = NULL, key = NULL,
   title = "", input = NULL)
 }
 \arguments{
 \item{data, }{count or normalized data}
 
-\item{conds, }{conds}
-
 \item{cols, }{cols}
+
+\item{conds, }{conds}
 
 \item{key, }{key}
 
