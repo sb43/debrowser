@@ -7,8 +7,8 @@
 #' @param output, output objects
 #' @param session, session 
 #' @param data, a matrix that includes expression values
-#' @param conds, conditions
 #' @param cols, columns
+#' @param conds, conditions
 #' @param key, the gene or region name
 #' @return density plot 
 #' @export
@@ -17,7 +17,7 @@
 #'     x <- debrowserbarmainplot()
 #'
 debrowserbarmainplot <- function(input, output, session, data = NULL,
-                                 conds=NULL, cols = NULL, key=NULL) {
+                                 cols = NULL, conds=NULL, key=NULL) {
     if(is.null(data)) return(NULL)
     output$BarMainUI <- renderUI({
         shinydashboard::box(
@@ -27,8 +27,7 @@ debrowserbarmainplot <- function(input, output, session, data = NULL,
                 height=input$height, width=input$width))
     })
     output$BarMain <- renderPlotly({
-        getBarMainPlot(data, conds, cols, key, title = "", input =input)
-
+        getBarMainPlot(data, cols, conds, key, title = "", input =input)
     })
 }
 
@@ -74,8 +73,8 @@ barMainPlotControlsUI <- function(id) {
 #' Makes Density plots
 #'
 #' @param data, count or normalized data
-#' @param conds, conds
 #' @param cols, cols
+#' @param conds, conds
 #' @param key, key
 #' @param title, title
 #' @param input, input
@@ -84,10 +83,10 @@ barMainPlotControlsUI <- function(id) {
 #' @examples
 #'     getBarMainPlot()
 #'
-getBarMainPlot <- function(data=NULL, conds=NULL, cols = NULL, key=NULL, title = "", input = NULL){
+getBarMainPlot <- function(data=NULL, cols = NULL, conds=NULL, key=NULL, title = "", input = NULL){
     if (is.null(data)) return(NULL)
-    vardata <- getVariationData(data, conds, cols, key)
-    title <- paste(vardata$genename, " variation")
+    vardata <- getVariationData(data, cols, conds, key)
+    title <- paste(key, "variation")
     
     p <- plot_ly(vardata, x = ~libs, y = ~count, 
                  color=~conds, colors=c("Blue", "Red"),
