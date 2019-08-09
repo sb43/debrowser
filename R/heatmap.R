@@ -206,6 +206,8 @@ runHeatmap <- function(input = NULL, session = NULL, expdata = NULL){
                           t = input$top,
                           r = input$right
             ))
+    if (!is.null(input$svg) && input$svg == TRUE)
+        p <- p %>% config(toImageButtonOptions = list(format = "svg"))
     p$elementId <- NULL
     p
 }
