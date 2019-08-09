@@ -187,10 +187,13 @@ plot_pca <- function(dat = NULL, pcx = 1, pcy = 2,
         plot1 <- plotly::hide_legend(plot1)
 
     plot1$elementId <- NULL
-    
+    if (!is.null(input$svg) && input$svg == TRUE)
+      plot1 <- plot1 %>% config(toImageButtonOptions = list(format = "svg"))
     pcaExp <- getPCAexplained(dat, pca_data, input)
     plot2 <- drawPCAExplained(pcaExp$plotdata)
     plot2$elementId <- NULL
+    if (!is.null(input$svg) && input$svg == TRUE)
+      plot2 <- plot2 %>% config(toImageButtonOptions = list(format = "svg"))
     return (list(plot1 =  plot1, plot2 =  plot2, pcaset = pcaExp$pcaset))
 }
 
