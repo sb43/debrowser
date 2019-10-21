@@ -441,7 +441,7 @@ getMean<-function(data = NULL, selcols=NULL) {
     if (length(selcols) > 1)
         mean_cond <-list(rowMeans( data[, selcols]))
     else
-        mean_cond <-list(norm_data[selcols])
+        mean_cond <-list(data[selcols])
     mean_cond
 }
 
