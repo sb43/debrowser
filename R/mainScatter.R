@@ -111,7 +111,7 @@ mainScatterNew <- function(input = NULL, data = NULL, source = NULL) {
     if ( is.null(data) ) return(NULL)
     
     p <- plot_ly(source = source, data=data, x=~x, y=~y, key=~key, alpha = 0.8,
-                 color=~Legend, colors=getLegendColors(unique(data$Legend)), 
+                 color=~Legend, colors=getLegendColors(getLevelOrder(unique(data$Legend))), 
                  type="scatter", mode = "markers",
                  width=input$width - 100, height=input$height,
                  text=~paste("<b>", ID, "</b><br>",
@@ -166,7 +166,7 @@ plotData <- function(pdata = NULL, input = NULL){
     }
     plot_init_data <- rbind(data_rand, data_rest)
     plot_init_data$Legend  <- factor(plot_init_data$Legend, 
-         levels = unique(plot_init_data$Legend))
+         levels = getLevelOrder(unique(plot_init_data$Legend)))
     
     plot_data <- plot_init_data
     if (mainplot == "volcano") {
