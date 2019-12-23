@@ -44,7 +44,11 @@ debrowsermainplot <- function(input = NULL, output = NULL, session = NULL, data 
         }
         list(
             textInput(session$ns('xlab'),'x label', x),
-            textInput(session$ns('ylab'),'y label', y)
+            textInput(session$ns('ylab'),'y label', y),
+            checkboxInput(session$ns('labelsearched'), 'Label searched points', value = FALSE),
+            conditionalPanel(paste0("input['",session$ns("labelsearched"), "']"),
+            colourpicker::colourInput(session$ns("labelcolor"), "Label colour", "black"),
+            selectInput(session$ns("labelsize"), "Label Size", choices=c(6:30), selected=14))
         )
     })
     selectedPoint <- reactive({
@@ -128,6 +132,31 @@ mainScatterNew <- function(input = NULL, data = NULL, source = NULL) {
                           t = input$top,
                           r = input$right
             ))
+    
+    if (!is.null(input$labelsearched) && input$labelsearched == TRUE){
+        searched_genes <- data[(data$Legend == "GS"),]
+        a <- list()
+        for (i in seq_len(nrow(searched_genes))) {
+            m <- searched_genes[i, ]
+            a[[i]] <- list(
+                x = m$x,
+                y = m$y,
+                text = rownames(m),
+                color = 'blue',
+                xref = "x",
+                yref = "y",
+                showarrow = TRUE,
+                arrowhead = 0.5,
+                ax = 20,
+                ay = -40,
+                font = list(color = input$labelcolor,
+                            face = 2,
+                            size = input$labelsize)
+            )
+        }
+        
+        p <- p %>%  plotly::layout(annotations = a)
+    }
     if (!is.null(input$svg) && input$svg == TRUE)
         p <- p %>% config(toImageButtonOptions = list(format = "svg"))
     p$elementId <- NULL
