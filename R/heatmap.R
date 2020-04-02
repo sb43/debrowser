@@ -226,8 +226,8 @@ runHeatmap <- function(input = NULL, session = NULL, data = NULL){
 #'
 runHeatmap2 <- function(input = NULL, session = NULL, data = NULL){
     if(is.null(data)) return(NULL)
-    if (nrow(data)>5000)
-        data <- data[1:5000, ]
+    #if (nrow(data)>5000)
+    #    data <- data[1:5000, ]
     
     if (!input$customColors ) {
         heatmapColors <- eval(parse(text=paste0(input$pal,
