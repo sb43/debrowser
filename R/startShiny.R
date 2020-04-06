@@ -26,6 +26,6 @@ startDEBrowser <- function(){
             
         app <- shinyApp( ui = shinyUI(deUI),
                     server = shinyServer(deServer))
-        runApp(app)
+        runApp(app,display.mode = "showcase")
     }
 }
